@@ -1,0 +1,15 @@
+
+This file has some issues I've come across when using VMware to run Linux
+so that I can do quick builds to check compilation of PHI firmware.
+
+1) Actual builds must be done on the Raspberry PI itself.  I have not
+   set up a cross-compilation environment because I imagine it will just
+   lead to confusion about how/where the firmware was built.
+
+2) VMware virtual machines can have their time go out of sync with the host
+   OS that is running it.  This can give warnings from "make" saying that
+   there is a clock skew.  To fix this, go to the VMware virtual machine
+   setting and check the box that says something like "keep clock synchronized
+   between guest and host".
+
+3) 

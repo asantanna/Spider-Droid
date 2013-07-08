@@ -1,0 +1,86 @@
+#! /bin/bash
+
+# Build Phi firmware but check some stuff first
+
+echo
+echo '****************'
+echo '*  Build Phi   *'
+echo '****************'
+echo
+
+echo Checking build environment ...
+
+# check that we have new version of pthread
+
+PTHREAD_IMPL=`getconf GNU_LIBPTHREAD_VERSION`
+
+if grep -q NPTL <<EOF
+$PTHREAD_IMPL
+EOF
+then
+echo ' OK ' : PThread version is $PTHREAD_IMPL
+else
+echo 'FAIL' : PThread version obsolete - version is $PTHREAD_IMPL
+exit
+fi
+
+# OK ... everything looks good
+echo ' OK ' : All tests complete
+echo
+
+# get hostname to use as part of directory names
+HOST_NAME=`uname -n`
+
+# create a temporary directory for cmake files so they don't
+# end up all mixed up with the source.
+
+TMP_DIR="cmake.tmp.$HOSTNAME"
+
+if [ ! -e $TMP_DIR ] ; then
+  echo "Creating directory for cmake tmp files : $TMP_DIR"
+  mkdir $TMP_DIR
+else
+  echo "Reusing cmake tmp dir : $TMP_DIR"
+fi
+
+# create makefiles with CMake
+#
+# Note: switch to tmp dir and build parent which
+#       is a way of making cmake tmp files stay
+#       out of the way.
+#
+# Note2: to clean up cmake files, it is OK to
+#        "rm -rf" the tmp dirs
+
+echo
+echo Creating Makefiles with cmake ...
+
+cd $TMP_DIR
+
+cmake ..
+
+# run makefile (in tmp dir)
+
+echo
+echo Starting build ...
+
+make
+
+# if successful ... copy executable to bin dir
+
+if [ $? == 0 ] ; then
+    echo SUCCESS - copying executable to ./bin
+    cp ./src/phi ../bin/.
+else
+    echo BUILD FAILED
+    exit
+fi
+
+# done
+
+echo 
+echo Done.
+echo
+
+exit
+

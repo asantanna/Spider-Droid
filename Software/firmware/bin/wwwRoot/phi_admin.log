@@ -1,0 +1,241 @@
+ERROR: system call:bind errno=13, pid=8279
+ERROR: system call:bind errno=13, pid=8286
+ERROR: system call:bind errno=13, pid=8352
+ERROR: system call:bind errno=13, pid=8353
+ERROR: system call:bind errno=13, pid=8395
+ERROR: system call:bind errno=13, pid=8428
+INFO: PHI Admin going into accept loop:(null):0
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:1
+NOT FOUND: failed to open file:index.html
+INFO: request:GET /favicon.ico HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: image/png,image/*;q=0.8,*/*;q=0.5**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:2
+NOT FOUND: failed to open file:favicon.ico
+INFO: request:GET /favicon.ico HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:3
+NOT FOUND: failed to open file:favicon.ico
+INFO: request:GET /foo HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:4
+INFO: request:GET /foo HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:4
+INFO: PHI Admin going into accept loop:(null):0
+INFO: PHI Admin going into accept loop:(null):0
+INFO: request:GET /foo HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:1
+INFO: request:GET /foo HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:1
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:2
+NOT FOUND: failed to open file:index.html
+INFO: request:GET //moo HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:3
+INFO: request:GET //moo HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:3
+INFO: request:GET //goo/ HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:4
+INFO: request:GET //goo/ HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:4
+INFO: request:GET //goo/ HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:5
+INFO: request:GET //goo/ HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:5
+INFO: PHI Admin going into accept loop:(null):0
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:1
+INFO: SEND:index.html:1
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 70
+Connection: close
+Content-Type: text/html
+
+:1
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive****:2
+INFO: SEND:index.html:2
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 70
+Connection: close
+Content-Type: text/html
+
+:2
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:3
+INFO: SEND:index.html:3
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 70
+Connection: close
+Content-Type: text/html
+
+:3
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:4
+INFO: SEND:index.html:4
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 70
+Connection: close
+Content-Type: text/html
+
+:4
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:5
+INFO: SEND:index.html:5
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 70
+Connection: close
+Content-Type: text/html
+
+:5
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:6
+INFO: SEND:index.html:6
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 70
+Connection: close
+Content-Type: text/html
+
+:6
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:7
+INFO: SEND:index.html:7
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 70
+Connection: close
+Content-Type: text/html
+
+:7
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:8
+INFO: SEND:index.html:8
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 239
+Connection: close
+Content-Type: text/html
+
+:8
+INFO: request:GET /nigel.jpg HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: image/png,image/*;q=0.8,*/*;q=0.5**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Referer: http://localhost/**Connection: keep-alive****:9
+NOT FOUND: failed to open file:nigel.jpg
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:10
+INFO: SEND:index.html:10
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 239
+Connection: close
+Content-Type: text/html
+
+:10
+INFO: request:GET /nigel.jpg HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: image/png,image/*;q=0.8,*/*;q=0.5**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Referer: http://localhost/**Connection: keep-alive****:11
+NOT FOUND: failed to open file:nigel.jpg
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:12
+INFO: SEND:index.html:12
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 239
+Connection: close
+Content-Type: text/html
+
+:12
+INFO: request:GET /nigel.jpg HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: image/png,image/*;q=0.8,*/*;q=0.5**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Referer: http://localhost/**Connection: keep-alive****:13
+NOT FOUND: failed to open file:nigel.jpg
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:14
+INFO: SEND:index.html:14
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 71
+Connection: close
+Content-Type: text/html
+
+:14
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:15
+INFO: SEND:index.html:15
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 107
+Connection: close
+Content-Type: text/html
+
+:15
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:16
+INFO: SEND:index.html:16
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 147
+Connection: close
+Content-Type: text/html
+
+:16
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:17
+INFO: SEND:index.html:17
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 149
+Connection: close
+Content-Type: text/html
+
+:17
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:18
+INFO: SEND:index.html:18
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 149
+Connection: close
+Content-Type: text/html
+
+:18
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:19
+INFO: SEND:index.html:19
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 193
+Connection: close
+Content-Type: text/html
+
+:19
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:20
+INFO: SEND:index.html:20
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 191
+Connection: close
+Content-Type: text/html
+
+:20
+INFO: request:GET /images/phi_letter.jpg HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: image/png,image/*;q=0.8,*/*;q=0.5**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Referer: http://localhost/**Connection: keep-alive****:21
+INFO: SEND:images/phi_letter.jpg:21
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 22351
+Connection: close
+Content-Type: image/jpg
+
+:21
+INFO: request:GET /images/phi_text.jpg HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: image/png,image/*;q=0.8,*/*;q=0.5**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Referer: http://localhost/**Connection: keep-alive****:22
+INFO: SEND:images/phi_text.jpg:22
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 4268
+Connection: close
+Content-Type: image/jpg
+
+:22
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:23
+INFO: SEND:index.html:23
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 263
+Connection: close
+Content-Type: text/html
+
+:23
+INFO: request:GET /images/phi_text.jpg HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: image/png,image/*;q=0.8,*/*;q=0.5**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Referer: http://localhost/**Connection: keep-alive**Cache-Control: max-age=0****:24
+INFO: SEND:images/phi_text.jpg:24
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 4268
+Connection: close
+Content-Type: image/jpg
+
+:24
+INFO: request:GET / HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Connection: keep-alive**Cache-Control: max-age=0****:25
+INFO: SEND:index.html:25
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 263
+Connection: close
+Content-Type: text/html
+
+:25
+INFO: request:GET /images/phi_text.jpg HTTP/1.1**Host: localhost**User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:22.0) Gecko/20100101 Firefox/22.0**Accept: image/png,image/*;q=0.8,*/*;q=0.5**Accept-Language: en-US,en;q=0.5**Accept-Encoding: gzip, deflate**Referer: http://localhost/**Connection: keep-alive**Cache-Control: max-age=0****:26
+INFO: SEND:images/phi_text.jpg:26
+INFO: Header:HTTP/1.1 200 OK
+Server: Phi Web Admin 0.1 dev
+Content-Length: 4268
+Connection: close
+Content-Type: image/jpg
+
+:26
