@@ -1,0 +1,32 @@
+#! /bin/bash
+
+# The purpose of this file is check out only part of the Spider-Droid
+# project on the Raspberry PI.  Seems weird to have the massive
+# desktop part and all the CAD files checked out here.  So we only get
+# the firmware.
+#
+# To use this, we must first create the repository manually:
+#
+#    mkdir Spider-Droid
+#    cd Spider-Droid
+#    git init
+#    git remote add -f origin https://github.com/asantanna/Spider-Droid.git
+#
+# Then run this script
+#
+
+# enable sparse checkout
+git config core.sparsecheckout true
+
+# create file to control what gets checked out
+
+FN=".git/info/sparse-checkout"
+
+cat >$FN <<EOF
+.gitignore
+README.md
+Software/firmware
+EOF
+
+# now just pull the source
+git pull origin master
