@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# The purpose of this file is check out only part of the Spider-Droid
+# The purpose of this file is to check out only part of the Spider-Droid
 # project on the Raspberry PI.  Seems weird to have the massive
 # desktop part and all the CAD files checked out here.  So we only get
 # the firmware.
