@@ -14,7 +14,7 @@ void main() {
   gettimeofday(&g_startupTime, NULL);
 
   // startup message
-  printf("PHI started at %d.%d\n", g_startupTime.tv_sec, g_startupTime.tv_usec);
+  printf("PHI started at %ld.%ld\n", g_startupTime.tv_sec, g_startupTime.tv_usec);
 
   // init some stuff (TODO)
 

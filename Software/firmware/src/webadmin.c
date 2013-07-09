@@ -35,6 +35,8 @@
 
 #include "phi.h"
 
+#define LOGFILE_NAME    "/var/log/phi.log"
+
 #define NWEB_VERSION    23
 #define BUFSIZE         8096
 #define ERROR           42
@@ -125,10 +127,13 @@ void wa_logger(int type, const char *s1, const char *s2, int sock_or_val)
 
   // No checks here, nothing can be done with a failure anyway
 
-  if ((fd = open("phi_admin.log", O_CREAT | O_WRONLY | O_APPEND, 0644)) >= 0) {
+  if ((fd = open(LOGFILE_NAME, O_CREAT | O_WRONLY | O_APPEND, 0644)) >= 0) {
     write(fd, logbuffer, strlen(logbuffer)); 
     write(fd, "\n", 1);      
     close(fd);
+  } else {
+    printf("Error: could not open log file '%s' (errno=%d)!  (Are you running as root?)\n", LOGFILE_NAME, errno);
+    exit (1);
   }
 }
 
