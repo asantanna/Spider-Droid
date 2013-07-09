@@ -4,17 +4,20 @@
 //
 
 #define PHI_VERSION     "0.1 dev"
+#define LOGFILE_NAME    "/var/log/phi.log"
 
 // signed ints
 #define INT8            char
 #define INT16           short
 #define INT32           long
+#define INT64           long long
 
 // unsigned ints
 #define UINT            unsigned int
 #define UINT8           unsigned char
 #define UINT16          unsigned short
 #define UINT32          unsigned long
+#define UINT64          unsigned long long
 
 // common data aliases
 
@@ -29,6 +32,18 @@
 // allocation helpers
 
 #define ALLOC(D)        ((D*)phi_allocHelper(sizeof(D)))
+
+// time
+
+#define U64_1E6         ((UINT64)1e6)
+#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
+
+// logging
+
+#define LOG_INFO(...)   phi_log_msg("", __VA_ARGS__)
+#define LOG_ERR(...)    phi_log_msg("ERROR: ", __VA_ARGS__)
+
+
 
 
 

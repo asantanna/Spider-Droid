@@ -35,8 +35,6 @@
 
 #include "phi.h"
 
-#define LOGFILE_NAME    "/var/log/phi.log"
-
 #define NWEB_VERSION    23
 #define BUFSIZE         8096
 #define ERROR           42
@@ -100,42 +98,6 @@ char wa_response_ok_header[] =
   "Connection: close\n"
   "Content-Type: %s\n"
   "\n";
-                              
-void wa_logger(int type, const char *s1, const char *s2, int sock_or_val)
-{
-  int fd;
-  char logbuffer[BUFSIZE];
-
-  switch (type) {
-    case ERROR:
-      sprintf(logbuffer, "ERROR: %s:%s errno=%d, pid=%d", s1, s2, errno, getpid()); 
-      break;
-
-    case FORBIDDEN:
-      write(sock_or_val, wa_response_forbidden, strlen(wa_response_forbidden));
-      break;
-
-    case NOTFOUND: 
-      write(sock_or_val, wa_response_notfound, strlen(wa_response_notfound));
-      sprintf(logbuffer, "NOT FOUND: %s:%s", s1, s2); 
-      break;
-
-    case LOG:
-      sprintf(logbuffer, "INFO: %s:%s:%d", s1, s2, sock_or_val);
-      break;
-  }
-
-  // No checks here, nothing can be done with a failure anyway
-
-  if ((fd = open(LOGFILE_NAME, O_CREAT | O_WRONLY | O_APPEND, 0644)) >= 0) {
-    write(fd, logbuffer, strlen(logbuffer)); 
-    write(fd, "\n", 1);      
-    close(fd);
-  } else {
-    printf("Error: could not open log file '%s' (errno=%d)!  (Are you running as root?)\n", LOGFILE_NAME, errno);
-    exit (1);
-  }
-}
 
 void wa_process_web_request(int socketfd, int hit)
 {
@@ -149,7 +111,8 @@ void wa_process_web_request(int socketfd, int hit)
 
   // read failure stop now
   if (sock_numRead == 0 || sock_numRead == -1) {
-    wa_logger(FORBIDDEN, "failed to read browser request", "", socketfd);
+    write(socketfd, wa_response_forbidden, strlen(wa_response_forbidden));
+    LOG_ERR("failed to read browser request");
     return;
   }
 
@@ -159,7 +122,7 @@ void wa_process_web_request(int socketfd, int hit)
   }
   else {
     // error
-    wa_logger(ERROR, "GET request too big", 0, 0);
+    LOG_ERR("GET request too big - size=%d", sock_numRead);
     buffer[0]=0;
     return;
   }
@@ -171,10 +134,11 @@ void wa_process_web_request(int socketfd, int hit)
     }
   }
 
-  wa_logger(LOG, "request", buffer, hit);
+  LOG_INFO("webadmin: request='%s', hit=%d", buffer, hit);
 
   if (strncmp(buffer, "GET ", 4) && strncmp(buffer, "get ", 4) ) {
-    wa_logger(FORBIDDEN, "Only simple GET operation supported", buffer, socketfd);
+    write(socketfd, wa_response_forbidden, strlen(wa_response_forbidden));
+    LOG_ERR("Only simple GET operation supported");
     return;
   }
 
@@ -190,7 +154,8 @@ void wa_process_web_request(int socketfd, int hit)
   // check for illegal parent directory use
   for (j=0 ; j<i-1 ; j++) {
     if (buffer[j] == '.' && buffer[j+1] == '.') {
-      wa_logger(FORBIDDEN, "Parent directory (..) path names not supported", buffer, socketfd);
+      write(socketfd, wa_response_forbidden, strlen(wa_response_forbidden));
+      LOG_ERR("Parent directory (..) path names not supported");
       return;
     }
   }
@@ -214,17 +179,19 @@ void wa_process_web_request(int socketfd, int hit)
   }
   
   if (fstr == 0) {
-    wa_logger(FORBIDDEN, "file extension type not supported", buffer, socketfd);
+    write(socketfd, wa_response_forbidden, strlen(wa_response_forbidden));
+    LOG_ERR("file extension type not supported (%s)", buffer);
     return;
   }
 
   // open the file for reading
   if ((pagefd = open(&buffer[5], O_RDONLY)) == -1) {
-    wa_logger(NOTFOUND, "failed to open file", &buffer[5], socketfd);
+    write(socketfd, wa_response_notfound, strlen(wa_response_notfound));
+    LOG_ERR("webadmin failed to open file '%s'", &buffer[5]);
     return;
   }
 
-  wa_logger(LOG, "SEND", &buffer[5], hit);
+  LOG_INFO("webadmin: page requested='%s'", &buffer[5]);
 
   // lseek to the file end to find the length
   len = (long) lseek(pagefd, (off_t)0, SEEK_END);
@@ -234,7 +201,7 @@ void wa_process_web_request(int socketfd, int hit)
 
   // send header plus blank line
   sprintf(buffer, wa_response_ok_header, PHI_VERSION, len, fstr);
-  wa_logger(LOG, "Header", buffer, hit);
+  LOG_INFO("webadmin: Header='%s'", buffer);
   write(socketfd, buffer, strlen(buffer));
 
   // send file in 8KB blocks - last block may be smaller
@@ -257,22 +224,22 @@ void phi_webadmin(int port, const char* wwwRoot)
   memset(&serv_addr, 0, sizeof(serv_addr));
 
   // debug
-  wa_logger(LOG, "PHI Admin starting ", (char*) wwwRoot, getpid());
+  LOG_INFO("PHI webadmin starting - wwwRoot='%s'", (char*) wwwRoot);
 
   // change dir to www doc root
   if (chdir(wwwRoot) == -1) { 
-    wa_logger(ERROR, "can't change to directory %s\n", wwwRoot, -1);
+    LOG_ERR("can't change to directory %s\n", wwwRoot);
     phi_abort_process(-1);
   }
 
   // setup the network socket
   if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-    wa_logger(ERROR, "system call", "socket", 0);
+    LOG_ERR("system call failed: socket");
     phi_abort_process(-1);
   }
 
   if (port < 0 || port > 60000) {
-    wa_logger(ERROR, "Invalid port number (try 1 -> 60000)", "port given=", port);
+    LOG_ERR("Invalid port number (try 1 -> 60000)", "port given=", port);
     phi_abort_process(-1);
   }
 
@@ -281,18 +248,15 @@ void phi_webadmin(int port, const char* wwwRoot)
   serv_addr.sin_port = htons(port);
 
   if (bind(listenfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) <0) {
-    wa_logger(ERROR, "system call", "bind", 0);
+    LOG_ERR("system call failed: bind");
     phi_abort_process(-1);
   }
 
 
   if ( listen(listenfd, 64) <0) {
-    wa_logger(ERROR, "system call", "listen", 0);
+    LOG_ERR("system call failed: listen");
     phi_abort_process(-1);
   }
-
-  // debug
-  wa_logger(LOG, "PHI Admin going into accept loop", 0, 0);
 
   // go into infinite loop accepting calls
 
@@ -300,7 +264,7 @@ void phi_webadmin(int port, const char* wwwRoot)
 
     length = sizeof(cli_addr);
     if ((socketfd = accept(listenfd, (struct sockaddr *) &cli_addr, &length)) < 0) {
-      wa_logger(ERROR, "system call", "accept", 0);
+      LOG_ERR("system call failed: accept");
       phi_abort_process(-1);
     }
 

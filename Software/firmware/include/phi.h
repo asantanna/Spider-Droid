@@ -3,9 +3,15 @@
 // Main include file for spiderBot
 //
 
+// make sure we get thread-safe functions from libc
+#define _REENTRANT 1
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
+#include <time.h>
+#include <errno.h>
 #include <sys/time.h>
 #include <unistd.h>			// used for UART
 #include <fcntl.h>			// used for UART
