@@ -11,12 +11,25 @@
 void main() {
 
   // remember start-up time
-  gettimeofday(&g_startupTime, NULL);
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  g_startupTime = TV_TO_USEC(tv);
+  
+  // startup message (in case log will fail)
+  time_t now = time(NULL);
+  char* sTime = ctime(&now);
+  printf("PHI started at %s\n", sTime);
 
-  // startup message
-  printf("PHI started at %d.%d\n", g_startupTime.tv_sec, g_startupTime.tv_usec);
+  // init log
+  if (phi_log_init(LOGFILE_NAME) == 0) {
+    // failed
+    printf("Error: could not open log file '%s' (errno=%d)!  (Are you running as root?)\n", LOGFILE_NAME, errno);
+    phi_abort_process(-1);
+  }
 
-  // init some stuff (TODO)
+  // remove NL and log
+  sTime[strlen(sTime)-1] = 0;
+  LOG_INFO("####### PHI startup at %s #######", sTime);
 
   // start web admin server (never returns)
   phi_webadmin(80, "./wwwRoot");

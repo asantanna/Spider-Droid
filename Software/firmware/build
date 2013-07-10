@@ -70,7 +70,7 @@ make
 
 if [ $? == 0 ] ; then
     echo SUCCESS - copying executable to ./bin
-    cp ./src/phi ../bin/.
+    cp ./src/phi "../bin/phi-$HOST_NAME"
 else
     echo BUILD FAILED
     exit
