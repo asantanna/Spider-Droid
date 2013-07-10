@@ -15,8 +15,8 @@ void* phi_allocHelper(int size);
 
 UINT64 phi_upTime();
 
-void phi_abort_process(int rc);
-void phi_abort_with_msg(const char* msg);
+void phi_abortProcess(int rc);
+void phi_abortWithMsg(const char* msg);
 
 //
 // non-ANSI
@@ -34,9 +34,9 @@ void phi_webadmin(int port, const char* wwwRoot);
 // LOGGING
 //
 
-int phi_log_start(char *filename);
-void phi_log_msg(const char* tag, const char *fmt, ...);
-void phi_log_close(void);
+int phi_logInit(char *filename);
+void phi_logMsg(const char* tag, const char *fmt, ...);
+void phi_logClose(void);
 
 
 
