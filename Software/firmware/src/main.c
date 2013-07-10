@@ -18,7 +18,7 @@ void main() {
   // startup message (in case log will fail)
   time_t now = time(NULL);
   char* sTime = ctime(&now);
-  printf("PHI started at %s\n", sTime);
+  printf("PHI started at %s", sTime);
 
   // init log
   if (phi_logInit(LOGFILE_NAME) == 0) {

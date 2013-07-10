@@ -100,8 +100,8 @@ int phi_logInit(char *filename) {
     fclose(phi_logfp);
   }
 
-  //truncate log files that are > 1000 lines ( or if \r\n EOL is used, 500.)
-  phi_logfp = fopen(filename, "r"); //open file in read mode.
+  // truncate log files that are > 1000 lines (or if \r\n EOL is used,  500)
+  phi_logfp = fopen(filename, "r");
   int lines = 0;
   if (phi_logfp != NULL) {
     char c;
