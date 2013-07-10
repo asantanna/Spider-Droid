@@ -29,7 +29,7 @@ void uart_init() {
   g_uart0_fs = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY);		
 
   if (g_uart0_fs == -1) {
-    phi_abort_with_msg("can't open UART. In use by another application?");
+    phi_abortWithMsg("can't open UART. In use by another application?");
   }
 
   // configure UART 0
@@ -64,7 +64,7 @@ void uart_send(BYTE* pData, int dataLen) {
     int count = write(g_uart0_fs, pData, dataLen);
     if (count < 0)
     {
-      phi_abort_with_msg("UART TX error");
+      phi_abortWithMsg("UART TX error");
     }
   }
 }

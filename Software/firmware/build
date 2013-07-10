@@ -52,6 +52,21 @@ fi
 # Note2: to clean up cmake files, it is OK to
 #        "rm -rf" the tmp dirs
 
+# set to true/false depending on whether you
+# want symbols for debugging
+DEBUG_MODE=false
+
+if [[ $DEBUG_MODE == true ]] ; then
+        echo 'Selecting *** DEBUG *** mode'
+        echo THIS DOES NOT WORK YET - gdb doesn''t see symbols for some reason
+        BUILD_TYPE="-DCMAKE_BUILD_TYPE=Debug"
+        BIN_DIR="bin-debug"
+else
+        echo Selecting RELEASE mode
+        BUILD_TYPE="-DCMAKE_BUILD_TYPE=Release"
+        BIN_DIR="bin"
+fi
+
 echo
 echo Creating Makefiles with cmake ...
 
@@ -69,8 +84,8 @@ make
 # if successful ... copy executable to bin dir
 
 if [ $? == 0 ] ; then
-    echo SUCCESS - copying executable to ./bin
-    cp ./src/phi "../bin/phi-$HOST_NAME"
+    echo "SUCCESS - copying executable \"phi-$HOST_NAME\" to ./$BIN_DIR"
+    cp ./src/phi "../$BIN_DIR/phi-$HOST_NAME"
 else
     echo BUILD FAILED
     exit

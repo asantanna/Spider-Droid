@@ -21,10 +21,10 @@ void main() {
   printf("PHI started at %s\n", sTime);
 
   // init log
-  if (phi_log_init(LOGFILE_NAME) == 0) {
+  if (phi_logInit(LOGFILE_NAME) == 0) {
     // failed
     printf("Error: could not open log file '%s' (errno=%d)!  (Are you running as root?)\n", LOGFILE_NAME, errno);
-    phi_abort_process(-1);
+    phi_abortProcess(-1);
   }
 
   // remove NL and log

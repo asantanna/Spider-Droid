@@ -40,8 +40,8 @@
 
 // logging
 
-#define LOG_INFO(...)   phi_log_msg("", __VA_ARGS__)
-#define LOG_ERR(...)    phi_log_msg("ERROR: ", __VA_ARGS__)
+#define LOG_INFO(...)   phi_logMsg("", __VA_ARGS__)
+#define LOG_ERR(...)    phi_logMsg("ERROR: ", __VA_ARGS__)
 
 
 

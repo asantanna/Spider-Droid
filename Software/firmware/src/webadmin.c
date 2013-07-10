@@ -136,7 +136,7 @@ void wa_process_web_request(int socketfd, int hit)
 
   LOG_INFO("webadmin: request='%s', hit=%d", buffer, hit);
 
-  if (strncmp(buffer, "GET ", 4) && strncmp(buffer, "get ", 4) ) {
+  if (strncasecmp(buffer, "GET ", 4)) {
     write(socketfd, wa_response_forbidden, strlen(wa_response_forbidden));
     LOG_ERR("Only simple GET operation supported");
     return;
@@ -161,7 +161,7 @@ void wa_process_web_request(int socketfd, int hit)
   }
 
   // convert no filename to index file
-  if ( !strncmp(&buffer[0], "GET /\0", 6) || !strncmp(&buffer[0], "get /\0", 6) ) {
+  if (!strncasecmp(&buffer[0], "GET /\0", 6)) {
     strcpy(buffer, "GET /index.html");
   }
 
@@ -172,7 +172,7 @@ void wa_process_web_request(int socketfd, int hit)
 
   for (i=0 ; wa_extensions[i].ext != 0 ; i++) {
     len = strlen(wa_extensions[i].ext);
-    if ( !strncmp(&buffer[buffLen-len], wa_extensions[i].ext, len)) {
+    if (!strncmp(&buffer[buffLen-len], wa_extensions[i].ext, len)) {
       fstr = wa_extensions[i].filetype;
       break;
     }
@@ -229,18 +229,18 @@ void phi_webadmin(int port, const char* wwwRoot)
   // change dir to www doc root
   if (chdir(wwwRoot) == -1) { 
     LOG_ERR("can't change to directory %s\n", wwwRoot);
-    phi_abort_process(-1);
+    phi_abortProcess(-1);
   }
 
   // setup the network socket
   if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     LOG_ERR("system call failed: socket");
-    phi_abort_process(-1);
+    phi_abortProcess(-1);
   }
 
   if (port < 0 || port > 60000) {
     LOG_ERR("Invalid port number (try 1 -> 60000)", "port given=", port);
-    phi_abort_process(-1);
+    phi_abortProcess(-1);
   }
 
   serv_addr.sin_family = AF_INET;
@@ -249,13 +249,23 @@ void phi_webadmin(int port, const char* wwwRoot)
 
   if (bind(listenfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) <0) {
     LOG_ERR("system call failed: bind");
-    phi_abort_process(-1);
+    phi_abortProcess(-1);
   }
 
+  // debug
 
+  UINT32 ipAddr = phi_getHostIP();
+
+  printf("listening on address %lu.%lu.%lu.%lu on port %d\n",
+         ipAddr & 0xff, (ipAddr >> 8) & 0xff,
+         (ipAddr >> 16) & 0xff,(ipAddr >> 24) & 0xff,
+         port);
+
+  // listen (enable receive)
+  
   if ( listen(listenfd, 64) <0) {
     LOG_ERR("system call failed: listen");
-    phi_abort_process(-1);
+    phi_abortProcess(-1);
   }
 
   // go into infinite loop accepting calls
@@ -265,7 +275,7 @@ void phi_webadmin(int port, const char* wwwRoot)
     length = sizeof(cli_addr);
     if ((socketfd = accept(listenfd, (struct sockaddr *) &cli_addr, &length)) < 0) {
       LOG_ERR("system call failed: accept");
-      phi_abort_process(-1);
+      phi_abortProcess(-1);
     }
 
     // process web request

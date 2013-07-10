@@ -13,9 +13,11 @@
 #include <time.h>
 #include <errno.h>
 #include <sys/time.h>
-#include <unistd.h>			// used for UART
-#include <fcntl.h>			// used for UART
-#include <termios.h>		// used for UART
+#include <netdb.h>      // for gethostbyname(), etc
+#include <ifaddrs.h>    // for getifaddrs()
+#include <unistd.h>			// for UART
+#include <fcntl.h>			// for UART
+#include <termios.h>		// for UART
 
 // useful types
 #include "phi_defs.h"
