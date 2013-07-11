@@ -25,3 +25,5 @@
 # specific files and dirs
 cmake.tmp.*
 phi-ubuntu
+phi-rpi-phi
+bin-debug
