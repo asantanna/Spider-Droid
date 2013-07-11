@@ -95,6 +95,7 @@ char* __itoa(int value, char* result, int base) {
 FILE *phi_logfp = NULL;
 
 int phi_logInit(char *filename) {
+
   //check if phi_logfp is already open.
   if (phi_logfp != NULL) {
     fclose(phi_logfp);
@@ -102,15 +103,20 @@ int phi_logInit(char *filename) {
 
   // truncate log files that are > 1000 lines (or if \r\n EOL is used,  500)
   phi_logfp = fopen(filename, "r");
+
   int lines = 0;
   if (phi_logfp != NULL) {
-    char c;
+    int c;
     //count end of lines, both of them... just in case
-    while ( (c = fgetc(phi_logfp)) != EOF )
-      if (c== '\n' || c == '\r')
+    while ( (c = fgetc(phi_logfp)) != EOF ) {
+      if (c == '\n' || c == '\r') {
         lines++;
+      }
+    }
     fclose(phi_logfp);
   }
+
+  printf("log file has %d lines\n", lines);
 
   //open file handle
   if (lines > 1000)
