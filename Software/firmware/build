@@ -8,6 +8,67 @@ echo '*  Build Phi   *'
 echo '****************'
 echo
 
+# get hostname to use as part of directory names
+HOST_NAME=`uname -n`
+
+# temporary directory for cmake files so they don't
+# end up all mixed up with the source.
+
+TMP_DIR="cmake.tmp.$HOSTNAME"
+
+#
+# process arguments
+#
+
+DEBUG_MODE=false
+
+for var in "$@"
+do
+  if [[ $var == debug ]] ; then
+    DEBUG_MODE=true
+    TMP_DIR="$TMP_DIR.dbg"
+  elif [[ $var == clean ]] ; then
+    echo "### cleaning target ###"
+    cd $TMP_DIR
+    make clean
+    echo done.
+    exit 0
+  elif [[ $var == clean_cmake ]] ; then
+    echo "## cleaning cmake cache ##"
+    rm -rf $TMP_DIR
+    echo done.
+    exit 0
+  else
+    echo "### Invalid argument \"$var\" ###"
+    exit 1
+  fi
+done
+
+if [[ $DEBUG_MODE == true ]] ; then
+        echo 'Selecting *** DEBUG *** mode'
+        BUILD_TYPE="-DCMAKE_BUILD_TYPE=Debug"
+        BIN_DIR="bin-debug"
+else
+        echo Selecting RELEASE mode
+        BUILD_TYPE="-DCMAKE_BUILD_TYPE=Release"
+        BIN_DIR="bin"
+fi
+
+TARGET_FN=$BIN_DIR/phi-$HOST_NAME
+
+# create TMP_DIR if it doesn't exist
+
+if [ ! -e $TMP_DIR ] ; then
+  echo "Creating directory for cmake tmp files : $TMP_DIR"
+  mkdir $TMP_DIR
+else
+  echo "Reusing cmake tmp dir : $TMP_DIR"
+fi
+
+#
+# check build environment
+#
+
 echo Checking build environment ...
 
 # check that we have new version of pthread
@@ -18,30 +79,15 @@ if grep -q NPTL <<EOF
 $PTHREAD_IMPL
 EOF
 then
-echo ' OK ' : PThread version is $PTHREAD_IMPL
+  echo ' OK ' : PThread version is $PTHREAD_IMPL
 else
-echo 'FAIL' : PThread version obsolete - version is $PTHREAD_IMPL
+  echo 'FAIL' : PThread version obsolete - version is $PTHREAD_IMPL
 exit
 fi
 
 # OK ... everything looks good
 echo ' OK ' : All tests complete
 echo
-
-# get hostname to use as part of directory names
-HOST_NAME=`uname -n`
-
-# create a temporary directory for cmake files so they don't
-# end up all mixed up with the source.
-
-TMP_DIR="cmake.tmp.$HOSTNAME"
-
-if [ ! -e $TMP_DIR ] ; then
-  echo "Creating directory for cmake tmp files : $TMP_DIR"
-  mkdir $TMP_DIR
-else
-  echo "Reusing cmake tmp dir : $TMP_DIR"
-fi
 
 # create makefiles with CMake
 #
@@ -52,27 +98,13 @@ fi
 # Note2: to clean up cmake files, it is OK to
 #        "rm -rf" the tmp dirs
 
-# set to true/false depending on whether you
-# want symbols for debugging
-DEBUG_MODE=false
-
-if [[ $DEBUG_MODE == true ]] ; then
-        echo 'Selecting *** DEBUG *** mode'
-        echo THIS DOES NOT WORK YET - gdb doesn''t see symbols for some reason
-        BUILD_TYPE="-DCMAKE_BUILD_TYPE=Debug"
-        BIN_DIR="bin-debug"
-else
-        echo Selecting RELEASE mode
-        BUILD_TYPE="-DCMAKE_BUILD_TYPE=Release"
-        BIN_DIR="bin"
-fi
 
 echo
 echo Creating Makefiles with cmake ...
 
 cd $TMP_DIR
 
-cmake ..
+cmake $BUILD_TYPE ..
 
 # run makefile (in tmp dir)
 
@@ -84,8 +116,8 @@ make
 # if successful ... copy executable to bin dir
 
 if [ $? == 0 ] ; then
-    echo "SUCCESS - copying executable \"phi-$HOST_NAME\" to ./$BIN_DIR"
-    cp ./src/phi "../$BIN_DIR/phi-$HOST_NAME"
+    echo "SUCCESS - copying PHI to ./$TARGET_FN"
+    cp ./src/phi "../$TARGET_FN"
 else
     echo BUILD FAILED
     exit
