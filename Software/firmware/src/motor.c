@@ -7,7 +7,7 @@
 
 MOTOR_DEF* attachMotor(BYTE motorID) {
 
-  MOTOR_DEF* p = ALLOC(MOTOR_DEF);
+  MOTOR_DEF* p = PHI_ALLOC(MOTOR_DEF);
 
   // init
   p -> motorID = motorID;

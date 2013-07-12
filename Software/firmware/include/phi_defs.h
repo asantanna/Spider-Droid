@@ -31,7 +31,16 @@
 
 // allocation helpers
 
-#define ALLOC(D)        ((D*)phi_allocHelper(sizeof(D)))
+#undef  ALLOC             // prevent confusion
+#undef  FREE
+#undef  ZERO
+#undef  ZERO_P
+
+#define PHI_ALLOC(D)      ((D*)phi_allocHelper(sizeof(D)))
+#define PHI_FREE(p)       free(p)
+
+#define PHI_ZERO(v)       memset(&(v), 0, sizeof(v))
+#define PHI_ZERO_P(p,l)   memset(p, 0, l)
 
 // time
 
@@ -42,6 +51,7 @@
 
 #define LOG_INFO(...)   phi_logMsg("", __VA_ARGS__)
 #define LOG_ERR(...)    phi_logMsg("ERROR: ", __VA_ARGS__)
+#define LOG_FATAL(...)  { phi_logMsg("FATAL: ", __VA_ARGS__); phi_abortProcess(-1); }
 
 
 
