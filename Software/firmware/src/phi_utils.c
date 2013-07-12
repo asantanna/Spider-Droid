@@ -100,8 +100,9 @@ int phi_logInit(char *filename) {
   if (phi_logfp != NULL) {
     fclose(phi_logfp);
   }
+  phi_abortProcess(-1);
 
-  // truncate log files that are > 1000 lines (or if \r\n EOL is used,  500)
+  // truncate log files that are > 1000 lines (or 500 if CRLF is used)
   phi_logfp = fopen(filename, "r");
 
   int lines = 0;
@@ -109,16 +110,19 @@ int phi_logInit(char *filename) {
     int c;
     //count end of lines, both of them... just in case
     while ( (c = fgetc(phi_logfp)) != EOF ) {
-      if (c == '\n' || c == '\r') {
+      if (c== '\n' || c == '\r') {
         lines++;
       }
     }
     fclose(phi_logfp);
+  } else {
+    // couldn't open
+    return 0;
   }
 
+  // reopen file handle
   printf("log file has %d lines\n", lines);
 
-  //open file handle
   if (lines > 1000)
   {
     phi_logfp = fopen(filename, "w");	// w will truncate the file, and then open it for writing.
