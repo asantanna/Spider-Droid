@@ -1,18 +1,66 @@
+<!DOCTYPE html>
 <html>
 
-   <head>
-      <title>PHI Admin Console</title>
-   </head>
+<head>
    
-   <body>
-   
-      <img src="./images/phi_letter.jpg"> </img>
-      <img src="./images/phi_text.jpg"> </img>
+   <title>PHI Admin Console</title>
 
-      <h1>
-         PHI says HI 
-      </h1>
+   <script>
+      var PHI_VARS = {
+        "hostName"       : "hostname",
+        "ipAddr"         : "ipAddr",
+        "battLevel"      : "battLevel",
+        "upTime"         : "upTime"        // no comma on last one!
+      };
+   </script>
    
-   </body>
+</head>
+
+<body>
+
+   <table>
+      
+      <tr>
+         <td>
+            <!-- Icon -->
+            <img src="./images/phi_letter.jpg" height=150 width=150> </img>
+         </td>
+         <td>
+            <!-- Title -->
+            <img src="./images/phi_text.jpg" height=100> </img>
+            <img src="./images/phi_text.jpg" height=100> </img>
+            <img src="./images/phi_text.jpg" height=100> </img>
+            <img src="./images/phi_text.jpg" height=100> </img>
+            <img src="./images/phi_text.jpg" height=100> </img>
+            </br>
+            <h1> &nbsp; Admin Console </h1>
+         </td>
+      </tr>
+      
+      <tr>
+         <!-- Navigation -->
+         <td>
+            buttons
+         </td>
+         <!-- Main -->
+         <td style="padding: 20px;">
+            
+ <h1> PHI says HI</b> </h1>
+
+TEST: </p>
+
+<table>
    
+   <tr> 
+      <td>hostname</td><td>=</td><td>
+          &nbsp; <script>document.write(PHI_VARS.hostName); </script>
+      </td></tr>
+   
+   <tr><td>ipAddr</td><td>=</td><td>
+         &nbsp;  <script> document.write(PHI_VARS.ipAddr); </script>
+      </td></tr>
+   
+</table>
+   
+</body>
 </html>

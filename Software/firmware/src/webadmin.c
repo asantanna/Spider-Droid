@@ -13,25 +13,39 @@
 // simplifies access to PHI internals
 //
 
+// Typical HTTP Request:
+//
+//			GET /path/file?CMD=3&FOO=3&MOO=192.168.1.1 HTTP/1.0
+//			Content-Length: num  (optional if GET)
+//			<blank line>
+//			<data> (opional if "GET")
+//
+// Typical response:
+//
+//			HTTP/1.0 200 OK
+//			Content-Length: num
+//			<blank line>
+//			<data>
+//
+// HTTP HEAD command: same as GET but return headers only (no data)
+//
+// HTTP POST command: similar to GET with following differences
+//
+//      a) request contains data for the server
+//      b) headers specify size and type with "Content-Type:" and
+//         "Content-Length:"
+//      c) Parameters go in body with form submissions, it has the
+//         same format as the part after the "?" in the GET command.
+//
+
 //
 // TODO: use PHI log mechanism
 // TODO: fix forking
 // TODO: fix return codes because no longer forking
 // TODO: read through all code
 // TODO: print thread id in "starting message"
+// TODO: parse URL encoding ... it's easy and will save pain later
 //
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <string.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 
 #include "phi.h"
 
@@ -41,6 +55,13 @@
 #define LOG             44
 #define FORBIDDEN       403
 #define NOTFOUND        404
+
+#define HTTP_METHOD_HEAD_STR		"HEAD"
+#define HTTP_METHOD_GET_STR			"GET"
+#define HTTP_METHOD_POST_STR		"POST"
+#define HTTP_HDR_LEN						"Content-Length:"
+
+#define MAX_TOKEN_SIZE          256
 
 struct {
 	char *ext;
@@ -134,7 +155,7 @@ void wa_process_web_request(int socketfd, int hit)
     }
   }
 
-  LOG_INFO("webadmin: request='%s', hit=%d", buffer, hit);
+  LOG_INFO("webadmin: hit=%d, request follows:\n%s\n", hit, buffer);
 
   if (strncasecmp(buffer, "GET ", 4)) {
     write(socketfd, wa_response_forbidden, strlen(wa_response_forbidden));
@@ -287,4 +308,289 @@ void phi_webadmin(int port, const char* wwwRoot)
     // close the socket
     close(socketfd);
   }
+}
+
+//
+// This is based on Arduino code in ALS-Libs.  Hence the use of statics
+// and other limitations due to the small amount of memory avail on the
+// Arduino.
+//
+// Limitations of parseRequest:
+//
+// 1) Maximum string is MAX_TOKEN_SIZE
+// 2) "%" escapes not processed
+
+typedef struct {
+  char filePath[MAX_TOKEN_SIZE+1];
+} PHI_PARSED_HTTP;
+
+void wa_parseHttpRequest(char* pReq, PHI_PARSED_HTTP* pParsed) {
+
+  enum state_t {READ_METHOD, READ_PATH, READ_PARAMS, READ_HTTP_HEADERS, DONE};
+  state_t state = READ_METHOD;
+  m_bAbort = false;
+  m_status = OK;
+  char c;
+
+  // add space for term zero
+  char token[MAX_TOKEN_SIZE+1];
+
+  // clear parsed response
+  memset(pParsed, 0, sizeof(*pParsed));
+
+  // free strings in params from last time
+  freeParams();
+
+  while ((m_bAbort == false) &&
+         (state != DONE)) {
+
+    // HACK TODO remove this if
+    if (TRUE) {
+
+      switch (state) {
+        case READ_METHOD:
+          readToken(client, token);
+          if (strcasecmp(token, HTTP_METHOD_HEAD_STR) == 0) {
+            m_httpMethod = ALSWU_HTTP_HEAD;
+          } else if (strcasecmp(token, HTTP_METHOD_GET_STR) == 0) {
+            m_httpMethod = ALSWU_HTTP_GET;
+          } else if (strcasecmp(token, HTTP_METHOD_POST_STR) == 0) {
+            m_httpMethod = ALSWU_HTTP_POST;
+          } else {
+            // unknown
+            m_bAbort = true;
+            m_status = BAD_METHOD;
+          }
+          state = SKIP_PATH;
+          break;
+
+        case READ_PATH:
+          // token will break at '?' or ws
+          c = readToken(client, token);
+          // save
+          strncpy(pParsed -> filePath, token, MAX_TOKEN_SIZE);
+          if (c == '?') {
+            // have params
+            state = READ_PARAMS;
+          } else {
+            // no params - discard HTTP version
+            readToEol(client);
+            state = READ_HTTP_HEADERS;
+          }
+          break;
+
+        case READ_PARAMS:
+          // read param
+          c = readParam(client, token);
+          if (c != '&') {
+            // no more params - discard HTTP version
+            readToEol(client);
+            state = READ_HTTP_HEADERS;
+          }
+          // stay in same state
+          break;
+
+        case READ_HTTP_HEADERS:
+          // read header name
+          c = readToken(client, token);
+          if (c == '\n') {
+            // blank line - done
+            state = DONE;
+            break;
+          }
+          if (strcasecmp(token, HTTP_HDR_LEN) == 0) {
+            // header is ContentLength:
+            // read value
+            readToken(client, token);
+            m_bodyLen = atoi(token);
+          } else {
+            // don't know this header - discard
+            readToken(client, token);
+          }
+          break;
+      }
+    } else {
+      // TODO Think about this and fix
+      
+      // if client not available (no chars to read), delay minimally in
+      // case the delay() function actually does something more than
+      // delay - this is probably not necessary
+      delay(1);
+    }
+  }
+}
+
+// reads up to a delimiter and returns zero-term string in token
+// notes:
+//		1) if too big, string is truncated
+//		3) set m_bAbort if error
+//		4) returns delimiter as return code (if error, then -1)
+//
+
+char ALS_WebUtils::readToken(WiFiClient client, char* token, bool bBreakOnDot) {
+
+  int idx = 0;
+  bool bSkippingWs = true;
+  char c;
+
+  // just in case
+  *token = 0;
+
+  while (true) {
+
+    if ((c = waitRead(client)) == -1) {
+      // error - status already set
+      return -1;
+    }
+
+    if (c == '\r') {
+      // ignore CR
+      continue;
+    }
+
+    if (c == ' ') {
+      // read a space
+      if (bSkippingWs) {
+        // ignore leading spaces
+        continue;
+      }
+      // otherwise space terminates token
+      break;
+
+    } else {
+      // not a space
+      bSkippingWs = false;
+      if ((c == '=') || (c == '&') || (c == ':') || (c == '?') || (c == '\n')) {
+        // these end token too
+        break;
+      } else if (bBreakOnDot && (c == '.')) {
+        // it's a '.' and we were asked to break on it (reading IP addr)
+        break;
+      }
+    }
+
+    // save char in token
+    token[idx] = c;
+
+    // advance to next if not too much
+    if (idx < MAX_TOKEN_SIZE) {
+      // this can increment to MAX_TOKEN_SIZE but buffer has
+      // one extra char which will overwrite the char with a zero
+      idx++;
+    }
+  }
+
+  // add term zero
+  token[idx] = 0;
+
+  // done
+  return c;
+}
+
+void ALS_WebUtils::readToEol(WiFiClient client) {
+
+  char c;
+
+  while (true) {
+
+    if ((c = waitRead(client)) == -1) {
+      // error - status already set
+      break;
+    }
+
+    if (c == '\n') {
+      // done
+      break;
+    }
+  }
+
+  // done
+  return;
+}
+
+char ALS_WebUtils::readParam(WiFiClient client, char* token) {
+
+  char c = readToken(client, token);
+  uint32_t ip = 0;
+
+  if (c != '=') {
+    // equal sign missing
+    m_bAbort = true;
+    m_status = BAD_PARAM_SPEC;
+    return -1;
+  }
+
+  int idx = atoi(token+1);
+  switch (*token) {
+    case PARAM_INT:
+      c = readToken(client, token);
+      if (idx < ALSWU_MAX_INT_PARAMS) {
+        m_paramInt[idx] = atoi(token);
+      }
+      break;
+
+    case PARAM_FLOAT:
+      c = readToken(client, token);
+      if (idx < ALSWU_MAX_FLOAT_PARAMS) {
+        m_paramFloat[idx] = atof(token);
+      }
+      break;
+
+    case PARAM_IP:
+      for (int i = 0 ; i < 4 ; i++) {
+        // read token but ask to break on '.'
+        c = readToken(client, token, true);
+        ip = (ip << 8) + strtoul(token, NULL, 10);
+        if (i < 3) {
+          if (c != '.') {
+            // missing period
+            m_bAbort = true;
+            m_status = BAD_IP_ADDR;
+            return -1;
+          }
+        }
+      }
+
+      if (idx < ALSWU_MAX_IP_PARAMS) {
+        m_paramIP[idx] = ip;
+      }
+      break;
+
+    case PARAM_STR:
+      c = readToken(client, token);
+      if (idx < ALSWU_MAX_STR_PARAMS) {
+        m_paramStr[idx] = strdup(token);
+      }
+      break;
+
+    default:
+      // unknown spec type
+      m_bAbort = true;
+      m_status = BAD_PARAM_SPEC;
+      return -1;
+  }
+
+  // done
+  return c;
+}
+
+char ALS_WebUtils::waitRead(WiFiClient client) {
+
+  int b;
+
+  while(client.connected()) {
+    if (client.available()) {
+      // available() makes state machine tick on Hydrogen
+      if ((b = client.read()) != -1) {
+        // have char
+        return (char) b;
+      }
+      // TODO: add timeout or will just disconnect?
+    } // available()
+  } // connected()
+
+  // client disconnected
+  m_bAbort = true;
+  m_status = CLIENT_DISCONNECTED;
+  return -1;
 }
