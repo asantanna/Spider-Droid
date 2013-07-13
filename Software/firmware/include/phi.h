@@ -18,6 +18,7 @@
 #include <unistd.h>			// for UART
 #include <fcntl.h>			// for UART
 #include <termios.h>		// for UART
+#include <pthread.h>
 
 // useful types
 #include "phi_defs.h"
