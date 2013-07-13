@@ -157,7 +157,7 @@ char wa_response_servererror_body[] =
 
 // internal
 
-void wa_process_web_request(int socketfd, int hit);
+void* wa_process_web_request(void* arg);
 int wa_parseHttpRequest(char* pReq, PHI_PARSED_HTTP* pParsed);
 char readToken(char** ppData, char** ppToken);
 void readToEol(char** ppData, char** ppToken);
@@ -218,23 +218,49 @@ void phi_webadmin(int port, const char* wwwRoot)
 
   // go into infinite loop accepting calls
 
+  pthread_t thread;
+  pthread_attr_t threadAttr;
+  
   for (hit = 1 ; ; hit++) {
 
+    // wait for HTTP request
+    
     length = sizeof(cli_addr);
+    
     if ((socketfd = accept(listenfd, (struct sockaddr *) &cli_addr, &length)) < 0) {
       LOG_FATAL("system call failed: accept");
     }
 
-// TODO: should spawn thread here
-    
-    // process web request
-    // Note: function will close socketfd when done
-    wa_process_web_request(socketfd, hit);
+    // spawn thread to process web request
+    //
+    // Note:  function will close socketfd when done
+    //
+    // Note2: thread is started detached because we want it to clean up
+    //        after itself immediately
+    //
+    // Note3: we don't keep track of the pthread_t, thread is
+    //        "fire and forget"
+
+    // init default attrs
+    PHI_ZERO(threadAttr);
+    pthread_attr_init(&threadAttr);
+
+    // request detached thread
+    pthread_attr_setdetachstate(&threadAttr, PTHREAD_CREATE_DETACHED);
+
+    // create thread
+    pthread_create(&thread, &threadAttr,  &wa_process_web_request, (void*) socketfd);
+
+    // release thread attr so we can reuse it
+    pthread_attr_destroy(&threadAttr);
   }
 }
 
-void wa_process_web_request(int socketfd, int hit)
+void* wa_process_web_request(void* arg)
 {
+  // arg is just an int
+  int socketfd = (int) arg;
+  
   int pagefd, pathLen;
   long sock_numRead, len;
   char* pContentType;
@@ -265,7 +291,7 @@ void wa_process_web_request(int socketfd, int hit)
     goto quick_exit;
   }
 
-  LOG_INFO("webadmin: hit=%d, request follows:\n## start ##\n%s\n## end ##", hit, buffer);
+  LOG_INFO("webadmin: HTTP request follows:\n## start ##\n%s\n## end ##", buffer);
 
   // parse web request
 
@@ -380,11 +406,8 @@ quick_exit:
   close(socketfd);
 }
 
-//
 // This is based on my Arduino code in ALS-Libs but heavily modified.
-//
 // NOTE: This routine *writes* into *pReq to zero term strings.
-//
 
 int wa_parseHttpRequest(char* pReq, PHI_PARSED_HTTP* pParsed) {
 
