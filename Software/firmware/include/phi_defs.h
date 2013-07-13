@@ -4,7 +4,10 @@
 //
 
 #define PHI_VERSION     "0.1 dev"
+
+// logging
 #define LOGFILE_NAME    "/var/log/phi.log"
+#define VERBOSE_LOG     1
 
 // signed ints
 #define INT8            char
@@ -29,18 +32,20 @@
 #define FALSE           0
 #define TRUE            1
 
+#define COUNTOF(arr)    (sizeof(arr) / sizeof(arr[0]))
+
 // allocation helpers
 
-#undef  ALLOC             // prevent confusion
+#undef  ALLOC           // prevent confusion
 #undef  FREE
 #undef  ZERO
 #undef  ZERO_P
 
-#define PHI_ALLOC(D)      ((D*)phi_allocHelper(sizeof(D)))
-#define PHI_FREE(p)       free(p)
+#define PHI_ALLOC(D)    ((D*)phi_allocHelper(sizeof(D)))
+#define PHI_FREE(p)     free(p)
 
-#define PHI_ZERO(v)       memset(&(v), 0, sizeof(v))
-#define PHI_ZERO_P(p,l)   memset(p, 0, l)
+#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
+#define PHI_ZERO_P(p,l) memset(p, 0, l)
 
 // time
 

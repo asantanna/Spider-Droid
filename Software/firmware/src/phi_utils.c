@@ -100,7 +100,6 @@ int phi_logInit(char *filename) {
   if (phi_logfp != NULL) {
     fclose(phi_logfp);
   }
-  phi_abortProcess(-1);
 
   // truncate log files that are > 1000 lines (or 500 if CRLF is used)
   phi_logfp = fopen(filename, "r");
@@ -115,9 +114,6 @@ int phi_logInit(char *filename) {
       }
     }
     fclose(phi_logfp);
-  } else {
-    // couldn't open
-    return 0;
   }
 
   // reopen file handle
