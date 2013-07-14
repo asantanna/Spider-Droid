@@ -340,7 +340,7 @@ void* wa_process_web_request(void* arg)
     }
   }
 
-  // TODO: check for HEAD/POST here
+  // TODO: check for HEAD/POST(JSON) here
 
   // work out the file type and check if we support it
   pContentType = NULL;
