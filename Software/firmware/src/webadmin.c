@@ -48,14 +48,15 @@
 
 #include "phi.h"
 
-#define BUFF_SIZE               8096      // max size of HTTP request
+
+#define HTTP_BUFFSIZE           8096      // max size of HTTP request
 #define FORBIDDEN               403
 #define NOTFOUND                404
 
 #define HTTP_METHOD_HEAD_STR		"HEAD"
 #define HTTP_METHOD_GET_STR			"GET"
 #define HTTP_METHOD_POST_STR		"POST"
-#define HTTP_HDR_LEN						"Content-Length:"
+#define HTTP_CONT_LEN						"Content-Length"
 #define HTTP_SERVER_NAME        "Phi Web Admin V" PHI_VERSION
 
 struct {
@@ -86,8 +87,18 @@ char wa_response_ok_hdr[] =
   "HTTP/1.1 200 OK\n"
   "Server: " HTTP_SERVER_NAME "\n"
   "Content-Length: %ld\n"
+  "Cache-Control: no-cache\n"
   "Connection: close\n"
   "Content-Type: %s\n"
+  "\n";
+
+char wa_response_json_hdr[] =
+  "HTTP/1.1 200 OK\n"
+  "Server: " HTTP_SERVER_NAME "\n"
+  "Content-Length: %ld\n"
+  "Cache-Control: no-cache\n"
+  "Connection: close\n"
+  "Content-Type: application/json\n"
   "\n";
 
 char wa_response_forbidden_hdr[] =
@@ -154,6 +165,14 @@ char wa_response_servererror_body[] =
     write(socketfd, buffer, strlen(buffer)); \
     write(socketfd, wa_response_ ## replyType ## _body, bodyLen); \
   }
+
+#define SEND_JSON_REPLY(pJson) \
+    { \
+      int bodyLen = strlen(pJson); \
+      sprintf(buffer, wa_response_json_hdr, bodyLen); \
+      write(socketfd, buffer, strlen(buffer)); \
+      write(socketfd, pJson , bodyLen); \
+    }
 
 // internal
 
@@ -264,13 +283,13 @@ void* wa_process_web_request(void* arg)
   int pagefd, pathLen;
   long sock_numRead, len;
   char* pContentType;
-  char buffer[BUFF_SIZE+1];   // add space for zero term
+  char buffer[HTTP_BUFFSIZE+1];   // add space for zero term
 
   // read Web request in one go
   //
   // NOTE: this code assumes we get everything in one shot.
   // Not sure if this is OK.
-  sock_numRead = read(socketfd, buffer, BUFF_SIZE);
+  sock_numRead = read(socketfd, buffer, HTTP_BUFFSIZE);
 
   if (sock_numRead == 0 || sock_numRead == -1) {
   // read failure - give up
@@ -279,19 +298,19 @@ void* wa_process_web_request(void* arg)
     goto quick_exit;
   }
 
-  if (sock_numRead > 0 && sock_numRead < BUFF_SIZE) {
+  if (sock_numRead > 0 && sock_numRead < HTTP_BUFFSIZE) {
     // read something - zero term
     buffer[sock_numRead] = 0;
   }
   else {
     // error
     SEND_ERROR_REPLY(forbidden);
-    LOG_ERR("GET request too small/big - size=%d", sock_numRead);
+    LOG_ERR("HTTP request too small/big - size=%d", sock_numRead);
     buffer[0] = 0;
     goto quick_exit;
   }
 
-  LOG_INFO("webadmin: HTTP request follows:\n## start ##\n%s\n## end ##", buffer);
+  LOG_INFO("webadmin: HTTP request follows:\n%s\n", buffer);
 
   // parse web request
 
@@ -340,7 +359,23 @@ void* wa_process_web_request(void* arg)
     }
   }
 
-  // TODO: check for HEAD/POST(JSON) here
+  // TODO: check for HEAD?
+
+  //
+  // Check for POST with JSON commands
+  //
+
+  if (!strcasecmp(parsedHttp.pMethod, HTTP_METHOD_POST_STR)) {
+    // got an HTTP POST - we expect JSON in the body
+    char jsonReplyBuff[1024+1];
+    phi_processJson(parsedHttp.pBody, jsonReplyBuff);
+    SEND_JSON_REPLY(jsonReplyBuff);
+    goto quick_exit;
+  }
+
+  //
+  // If we get here, we are serving a FILE
+  //
 
   // work out the file type and check if we support it
   pContentType = NULL;
@@ -389,11 +424,11 @@ void* wa_process_web_request(void* arg)
 
   // send header plus blank line
   sprintf(buffer, wa_response_ok_hdr, len, pContentType);
-  LOG_INFO("webadmin: reply header='%s'", buffer);
+  LOG_INFO("webadmin: reply header follows:\n%s\n", buffer);
   write(socketfd, buffer, strlen(buffer));
 
   // send file in 8KB blocks - last block may be smaller
-  while (	(len = read(pagefd, buffer, BUFF_SIZE)) > 0 ) {
+  while (	(len = read(pagefd, buffer, HTTP_BUFFSIZE)) > 0 ) {
     write(socketfd, buffer, len);
   }
 
@@ -461,16 +496,19 @@ int wa_parseHttpRequest(char* pReq, PHI_PARSED_HTTP* pParsed) {
           state = READ_BODY;
           break;
         }
-        // read header value
-        readToEol(&pReq, &pToken);
         // check if it is one we know (ignore others)
-        if (strcasecmp(pToken, HTTP_HDR_LEN) == 0) {
+        if (!strcasecmp(pToken, HTTP_CONT_LEN)) {
           // header is ContentLength
+          readToEol(&pReq, &pToken);
           pParsed -> pHdrContentLength = pToken;
+        } else {
+          // don't care what this header - discard
+          readToEol(&pReq, &pToken);
         }
         break;
 
       case READ_BODY:
+        pParsed -> pBody = pReq;
         state = DONE;
         rc = 0;
         break;
@@ -588,12 +626,24 @@ void readToSpace(char** ppData, char** ppToken) {
 
 void readToEol(char** ppData, char** ppToken) {
 
+  BOOL bSkippingSpaces = TRUE;
   char* pData = *ppData;
   char c;
 
   *ppToken = pData;
 
   while ((c = *pData++) != 0) {
+    
+    if (bSkippingSpaces) {
+      // skipping leading spaces
+      if (c == ' ') {
+        *ppToken = pData;
+        continue;
+      } else {
+        bSkippingSpaces = FALSE;
+      }
+    }
+    
     if (c == '\n') {
       // found LF - done
       break;

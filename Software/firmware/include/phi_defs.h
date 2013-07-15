@@ -32,7 +32,7 @@
 #define FALSE           0
 #define TRUE            1
 
-#define COUNTOF(arr)    (sizeof(arr) / sizeof(arr[0]))
+#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
 
 // allocation helpers
 

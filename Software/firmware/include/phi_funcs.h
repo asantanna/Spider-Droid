@@ -29,6 +29,7 @@ char* __itoa(int value, char* result, int base);
 //
 
 void phi_webadmin(int port, const char* wwwRoot);
+void phi_processJson(char *pJson, char* pReplyBuff);
 
 //
 // LOGGING

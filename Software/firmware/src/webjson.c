@@ -23,55 +23,136 @@
 //
 
 #include "phi.h"
-#include "jsmh.h"
+#include "jsmn.h"
 
 // max number of JSON tokens we support (should be way plenty)
 #define MAX_JSON_TOKENS     100
 
-void processJson(char *pJson) {
+void phi_processJson(char *pJson, char* pReplyBuff) {
+  
+  int i;
+  jsmntok_t tokens[MAX_JSON_TOKENS];
+  jsmn_parser parser;
 
   // init JSON parser
-  jsmntok_t tokens[MAX_JSON_TOKENS];
-  struct jsmn_parser parser;
-  jsmn_init_parser(&parser);
+  jsmn_init(&parser);
 
-  // we only support 
+  // parse
+  int rc = jsmn_parse(&parser, pJson, tokens, 256);
 
-  int jsonRc = jsmn_parse(&parser, js, tokens, 256);
-
-  if (jsonRc != 0) {
+  if (rc != 0) {
     // error parsing
-    LOG_ERR("error parsing JSON request - rc=%d", jsonRc);
+    LOG_ERR("error parsing JSON request - rc=%d", rc);
     goto quick_exit;
   }
 
-/*
-  If something goes wrong, you will get an error returned by jsmn_parse(). Return value will be one of these:
-      •JSMN_SUCCESS - everything went fine. String was parsed
-      •JSMN_ERROR_INVAL - bad token, JSON string is corrupted
-      •JSMN_ERROR_NOMEM - not enough tokens, JSON string is too large
-      •JSMN_ERROR_PART - JSON string is too short, expecting more JSON data
-*/  
+  // parse request
+
+  // HACK for now just dump this stupid thing so we can
+  // see what it does
+  
+  LOG_INFO("Received JSON command:");
+
+  for (i = 0 ; i < 5 /* COUNTOF(tokens)*/ ; i++) {
+    char val[128];
+    int len = tokens[i].end - tokens[i].start + 1;
+    memcpy(val, pJson + tokens[i].start, len);
+    LOG_INFO("  token %d: type=%d, val='%s', size=%d",
+             i, tokens[i].type, val, tokens[i].size);
+  }
+
+  sprintf(pReplyBuff,
+         "\"reply\" : {\n"
+         "  \"group\" : \"globalData\"\n"
+         "  \"cmd\" : \"getVersion\"\n"
+         "  \"version\" : \"%s\"\n"
+         "}", PHI_VERSION);
+
+quick_exit:
+
+  return;
   
 }
 
 //
-// Command group: motorCtrl
+// Command group: globalData
+//  
+//   globalData : {
+//      cmd : getVersion
+//   }
 //
-//   motorCtrl = {
-//     motorId = 3 "ppj"        // motor identifier
+//  reply : {
+//    group : motorCtrl
+//    cmd : getVersion
+//    status : 0K | error code
+// if cmd = getVersion
+//    version : string
+//  }
+
+//
+// Command group: motorCtrl
+//  
+//   motorCtrl : {
+//      cmd : setPower | setBrake
+//      motorId : "ppj"
+// if cmd = setPower
+//      power : -100% to 100%
+// if cmd = setBrake
+//      val : on | off | zeroMeansBrake
 //   }
 //                               
 // where:
 //
 // motorId: 3 char code "ppj" with
 //
-//   pp = "rf"   right forward leg
-//      = "lf"   left forward leg
-//      = "rr"   right rear leg
-//      = "lr"   left rear leg
+//   pp = rf      right forward leg
+//      = lf      left forward leg
+//      = rr      right rear leg
+//      = lr      left rear leg
 //
-//    j = "r"    hip rotator joint
-//      = "t"    thigh joint
-//      = "k"    knee joint
-//     
+//    j = r       hip rotator joint
+//      = t       thigh joint
+//      = k       knee joint
+//
+// if setPower:
+//    power = -100% to 100%   negative means backwards, meaning of 0%
+//                            depends on setBreak
+// if setBrake:
+//
+//   val = on               put motor in braking mode now
+//       = off              put motor in idle mode now
+//       = zeroMeansBrake   power=0% means braking mode
+//       = zeroMeansCoast   power=0% means coast (default)
+//
+// Returns:
+//
+//  reply : {
+//    group : motorCtrl
+//    cmd : setPower
+//    status : 0K | error code  
+//  }
+//
+
+
+//
+// Command group: accelCtrl
+//  
+//   accelCtrl : {
+//      cmd : getAccel
+//   }
+//
+// Returns:
+//
+//   reply : {
+//      group : accelCtrl
+//      cmd : getAccel
+//      status : 0K | error code  
+//      x : num                       accel in X dir
+//      y : num                       accel in Y dir
+//      z : num                       accel in Z dir
+//   }
+//
+
+  
+
+

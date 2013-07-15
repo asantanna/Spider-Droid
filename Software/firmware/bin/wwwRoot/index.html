@@ -5,15 +5,75 @@
    
    <title>PHI Admin Console</title>
 
-   <script>
+   <!-- This block will be have values dynamically filled in by PHI --> 
+   <script id="phi_vars">
       var PHI_VARS = {
-        "hostName"       : "hostname",
-        "ipAddr"         : "ipAddr",
-        "battLevel"      : "battLevel",
-        "upTime"         : "upTime"        // no comma on last one!
+        "hostName"       : "",
+        "ipAddr"         : "",
+        "battLevel"      : "",
+        "upTime"         : ""        // no comma on last one!
       };
    </script>
-   
+
+   <script>
+      
+      function jsonReplyListener () {
+        
+        // alert("received JSON reply");
+        
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+            alert(this.responseText);
+          } else {
+            alert('There was a problem with the JSON request.');
+          }
+        }
+      }
+      
+      function sendJsonRequest(json) {
+
+        // alert("sending JSON request");
+
+        var httpRequest;
+
+        if (window.XMLHttpRequest) {
+          // Mozilla, Safari, ...
+          httpRequest = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+          // IE
+          try {
+            httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+          } 
+          catch (e) {
+            try {
+              httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+            } 
+            catch (e) {}
+          }
+        }
+
+        if (!httpRequest) {
+          alert('error: cannot create an XMLHTTP instance');
+          return false;
+        }
+
+        httpRequest.onreadystatechange = jsonReplyListener;
+
+        httpRequest.open('POST', "postJson");
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.setRequestHeader("Content-length", json.length);
+        httpRequest.setRequestHeader("Connection", "close");
+        httpRequest.setRequestHeader("Content-type", "application/json");
+        
+        httpRequest.send(json);
+      }
+
+      function buttonPressed() {
+        sendJsonRequest("globalData : {\ncmd : getVersion\n}");
+      }
+
+   </script>
+      
 </head>
 
 <body>
@@ -65,6 +125,9 @@ TEST: </p>
    </tr>
    
 </table>
+
+</br>
+<input type="button" onclick="buttonPressed()" value="Get Version">
 
  <!-- END OF MAIN PANE -->
 
