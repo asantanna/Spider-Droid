@@ -42,6 +42,7 @@
 #undef  ZERO_P
 
 #define PHI_ALLOC(D)    ((D*)phi_allocHelper(sizeof(D)))
+#define PHI_ALLOC_N(n)  phi_allocHelper(n)
 #define PHI_FREE(p)     free(p)
 
 #define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))

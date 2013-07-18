@@ -19,7 +19,10 @@ void main() {
   time_t now = time(NULL);
   char* sTime = ctime(&now);
   printf("PHI started at %s", sTime);
-
+  
+  // get IP of (probable) interface we will get requests from
+  g_ipAddr = phi_getHostIP();
+  
   // init log
   if (phi_logInit(LOGFILE_NAME) == 0) {
     // failed

@@ -5,34 +5,59 @@
    
    <title>PHI Admin Console</title>
 
-   <!-- This block will be have values dynamically filled in by PHI --> 
-   <script id="phi_vars">
-      var PHI_VARS = {
-        "hostName"       : "",
-        "ipAddr"         : "",
-        "battLevel"      : "",
-        "upTime"         : ""        // no comma on last one!
-      };
-   </script>
-
    <script>
-      
+/*      
+      function refreshPhiData()
+      {
+        document.getElementById("phi_hostname").innerHTML= "ubuntu";
+        document.getElementById("phi_ipaddr").innerHTML= "1.2.3.4";
+
+        // call again in 5 seconds
+        window.setTimeout(refreshPhiData, 5000);
+      }      
+    */
+
       function jsonReplyListener () {
         
         // alert("received JSON reply");
         
         if (this.readyState === 4) {
           if (this.status === 200) {
-            alert(this.responseText);
+            // alert(this.responseText);
+            var obj = eval ("(" + this.responseText + ")");
+            if (obj == null) {
+              alert("jsonReplyListener: JSON obj eval failed");
+            }
+            parseJsonReply(obj);
           } else {
-            alert('There was a problem with the JSON request.');
+            alert('jsonReplyListener: There was a problem with the JSON request.');
           }
         }
       }
-      
+
+      function parseJsonReply(obj) {
+        var num = obj.reply.length;
+        for (var i = 0 ; i < num ; i++) {
+          var reply = obj.reply[i];
+          // alert("obj.reply[" + i + "].cmd = " + reply.cmd);
+          switch (reply.cmd) {
+            case "getVersion":
+              document.getElementById("phi_firmware_version").innerHTML = reply.version;
+              break;
+            case "getHost":
+              document.getElementById("phi_hostname").innerHTML = reply.name;
+              document.getElementById("phi_ipaddr").innerHTML = reply.ip;
+              break;
+            default:
+              alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
+              break;
+          }
+        }
+      }
+
       function sendJsonRequest(json) {
 
-        // alert("sending JSON request");
+        // alert("sending JSON request:" + json);
 
         var httpRequest;
 
@@ -68,8 +93,9 @@
         httpRequest.send(json);
       }
 
-      function buttonPressed() {
-        sendJsonRequest("globalData : {\ncmd : getVersion\n}");
+      function testButtonPressed() {
+        // alert("button pressed");
+        sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost} ]");
       }
 
    </script>
@@ -100,7 +126,7 @@
       <tr>
          <td>
             <!-- Navigation -->
-            buttons
+            nav buttons go here
          </td>
          <td style="padding: 20px;">
             
@@ -113,27 +139,38 @@ TEST: </p>
 <table>
    
    <tr> 
+      <td>firmware version</td>
+      <td>=</td>
+      <td>&nbsp; <span id="phi_firmware_version">v</span></td>
+   </tr>
+   
+   <tr> 
       <td>hostname</td>
       <td>=</td>
-      <td>&nbsp; <script>document.write(PHI_VARS.hostName); </script></td>
+      <td>&nbsp; <span id="phi_hostname">n</span></td>
    </tr>
    
    <tr>
       <td>ipAddr</td>
       <td>=</td>
-      <td>&nbsp; <script> document.write(PHI_VARS.ipAddr); </script></td>
+      <td>&nbsp; <span id="phi_ipaddr">ip</span></td>
    </tr>
    
 </table>
 
 </br>
-<input type="button" onclick="buttonPressed()" value="Get Version">
+
+<input type="button" onclick="testButtonPressed()" value="Test">
 
  <!-- END OF MAIN PANE -->
 
          </td>
       </tr>
    </table>
+
+   <script>
+//      refreshPhiData();
+   </script>
    
 </body>
 </html>

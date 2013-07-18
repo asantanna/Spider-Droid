@@ -217,16 +217,12 @@ void phi_webadmin(int port, const char* wwwRoot)
   serv_addr.sin_port = htons(port);
 
   if (bind(listenfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) <0) {
-    LOG_FATAL("system call failed: bind");
+    LOG_FATAL("system call failed: bind : Are you running as root?");
   }
 
-  // get IP of (probable) interface we will get requests from
-
-  UINT32 ipAddr = phi_getHostIP();
-
   printf("listening on address %lu.%lu.%lu.%lu on port %d\n",
-         ipAddr & 0xff, (ipAddr >> 8) & 0xff,
-         (ipAddr >> 16) & 0xff,(ipAddr >> 24) & 0xff,
+         g_ipAddr & 0xff, (g_ipAddr >> 8) & 0xff,
+         (g_ipAddr >> 16) & 0xff,(g_ipAddr >> 24) & 0xff,
          port);
 
   // listen (enable receive)
@@ -367,9 +363,9 @@ void* wa_process_web_request(void* arg)
 
   if (!strcasecmp(parsedHttp.pMethod, HTTP_METHOD_POST_STR)) {
     // got an HTTP POST - we expect JSON in the body
-    char jsonReplyBuff[1024+1];
-    phi_processJson(parsedHttp.pBody, jsonReplyBuff);
-    SEND_JSON_REPLY(jsonReplyBuff);
+    char* pJsonReply = phi_processJson(parsedHttp.pBody);
+    SEND_JSON_REPLY(pJsonReply);
+    phi_freeJsonReply(pJsonReply);
     goto quick_exit;
   }
 
@@ -405,7 +401,7 @@ void* wa_process_web_request(void* arg)
   if ((pagefd = open(pFname, O_RDONLY)) == -1) {
     SEND_ERROR_REPLY(notfound);
     LOG_ERR("webadmin failed to open file '%s'", pFname);
-    return;
+    goto quick_exit;
   }
 
   LOG_INFO("webadmin: file requested='%s'", pFname);
@@ -439,6 +435,9 @@ quick_exit:
 
   // close the socket
   close(socketfd);
+
+  // return status
+  return NULL;
 }
 
 // This is based on my Arduino code in ALS-Libs but heavily modified.
