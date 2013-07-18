@@ -27,3 +27,8 @@ cmake.tmp.*
 phi-ubuntu
 phi-rpi-phi
 bin-debug
+
+# eclipse stuff
+.project
+.cproject
+.settings
