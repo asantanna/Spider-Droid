@@ -39,3 +39,24 @@ void main() {
 
   // never gets here
 }
+
+// initialize all PHI-specific hardware
+//
+// Note: all initialization that requires PHI hardware
+// goes here.
+
+char* phi_initPeripherals() {
+
+  // NULL means success
+  char *rc = NULL;
+  
+  // set up UART for communication with motor controllers
+  if (!uartInit()) {
+    rc = "phi_InitPeripherals: Can't open UART. Are you running on PHI?";
+    goto quick_exit;
+  }
+
+quick_exit:
+  
+  return rc;
+}

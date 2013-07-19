@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+   
+   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+   <title>PHI Admin Console: Main</title>
+
+   <!-- shared PHI stuff -->
+   <script src="js/phi.js"></script>
+   <link rel="stylesheet" type="text/css" href="css/phi.css">
+
+   <script>
+
+      function pageLoaded()
+      {
+        sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost} ]");
+        // how to set a timer
+        // window.setTimeout(name_of_self, 5000);
+      }      
+
+      function parseJsonReply(obj) {
+        var num = obj.reply.length;
+        for (var i = 0 ; i < num ; i++) {
+          var reply = obj.reply[i];
+          // alert("obj.reply[" + i + "].cmd = " + reply.cmd);
+          switch (reply.cmd) {
+            case "getVersion":
+              document.getElementById("phi_firmware_version").innerHTML = reply.version;
+              break;
+            case "getHost":
+              document.getElementById("phi_hostname").innerHTML = reply.name;
+              document.getElementById("phi_ipaddr").innerHTML = reply.ip;
+              break;
+            default:
+              alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
+              break;
+          }
+        }
+      }
+
+      /* function testButtonPressed() {
+        // alert("test button pressed");
+        sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost} ]");
+      } */
+
+   </script>
+
+</head>
+
+<body onload="pageLoaded()">
+
+
+   <table border="0" cellpadding="5">
+      <tr><td class="phi_page_title"> Status </td></tr>
+   </table>
+   <br/>
+   
+   <table class="phi_indent_1" border="0" cellpadding="5">
+
+      <tr> 
+         <td class="phi_label">firmware version</td>
+         <td class="phi_value">&nbsp; <span id="phi_firmware_version">v</span></td>
+      </tr>
+
+      <tr> 
+         <td class="phi_label">hostname</td>
+         <td class="phi_value">&nbsp; <span id="phi_hostname">n</span></td>
+      </tr>
+
+      <tr>
+         <td class="phi_label">ipAddr</td>
+         <td class="phi_value">&nbsp; <span id="phi_ipaddr">ip</span></td>
+      </tr>
+
+   </table>
+
+   <br/>
+
+   <!-- <input type="button" onclick="testButtonPressed()" value="Test"> -->
+
+</body>
+</html>

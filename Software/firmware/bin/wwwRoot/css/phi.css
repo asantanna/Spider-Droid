@@ -1,0 +1,37 @@
+
+   table.phi_frame {
+           padding-top:0px;
+           padding-right:0px;
+           padding-bottom:0px;
+           padding-left:5px; }
+   
+   td.phi_title {
+           padding-left:20px; }
+   
+   /* used consistent coloring of PHI page titles */
+   
+   .phi_page_title {
+           font-size: 200%;
+           background-color:white;
+           color:black; }
+
+   /* used consistent coloring of PHI property names */
+   
+   .phi_label {
+           background-color:#F4D0E7;
+           color:black; }
+
+   /* used consistent coloring of retrieved PHI property values */
+   
+   .phi_value {
+           font-weight:bold;
+           color:#005000; }
+   
+
+   /* used consistent indentation of page content */
+   
+   .phi_indent_1 {
+           padding-left:50px; }
+   
+   .phi_indent_2 {
+           padding-left:100px; }

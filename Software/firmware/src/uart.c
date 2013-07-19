@@ -7,7 +7,7 @@
 
 // At bootup, RPI pins 8 and 10 are already set to UART0_TXD, UART0_RXD (ie the alt0 function) respectively
 
-void uart_init() {
+BOOL uartInit() {
 
   // open UART 0
   //
@@ -29,7 +29,8 @@ void uart_init() {
   g_uart0_fs = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY);		
 
   if (g_uart0_fs == -1) {
-    phi_abortWithMsg("can't open UART. In use by another application?");
+    LOG_ERR("uartInit: can't open UART device driver");
+    return FALSE;
   }
 
   // configure UART 0
@@ -55,9 +56,11 @@ void uart_init() {
   options.c_lflag = 0;
   tcflush(g_uart0_fs, TCIFLUSH);
   tcsetattr(g_uart0_fs, TCSANOW, &options);
+
+  return TRUE;
 }
 
-void uart_send(BYTE* pData, int dataLen) {
+void uartSend(BYTE* pData, int dataLen) {
   
   if (g_uart0_fs != -1)
   {
@@ -73,7 +76,7 @@ void uart_send(BYTE* pData, int dataLen) {
 // controller status because the controller TX lines can't be
 // wire-ANDed together. (Code also never tested ...)
 
-int uart_receive(void* pBuff, int buffLen) {
+int uartReceive(void* pBuff, int buffLen) {
 
   // Note: Since we use O_NDELAY, this function will exit if there are
   // no receive bytes waiting (non blocking read). If we want to hold

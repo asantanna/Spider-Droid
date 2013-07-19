@@ -1,176 +1,62 @@
-<!DOCTYPE html>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd"> 
+
 <html>
 
 <head>
-   
    <title>PHI Admin Console</title>
-
-   <script>
-/*      
-      function refreshPhiData()
-      {
-        document.getElementById("phi_hostname").innerHTML= "ubuntu";
-        document.getElementById("phi_ipaddr").innerHTML= "1.2.3.4";
-
-        // call again in 5 seconds
-        window.setTimeout(refreshPhiData, 5000);
-      }      
-    */
-
-      function jsonReplyListener () {
-        
-        // alert("received JSON reply");
-        
-        if (this.readyState === 4) {
-          if (this.status === 200) {
-            // alert(this.responseText);
-            var obj = eval ("(" + this.responseText + ")");
-            if (obj == null) {
-              alert("jsonReplyListener: JSON obj eval failed");
-            }
-            parseJsonReply(obj);
-          } else {
-            alert('jsonReplyListener: There was a problem with the JSON request.');
-          }
-        }
-      }
-
-      function parseJsonReply(obj) {
-        var num = obj.reply.length;
-        for (var i = 0 ; i < num ; i++) {
-          var reply = obj.reply[i];
-          // alert("obj.reply[" + i + "].cmd = " + reply.cmd);
-          switch (reply.cmd) {
-            case "getVersion":
-              document.getElementById("phi_firmware_version").innerHTML = reply.version;
-              break;
-            case "getHost":
-              document.getElementById("phi_hostname").innerHTML = reply.name;
-              document.getElementById("phi_ipaddr").innerHTML = reply.ip;
-              break;
-            default:
-              alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
-              break;
-          }
-        }
-      }
-
-      function sendJsonRequest(json) {
-
-        // alert("sending JSON request:" + json);
-
-        var httpRequest;
-
-        if (window.XMLHttpRequest) {
-          // Mozilla, Safari, ...
-          httpRequest = new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-          // IE
-          try {
-            httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
-          } 
-          catch (e) {
-            try {
-              httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-            } 
-            catch (e) {}
-          }
-        }
-
-        if (!httpRequest) {
-          alert('error: cannot create an XMLHTTP instance');
-          return false;
-        }
-
-        httpRequest.onreadystatechange = jsonReplyListener;
-
-        httpRequest.open('POST', "postJson");
-        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        httpRequest.setRequestHeader("Content-length", json.length);
-        httpRequest.setRequestHeader("Connection", "close");
-        httpRequest.setRequestHeader("Content-type", "application/json");
-        
-        httpRequest.send(json);
-      }
-
-      function testButtonPressed() {
-        // alert("button pressed");
-        sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost} ]");
-      }
-
-   </script>
-      
 </head>
 
-<body>
+<frameset rows="200,*" frameborder="0" border="0" framespacing="0">
+   <frame name="header_frame" src="header.html">
+   <frameset cols="182,*" frameborder="0" border="0" framespacing="0">
+      <frame name="nav_frame" src="nav.html" marginheight="0" marginwidth="0" scrolling="auto" noresize>
+      <frame name="content_frame" src="page_main.html" marginheight="0" marginwidth="0" scrolling="auto" noresize>
+      <noframes><p>WTF? No frames? Get a real browser!</p></noframes>
+   </frameset>
+</frameset>
 
-   <table>
-      
-      <tr>
-         <td>
-            <!-- Icon -->
-            <img src="./images/phi_letter.jpg" height=150 width=150> </img>
-         </td>
-         <td>
-            <!-- Title -->
-            <img src="./images/phi_text.jpg" height=80> </img>
-            <img src="./images/phi_text.jpg"height=80> </img>
-            <img src="./images/phi_text.jpg"height=80> </img>
-            <img src="./images/phi_text.jpg"height=80> </img>
-            <img src="./images/phi_text.jpg"height=80> </img>
-            </br>
-            <h1> &nbsp; Admin Console </h1>
-         </td>
-      </tr>
-      
-      <tr>
-         <td>
-            <!-- Navigation -->
-            nav buttons go here
-         </td>
-         <td style="padding: 20px;">
-            
- <!-- MAIN PANE -->
-            
-<h1> PHI says HI</b> </h1>
 
-TEST: </p>
+<!--
 
-<table>
-   
-   <tr> 
-      <td>firmware version</td>
-      <td>=</td>
-      <td>&nbsp; <span id="phi_firmware_version">v</span></td>
-   </tr>
-   
-   <tr> 
-      <td>hostname</td>
-      <td>=</td>
-      <td>&nbsp; <span id="phi_hostname">n</span></td>
-   </tr>
-   
-   <tr>
-      <td>ipAddr</td>
-      <td>=</td>
-      <td>&nbsp; <span id="phi_ipaddr">ip</span></td>
-   </tr>
-   
-</table>
+========================================================================
+This template is available for free download from the Quackit website.
 
-</br>
+If you have found it to be useful, please consider linking from your
+website to http://www.quackit.com
 
-<input type="button" onclick="testButtonPressed()" value="Test">
+Thanks!
+========================================================================
 
- <!-- END OF MAIN PANE -->
+Note the following:
 
-         </td>
-      </tr>
-   </table>
+1. Each frame has it's own 'frame' tag.
 
-   <script>
-//      refreshPhiData();
-   </script>
-   
-</body>
+2. Each frame has a name (eg, name="menu"). This is used for when you
+need to load one frame from another. For example, your left frame
+might have links that, when clicked on, loads a new page in the right
+frame. This is acheived by using 'target="content"' within your
+links/anchor tags.
+
+3. Each 'frame' tag has a 'src' attribute. This is where you specify
+the name of the file to be loaded into that frame when the page first
+loads.
+
+4. You can change the size of the frames by changing the value of the
+'cols' and/or 'rows' attribute. A value of "200" sets the frame at 200
+pixels. An asterisk (*) specifies that the frame should use up
+whatever space is left over from the other frames. You can also use
+percentage values if desired (i.e. 20%,80%)
+
+5. To specify a border, set 'frameborder' and 'border' to "1". I
+included both attributes for maximum browser compatibility.
+
+6. The 'framespacing' attribute doesn't work in all browsers, but you
+can set any numeric value you like here.
+
+7. To learn more about HTML frames, check out:
+http://www.quackit.com/html/tutorial/html_frames.cfm
+
+-->
+
 </html>

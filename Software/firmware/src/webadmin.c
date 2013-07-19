@@ -73,6 +73,8 @@ struct {
 	{"tar", "image/tar" },  
 	{"htm", "text/html" },  
 	{"html", "text/html" },  
+  {"js", "application/javascript" },
+  {"css", "text/css" },  
 };
 
 typedef struct {
@@ -157,6 +159,11 @@ char wa_response_servererror_body[] =
  "Something went wrong (and it's probably your fault).\n"
  "</body>\n"
  "</html>\n";
+
+// NOTE: this macro uses "buffer" which means that it will overwrite
+// the HTTP request.  So if need to log something in the request,
+// do it *before* you use this macro.
+// see example below:  LOG_ERR("file extension type not supported (%s)", pPath);
 
 #define SEND_ERROR_REPLY(replyType) \
   { \
@@ -289,8 +296,8 @@ void* wa_process_web_request(void* arg)
 
   if (sock_numRead == 0 || sock_numRead == -1) {
   // read failure - give up
-    SEND_ERROR_REPLY(forbidden);
     LOG_ERR("failed to read browser request");
+    SEND_ERROR_REPLY(forbidden);
     goto quick_exit;
   }
 
@@ -300,8 +307,8 @@ void* wa_process_web_request(void* arg)
   }
   else {
     // error
-    SEND_ERROR_REPLY(forbidden);
     LOG_ERR("HTTP request too small/big - size=%d", sock_numRead);
+    SEND_ERROR_REPLY(forbidden);
     buffer[0] = 0;
     goto quick_exit;
   }
@@ -313,8 +320,8 @@ void* wa_process_web_request(void* arg)
   PHI_PARSED_HTTP parsedHttp;
   
   if (wa_parseHttpRequest(buffer, &parsedHttp) == -1) {
-    SEND_ERROR_REPLY(servererror);
     LOG_ERR("error parsing HTTP request");
+    SEND_ERROR_REPLY(servererror);
     goto quick_exit;
   }
 
@@ -338,8 +345,8 @@ void* wa_process_web_request(void* arg)
     }
   } else {
     // no path at all - error
-    SEND_ERROR_REPLY(servererror);
     LOG_ERR("HTTP request has no path");
+    SEND_ERROR_REPLY(servererror);
     goto quick_exit;
   }
 
@@ -349,8 +356,8 @@ void* wa_process_web_request(void* arg)
   
   for (i=0 ; i < pathLen ; i++) {
     if (pPath[i] == '.' && pPath[i+1] == '.') {
-      SEND_ERROR_REPLY(forbidden);
       LOG_ERR("Parent directory (..) path names not supported");
+      SEND_ERROR_REPLY(forbidden);
       goto quick_exit;
     }
   }
@@ -385,8 +392,8 @@ void* wa_process_web_request(void* arg)
   }
   
   if (pContentType == NULL) {
-    SEND_ERROR_REPLY(forbidden);
     LOG_ERR("file extension type not supported (%s)", pPath);
+    SEND_ERROR_REPLY(forbidden);
     goto quick_exit;
   }
 
@@ -399,8 +406,8 @@ void* wa_process_web_request(void* arg)
   }
   
   if ((pagefd = open(pFname, O_RDONLY)) == -1) {
-    SEND_ERROR_REPLY(notfound);
     LOG_ERR("webadmin failed to open file '%s'", pFname);
+    SEND_ERROR_REPLY(notfound);
     goto quick_exit;
   }
 

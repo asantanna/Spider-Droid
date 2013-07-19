@@ -77,9 +77,13 @@ typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok);
 // Internal
 jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq);
 
-// JSON handlers
-PHI_JSON_CMD_REPLY_TYPE* json_getVersion(jsmntok_t** ppTok);
-PHI_JSON_CMD_REPLY_TYPE* json_getHost(jsmntok_t** ppTok);
+// JSON handlers forward decls
+
+#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok)
+
+JSON_HANDLER(initPeripherals);
+JSON_HANDLER(getVersion);
+JSON_HANDLER(getHost);
 
 // valid command list
 
@@ -89,15 +93,16 @@ typedef struct {
   
 } PHI_JSON_CMD_TYPE;
 
-#define VC_ENTRY(c) { STR(c) , json_ ## c }
+#define CMD_ENTRY(c) { STR(c) , json_ ## c }
 
 PHI_JSON_CMD_TYPE validCmds[] = {
-  VC_ENTRY(getVersion),
-  VC_ENTRY(getHost),
-//  VC_ENTRY(getUpTime),
-//  VC_ENTRY(getAccel),
-//  VC_ENTRY(setPower),
-//  VC_ENTRY(setBrake),
+  CMD_ENTRY(initPeripherals),
+  CMD_ENTRY(getVersion),
+  CMD_ENTRY(getHost),
+//  CMD_ENTRY(getUpTime),
+//  CMD_ENTRY(getAccel),
+//  CMD_ENTRY(setPower),
+//  CMD_ENTRY(setBrake),
   { 0, 0}
 };
 
@@ -369,6 +374,9 @@ not_found:
 //
 // Global data
 //  
+//   req:   { cmd : initPeripherals }
+//   reply: { status : string }
+//
 //   req:   { cmd : getVersion }
 //   reply: { version : string }
 //
@@ -384,21 +392,25 @@ not_found:
 //            z : num,               // accel in Z dir
 //   }
 
-PHI_JSON_CMD_REPLY_TYPE* json_getVersion(jsmntok_t** ppTok) {
+JSON_HANDLER(initPeripherals) {
+  JSON_HANDLER_PROLOG(initPeripherals);
+  char* status = phi_initPeripherals();
+  sprintf(buff + strlen(buff), Q(status) ":" Q(%s) "\n", status == NULL ? "OK" : status);
+  JSON_HANDLER_EPILOG();
+}
+
+JSON_HANDLER(getVersion) {
   JSON_HANDLER_PROLOG(getVersion);
   sprintf(buff + strlen(buff), Q(version) ":" Q(%s) "\n", PHI_VERSION);
   JSON_HANDLER_EPILOG();
 }
 
-PHI_JSON_CMD_REPLY_TYPE* json_getHost(jsmntok_t** ppTok) {
+JSON_HANDLER(getHost) {
   JSON_HANDLER_PROLOG(getHost);
-  
   sprintf(buff + strlen(buff), Q(name) ":" Q(%s) ",\n", "NOT_IMPL");
-  
   sprintf(buff + strlen(buff), Q(ip) ":" Q(%lu.%lu.%lu.%lu) "\n",
     g_ipAddr & 0xff, (g_ipAddr >> 8) & 0xff,
     (g_ipAddr >> 16) & 0xff,(g_ipAddr >> 24) & 0xff);
-  
   JSON_HANDLER_EPILOG();
 }
 

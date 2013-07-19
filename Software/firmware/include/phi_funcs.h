@@ -40,5 +40,15 @@ int phi_logInit(char *filename);
 void phi_logMsg(const char* tag, const char *fmt, ...);
 void phi_logClose(void);
 
+//
+// HARDWARE
+//
+
+char* phi_initPeripherals();
+
+BOOL uartInit();
+int uartReceive(void* pBuff, int buffLen);
+void uartSend(BYTE* pData, int dataLen);
+
 
 
