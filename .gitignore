@@ -32,3 +32,6 @@ bin-debug
 .project
 .cproject
 .settings
+
+# third party dir
+third-party
