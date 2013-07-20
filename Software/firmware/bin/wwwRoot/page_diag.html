@@ -22,9 +22,9 @@
       var slider;
       
       function initSlider() {
-        slider = new Slider("slider", "horizontal", 80);
+        slider = new Slider("slider", "horizontal", 201);
         slider.onChange = sliderChanged;
-        slider.setStart(4);
+        slider.setStart(101);
         slider.show();
       }
 
@@ -34,11 +34,11 @@
 
       function pageLoaded()
       {
+        // init motor control slider
         initSlider();
-        
-        // sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost} ]");
-        // how to set a timer
-        // window.setTimeout(name_of_self, 5000);
+
+        // request Phi initialization status
+        // sendJsonRequest("req : [ {cmd:getPhiState} ]");
       }      
 
       function parseJsonReply(obj) {
@@ -61,10 +61,10 @@
         }
       }
 
-      /* function testButtonPressed() {
-        // alert("test button pressed");
-        sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost} ]");
-      } */
+      function requestInit() {
+        alert("requestInit() called");
+        // sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost} ]");
+      }
 
    </script>
 
@@ -72,35 +72,70 @@
 
 <body onload="pageLoaded()">
 
-      <table border="0" cellpadding="5">
+   <table style="background-color:black;" border="0" cellpadding="5">
+      <col width=500>
+      <tr><td class="phi_page_title"> Diagnostics </td></tr>
+   </table>
+   
+   <h3>Peripherals</h3>
+   
+   <table class="phi_indent_1" border="0" cellpadding="5">
 
-         <tr> 
-            <td class="phi_label">firmware version</td>
-            <td class="phi_value">&nbsp; <span id="phi_firmware_version">v</span></td>
-         </tr>
+      <tr> 
+         <td class="phi_label">State</td>
+         <td class="phi_value">
+            &nbsp; <span id="phi_peripheral_init"> Not Initialized </span>
+         </td>
+         <td style="padding-left:30px;">
+            <input type="button" onclick="requestInit()" value="Initialize Now">
+         </td>
+      </tr>
 
-         <tr> 
-            <td class="phi_label">hostname</td>
-            <td class="phi_value">&nbsp; <span id="phi_hostname">n</span></td>
-         </tr>
+   </table>
 
-         <tr>
-            <td class="phi_label">ipAddr</td>
-            <td class="phi_value">&nbsp; <span id="phi_ipaddr">ip</span></td>
-         </tr>
-
-      </table>
-
-      <br/>
-
-      <!-- <input type="button" onclick="testButtonPressed()" value="Test"> -->
-
-      <br><br>
+   <h3>Motor Control</h3>
+   
+   <table class="phi_indent_1" border="0" cellpadding="5">
       
-      <div id="slider"></div> &nbsp; &nbsp; <span id="slider_val"></span>
+      <tr> 
+         <td class="phi_label">Select Leg:</td>
+         <td style="padding-left:30px;">
+            <select>
+               <option value="rf">Right Front</option>
+               <option value="lf">Left Front</option>
+               <option value="rr">Right Rear</option>
+               <option value="lr">Left Rear</option>
+            </select>             
+         </td>
+      </tr>
 
-      <br/>
-      <br/>
+      <tr> 
+         <td class="phi_label">Select Joint:</td>
+         <td style="padding-left:30px;">
+            <select>
+               <option value="r">Hip Rotator</option>
+               <option value="t">Hip Flexor</option>
+               <option value="k">Knee Flexor</option>
+            </select>             
+         </td>
+      </tr>
+      
+      <tr> 
+         <td class="phi_label">Speed:</td>
+         <td style="padding-left:30px;">
+               <span id="slider"></span>
+         </td>
+         <td>
+            <span id="slider_val"></span>
+         </td>
+      </tr>
+
+   </table>
+
+      
+
+   <br/>
+   <br/>
 
 </body>
 </html>

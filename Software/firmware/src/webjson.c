@@ -433,8 +433,8 @@ JSON_HANDLER(getHost) {
 //      = lr      left rear leg
 //
 //    j = r       hip rotator joint
-//      = t       thigh joint
-//      = k       knee joint
+//      = t       thigh flexor joint (aka hip flexor)
+//      = k       knee flexor joint
 //
 // if setPower:
 //    power = -100 to 100   negative means backwards, meaning of 0%
