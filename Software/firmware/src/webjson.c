@@ -86,6 +86,8 @@ JSON_HANDLER(initPeripherals);
 JSON_HANDLER(getVersion);
 JSON_HANDLER(getHost);
 
+JSON_HANDLER(debugJunk);
+
 // valid command list
 
 typedef struct {
@@ -105,6 +107,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
 //  CMD_ENTRY(getAccel),
 //  CMD_ENTRY(setPower),
 //  CMD_ENTRY(setBrake),
+  CMD_ENTRY(debugJunk),
   { 0, 0}
 };
 
@@ -463,4 +466,15 @@ JSON_HANDLER(getHost) {
 
   
 
+//
+// JUNK commnds for quick tests
+//
 
+
+JSON_HANDLER(debugJunk) {
+  JSON_HANDLER_PROLOG(debugJunk);
+  char motorCmd[] = { MC_CMD_SIGN, MC_DEFAULT_DEVICE_NUM, MC_CMD_FWD_M0, 0x7F };
+  uartSend(motorCmd, sizeof(motorCmd));
+  sprintf(buff + strlen(buff), Q(status) ":" Q(%s) "\n", "OK");
+  JSON_HANDLER_EPILOG();
+}

@@ -56,7 +56,7 @@
 //
 // Param indexes:
 // param 0: DEVICE_ID    (controller device ID)
-// param 1: PWM_MODE     (pwm frequency and resolution)
+// param 1: PWM_MODE     (pwm frequency and resolution - DEFAULT = 0)
 //         0 = high-frequency, 7-bit mode (PWM frequency of 31.5 kHz, which is ultrasonic)
 //         1 = high-frequency, 8-bit mode (PWM frequency of 15.7 kHz)
 //         2 = low-frequency, 7-bit mode (PWM frequency of 7.8 kHz)
