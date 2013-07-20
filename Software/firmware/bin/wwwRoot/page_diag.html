@@ -22,23 +22,29 @@
       var slider;
       
       function initSlider() {
-        slider = new Slider("slider", "horizontal", 201);
+        
+        slider = new Slider(
+                      "slider",
+                      "horizontal",
+                      201,                  // length (width for horizontal)
+                      201);                 // range [0, 200]
+        
         slider.onChange = sliderChanged;
-        slider.setStart(101);
+        slider.setStart(100);               // must call after setting .onChange
         slider.show();
       }
 
       function sliderChanged(value) {
-        document.getElementById("slider_val").innerHTML = value;
+        document.getElementById("slider_val").innerHTML = value - 100 + " %";
       }
 
       function pageLoaded()
       {
         // init motor control slider
         initSlider();
-
-        // request Phi initialization status
-        // sendJsonRequest("req : [ {cmd:getPhiState} ]");
+        
+        // get init state
+        phi_getInitState();
       }      
 
       function parseJsonReply(obj) {
@@ -47,12 +53,12 @@
           var reply = obj.reply[i];
           // alert("obj.reply[" + i + "].cmd = " + reply.cmd);
           switch (reply.cmd) {
-            case "getVersion":
-              document.getElementById("phi_firmware_version").innerHTML = reply.version;
+            case "getInitState":
+              document.getElementById("phi_peripheral_init").innerHTML = reply.initPeriph;
               break;
-            case "getHost":
-              document.getElementById("phi_hostname").innerHTML = reply.name;
-              document.getElementById("phi_ipaddr").innerHTML = reply.ip;
+            case "initPeripherals":
+              document.getElementById("phi_init_request_status").innerHTML = reply.status;
+              phi_getInitState();
               break;
             default:
               alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
@@ -61,9 +67,19 @@
         }
       }
 
-      function requestInit() {
-        alert("requestInit() called");
-        // sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost} ]");
+
+      function phi_getInitState() {
+        // request Phi initialization status
+        sendJsonRequest("req : [ {cmd:getInitState} ]");
+      }
+
+      function phi_initPeripherals() {
+        sendJsonRequest("req : [ {cmd:initPeripherals} ]");
+      }
+
+      function testSize() {
+        alert('foo');
+        slider.moveSlide(100);
       }
 
    </script>
@@ -74,20 +90,24 @@
 
    <table style="background-color:black;" border="0" cellpadding="5">
       <col width=500>
-      <tr><td class="phi_page_title"> Diagnostics </td></tr>
+      <tr><td class="phi_page_title"> Diagnostics Lucas </td></tr>
    </table>
    
    <h3>Peripherals</h3>
    
    <table class="phi_indent_1" border="0" cellpadding="5">
+      <col>
+      <col width=200>
 
       <tr> 
          <td class="phi_label">State</td>
          <td class="phi_value">
-            &nbsp; <span id="phi_peripheral_init"> Not Initialized </span>
+            &nbsp; <span id="phi_peripheral_init"> </span>
          </td>
          <td style="padding-left:30px;">
-            <input type="button" onclick="requestInit()" value="Initialize Now">
+            <input type="button" onclick="phi_initPeripherals()" value="Initialize Now">
+         </td>
+         <td id="phi_init_request_status" class="phi_value">
          </td>
       </tr>
 
@@ -96,6 +116,8 @@
    <h3>Motor Control</h3>
    
    <table class="phi_indent_1" border="0" cellpadding="5">
+      <col>
+      <col width=250>
       
       <tr> 
          <td class="phi_label">Select Leg:</td>
@@ -132,7 +154,10 @@
 
    </table>
 
-      
+   <br/>
+   <br/>
+   
+   <input type="button" onclick="testSize()" value="Test Size">
 
    <br/>
    <br/>

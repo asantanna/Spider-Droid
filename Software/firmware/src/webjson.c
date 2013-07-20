@@ -81,6 +81,7 @@ jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq);
 
 #define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok)
 
+JSON_HANDLER(getInitState);
 JSON_HANDLER(initPeripherals);
 JSON_HANDLER(getVersion);
 JSON_HANDLER(getHost);
@@ -96,6 +97,7 @@ typedef struct {
 #define CMD_ENTRY(c) { STR(c) , json_ ## c }
 
 PHI_JSON_CMD_TYPE validCmds[] = {
+  CMD_ENTRY(getInitState),
   CMD_ENTRY(initPeripherals),
   CMD_ENTRY(getVersion),
   CMD_ENTRY(getHost),
@@ -374,6 +376,9 @@ not_found:
 //
 // Global data
 //  
+//   req:   { cmd : getInitState }
+//   reply: { initPeriph : "OK" | "NOT INIT" }
+//
 //   req:   { cmd : initPeripherals }
 //   reply: { status : string }
 //
@@ -391,6 +396,12 @@ not_found:
 //            y : num,               // accel in Y dir
 //            z : num,               // accel in Z dir
 //   }
+
+JSON_HANDLER(getInitState) {
+  JSON_HANDLER_PROLOG(getInitState);
+  sprintf(buff + strlen(buff), Q(initPeriph) ":" Q(%s) "\n", g_initPeriph == TRUE ? "OK" : "NOT INIT");
+  JSON_HANDLER_EPILOG();
+}
 
 JSON_HANDLER(initPeripherals) {
   JSON_HANDLER_PROLOG(initPeripherals);

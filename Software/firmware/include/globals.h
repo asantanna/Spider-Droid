@@ -11,8 +11,11 @@
 #define EXT       extern
 #endif
 
-// enable debug msgs to stderr
-EXT BOOL g_debugToLog INIT(TRUE);
+//
+// init state
+//
+
+EXT BOOL g_initPeriph INIT(FALSE);        // TRUE if UART peripherals initialized
 
 // startup time (in uSecs)
 EXT UINT64 g_startupTime INIT({0});
