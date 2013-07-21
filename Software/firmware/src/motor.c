@@ -13,7 +13,7 @@ void setMotorPower(MOTOR_DEF* md, BYTE power, BOOL bFwd) {
   
   char motorCmd[] = {
     MC_CMD_SIGN,
-    md -> controllerID,
+    /*HACK FOR NOW md -> controllerID,*/ 9,
     cmd,
     power
   };
