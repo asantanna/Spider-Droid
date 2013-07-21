@@ -63,6 +63,9 @@
             case "debugJunk":
               alert("debugJunk() command sent");
               break;
+            case "debugJunk2":
+              alert("debugJunk2() command sent");
+              break;
             default:
               alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
               break;
@@ -82,6 +85,10 @@
 
       function debugTest() {
         sendJsonRequest("req : [ {cmd:debugJunk} ]");
+      }
+
+      function debugTest() {
+        sendJsonRequest("req : [ {cmd:debugJunk2} ]");
       }
 
    </script>
@@ -160,6 +167,8 @@
    <br/>
    
    <input type="button" onclick="debugTest()" value="Start Motor 0">
+   <br/>
+   <input type="button" onclick="debugTest2()" value="Stop Motor 0">
 
    <br/>
    <br/>
