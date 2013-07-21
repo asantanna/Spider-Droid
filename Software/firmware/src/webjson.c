@@ -87,6 +87,7 @@ JSON_HANDLER(getVersion);
 JSON_HANDLER(getHost);
 
 JSON_HANDLER(debugJunk);
+JSON_HANDLER(debugJunk2);
 
 // valid command list
 
@@ -108,6 +109,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
 //  CMD_ENTRY(setPower),
 //  CMD_ENTRY(setBrake),
   CMD_ENTRY(debugJunk),
+  CMD_ENTRY(debugJunk2),
   { 0, 0}
 };
 
@@ -474,6 +476,14 @@ JSON_HANDLER(getHost) {
 JSON_HANDLER(debugJunk) {
   JSON_HANDLER_PROLOG(debugJunk);
   char motorCmd[] = { MC_CMD_SIGN, MC_DEFAULT_DEVICE_NUM, MC_CMD_FWD_M0, 0x7F };
+  uartSend(motorCmd, sizeof(motorCmd));
+  sprintf(buff + strlen(buff), Q(status) ":" Q(%s) "\n", "OK");
+  JSON_HANDLER_EPILOG();
+}
+
+JSON_HANDLER(debugJunk2) {
+  JSON_HANDLER_PROLOG(debugJunk2);
+  char motorCmd[] = { MC_CMD_SIGN, MC_DEFAULT_DEVICE_NUM, MC_CMD_FWD_M0, 0 };
   uartSend(motorCmd, sizeof(motorCmd));
   sprintf(buff + strlen(buff), Q(status) ":" Q(%s) "\n", "OK");
   JSON_HANDLER_EPILOG();
