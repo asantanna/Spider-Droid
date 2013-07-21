@@ -136,7 +136,6 @@ char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON requ
 
 char* phi_processJson(char *pJsonReq) {
   
-  int i;
   jsmntok_t tokens[MAX_JSON_TOKENS];
   jsmn_parser parser;
 
@@ -168,6 +167,8 @@ char* phi_processJson(char *pJsonReq) {
   if (VERBOSE_LOG) {
 
     LOG_INFO("Received JSON command:");
+    
+    int i;
 
     for (i = 0 ; i < 10 /* COUNTOF(tokens)*/ ; i++) {
       char val[2048];
@@ -232,7 +233,7 @@ char* phi_processJson(char *pJsonReq) {
     jsonCmdHandler jsonHandler = getJsonHandler(&pTok, pJsonReq);
 
     if (jsonHandler == NULL) {
-      LOG_ERR("webjson: unknown cmd at index %d", i);
+      LOG_ERR("webjson: unknown cmd received: '%*s'", TOK_LEN(pTok), TOK_START(pTok));
       goto err_exit;
     }
 
@@ -533,8 +534,10 @@ JSON_HANDLER(setPower) {
     sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: parameters missing.) );
     goto error_exit;
   }
-  
+
   MOTOR_DEF* md = &(motorDefs[MOTOR_NAME_TO_IDX(motorName)]);
+  LOG_INFO("JSON.setPower: setting motor C%d:M%d to power=%u, dir=%s", md -> controllerId, md -> motorIdx, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
+    
   setMotorPower(md, (BYTE) powerVal, bFwd);
   
   sprintf(_buff + strlen(_buff), Q(setPower) ":" Q(%s) "\n", "OK");

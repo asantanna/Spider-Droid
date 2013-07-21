@@ -49,7 +49,7 @@
 
 
 typedef struct {
-  BYTE controllerID;  // id of controller for motor
+  BYTE controllerId;  // id of controller for motor
   BYTE motorIdx;      // idx of motor in controller (0 or 1)
   
 } MOTOR_DEF;

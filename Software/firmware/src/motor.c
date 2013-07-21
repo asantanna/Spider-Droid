@@ -15,7 +15,7 @@ void setMotorPower(MOTOR_DEF* md, BYTE power, BOOL bFwd) {
     MC_CMD_SIGN,
     /*HACK FOR NOW md -> controllerID,*/ 9,
     cmd,
-    power
+    /*ANOTHER HACK until motor is init properly */ power > 127 ? 127 : power
   };
     
   uartSend(motorCmd, sizeof(motorCmd));
