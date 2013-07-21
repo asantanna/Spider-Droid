@@ -20,6 +20,7 @@
    <script>
 
       var slider;
+      var bPhiInit = false;
       
       function initSlider() {
         
@@ -35,7 +36,13 @@
       }
 
       function sliderChanged(value) {
-        document.getElementById("slider_val").innerHTML = value - 100 + " %";
+        var percent = value - 100;
+        document.getElementById("slider_val").innerHTML = percent + "%";
+        // set motor speed
+        motorId = document.getElementById("phi_leg").value + document.getElementById("phi_joint").value;
+        if (bPhiInit) {
+          phi_setPower(motorId, percent);
+        }
       }
 
       function pageLoaded()
@@ -48,23 +55,33 @@
       }      
 
       function parseJsonReply(obj) {
+        
         var num = obj.reply.length;
+        var elem;
+        
         for (var i = 0 ; i < num ; i++) {
           var reply = obj.reply[i];
           // alert("obj.reply[" + i + "].cmd = " + reply.cmd);
           switch (reply.cmd) {
             case "getInitState":
-              document.getElementById("phi_peripheral_init").innerHTML = reply.initPeriph;
+              elem = document.getElementById("phi_peripheral_init");
+              elem.innerHTML = reply.initPeriph;
+              if (reply.initPeriph == "OK") {
+                bPhiInit = true;
+                elem.className = "phi_ok_value";
+              } else {
+                bPhiInit = false;
+                elem.className = "phi_error_value";
+              }
               break;
             case "initPeripherals":
               document.getElementById("phi_init_request_status").innerHTML = reply.status;
               phi_getInitState();
               break;
             case "debugJunk":
-              alert("debugJunk() command sent");
-              break;
             case "debugJunk2":
-              alert("debugJunk2() command sent");
+            case "setPower":
+              alert("got " + reply.cmd + " command reply");
               break;
             default:
               alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
@@ -73,22 +90,22 @@
         }
       }
 
-
-      function phi_getInitState() {
-        // request Phi initialization status
-        sendJsonRequest("req : [ {cmd:getInitState} ]");
-      }
-
-      function phi_initPeripherals() {
-        sendJsonRequest("req : [ {cmd:initPeripherals} ]");
-      }
-
       function debugTest() {
-        sendJsonRequest("req : [ {cmd:debugJunk} ]");
+        if (bPhiInit == false) {
+          // not initialized
+          alert("PHI is not initialized, you dummy!");
+          return;
+        }
+        phi_setPower("rft", 100);
       }
 
       function debugTest2() {
-        sendJsonRequest("req : [ {cmd:debugJunk2} ]");
+        if (bPhiInit == false) {
+          // not initialized
+          alert("PHI is not initialized, you dummy!");
+          return;
+        }
+        phi_setPower("rft", 0);
       }
 
    </script>
@@ -106,13 +123,14 @@
    
    <table class="phi_indent_1" border="0" cellpadding="5">
       <col>
+      <col>
+      <col>
       <col width=200>
 
       <tr> 
          <td class="phi_label">State</td>
-         <td class="phi_value">
-            &nbsp; <span id="phi_peripheral_init"> </span>
-         </td>
+         <td> &nbsp; &nbsp; </td>
+         <td id="phi_peripheral_init"></td>
          <td style="padding-left:30px;">
             <input type="button" onclick="phi_initPeripherals()" value="Initialize Now">
          </td>
@@ -122,7 +140,7 @@
 
    </table>
 
-   <h3>Motor Control</h3>
+   <h3>Direct Motor Control</h3>
    
    <table class="phi_indent_1" border="0" cellpadding="5">
       <col>
@@ -131,11 +149,11 @@
       <tr> 
          <td class="phi_label">Select Leg:</td>
          <td style="padding-left:30px;">
-            <select>
+            <select id="phi_leg">
                <option value="rf">Right Front</option>
                <option value="lf">Left Front</option>
-               <option value="rr">Right Rear</option>
-               <option value="lr">Left Rear</option>
+               <option value="rb">Right Back</option>
+               <option value="lb">Left Back</option>
             </select>             
          </td>
       </tr>
@@ -143,10 +161,10 @@
       <tr> 
          <td class="phi_label">Select Joint:</td>
          <td style="padding-left:30px;">
-            <select>
-               <option value="r">Hip Rotator</option>
-               <option value="t">Hip Flexor</option>
+            <select id="phi_joint">
+               <option value="t">Thigh Flexor</option>
                <option value="k">Knee Flexor</option>
+               <option value="h">Hip Rotator</option>
             </select>             
          </td>
       </tr>

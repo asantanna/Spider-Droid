@@ -54,12 +54,14 @@
 
 // JSMN token helpers
 
-#define TOK_TYPE(pTok)        (pTok)->type
-#define TOK_NUM_CHILD(pTok)   (pTok)->size
+#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
+#define TOK_LEN(pTok)         ((pTok)->end - (pTok)->start)
+#define TOK_TYPE(pTok)        ((pTok)->type)
+#define TOK_NUM_CHILD(pTok)   ((pTok)->size)
 
 #define TOK_EQ(pTok,s) \
-    ((int) strlen(s) == (pTok)->end - (pTok)->start) \
-    ? (strncmp(s, pJsonReq + (pTok)->start, strlen(s)) == 0) \
+    ((int) strlen(s) == TOK_LEN(pTok)) \
+    ? (strncmp(s, TOK_START(pTok), strlen(s)) == 0) \
     : FALSE
 
 //
@@ -72,19 +74,20 @@ typedef struct _jsonCmdReply_t {
 
 } PHI_JSON_CMD_REPLY_TYPE;
 
-typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok);
+typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok, char* pJsonReq);
 
 // Internal
 jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq);
 
 // JSON handlers forward decls
 
-#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok)
+#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok, char* pJsonReq)
 
 JSON_HANDLER(getInitState);
 JSON_HANDLER(initPeripherals);
 JSON_HANDLER(getVersion);
 JSON_HANDLER(getHost);
+JSON_HANDLER(setPower);
 
 JSON_HANDLER(debugJunk);
 JSON_HANDLER(debugJunk2);
@@ -106,7 +109,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(getHost),
 //  CMD_ENTRY(getUpTime),
 //  CMD_ENTRY(getAccel),
-//  CMD_ENTRY(setPower),
+  CMD_ENTRY(setPower),
 //  CMD_ENTRY(setBrake),
   CMD_ENTRY(debugJunk),
   CMD_ENTRY(debugJunk2),
@@ -229,15 +232,15 @@ char* phi_processJson(char *pJsonReq) {
     jsonCmdHandler jsonHandler = getJsonHandler(&pTok, pJsonReq);
 
     if (jsonHandler == NULL) {
-        LOG_ERR("webjson: unknown cmd at index %d", i);
-        goto err_exit;
+      LOG_ERR("webjson: unknown cmd at index %d", i);
+      goto err_exit;
     }
 
     // call handler
-    PHI_JSON_CMD_REPLY_TYPE* pCmdReply = (*jsonHandler)(&pTok);
+    PHI_JSON_CMD_REPLY_TYPE* pCmdReply = (*jsonHandler)(&pTok, pJsonReq);
 
     // save reply
-    
+
     if (pCmdReply != NULL) {
       pCmdReply -> pNext = NULL;
       if (pRepHead == NULL) {
@@ -246,6 +249,8 @@ char* phi_processJson(char *pJsonReq) {
         pRepCurr -> pNext = pCmdReply;
       }
       pRepCurr = pCmdReply;
+    } else {
+      LOG_FATAL("webjson: pCmdReply should never be NULL");
     }
   }
 
@@ -336,10 +341,7 @@ jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
   PHI_JSON_CMD_TYPE* pHandler = validCmds;
   while (pHandler -> pCmd != NULL) {
     if (TOK_EQ(pTok, pHandler -> pCmd)) {
-      // found handler - update caller pToken to next token after cmd : string
-      // (ie the first "real" parameter for the command)
-      *ppTok = pTok + 1;
-      // return handler
+      // found handler
       return pHandler -> handler;
     }
     pHandler ++;
@@ -347,7 +349,7 @@ jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
 
 not_found:
   
-  // not found (no need to update *ppTok because caller should abort)
+  // not found
   return NULL;
 }
 
@@ -359,24 +361,26 @@ not_found:
 
 #define JSON_HANDLER_PROLOG(cmd) \
   /* allocate buffer for building reply */ \
-  char buff[JSON_TMP_BUFFSIZE]; \
+  char _buff[JSON_TMP_BUFFSIZE]; \
   /* remember number of child tokens */ \
-  int numChild = (*ppTok) -> size; \
+  int _numChild = TOK_NUM_CHILD(*ppTok); \
   /* write common prolog into it */ \
-  sprintf(buff, jsonReplyObject_start, #cmd)
+  sprintf(_buff, jsonReplyObject_start, #cmd); \
+  /* skip to first "real" parameter (skip function name) */ \
+  (*ppTok) += 3; /* extra semi-colon ok */
 
 #define JSON_HANDLER_EPILOG() \
-  /* write common epilog into buff */ \
-  strcat(buff, jsonReplyObject_end); \
+  /* write common epilog into _buff */ \
+  strcat(_buff, jsonReplyObject_end); \
   /* create reply struct */ \
-  PHI_JSON_CMD_REPLY_TYPE* pRet = PHI_ALLOC(PHI_JSON_CMD_REPLY_TYPE); \
-  pRet -> pReply = strdup(buff); \
-  /* on entry, *ppTok points to the THIRD token within the cmd object */ \
+  PHI_JSON_CMD_REPLY_TYPE* _pRet = PHI_ALLOC(PHI_JSON_CMD_REPLY_TYPE); \
+  _pRet -> pReply = strdup(_buff); \
+  /* after the prolog, *ppTok points to the THIRD token within the cmd object */ \
   /* (if it exists) since we skip the common "cmd:string" part. */ \
   /* Advance *pTok to point to the next command object in the req array */ \
-  (*ppTok) += numChild - 2; \
+  (*ppTok) += _numChild - 2; \
   /* return to caller */ \
-  return pRet
+  return _pRet; /* extra semi-colon ok */
 
 //
 // Global data
@@ -404,27 +408,27 @@ not_found:
 
 JSON_HANDLER(getInitState) {
   JSON_HANDLER_PROLOG(getInitState);
-  sprintf(buff + strlen(buff), Q(initPeriph) ":" Q(%s) "\n", g_initPeriph == TRUE ? "OK" : "NOT INIT");
+  sprintf(_buff + strlen(_buff), Q(initPeriph) ":" Q(%s) "\n", g_initPeriph == TRUE ? "OK" : "NOT INIT");
   JSON_HANDLER_EPILOG();
 }
 
 JSON_HANDLER(initPeripherals) {
   JSON_HANDLER_PROLOG(initPeripherals);
   char* status = phi_initPeripherals();
-  sprintf(buff + strlen(buff), Q(status) ":" Q(%s) "\n", status == NULL ? "OK" : status);
+  sprintf(_buff + strlen(_buff), Q(status) ":" Q(%s) "\n", status == NULL ? "OK" : status);
   JSON_HANDLER_EPILOG();
 }
 
 JSON_HANDLER(getVersion) {
   JSON_HANDLER_PROLOG(getVersion);
-  sprintf(buff + strlen(buff), Q(version) ":" Q(%s) "\n", PHI_VERSION);
+  sprintf(_buff + strlen(_buff), Q(version) ":" Q(%s) "\n", PHI_VERSION);
   JSON_HANDLER_EPILOG();
 }
 
 JSON_HANDLER(getHost) {
   JSON_HANDLER_PROLOG(getHost);
-  sprintf(buff + strlen(buff), Q(name) ":" Q(%s) ",\n", "NOT_IMPL");
-  sprintf(buff + strlen(buff), Q(ip) ":" Q(%lu.%lu.%lu.%lu) "\n",
+  sprintf(_buff + strlen(_buff), Q(name) ":" Q(%s) ",\n", "NOT_IMPL");
+  sprintf(_buff + strlen(_buff), Q(ip) ":" Q(%lu.%lu.%lu.%lu) "\n",
     g_ipAddr & 0xff, (g_ipAddr >> 8) & 0xff,
     (g_ipAddr >> 16) & 0xff,(g_ipAddr >> 24) & 0xff);
   JSON_HANDLER_EPILOG();
@@ -433,22 +437,23 @@ JSON_HANDLER(getHost) {
 //
 // Motor control
 //  
-//  req:    { cmd : setPower, motorId : "ppj" , power : -100 to 100 (percent)
+//  req:    { cmd : setPower, motorId : "spj" , power : -100 to 100 (percent)
 //  reply:  {}
 //
-//  req:    { cmd : setBrake, motorId : "ppj" , brake : on | off | zeroMeansBrake | zeroMeansCoast
+//  req:    { cmd : setBrake, motorId : "spj" , brake : on | off | zeroMeansBrake | zeroMeansCoast
 //  reply:  {}
 //
 // where:
 //
-// motorId: 3 char code "ppj" with
+// motorId: 3 char code "spj" with
 //
-//   pp = rf      right forward leg
-//      = lf      left forward leg
-//      = rr      right rear leg
-//      = lr      left rear leg
+//    s = r       right side
+//        l       left side
 //
-//    j = r       hip rotator joint
+//    p = f       forward
+//      = r       rear
+//
+//    j = h       hip rotator joint
 //      = t       thigh flexor joint (aka hip flexor)
 //      = k       knee flexor joint
 //
@@ -465,19 +470,94 @@ JSON_HANDLER(getHost) {
 //
 //
 
-
+JSON_HANDLER(setPower) {
+  JSON_HANDLER_PROLOG(setPower);
   
+  jsmntok_t* pTok = *ppTok;
+  char motorName[3] = {0, 0, 0};
+  int powerVal = -1;
+  BOOL bFwd = TRUE;
+  int toksRead = 2;
+  
+  while (toksRead < _numChild) {
+    
+    if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
+      sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: param name is not a primitive.) );
+      goto error_exit;
+    }
+    
+    if (TOK_EQ(pTok, "motorId")) {
+      // advance
+      pTok ++;
+      toksRead ++;
+      
+      // get motor name
+      if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorId value is not a primitive.) );
+        goto error_exit;
+      }
+      
+      if (TOK_LEN(pTok) != 3) {
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorId length is not 3.) );
+        goto error_exit;
+      }
+      memcpy(motorName, TOK_START(pTok), sizeof(motorName));
+    }
+    else if (TOK_EQ(pTok, "power")) {
+      // advance
+      pTok ++;
+      toksRead ++;
+      
+      // get power
+      if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: power value is not a primitive.) );
+        goto error_exit;
+      }
+
+      int percent = atoi(TOK_START(pTok));
+      
+      if (percent < 0) {
+        bFwd = FALSE;
+        percent = -percent;
+      }
+
+      powerVal = (percent * 255) / 100;
+    }
+    
+      // advance
+    pTok ++;
+    toksRead ++;
+  }
+
+  if ((motorName[0] == 0) || (powerVal == -1)) {
+    sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: parameters missing.) );
+    goto error_exit;
+  }
+  
+  MOTOR_DEF* md = &(motorDefs[MOTOR_NAME_TO_IDX(motorName)]);
+  setMotorPower(md, (BYTE) powerVal, bFwd);
+  
+  sprintf(_buff + strlen(_buff), Q(setPower) ":" Q(%s) "\n", "OK");
+
+quick_exit:
+  
+  JSON_HANDLER_EPILOG();
+
+error_exit:
+
+  LOG_ERR("JSON.setPower:  call failed");
+  goto quick_exit;
+}
 
 //
 // JUNK commnds for quick tests
 //
 
-
 JSON_HANDLER(debugJunk) {
   JSON_HANDLER_PROLOG(debugJunk);
   char motorCmd[] = { MC_CMD_SIGN, MC_DEFAULT_DEVICE_NUM, MC_CMD_FWD_M0, 0x7F };
   uartSend(motorCmd, sizeof(motorCmd));
-  sprintf(buff + strlen(buff), Q(status) ":" Q(%s) "\n", "OK");
+  sprintf(_buff + strlen(_buff), Q(status) ":" Q(%s) "\n", "OK");
   JSON_HANDLER_EPILOG();
 }
 
@@ -485,6 +565,8 @@ JSON_HANDLER(debugJunk2) {
   JSON_HANDLER_PROLOG(debugJunk2);
   char motorCmd[] = { MC_CMD_SIGN, MC_DEFAULT_DEVICE_NUM, MC_CMD_FWD_M0, 0 };
   uartSend(motorCmd, sizeof(motorCmd));
-  sprintf(buff + strlen(buff), Q(status) ":" Q(%s) "\n", "OK");
+  sprintf(_buff + strlen(_buff), Q(status) ":" Q(%s) "\n", "OK");
   JSON_HANDLER_EPILOG();
 }
+
+

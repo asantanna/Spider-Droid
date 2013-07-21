@@ -2,6 +2,26 @@
 // PHI web admin common routines
 //
 
+//
+// PHI command helpers
+//
+
+function phi_getInitState() {
+  sendJsonRequest("req : [ {cmd:getInitState} ]");
+}
+
+function phi_initPeripherals() {
+  sendJsonRequest("req : [ {cmd:initPeripherals} ]");
+}
+
+function phi_setPower(motorId, percent) {
+  sendJsonRequest("req : [ {cmd:setPower, motorId:" + motorId + ", power:" + percent + " } ]");
+}
+
+//
+// JSON common functions
+//
+
 function jsonReplyListener () {
 
   // alert("received JSON reply");

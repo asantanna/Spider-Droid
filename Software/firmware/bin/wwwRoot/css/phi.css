@@ -27,6 +27,16 @@
            font-weight:bold;
            color:#005000; }
    
+   /* used consistent coloring of fields that have OK and ERROR values */
+   
+   .phi_ok_value {
+           font-weight:bold;
+           color:green; }
+   
+   .phi_error_value {
+           font-weight:bold;
+           color:white;
+           background-color:red; }
 
    /* used consistent indentation of page content */
    
