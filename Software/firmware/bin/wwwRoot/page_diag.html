@@ -60,6 +60,9 @@
               document.getElementById("phi_init_request_status").innerHTML = reply.status;
               phi_getInitState();
               break;
+            case "debugJunk":
+              alert("debugJunk() command sent");
+              break;
             default:
               alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
               break;
@@ -78,7 +81,7 @@
       }
 
       function debugTest() {
-        sendJsonRequest("req : [ {cmd:debugJunk ]");
+        sendJsonRequest("req : [ {cmd:debugJunk} ]");
       }
 
    </script>
