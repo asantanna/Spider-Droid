@@ -77,9 +77,8 @@
         sendJsonRequest("req : [ {cmd:initPeripherals} ]");
       }
 
-      function testSize() {
-        alert('foo');
-        slider.moveSlide(100);
+      function debugTest() {
+        sendJsonRequest("req : [ {cmd:debugJunk ]");
       }
 
    </script>
@@ -90,7 +89,7 @@
 
    <table style="background-color:black;" border="0" cellpadding="5">
       <col width=500>
-      <tr><td class="phi_page_title"> Diagnostics Lucas </td></tr>
+      <tr><td class="phi_page_title"> Diagnostics </td></tr>
    </table>
    
    <h3>Peripherals</h3>
@@ -157,7 +156,7 @@
    <br/>
    <br/>
    
-   <input type="button" onclick="testSize()" value="Test Size">
+   <input type="button" onclick="debugTest()" value="Start Motor 0">
 
    <br/>
    <br/>
