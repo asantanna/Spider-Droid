@@ -49,12 +49,17 @@ char* phi_initPeripherals() {
 
   // NULL means success
   char *rc = NULL;
-
   g_initPeriph = FALSE;
   
   // set up UART for communication with motor controllers
   if (!uartInit()) {
-    rc = "phi_InitPeripherals: Can't open UART. Are you running on PHI?";
+    rc = "phi_InitPeripherals: UART init failed. Are you running on PHI?";
+    goto quick_exit;
+  }
+  
+  // set up SPI for communication with gyroscope
+  if (!spiInit()) {
+    rc = "phi_InitPeripherals: SPI init failed";
     goto quick_exit;
   }
 

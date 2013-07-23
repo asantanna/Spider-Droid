@@ -59,7 +59,11 @@
 #define LOG_ERR(...)    phi_logMsg("ERROR: ", __VA_ARGS__)
 #define LOG_FATAL(...)  { phi_logMsg("FATAL: ", __VA_ARGS__); phi_abortProcess(-1); }
 
+// Linux drivers
 
+#define UART_DRIVER_NAME  "/dev/ttyAMA0"
 
+#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
+#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
 
 

@@ -18,13 +18,17 @@
 #include <unistd.h>			// for UART
 #include <fcntl.h>			// for UART
 #include <termios.h>		// for UART
-#include <pthread.h>
+#include <pthread.h>    
+#include <sys/ioctl.h>  // for driver access (SPI, etc)
 
 // useful types
 #include "phi_defs.h"
 
 // polulu 2s9v1 motor controller
 #include "polulu_2s9v1.h"
+
+// parallax L3G4200D gyroscope module
+#include "plax_L3G4200D.h"
 
 // abstract motor (hides controller details)
 #include "motor.h"

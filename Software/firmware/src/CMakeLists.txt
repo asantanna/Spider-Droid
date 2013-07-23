@@ -26,6 +26,7 @@ add_executable ( phi
   webadmin.c
   webjson.c
   jsmn.c
+  spi.c
 )
 
 # no libs to link

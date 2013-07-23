@@ -52,7 +52,9 @@
 // max number of JSON tokens we support (should be way plenty)
 #define MAX_JSON_TOKENS       256
 
-// JSMN token helpers
+// JSMN (JSON parser) helpers
+
+#define PARSER_NUM_TOK(parser)  ((parser).toknext)
 
 #define TOK_START(pTok)       (pJsonReq + (pTok)->start)
 #define TOK_LEN(pTok)         ((pTok)->end - (pTok)->start)
@@ -166,14 +168,19 @@ char* phi_processJson(char *pJsonReq) {
 
   if (VERBOSE_LOG) {
 
-    LOG_INFO("Received JSON command:");
+    LOG_INFO("Parsed JSON request to %d tokens: ", PARSER_NUM_TOK(parser)) ;
+
+    // this hacky loop prints first 10 tokens slots
+    // because it is too much trouble to figure out
+    // ahead of tme how 
     
     int i;
 
-    for (i = 0 ; i < 10 /* COUNTOF(tokens)*/ ; i++) {
+    for (i = 0 ; i < PARSER_NUM_TOK(parser) ; i++) {
       char val[2048];
-      int len = tokens[i].end - tokens[i].start;
-      int type = tokens[i].type;
+      jsmntok_t* pTok = &tokens[i];
+      int len = TOK_LEN(pTok);
+      int type = TOK_TYPE(pTok);
       char *pType;
       switch (type) {
         case JSMN_PRIMITIVE: pType = "primitive"; break;
@@ -182,10 +189,11 @@ char* phi_processJson(char *pJsonReq) {
         case JSMN_STRING: pType = "string"; break;
         default: pType = "unknown" ; break;
       }
-      memcpy(val, pJsonReq + tokens[i].start, len);
+      memcpy(val, TOK_START(pTok), len);
       val[len] = 0;
-      LOG_INFO("  token %d: type=%s, val='%s', size=%d", i, pType, val, tokens[i].size);
+      LOG_INFO("  token %d: type=%s, val='%s', offset=%d, numChild=%d", i, pType, val, TOK_START(pTok), TOK_NUM_CHILD(pTok));
     }
+    
   }
 
   //

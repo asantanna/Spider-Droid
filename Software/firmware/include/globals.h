@@ -23,7 +23,9 @@ EXT UINT64 g_startupTime INIT({0});
 // host IP
 EXT UINT32 g_ipAddr INIT(0);
 
-
 // UART 0 
 EXT int g_uart0_fs INIT(-1);
+
+// SPI 0 
+EXT int g_spi0_fs INIT(-1);
 

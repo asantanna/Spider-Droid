@@ -26,7 +26,7 @@ BOOL uartInit() {
 
   // open UART 0 in non blocking read/write mode
   
-  g_uart0_fs = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY);		
+  g_uart0_fs = open(UART_DRIVER_NAME, O_RDWR | O_NOCTTY | O_NDELAY);		
 
   if (g_uart0_fs == -1) {
     LOG_ERR("uartInit: can't open UART device driver");
