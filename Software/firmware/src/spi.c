@@ -16,12 +16,7 @@
 #include "phi.h"
 #include <linux/spi/spidev.h>
 
-// SPI settings for gyroscope module   
-#define GYRO_SPI_CLK    (8ul*1000ul*1000ul)
-#define GYRO_SPI_MODE   (SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST)
-#define GYRO_SPI_BPW     7
-
-// SPI 0 SETTINGS (for gyroscope module)
+// SPI 0 SETTINGS
    
 UINT32 spi0_speed = GYRO_SPI_CLK;
 BYTE spi0_mode = GYRO_SPI_MODE;
