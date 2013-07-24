@@ -18,9 +18,6 @@
 
 // SPI 0 SETTINGS
    
-UINT32 spi0_speed = GYRO_SPI_CLK;
-BYTE spi0_mode = GYRO_SPI_MODE;
-BYTE spi0_bpw = GYRO_SPI_BPW;
 
 struct spi_ioc_transfer spi0_xfer = {
   .tx_buf = 0,
@@ -31,65 +28,62 @@ struct spi_ioc_transfer spi0_xfer = {
   .bits_per_word = GYRO_SPI_BPW,
 };
 
-/* SPI 1 SETTINGS
+int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw) {
 
-UINT32 spi1_speed = 8ul*1000ul*1000ul;
-BYTE spi1_mode = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST;
-BYTE spi1_bpw = 7;
+  int fd = open(pDriverName, O_RDWR);
+  
+  if (fd < 0) {
+    LOG_ERR("spiInit: can't open SPI device driver '%s'", pDriverName);
+    goto error_exit;
+  }
 
-struct spi_ioc_transfer spi1_xfer = {
-  .tx_buf = 0,
-  .rx_buf = 0,
-  .len = 0,
-  .delay_usecs = 0,
-  .speed_hz = spi1_speed,
-  .bits_per_word = spi1_bpw,
-}; */
+  // set SPI mode
+  // to read mode: ioctl(fd, SPI_IOC_RD_MODE, &mode);
+
+  if (ioctl(fd, SPI_IOC_WR_MODE, &mode) < 0) {
+    LOG_ERR("spiInit: can't set SPI mode");
+    goto error_exit;
+  }
+
+  // set SPI bits per word
+  // to read bpw : ioctl(fd, SPI_IOC_RD_BITS_PER_WORD, &bpw;
+
+  if (ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, &bpw) < 0) {
+    LOG_ERR("spiInit: can't set SPI bits per word");
+    goto error_exit;
+  }
+
+  // set SPI max speed
+  // to read speed: ioctl(fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
+
+  if (ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed) < 0) {
+    LOG_ERR("spiInit: can't set SPI speed");
+    goto error_exit;
+  }
+
+  LOG_INFO("spiInit: init'd SPI='%s' to mode=0x%02x, bpw=%d, speed=%d",
+    pDriverName, mode, bpw, speed);
+
+
+quick_exit:
+
+  return fd;
+}
 
 
 BOOL spiInit() {
 
   BOOL rc = TRUE;
 
-  // hack - refactor this when we need to user SPI 1 for something
+  // init SPI 0 for use by gyroscope
 
-  // 
-  // Init SPI 0 - Gyroscope
-  //
-
-  g_spi0_fs = open(SPI0_DRIVER_NAME, O_RDWR);
-
-  if (g_spi0_fs < 0) {
-    LOG_ERR("spiInit: can't open SPI 0 device driver");
-    goto error_exit;
-  }
-
-  // set SPI 0 mode
-  // to read mode: ioctl(g_spi0_fs, SPI_IOC_RD_MODE, &spi0_mode);
-
-  if (ioctl(g_spi0_fs, SPI_IOC_WR_MODE, &spi0_mode) < 0) {
-    LOG_ERR("spiInit: can't set SPI 0 mode");
-    goto error_exit;
-  }
-
-  // set SPI bits per word
-  // to read bpw : ioctl(g_spi0_fs, SPI_IOC_RD_BITS_PER_WORD, &spi0_bpw;
-
-  if (ioctl(g_spi0_fs, SPI_IOC_WR_BITS_PER_WORD, &spi0_bpw) < 0) {
-    LOG_ERR("spiInit: can't set SPI 0 bits per word");
-    goto error_exit;
-  }
-
-  // set SPI max speed
-  // to read speed: ioctl(g_spi0_fs, SPI_IOC_RD_MAX_SPEED_HZ, &spi0_speed);
-
-  if (ioctl(g_spi0_fs, SPI_IOC_WR_MAX_SPEED_HZ, &spi0_speed) < 0) {
-    LOG_ERR("spiInit: can't set SPI 0 speed");
-    goto error_exit;
-  }
-
-  LOG_INFO("spiInit: init'd SPI 0 to mode=0x%x, bpw=%d, speed=%d", spi0_mode, spi0_bpw, spi0_speed);
+  g_spi0_fd = initSpiDriver(SPI0_DRIVER_NAME, GYRO_SPI_CLK, GYRO_SPI_MODE,  GYRO_SPI_BPW);
   
+  if (g_spi0_fd < 0) {
+    LOG_ERR("spiInit: can't init device driver '%s'", pDriverName);
+    goto error_exit;
+  }
+
 quick_exit:
 
   return rc;
@@ -97,29 +91,27 @@ quick_exit:
 error_exit:
 
   rc = FALSE;
-  LOG_ERR("spiInit: SPI 0 initialization failed!");
+  LOG_ERR("spiInit: SPI initialization failed!");
   goto quick_exit;
 }
 
 void spiTransfer(int spiID, BYTE* rxBuff, BYTE* txBuff, UINT32 dataLen) {
 
-  // hack - refactor this when we need to user SPI 1 for something
-  // spiID is ignored
-
   spi0_xfer.rx_buf = (UINT32) rxBuff;
   spi0_xfer.tx_buf = (UINT32) txBuff;
   spi0_xfer.len = dataLen;
   
-  if (ioctl(g_spi0_fs, SPI_IOC_MESSAGE(1), &spi0_xfer) < 0) {
+  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(1), &spi0_xfer) < 0) {
     LOG_ERR("spiTransfer: ioctl() failed");
   }
+  
 }
 
-void spiSend(BYTE* pData, int dataLen) {
+void spi0Send(BYTE* pData, int dataLen) {
   spiTransfer(0, NULL, pData, dataLen);
 }
 
-void spiReceive(void* pBuff, int buffLen) {
+void spi0Receive(void* pBuff, int buffLen) {
   spiTransfer(0, pBuff, NULL, buffLen);
 }
 

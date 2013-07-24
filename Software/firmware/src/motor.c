@@ -1,6 +1,6 @@
 
 //
-// Interface to spiderBot's motors
+// Interface to PHI's motors
 //
 
 #include "phi.h"

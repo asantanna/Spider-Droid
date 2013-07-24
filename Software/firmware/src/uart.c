@@ -26,9 +26,9 @@ BOOL uartInit() {
 
   // open UART 0 in non blocking read/write mode
   
-  g_uart0_fs = open(UART_DRIVER_NAME, O_RDWR | O_NOCTTY | O_NDELAY);		
+  g_uart0_fd = open(UART_DRIVER_NAME, O_RDWR | O_NOCTTY | O_NDELAY);		
 
-  if (g_uart0_fs == -1) {
+  if (g_uart0_fd == -1) {
     LOG_ERR("uartInit: can't open UART device driver");
     return FALSE;
   }
@@ -48,23 +48,23 @@ BOOL uartInit() {
   //	PARODD - Odd parity (else even)
 
   struct termios options;
-  tcgetattr(g_uart0_fs, &options);
+  tcgetattr(g_uart0_fd, &options);
 
   options.c_cflag = MC_DEF_BAUD | CS8 | CLOCAL;           // set baud rate, RX disabled
   options.c_iflag = IGNPAR;                               // ignore parity (RX disabled)
   options.c_oflag = 0;
   options.c_lflag = 0;
-  tcflush(g_uart0_fs, TCIFLUSH);
-  tcsetattr(g_uart0_fs, TCSANOW, &options);
+  tcflush(g_uart0_fd, TCIFLUSH);
+  tcsetattr(g_uart0_fd, TCSANOW, &options);
 
   return TRUE;
 }
 
 void uartSend(BYTE* pData, int dataLen) {
   
-  if (g_uart0_fs != -1)
+  if (g_uart0_fd != -1)
   {
-    int count = write(g_uart0_fs, pData, dataLen);
+    int count = write(g_uart0_fd, pData, dataLen);
     if (count < 0)
     {
       phi_abortWithMsg("UART TX error");
@@ -85,9 +85,9 @@ int uartReceive(void* pBuff, int buffLen) {
 
   int numRead = 0;
 
-  if (g_uart0_fs != -1)
+  if (g_uart0_fd != -1)
   {
-    numRead = read(g_uart0_fs, pBuff, buffLen);
+    numRead = read(g_uart0_fd, pBuff, buffLen);
     
     if (numRead < 0)
     {
