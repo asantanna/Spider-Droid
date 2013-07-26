@@ -613,9 +613,9 @@ JSON_HANDLER(getGyroData) {
   JSON_HANDLER_PROLOG(getGyroData);
   float pitchDps, yawDps, rollDps;
   gyroGetData(&pitchDps, &yawDps, &rollDps);
-  sprintf(_buff + strlen(_buff), Q(pitchDps) ":" Q(%.1g) ",\n", (double) pitchDps);
-  sprintf(_buff + strlen(_buff), Q(yawDps) ":" Q(%.1g) ",\n", (double) yawDps);
-  sprintf(_buff + strlen(_buff), Q(rollDps) ":" Q(%.1g) "\n", (double) rollDps);
+  sprintf(_buff + strlen(_buff), Q(pitchDps) ":" Q(%.1f) ",\n", (double) pitchDps);
+  sprintf(_buff + strlen(_buff), Q(yawDps) ":" Q(%.1f) ",\n", (double) yawDps);
+  sprintf(_buff + strlen(_buff), Q(rollDps) ":" Q(%.1f) "\n", (double) rollDps);
   JSON_HANDLER_EPILOG();
 }
 
