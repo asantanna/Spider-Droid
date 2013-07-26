@@ -596,7 +596,7 @@ error_exit:
 JSON_HANDLER(debugJunk) {
   JSON_HANDLER_PROLOG(debugJunk);
   char motorCmd[] = { MC_CMD_SIGN, MC_DEFAULT_DEVICE_NUM, MC_CMD_FWD_M0, 0x7F };
-  uartSend(motorCmd, sizeof(motorCmd));
+  uart_send(motorCmd, sizeof(motorCmd));
   sprintf(_buff + strlen(_buff), Q(status) ":" Q(%s) "\n", "OK");
   JSON_HANDLER_EPILOG();
 }
@@ -604,7 +604,7 @@ JSON_HANDLER(debugJunk) {
 JSON_HANDLER(debugJunk2) {
   JSON_HANDLER_PROLOG(debugJunk2);
   char motorCmd[] = { MC_CMD_SIGN, MC_DEFAULT_DEVICE_NUM, MC_CMD_FWD_M0, 0 };
-  uartSend(motorCmd, sizeof(motorCmd));
+  uart_send(motorCmd, sizeof(motorCmd));
   sprintf(_buff + strlen(_buff), Q(status) ":" Q(%s) "\n", "OK");
   JSON_HANDLER_EPILOG();
 }

@@ -66,4 +66,11 @@
 #define SPI0_DRIVER_NAME  "/dev/spidev0.0"
 #define SPI1_DRIVER_NAME  "/dev/spidev0.1"
 
+// RPi resources
+
+// gyro on SPI index 0 of Rpi
+#define GYRO_SPI_IDX    0
+
+
+
 

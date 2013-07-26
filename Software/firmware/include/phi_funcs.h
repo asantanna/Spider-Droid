@@ -47,12 +47,13 @@ void phi_logClose(void);
 char* phi_initPeripherals();
 
 BOOL uartInit();
-int uartReceive(void* pBuff, int buffLen);
-void uartSend(BYTE* pData, int dataLen);
+void uart_send(BYTE* pData, int dataLen);
+int uart_receive(void* pBuff, int buffLen);
 
 BOOL spiInit();
-void spiReceive(void* pBuff, int buffLen);
-void spiSend(BYTE* pData, int dataLen);
+void spi_send(int spiIdx, BYTE* pTx, int txLen);
+void spi_receive(int spiIdx, BYTE* pRx, int rxLen);
+void spi_sendreceive(int spiIdx, BYTE* pRx, int rxLen, BYTE* pTx, int txLen);
 
 BOOL gyroInit();
 

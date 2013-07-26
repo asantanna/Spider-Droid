@@ -60,7 +60,7 @@ BOOL uartInit() {
   return TRUE;
 }
 
-void uartSend(BYTE* pData, int dataLen) {
+void uart_send(BYTE* pData, int dataLen) {
   
   if (g_uart0_fd != -1)
   {
@@ -76,7 +76,7 @@ void uartSend(BYTE* pData, int dataLen) {
 // controller status because the controller TX lines can't be
 // wire-ANDed together. (Code also never tested ...)
 
-int uartReceive(void* pBuff, int buffLen) {
+int uart_receive(void* pBuff, int buffLen) {
 
   // Note: Since we use O_NDELAY, this function will exit if there are
   // no receive bytes waiting (non blocking read). If we want to hold

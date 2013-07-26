@@ -35,6 +35,6 @@ void setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
     /*ANOTHER HACK until motor is init properly */ power > 127 ? 127 : power
   };
     
-  uartSend(motorCmd, sizeof(motorCmd));
+  uart_send(motorCmd, sizeof(motorCmd));
 }
 

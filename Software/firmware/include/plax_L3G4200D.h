@@ -5,8 +5,8 @@
 // max SPI speed 10MHz
 #define GYRO_MAX_SPI_CLK          (10ul*1000ul*1000ul)
 
-// use 8MHz for safety
-#define GYRO_SPI_CLK              ( 8ul*1000ul*1000ul)
+// 80% max for safety
+#define GYRO_SAFE_SPI_CLK         ( 8ul*1000ul*1000ul)
 
 // SPI mode
 //
@@ -16,7 +16,7 @@
 //   4) CS is active low.
 //
 
-#define GYRO_SPI_MODE             (SPI_CPHA | SPI_CPOL)
+#define GYRO_SPI_MODE             (SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST)
 
 // 8 bits per word
 #define GYRO_SPI_BPW              8
@@ -93,6 +93,7 @@
 
 #define GYRO_CR4_BDU_EN           0x80
 #define GYRO_CR4_BIG_ENDIAN       0x40
+#define GYRO_CR4_LITTLE_ENDIAN    0
 #define GYRO_CR4_FS_MASK          0x30
 #define GYRO_CR4_STEST_MASK       0x06
 #define GYRO_CR4_SPI_3WIRE        0x01
