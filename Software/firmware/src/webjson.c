@@ -93,6 +93,7 @@ JSON_HANDLER(setPower);
 JSON_HANDLER(getUname);
 JSON_HANDLER(getSysInfo);
 JSON_HANDLER(getGyroData);
+JSON_HANDLER(getGyroTemp);
 JSON_HANDLER(getPhiUptime);
 
 JSON_HANDLER(debugJunk);
@@ -118,6 +119,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(getPhiUptime),
   CMD_ENTRY(setPower),
   CMD_ENTRY(getGyroData),
+  CMD_ENTRY(getGyroTemp),
 //  CMD_ENTRY(setBrake),
   CMD_ENTRY(debugJunk),
   CMD_ENTRY(debugJunk2),
