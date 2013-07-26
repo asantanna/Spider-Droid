@@ -22,6 +22,11 @@
 // 8 bits per word
 #define GYRO_SPI_BPW              8
 
+// multipliers for raw dps values
+#define GYRO_250DPS_MULT          0.00875f
+#define GYRO_500DPS_MULT          0.0175f
+#define GYRO_2000DPS_MULT         0.07f
+
 //
 // Command format
 //
@@ -95,7 +100,12 @@
 #define GYRO_CR4_BDU_EN           0x80
 #define GYRO_CR4_BIG_ENDIAN       0x40
 #define GYRO_CR4_LITTLE_ENDIAN    0
+
 #define GYRO_CR4_FS_MASK          0x30
+#define GYRO_CR4_FS_250DPS        0x00
+#define GYRO_CR4_FS_500DPS        0x10
+#define GYRO_CR4_FS_2000DPS       0x30
+
 #define GYRO_CR4_STEST_MASK       0x06
 #define GYRO_CR4_SPI_3WIRE        0x01
 
@@ -119,7 +129,16 @@
 
 // STATUS_REG
 
-#define GYRO_RSTATUS_ADDR         0x27
+#define GYRO_STATUS_ADDR          0x27
+
+#define GYRO_STATUS_OVER           0x80
+#define GYRO_STATUS_Z_OVER         0x40
+#define GYRO_STATUS_Y_OVER         0x20
+#define GYRO_STATUS_X_OVER         0x10
+#define GYRO_STATUS_AVAIL          0x08
+#define GYRO_STATUS_Z_AVAIL        0x04
+#define GYRO_STATUS_Y_AVAIL        0x02
+#define GYRO_STATUS_X_AVAIL        0x01
 
 // OUT_X_L, OUT_X_H
 

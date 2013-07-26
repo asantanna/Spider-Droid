@@ -56,5 +56,7 @@ void spi_receive(int spiIdx, BYTE* pRx, int rxLen);
 void spi_sendreceive(int spiIdx, BYTE* pRx, int rxLen, BYTE* pTx, int txLen);
 
 BOOL gyroInit();
+void gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps);
+INT8 gyroGetTemp();
 
 

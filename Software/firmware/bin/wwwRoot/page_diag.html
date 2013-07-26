@@ -63,6 +63,7 @@
           var reply = obj.reply[i];
           // alert("obj.reply[" + i + "].cmd = " + reply.cmd);
           switch (reply.cmd) {
+            
             case "getInitState":
               elem = document.getElementById("phi_peripheral_init");
               elem.innerHTML = reply.initPeriph;
@@ -74,15 +75,28 @@
                 elem.className = "phi_error_value";
               }
               break;
+              
             case "initPeripherals":
               document.getElementById("phi_init_request_status").innerHTML = reply.status;
               phi_getInitState();
               break;
+              
+            case "getGyroData":
+              document.getElementById("phi_pitch_rate").innerHTML = reply.pitchDps;
+              document.getElementById("phi_yaw_rate").innerHTML = reply.yawDps;
+              document.getElementById("phi_roll_rate").innerHTML = reply.rollDps;
+              break;
+              
+            case "getGyroTemp":
+              document.getElementById("phi_temp").innerHTML = reply.degreesC;
+              break;
+
             case "debugJunk":
             case "debugJunk2":
             case "setPower":
               // alert("got " + reply.cmd + " command reply");
               break;
+              
             default:
               alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
               break;
@@ -187,25 +201,34 @@
       
       <tr> 
          <td class="phi_label">Pitch Rate</td>
-         <td class="phi_value">&nbsp; <span id="phi_accel_X">?</span>
+         <td class="phi_value">&nbsp; <span id="phi_pitch_rate">?</span>
             &nbsp; (deg/s) </td>
       </tr>
       
       
       <tr> 
          <td class="phi_label">Yaw Rate</td>
-         <td class="phi_value">&nbsp; <span id="phi_accel_X">?</span>
+         <td class="phi_value">&nbsp; <span id="phi_yaw_rate">?</span>
             &nbsp; (deg/s) </td>
       </tr>
       
       
       <tr> 
          <td class="phi_label">Roll Rate</td>
-         <td class="phi_value">&nbsp; <span id="phi_accel_X">?</span>
+         <td class="phi_value">&nbsp; <span id="phi_roll_rate">?</span>
              &nbsp; (deg/s) </td>
+      </tr>
+      
+      <tr> 
+         <td class="phi_label">Temperature</td>
+         <td class="phi_value">&nbsp; <span id="phi_temp">?</span>
+             &nbsp; C </td>
       </tr>
 
    </table>
+
+   <input type="button" onclick="getGyroData(); getGyroTemp()"
+         value="Get Gyro Data / Temp">
 
    <!--
    <input type="button" onclick="debugTest()" value="Start Motor 0">

@@ -18,6 +18,14 @@ function phi_setPower(motorId, percent) {
   sendJsonRequest("req : [ {cmd:setPower, motorId:" + motorId + ", power:" + percent + " } ]");
 }
 
+function phi_getGyroData() {
+  sendJsonRequest("req : [ {cmd:getGyroData} ]");
+}
+
+function phi_getGyroTemp() {
+  sendJsonRequest("req : [ {cmd:getGyroTemp} ]");
+}
+
 //
 // Utils
 //

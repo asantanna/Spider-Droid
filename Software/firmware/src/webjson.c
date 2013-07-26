@@ -92,6 +92,8 @@ JSON_HANDLER(getHost);
 JSON_HANDLER(setPower);
 JSON_HANDLER(getUname);
 JSON_HANDLER(getSysInfo);
+JSON_HANDLER(getGyroData);
+JSON_HANDLER(getPhiUptime);
 
 JSON_HANDLER(debugJunk);
 JSON_HANDLER(debugJunk2);
@@ -113,8 +115,9 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(getHost),
   CMD_ENTRY(getUname),
   CMD_ENTRY(getSysInfo),
-//  CMD_ENTRY(getPhiUpTime),
+  CMD_ENTRY(getPhiUptime),
   CMD_ENTRY(setPower),
+  CMD_ENTRY(getGyroData),
 //  CMD_ENTRY(setBrake),
   CMD_ENTRY(debugJunk),
   CMD_ENTRY(debugJunk2),
@@ -409,8 +412,8 @@ not_found:
 //   req:   { cmd  : getHost }
 //   reply: { name : string, ip = string }
 //
-//   req:   { cmd  : getUptime }
-//   reply: { uSecs : num64 }
+//   req:   { cmd  : getPhiUptime }
+//   reply: { mSecs : UINT32 }
 //
 
 JSON_HANDLER(getInitState) {
@@ -472,13 +475,19 @@ JSON_HANDLER(getSysInfo) {
   JSON_HANDLER_EPILOG();
 }
 
+JSON_HANDLER(getPhiUptime) {
+  JSON_HANDLER_PROLOG(getPhiUptime);
+  sprintf(_buff + strlen(_buff), Q(mSecs) ":" Q(%lu) "\n", (UINT32) phi_upTime());
+  JSON_HANDLER_EPILOG();
+}
+
 //
 // Motor control
 //  
-//  req:    { cmd : setPower, motorId : "spj" , power : -100 to 100 (percent)
+//  req:    { cmd : setPower, motorId : "spj" , power : -100 to 100 (percent)  }
 //  reply:  {}
 //
-//  req:    { cmd : setBrake, motorId : "spj" , brake : on | off | zeroMeansBrake | zeroMeansCoast
+//  req:    { cmd : setBrake, motorId : "spj" , brake : on | off | zeroMeansBrake | zeroMeansCoast }
 //  reply:  {}
 //
 // where:
@@ -587,6 +596,31 @@ error_exit:
 
   LOG_ERR("JSON.setPower:  call failed");
   goto quick_exit;
+}
+
+//
+// Gyroscope
+//
+//  req:    { cmd : getGyroData }
+//  reply:  { pitchDps: -250 to 250, yawDps: -250 to 250, rollDps: -250 to 250 }
+//
+//  req:    { cmd : getGyroTemp }
+//  reply:  { degreesC: -128 to 127 deg celsius (1s refresh rate) }
+
+JSON_HANDLER(getGyroData) {
+  JSON_HANDLER_PROLOG(getGyroData);
+  float pitchDps, yawDps, rollDps;
+  gyroGetData(&pitchDps, &yawDps, &rollDps);
+  sprintf(_buff + strlen(_buff), Q(pitchDps) ":" Q(%.1g) ",\n", (double) pitchDps);
+  sprintf(_buff + strlen(_buff), Q(yawDps) ":" Q(%.1g) ",\n", (double) yawDps);
+  sprintf(_buff + strlen(_buff), Q(rollDps) ":" Q(%.1g) "\n", (double) rollDps);
+  JSON_HANDLER_EPILOG();
+}
+
+JSON_HANDLER(getGyroTemp) {
+  JSON_HANDLER_PROLOG(getGyroTemp);
+  sprintf(_buff + strlen(_buff), Q(degreesC) ":" Q(%d) "\n", gyroGetTemp());
+  JSON_HANDLER_EPILOG();
 }
 
 //
