@@ -16,7 +16,7 @@
 //   4) CS is active low.
 //
 
-#define GYRO_SPI_MODE             (SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST)
+#define GYRO_SPI_MODE             (SPI_CPHA | SPI_CPOL)
 
 // 8 bits per word
 #define GYRO_SPI_BPW              8
