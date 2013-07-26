@@ -20,6 +20,9 @@ EXT BOOL g_initPeriph INIT(FALSE);        // TRUE if UART peripherals initialize
 // startup time (in uSecs)
 EXT UINT64 g_startupTime INIT({0});
 
+// system info
+EXT struct utsname g_uname;              // can't init this to zero here for some reason
+
 // host IP
 EXT UINT32 g_ipAddr INIT(0);
 

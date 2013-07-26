@@ -68,6 +68,14 @@ int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw) {
 quick_exit:
 
   return fd;
+
+error_exit:
+
+  if (fd > 0) {
+    close(fd);
+  }
+
+  goto quick_exit;
 }
 
 
@@ -80,7 +88,7 @@ BOOL spiInit() {
   g_spi0_fd = initSpiDriver(SPI0_DRIVER_NAME, GYRO_SPI_CLK, GYRO_SPI_MODE,  GYRO_SPI_BPW);
   
   if (g_spi0_fd < 0) {
-    LOG_ERR("spiInit: can't init device driver '%s'", pDriverName);
+    LOG_ERR("spiInit: can't init device driver '%s'", SPI0_DRIVER_NAME);
     goto error_exit;
   }
 

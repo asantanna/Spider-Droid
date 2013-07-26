@@ -19,6 +19,12 @@ void main() {
   time_t now = time(NULL);
   char* sTime = ctime(&now);
   printf("PHI started at %s", sTime);
+
+  // get system info
+  if (uname(&g_uname) < 0) {
+    LOG_ERR("could not get system info - uname() failed");
+    // not fatal
+  }
   
   // get IP of (probable) interface we will get requests from
   g_ipAddr = phi_getHostIP();
@@ -34,7 +40,13 @@ void main() {
   sTime[strlen(sTime)-1] = 0;
   LOG_INFO("####### PHI startup at %s #######", sTime);
 
-  // start web admin server (never returns)
+  //
+  // Start web admin server
+  //
+  // Note: the main thread is dedicated to the admin web server
+  // main loop.
+  //
+  
   phi_webadmin(80, "./wwwRoot");
 
   // never gets here
@@ -60,6 +72,12 @@ char* phi_initPeripherals() {
   // set up SPI for communication with gyroscope
   if (!spiInit()) {
     rc = "phi_InitPeripherals: SPI init failed";
+    goto quick_exit;
+  }
+
+  // set up gyroscope
+  if (!gyroInit()) {
+    rc = "phi_InitPeripherals: gyroscope init failed";
     goto quick_exit;
   }
 

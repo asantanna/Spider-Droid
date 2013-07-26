@@ -27,7 +27,7 @@
 #define BYTE            UINT8
 #define WORD            UINT16
 #define DWORD           UINT32
-#define BOOL            UINT
+#define BOOL            UINT8
 
 #define FALSE           0
 #define TRUE            1

@@ -27,6 +27,7 @@ add_executable ( phi
   webjson.c
   jsmn.c
   spi.c
+  gyro.c
 )
 
 # no libs to link

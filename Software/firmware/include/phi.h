@@ -12,14 +12,16 @@
 #include <string.h>
 #include <time.h>
 #include <errno.h>
-#include <sys/time.h>
-#include <netdb.h>      // for gethostbyname(), etc
-#include <ifaddrs.h>    // for getifaddrs()
-#include <unistd.h>			// for UART
-#include <fcntl.h>			// for UART
-#include <termios.h>		// for UART
+#include <netdb.h>          // for gethostbyname(), etc
+#include <ifaddrs.h>        // for getifaddrs()
+#include <unistd.h>         // for UART
+#include <fcntl.h>          // for UART
+#include <termios.h>        // for UART
 #include <pthread.h>    
-#include <sys/ioctl.h>  // for driver access (SPI, etc)
+#include <sys/ioctl.h>      // for driver access (SPI, etc)
+#include <sys/time.h>
+#include <sys/utsname.h>    // for uname()
+#include <sys/sysinfo.h>    // for sysinfo()
 
 // useful types
 #include "phi_defs.h"

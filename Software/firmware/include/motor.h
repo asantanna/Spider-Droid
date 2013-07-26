@@ -55,29 +55,6 @@ typedef struct {
 } MOTOR_DEF;
 
 
-#ifdef GLOBAL_INIT
-
-MOTOR_DEF motorDefs[] = {
-  { 0, 0},    // rft
-  { 0, 1},    // rfk
-  { 1, 0},    // lft
-  { 1, 1},    // lfk
-  { 2, 0},    // rbt
-  { 2, 1},    // rbk
-  { 3, 0},    // lbt
-  { 3, 1},    // lbk
-  { 4, 0},    // rfh
-  { 4, 1},    // lfh
-  { 5, 0},    // rbh
-  { 5, 1},    // lbh
-};
-
-#else
-
-extern MOTOR_DEF motorDefs[];
-
-#endif
-
 // functions
 
-void setMotorPower(MOTOR_DEF* md, BYTE power, BOOL bFwd);
+void setMotorPower(int motorIdx, BYTE power, BOOL bFwd);

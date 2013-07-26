@@ -54,3 +54,6 @@ BOOL spiInit();
 void spiReceive(void* pBuff, int buffLen);
 void spiSend(BYTE* pData, int dataLen);
 
+BOOL gyroInit();
+
+

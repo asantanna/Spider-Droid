@@ -19,6 +19,43 @@ function phi_setPower(motorId, percent) {
 }
 
 //
+// Utils
+//
+
+function getPrettyByteString(byteVal) {
+  var kVal = Math.floor(byteVal / 1024);
+  var mVal = Math.floor(kVal / 1024);
+  var gVal = Math.floor(mVal / 1024);
+  if (gVal > 0) {
+    mVal = mVal % 1024;
+    return gVal + (mVal / 1024.0).toFixed(2).substr(1) + " GB";
+  } 
+  kVal = kVal % 1024;
+  return mVal + (kVal / 1024.0).toFixed(2).substr(1) + " MB";
+}
+
+function getPrettyTime(secs) {
+  var mins = Math.floor(secs / 60);
+  secs = secs % 60;
+  var hrs = Math.floor(mins / 60);
+  mins = mins % 60;
+  var days = Math.floor(hrs / 24);
+  hrs = hrs % 24;
+  var s = "";
+  if (days > 0) {
+    s += days + " day(s) ";
+  }
+  s += zeroPad(hrs,2) + ":";
+  s += zeroPad(mins,2) + ":";
+  s += zeroPad(secs,2);
+  return s;
+}
+
+function zeroPad(n, pad) {
+  return (n/Math.pow(10.0,pad)).toFixed(pad).substr(2);
+}
+
+//
 // JSON common functions
 //
 

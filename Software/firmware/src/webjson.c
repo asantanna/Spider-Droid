@@ -90,6 +90,8 @@ JSON_HANDLER(initPeripherals);
 JSON_HANDLER(getVersion);
 JSON_HANDLER(getHost);
 JSON_HANDLER(setPower);
+JSON_HANDLER(getUname);
+JSON_HANDLER(getSysInfo);
 
 JSON_HANDLER(debugJunk);
 JSON_HANDLER(debugJunk2);
@@ -109,8 +111,9 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(initPeripherals),
   CMD_ENTRY(getVersion),
   CMD_ENTRY(getHost),
-//  CMD_ENTRY(getUpTime),
-//  CMD_ENTRY(getAccel),
+  CMD_ENTRY(getUname),
+  CMD_ENTRY(getSysInfo),
+//  CMD_ENTRY(getPhiUpTime),
   CMD_ENTRY(setPower),
 //  CMD_ENTRY(setBrake),
   CMD_ENTRY(debugJunk),
@@ -409,11 +412,6 @@ not_found:
 //   req:   { cmd  : getUptime }
 //   reply: { uSecs : num64 }
 //
-//   req:   { cmd : getAccel }
-//   reply: { x : num,               // accel in X dir
-//            y : num,               // accel in Y dir
-//            z : num,               // accel in Z dir
-//   }
 
 JSON_HANDLER(getInitState) {
   JSON_HANDLER_PROLOG(getInitState);
@@ -440,6 +438,37 @@ JSON_HANDLER(getHost) {
   sprintf(_buff + strlen(_buff), Q(ip) ":" Q(%lu.%lu.%lu.%lu) "\n",
     g_ipAddr & 0xff, (g_ipAddr >> 8) & 0xff,
     (g_ipAddr >> 16) & 0xff,(g_ipAddr >> 24) & 0xff);
+  JSON_HANDLER_EPILOG();
+}
+
+JSON_HANDLER(getUname) {
+  JSON_HANDLER_PROLOG(getUname);
+  sprintf(_buff + strlen(_buff), Q(sysName)  ":" Q(%s)  ",\n", g_uname.sysname);
+  sprintf(_buff + strlen(_buff), Q(nodeName) ":" Q(%s)  ",\n", g_uname.nodename);
+  sprintf(_buff + strlen(_buff), Q(release)  ":" Q(%s)  ",\n", g_uname.release);
+  sprintf(_buff + strlen(_buff), Q(version)  ":" Q(%s)  ",\n", g_uname.version);
+  sprintf(_buff + strlen(_buff), Q(machine)  ":" Q(%s)  " \n", g_uname.machine);
+  JSON_HANDLER_EPILOG();
+}
+
+JSON_HANDLER(getSysInfo) {
+  JSON_HANDLER_PROLOG(getSysInfo);
+  struct sysinfo info;
+  sysinfo(&info);
+  sprintf(_buff + strlen(_buff), Q(upTime)      ":" Q(%ld)  ",\n", info.uptime);
+  sprintf(_buff + strlen(_buff), Q(sysLoad_1m)  ":" Q(%lu)  ",\n", info.loads[0]);
+  sprintf(_buff + strlen(_buff), Q(sysLoad_5m)  ":" Q(%lu)  ",\n", info.loads[1]);
+  sprintf(_buff + strlen(_buff), Q(sysLoad_15m) ":" Q(%lu)  ",\n", info.loads[2]);
+  sprintf(_buff + strlen(_buff), Q(totalRAM)    ":" Q(%lu)  ",\n", info.totalram);
+  sprintf(_buff + strlen(_buff), Q(freeRAM)     ":" Q(%lu)  ",\n", info.freeram);
+  sprintf(_buff + strlen(_buff), Q(sharedRAM)   ":" Q(%lu)  ",\n", info.sharedram);
+  sprintf(_buff + strlen(_buff), Q(bufferRAM)   ":" Q(%lu)  ",\n", info.bufferram);
+  sprintf(_buff + strlen(_buff), Q(totalSwap)   ":" Q(%lu)  ",\n", info.totalswap);
+  sprintf(_buff + strlen(_buff), Q(freeSwap)    ":" Q(%lu)  ",\n", info.freeswap);
+  sprintf(_buff + strlen(_buff), Q(numProcs)    ":" Q(%d)   ",\n", info.procs);
+  sprintf(_buff + strlen(_buff), Q(totalHigh)   ":" Q(%lu)  ",\n", info.totalhigh);
+  sprintf(_buff + strlen(_buff), Q(freeHigh)    ":" Q(%lu)  ",\n", info.freehigh);
+  sprintf(_buff + strlen(_buff), Q(memUnit)     ":" Q(%d)   "\n" , info.mem_unit);
   JSON_HANDLER_EPILOG();
 }
 
@@ -543,10 +572,10 @@ JSON_HANDLER(setPower) {
     goto error_exit;
   }
 
-  MOTOR_DEF* md = &(motorDefs[MOTOR_NAME_TO_IDX(motorName)]);
-  LOG_INFO("JSON.setPower: setting motor C%d:M%d to power=%u, dir=%s", md -> controllerId, md -> motorIdx, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
+  int motorIdx = MOTOR_NAME_TO_IDX(motorName);
+  LOG_INFO("JSON.setPower: setting motor idx=%d to power=%u, dir=%s", motorIdx, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
     
-  setMotorPower(md, (BYTE) powerVal, bFwd);
+  setMotorPower(motorIdx, (BYTE) powerVal, bFwd);
   
   sprintf(_buff + strlen(_buff), Q(setPower) ":" Q(%s) "\n", "OK");
 
