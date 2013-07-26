@@ -199,7 +199,7 @@ char* phi_processJson(char *pJsonReq) {
       }
       memcpy(val, TOK_START(pTok), len);
       val[len] = 0;
-      LOG_INFO("  token %d: type=%s, val='%s', offset=%d, numChild=%d", i, pType, val, TOK_START(pTok), TOK_NUM_CHILD(pTok));
+      LOG_INFO("  token %d: type=%s, val='%s', offset=%d, numChild=%d", i, pType, val, TOK_START(pTok) - pJsonReq, TOK_NUM_CHILD(pTok));
     }
     
   }
