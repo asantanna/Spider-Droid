@@ -7,29 +7,29 @@
 BOOL gyroInit() {
 
   BOOL rc = FALSE;
-  BYTE txData[2];
-  BYTE rxData[2];
+  BYTE txBuff[2];
+  BYTE rxBuff[2];
 
   // make sure gyro is there
-  txData[0] = GYRO_ADDR_READ | GYRO_ADDR_NO_INC | GYRO_WHOAMI_ADDR;
-  spi_sendreceive(GYRO_SPI_IDX, txData, 1, rxData, 1);
-  
-  if (rxData[0] != GYRO_WHOAMI_REPLY) {
+  txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_NO_INC | GYRO_WHOAMI_ADDR;
+  spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 1);
+
+  if (rxBuff[0] != GYRO_WHOAMI_REPLY) {
     // bad (or no) reply
-    LOG_ERR("bad (or no) reply from gyroscope, reply=%02Xh", rxData[0]);
+    LOG_ERR("bad (or no) reply from gyroscope, reply=%02Xh", rxBuff[0]);
     goto quick_exit;
   }
 
   // CR2 - HACK - leave at default values?
-  
+
   // CR3 - default values OK
-  
+
   // CR4
   // Note: bits of a byte are sent out MSB but multiple bytes are sent out LSB (little endian)
-  
-  txData[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_CR4_ADDR;
-  txData[1] = GYRO_CR4_BDU_EN | GYRO_CR4_LITTLE_ENDIAN | GYRO_CR4_FS_250DPS;
-  spi_send(GYRO_SPI_IDX, txData, 2);
+
+  txBuff[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_CR4_ADDR;
+  txBuff[1] = GYRO_CR4_BDU_EN | GYRO_CR4_LITTLE_ENDIAN | GYRO_CR4_FS_250DPS;
+  spi_send(GYRO_SPI_IDX, txBuff, 2);
 
   // CR5 - default values OK
 
@@ -42,9 +42,9 @@ BOOL gyroInit() {
   // INT1_CFG - default values OK (ints disabled)
 
   // CR1
-  txData[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_CR1_ADDR;
-  txData[1] = GYRO_CR1_DR_100HZ | GYRO_CR1_BW_CO_1 | GYRO_CR1_X_EN | GYRO_CR1_Y_EN | GYRO_CR1_Z_EN;
-  spi_send(GYRO_SPI_IDX, txData, 2);
+  txBuff[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_CR1_ADDR;
+  txBuff[1] = GYRO_CR1_DR_100HZ | GYRO_CR1_BW_CO_1 | GYRO_CR1_MODE_NORMAL | GYRO_CR1_X_EN | GYRO_CR1_Y_EN | GYRO_CR1_Z_EN;
+  spi_send(GYRO_SPI_IDX, txBuff, 2);
 
   // success
   rc = TRUE;
@@ -56,23 +56,23 @@ quick_exit:
 
 BYTE gyroReadStatus() {
   
-  BYTE txData[1];
-  BYTE rxData[1];
+  BYTE txBuff[1];
+  BYTE rxBuff[1];
   
-  txData[0] = GYRO_ADDR_READ | GYRO_ADDR_NO_INC | GYRO_STATUS_ADDR;
-  spi_sendreceive(GYRO_SPI_IDX, txData, 1, rxData, 1);
+  txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_NO_INC | GYRO_STATUS_ADDR;
+  spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 1);
 
-  return rxData[0];
+  return rxBuff[0];
 }
 
 INT16 gyroReadRawDps(BYTE lowRegAddr) {
-  BYTE txData[1];
-  BYTE rxData[2];
+  BYTE txBuff[1];
+  BYTE rxBuff[2];
 
-  txData[0] = GYRO_ADDR_READ | GYRO_ADDR_AUTO_INC | lowRegAddr;
-  spi_sendreceive(GYRO_SPI_IDX, txData, 1, rxData, 2);
+  txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_AUTO_INC | lowRegAddr;
+  spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 2);
 
-  return *((INT16 *)rxData);
+  return *((INT16 *)rxBuff);
 }
 
 // gyroscope can have a systematic error and thus zero dps might not
@@ -102,14 +102,16 @@ void gyroCalcZeroRates(BYTE lowRegAddr) {
 */
 
 float gyroReadDps(BYTE lowRegAddr) {
-  BYTE txData[1];
-  BYTE rxData[2];
+  BYTE txBuff[1];
+  BYTE rxBuff[2];
   
-  txData[0] = GYRO_ADDR_READ | GYRO_ADDR_AUTO_INC | lowRegAddr;
-  spi_sendreceive(GYRO_SPI_IDX, txData, 1, rxData, 2);
+  txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_AUTO_INC | lowRegAddr;
+  spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 2);
 
   INT16 raw = gyroReadRawDps(lowRegAddr);
-  
+
+  LOG_INFO("raw %c dps = %d", 'X' + (char)((lowRegAddr - GYRO_XL_ADDR) / 2), raw);
+
   // see note above about why we don't substract the zeroRate
   float trueDps = raw * GYRO_250DPS_MULT;
 
@@ -132,6 +134,8 @@ static float prevRollDps = 0;
 void gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
   
   BYTE status = gyroReadStatus();
+
+  LOG_INFO("gyro status = %02Xh", status);
 
   if ((status & GYRO_STATUS_Y_AVAIL) != 0) {
     // have new Y (pitch) data
@@ -157,12 +161,12 @@ void gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
 }
 
 INT8 gyroGetTemp() {
-  BYTE txData[1];
-  BYTE rxData[1];
+  BYTE txBuff[1];
+  BYTE rxBuff[1];
 
-  txData[0] = GYRO_ADDR_READ | GYRO_ADDR_NO_INC | GYRO_TEMP_ADDR;
-  spi_sendreceive(GYRO_SPI_IDX, txData, 1, rxData, 1);
+  txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_NO_INC | GYRO_TEMP_ADDR;
+  spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 1);
 
-  return rxData[0];
+  return rxBuff[0];
 }
 

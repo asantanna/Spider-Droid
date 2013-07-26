@@ -66,7 +66,8 @@
 #define GYRO_CR1_BW_CO_3          0x20
 #define GYRO_CR1_BW_CO_4          0x30
 
-#define GYRO_CR1_PWRDOWN          0x08
+#define GYRO_CR1_MODE_PWRDOWN     0
+#define GYRO_CR1_MODE_NORMAL	  0x08
 #define GYRO_CR1_Z_EN             0x04
 #define GYRO_CR1_Y_EN             0x02
 #define GYRO_CR1_X_EN             0x01
