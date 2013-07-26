@@ -25,6 +25,8 @@ BOOL gyroInit() {
   // CR3 - default values OK
   
   // CR4
+  //
+  // Note: bits are sent out MSB but bytes are sent out LSB (little endian)
   
   txData[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_CR4_ADDR;
   txData[1] = GYRO_CR4_BDU_EN | GYRO_CR4_LITTLE_ENDIAN;

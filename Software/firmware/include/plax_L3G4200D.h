@@ -8,11 +8,12 @@
 // 80% max for safety
 #define GYRO_SAFE_SPI_CLK         ( 8ul*1000ul*1000ul)
 
-// SPI mode
+// Gyro SPI mode
 //
 //   1) SCLK idles HIGH (CPOL = 1)
 //   2) sampling occurs on even edges (CPHA = 1)
-//   3) MSB sent out first
+//   3) MSB (bit) sent out first
+//   4) bytes are sent out little-endian, LSB (byte) first
 //   4) CS is active low.
 //
 
