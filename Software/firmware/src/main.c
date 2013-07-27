@@ -8,8 +8,22 @@
 
 #include "phi.h"
 
-void main() {
+// uncomment to debug mem allocations
+//
+// You must also do:
+//      "export MALLOC_TRACE=mtrace.out" in shell
+//      cd bin
+//      sudo ../bin-debug/phi-ubuntu
+//
+// #include <mcheck.h>
+// #define PHI_DEBUG_MALLOC    1
 
+void main() {
+  
+#ifdef PHI_DEBUG_MALLOC
+  mtrace();
+#endif
+  
   // remember start-up time
   struct timeval tv;
   gettimeofday(&tv, NULL);
@@ -50,6 +64,8 @@ void main() {
   phi_webadmin(80, "./wwwRoot");
 
   // never gets here
+  LOG_FATAL("phi_webadmin returned!");
+  
 }
 
 // initialize all PHI-specific hardware

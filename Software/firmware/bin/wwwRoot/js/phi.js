@@ -64,6 +64,37 @@ function zeroPad(n, pad) {
 }
 
 //
+// Canvas utilities
+//
+
+function drawPieSlice(canvas, x, y, radius, startAngle, endAngle, colStroke, colFill) {
+  
+  if (canvas.getContext) {
+    
+    var ctx = canvas.getContext('2d');
+
+    // draw outline circle
+    ctx.beginPath();
+    ctx.strokeStyle = colStroke;
+    ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+    ctx.stroke();
+
+    // draw slice
+    ctx.beginPath();
+    ctx.fillStyle = colFill;
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y - radius);
+    ctx.arc(x, y, radius,
+      startAngle,
+      endAngle,
+      endAngle < startAngle);
+    ctx.lineTo(x, y);
+    ctx.fill();
+
+    }
+}
+
+//
 // JSON common functions
 //
 

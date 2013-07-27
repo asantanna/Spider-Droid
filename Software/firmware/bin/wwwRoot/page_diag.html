@@ -21,14 +21,13 @@
 
       var slider;
       var bPhiInit = false;
-      
+
       function initSlider() {
         
         slider = new Slider(
-                      "slider",
-                      "horizontal",
-                      201,                  // length (width for horizontal)
-                      201);                 // range [0, 200]
+          "slider", "horizontal",
+          201,      // length (width for horizontal)
+          201);     // range [0, 200]
         
         slider.onChange = sliderChanged;
         slider.setStart(100);               // must call after setting .onChange
@@ -50,9 +49,20 @@
         // init motor control slider
         initSlider();
         
-        // get init state
+        // request init state
         phi_getInitState();
+
+        // draw gyro indicators (test)
+        drawGyroIndicators(-200, -100, 150);
+        
+        // start timer
+        // onTimer();
       }      
+
+      /* function onTimer() {
+        // call self again in a bit
+        // window.setTimeout(onTimer, );
+       } */
 
       function parseJsonReply(obj) {
         
@@ -85,6 +95,10 @@
               document.getElementById("phi_pitch_rate").innerHTML = reply.pitchDps;
               document.getElementById("phi_yaw_rate").innerHTML = reply.yawDps;
               document.getElementById("phi_roll_rate").innerHTML = reply.rollDps;
+
+              // draw gyro indicators
+              drawGyroIndicators(reply.pitchDps, reply.yawDps, reply.rollDps);
+              
               break;
               
             case "getGyroTemp":
@@ -103,6 +117,22 @@
           }
         }
       }
+
+      function drawGyroIndicators(pitch, yaw, roll) {
+        
+        var colStroke = "rgb(0, 0, 0)";
+        var colFill = "rgb(0, 0, 255)";
+        var radius = 40;
+        var frameSide = radius * 1.5;
+        
+        drawPieSlice(document.getElementById("phi_pitch_ind"),
+          frameSide, frameSide, radius, -Math.PI / 2, (-Math.PI / 2) + (Math.PI * pitch / 250), colStroke, colFill);
+        drawPieSlice(document.getElementById("phi_yaw_ind"),
+          frameSide, frameSide, radius, -Math.PI / 2, (-Math.PI / 2) + (Math.PI * yaw / 250), colStroke, colFill);
+        drawPieSlice(document.getElementById("phi_roll_ind"),
+          frameSide, frameSide, radius, -Math.PI / 2, (-Math.PI / 2) + (Math.PI * roll / 250), colStroke, colFill);
+      }
+      
 
       function debugTest() {
         if (bPhiInit == false) {
@@ -201,22 +231,32 @@
       
       <tr> 
          <td class="phi_label">Pitch Rate</td>
-         <td class="phi_value">&nbsp; <span id="phi_pitch_rate">?</span>
-            &nbsp; (deg/s) </td>
-      </tr>
-      
-      
-      <tr> 
          <td class="phi_label">Yaw Rate</td>
-         <td class="phi_value">&nbsp; <span id="phi_yaw_rate">?</span>
-            &nbsp; (deg/s) </td>
+         <td class="phi_label">Roll Rate</td>
+      
+      <tr> 
+         <td>
+            <canvas id="phi_pitch_ind" width="120" height="120"></canvas>
+         </td>
+         <td>
+            <canvas id="phi_yaw_ind" width="120" height="120"></canvas>
+         </td>
+         <td>
+            <canvas id="phi_roll_ind" width="120" height="120"></canvas>
+         </td>
       </tr>
       
       
       <tr> 
-         <td class="phi_label">Roll Rate</td>
+         <td class="phi_value">&nbsp; <span id="phi_pitch_rate">?</span>
+            &nbsp; (deg/s)
+         </td>
+         <td class="phi_value">&nbsp; <span id="phi_yaw_rate">?</span>
+            &nbsp; (deg/s)
+         </td>
          <td class="phi_value">&nbsp; <span id="phi_roll_rate">?</span>
-             &nbsp; (deg/s) </td>
+             &nbsp; (deg/s)
+         </td>
       </tr>
       
       <tr> 

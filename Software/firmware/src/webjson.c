@@ -88,7 +88,7 @@ jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq);
 JSON_HANDLER(getInitState);
 JSON_HANDLER(initPeripherals);
 JSON_HANDLER(getVersion);
-JSON_HANDLER(getHost);
+JSON_HANDLER(getIpAddr);
 JSON_HANDLER(setPower);
 JSON_HANDLER(getUname);
 JSON_HANDLER(getSysInfo);
@@ -113,7 +113,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(getInitState),
   CMD_ENTRY(initPeripherals),
   CMD_ENTRY(getVersion),
-  CMD_ENTRY(getHost),
+  CMD_ENTRY(getIpAddr),
   CMD_ENTRY(getUname),
   CMD_ENTRY(getSysInfo),
   CMD_ENTRY(getPhiUptime),
@@ -178,9 +178,7 @@ char* phi_processJson(char *pJsonReq) {
 
     LOG_INFO("Parsed JSON request to %d tokens: ", PARSER_NUM_TOK(parser)) ;
 
-    // this hacky loop prints first 10 tokens slots
-    // because it is too much trouble to figure out
-    // ahead of tme how 
+    // print tokens
     
     int i;
 
@@ -190,6 +188,7 @@ char* phi_processJson(char *pJsonReq) {
       int len = TOK_LEN(pTok);
       int type = TOK_TYPE(pTok);
       char *pType;
+      
       switch (type) {
         case JSMN_PRIMITIVE: pType = "primitive"; break;
         case JSMN_OBJECT: pType = "object"; break;
@@ -197,11 +196,11 @@ char* phi_processJson(char *pJsonReq) {
         case JSMN_STRING: pType = "string"; break;
         default: pType = "unknown" ; break;
       }
+      
       memcpy(val, TOK_START(pTok), len);
       val[len] = 0;
       LOG_INFO("  token %d: type=%s, val='%s', offset=%d, numChild=%d", i, pType, val, TOK_START(pTok) - pJsonReq, TOK_NUM_CHILD(pTok));
     }
-    
   }
 
   //
@@ -256,6 +255,8 @@ char* phi_processJson(char *pJsonReq) {
     // call handler
     PHI_JSON_CMD_REPLY_TYPE* pCmdReply = (*jsonHandler)(&pTok, pJsonReq);
 
+    LOG_INFO("pCmdReply=%lu, reply=%lu", pCmdReply, pCmdReply->pReply);
+
     // save reply
 
     if (pCmdReply != NULL) {
@@ -276,7 +277,8 @@ char* phi_processJson(char *pJsonReq) {
   int repSize = strlen(jsonReply_start) + strlen(jsonReply_end) + 1;
 
   for (pRepCurr = pRepHead; pRepCurr != NULL ; pRepCurr = pRepCurr -> pNext) {
-    repSize += strlen(pRepCurr -> pReply);
+    // add len + a comma
+    repSize += strlen(pRepCurr -> pReply) + 1;
   }
 
   // allocate it
@@ -305,10 +307,21 @@ char* phi_processJson(char *pJsonReq) {
   // common end (copy on top of extraneous last comma)
   strcpy(pJsonReply + strlen(pJsonReply) - 1, jsonReply_end);
 
+  // make sure we didn't overrun
+  if (strlen(pJsonReply) >= (size_t) repSize) {
+    LOG_FATAL("length of reply (%d) is greater than allocation (%d)!", strlen(pJsonReply), repSize);
+  }
+  
+  if (VERBOSE_LOG) {
+    LOG_INFO("JSON reply:\n%s\n", pJsonReply);
+  }
+
 quick_exit:
 
   while (pRepHead != NULL) {
     PHI_JSON_CMD_REPLY_TYPE* pNext = pRepHead -> pNext;
+    // debug
+    LOG_INFO("freeing pCmdReply=%lu, reply=%lu", pRepHead, pRepHead->pReply);
     // free part allocated with strdup
     free(pRepHead -> pReply);
     // free part allocated with PHI_ALLOC
@@ -411,8 +424,8 @@ not_found:
 //   req:   { cmd : getVersion }
 //   reply: { version : string }
 //
-//   req:   { cmd  : getHost }
-//   reply: { name : string, ip = string }
+//   req:   { cmd  : getIpAddr }
+//   reply: { ip = string }
 //
 //   req:   { cmd  : getPhiUptime }
 //   reply: { mSecs : UINT32 }
@@ -437,9 +450,9 @@ JSON_HANDLER(getVersion) {
   JSON_HANDLER_EPILOG();
 }
 
-JSON_HANDLER(getHost) {
-  JSON_HANDLER_PROLOG(getHost);
-  sprintf(_buff + strlen(_buff), Q(name) ":" Q(%s) ",\n", "NOT_IMPL");
+JSON_HANDLER(getIpAddr) {
+  JSON_HANDLER_PROLOG(
+    getIpAddr);
   sprintf(_buff + strlen(_buff), Q(ip) ":" Q(%lu.%lu.%lu.%lu) "\n",
     g_ipAddr & 0xff, (g_ipAddr >> 8) & 0xff,
     (g_ipAddr >> 16) & 0xff,(g_ipAddr >> 24) & 0xff);
@@ -479,7 +492,7 @@ JSON_HANDLER(getSysInfo) {
 
 JSON_HANDLER(getPhiUptime) {
   JSON_HANDLER_PROLOG(getPhiUptime);
-  sprintf(_buff + strlen(_buff), Q(mSecs) ":" Q(%lu) "\n", (UINT32) phi_upTime());
+  sprintf(_buff + strlen(_buff), Q(mSecs) ":" Q(%lu) "\n", (UINT32) (phi_upTime() / 1000));
   JSON_HANDLER_EPILOG();
 }
 

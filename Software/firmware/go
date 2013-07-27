@@ -1,8 +1,13 @@
 #! /bin/bash
 
-cd bin
+# set name of trace file if memory debug is on
+
+# run host-specific version of program (release)
 
 HOST_NAME=`uname -n`
+
+cd bin
+
 sudo ./phi-$HOST_NAME
 
 

@@ -17,57 +17,48 @@
 
       function pageLoaded()
       {
-        
-        sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost}, {cmd:getSysInfo} ]");
-        
-        // how to set a timer
-        // window.setTimeout(name_of_self, 5000);
-      }      
+        // get some stuff from PHI
+        sendJsonRequest("req : [ {cmd:getIpAddr}, {cmd:getUname} ]");
+        sendJsonRequest("req : [ {cmd:getSysInfo}, {cmd:getPhiUptime} ]");
+      }
 
+      // this function parses all JSON replies
+      
       function parseJsonReply(obj) {
+        
         var num = obj.reply.length;
+        
         for (var i = 0 ; i < num ; i++) {
+          
           var reply = obj.reply[i];
           // alert("obj.reply[" + i + "].cmd = " + reply.cmd);
+          
           switch (reply.cmd) {
-            
-            case "getVersion":
               
-              document.getElementById("phi_firmware_version").innerHTML = reply.version;
-              break;
+            case "getIpAddr":
               
-            case "getHost":
-              
-              document.getElementById("phi_hostname").innerHTML = reply.name;
               document.getElementById("phi_ipaddr").innerHTML = reply.ip;
               break;
               
             case "getSysInfo":
-              
-              document.getElementById("phi_uptime").innerHTML = getPrettyTime(reply.upTime);
-              
+
+              document.getElementById("phi_sys_uptime").innerHTML = getPrettyTime(reply.upTime);
+
               document.getElementById("phi_load").innerHTML =
                 "1 min: " + (reply.sysLoad_1m/65535*100).toFixed(2) +
                 "%,    5 mins: " + (reply.sysLoad_5m/65535*100).toFixed(2) +
                 "%,    15 min: " + (reply.sysLoad_15m/65535*100).toFixed(2) + "%";
+              
+              break;
+              
+            case "getUname":
 
-              // don't know what this means exactly
-              // document.getElementById("phi_procs").innerHTML = reply.numProcs;
-              
-              document.getElementById("phi_ram").innerHTML =
-                getPrettyByteString(reply.totalRAM) + " (" + getPrettyByteString(reply.freeRAM) + " free)";
-              
-              document.getElementById("phi_shared_ram").innerHTML = getPrettyByteString(reply.sharedRAM);
-              
-              document.getElementById("phi_swap_space").innerHTML =
-                getPrettyByteString(reply.totalSwap) + " (" + getPrettyByteString(reply.freeSwap) + " free)";
-              
-              document.getElementById("phi_buffer_ram").innerHTML = getPrettyByteString(reply.bufferRAM);
-              document.getElementById("phi_mem_unit").innerHTML = reply.memUnit + " byte(s)";
-              
-              document.getElementById("phi_high_mem").innerHTML =
-                getPrettyByteString(reply.totalHigh) + " (" + getPrettyByteString(reply.freeHigh) + " free)";
-              
+              document.getElementById("phi_hostname").innerHTML = reply.nodeName;
+              break;
+
+            case "getPhiUptime":
+
+              document.getElementById("phi_uptime").innerHTML = getPrettyTime(reply.mSecs / 1000);
               break;
               
             default:
@@ -79,7 +70,7 @@
 
       /* function testButtonPressed() {
         // alert("test button pressed");
-        sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getHost} ]");
+        sendJsonRequest("req : [ {cmd:getVersion}, {cmd:getIpAddr} ]");
       } */
 
    </script>
@@ -89,65 +80,37 @@
 <body onload="pageLoaded()">
 
    <table style="background-color:black;" border="0" cellpadding="5">
-      <col width=500>
+      <col width=65
+           0>
       <tr><td class="phi_page_title"> Status </td></tr>
    </table>
-   <br/>
    
-   <h3>System</h3>
+   <h3>General</h3>
    
    <table class="phi_indent_1" border="0" cellpadding="5">
+      <col>
+      <col>
+      <col width=50>
       
       <tr> 
-         <td class="phi_label">firmware version</td>
-         <td class="phi_value">&nbsp; <span id="phi_firmware_version">?</span></td>
-      </tr>
-
-      <tr> 
-         <td class="phi_label">hostname</td>
-         <td class="phi_value">&nbsp; <span id="phi_hostname">n</span></td>
-      </tr>
-
-      <tr>
-         <td class="phi_label">ipAddr</td>
+         <td class="phi_label">Host Name</td>
+         <td class="phi_value">&nbsp; <span id="phi_hostname"></span></td>
+         <td></td>
+         <td class="phi_label">IP Address</td>
          <td class="phi_value">&nbsp; <span id="phi_ipaddr">ip</span></td>
       </tr>
-
+      
       <tr> 
-         <td class="phi_label">Up Time</td>
+         <td class="phi_label">Sys Up Time</td>
+         <td class="phi_value">&nbsp; <span id="phi_sys_uptime">?</span></td>
+         <td></td>
+         <td class="phi_label">Phi Up Time</td>
          <td class="phi_value">&nbsp; <span id="phi_uptime">?</span></td>
       </tr>
       
       <tr> 
-         <td class="phi_label">Load (1.0=100%)</td>
-         <td class="phi_value">&nbsp; <span id="phi_load">?</span></td>
-      </tr>
-
-   </table>
-   
-   <h3>Memory</h3>
-   
-   <table class="phi_indent_1" border="0" cellpadding="5">
-      
-      <tr> 
-         <td class="phi_label">RAM</td>
-         <td class="phi_value">&nbsp; <span id="phi_ram">?</span></td>
-         <td class="phi_label">Shared RAM</td>
-         <td class="phi_value">&nbsp; <span id="phi_shared_ram">?</span></td>
-      </tr>
-      
-      <tr> 
-         <td class="phi_label">Swap Space</td>
-         <td class="phi_value">&nbsp; <span id="phi_swap_space">?</span></td>
-         <td class="phi_label">Buffer RAM</td>
-         <td class="phi_value">&nbsp; <span id="phi_buffer_ram">?</span></td>
-      </tr>
-      
-      <tr> 
-         <td class="phi_label">Memory Unit Size</td>
-         <td class="phi_value">&nbsp; <span id="phi_mem_unit">?</span></td>
-         <td class="phi_label">High Memory</td>
-         <td class="phi_value">&nbsp; <span id="phi_high_mem">?</span></td>
+         <td class="phi_label">CPU Load</td>
+         <td class="phi_value" colspan=4>&nbsp; <span id="phi_load">?</span></td>
       </tr>
 
    </table>
