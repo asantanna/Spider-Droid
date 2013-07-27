@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html>
@@ -85,12 +84,16 @@
               break;
               
             case "getGyroData":
-              document.getElementById("phi_pitch_rate").innerHTML = reply.pitchDps;
-              document.getElementById("phi_yaw_rate").innerHTML = reply.yawDps;
-              document.getElementById("phi_roll_rate").innerHTML = reply.rollDps;
+              var pitch = parseFloat(reply.pitchDps);
+              var yaw = parseFloat(reply.yawDps);
+              var roll = parseFloat(reply.rollDps);
+
+              document.getElementById("phi_pitch_rate").innerHTML = pitch.toString();
+              document.getElementById("phi_yaw_rate").innerHTML = yaw.toString();
+              document.getElementById("phi_roll_rate").innerHTML = roll.toString();
 
               // draw gyro indicators
-              drawGyroIndicators(reply.pitchDps, reply.yawDps, reply.rollDps);
+              drawGyroIndicators(pitch, yaw, roll);
               
               break;
               
@@ -248,6 +251,10 @@
    <h3>Gyroscope </h3>
    
    <table class="phi_indent_1" border="0" cellpadding="5">
+
+      <col width=150>
+      <col width=150>
+      <col width=150>
       
       <tr> 
          <td class="phi_label">Pitch Rate</td>
@@ -272,13 +279,13 @@
       
       
       <tr> 
-         <td class="phi_value">&nbsp; <span id="phi_pitch_rate">?</span>
+         <td>&nbsp; <span id="phi_pitch_rate">?</span>
             &nbsp; (deg/s)
          </td>
-         <td class="phi_value">&nbsp; <span id="phi_yaw_rate">?</span>
+         <td>&nbsp; <span id="phi_yaw_rate">?</span>
             &nbsp; (deg/s)
          </td>
-         <td class="phi_value">&nbsp; <span id="phi_roll_rate">?</span>
+         <td>&nbsp; <span id="phi_roll_rate">?</span>
              &nbsp; (deg/s)
          </td>
       </tr>

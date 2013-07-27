@@ -73,6 +73,9 @@ function drawPieSlice(canvas, x, y, radius, startAngle, endAngle, colStroke, col
     
     var ctx = canvas.getContext('2d');
 
+    // clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     // draw outline circle
     ctx.beginPath();
     ctx.strokeStyle = colStroke;
