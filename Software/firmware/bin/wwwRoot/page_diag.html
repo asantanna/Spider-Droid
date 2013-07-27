@@ -21,6 +21,7 @@
 
       var slider;
       var bPhiInit = false;
+      var bPollGyro = false;
 
       function initSlider() {
         
@@ -54,15 +55,7 @@
 
         // draw gyro indicators (test)
         drawGyroIndicators(-200, -100, 150);
-        
-        // start timer
-        // onTimer();
       }      
-
-      /* function onTimer() {
-        // call self again in a bit
-        // window.setTimeout(onTimer, );
-       } */
 
       function parseJsonReply(obj) {
         
@@ -103,6 +96,15 @@
               
             case "getGyroTemp":
               document.getElementById("phi_temp").innerHTML = reply.degreesC;
+
+              // pollGyro() calls getGyroTemp() *last* - which means
+              // we can reschedule if polling is active
+
+              if (bPollGyro) {
+                // call again soon
+                window.setTimeout(pollGyro, 500);
+              }
+              
               break;
 
             case "debugJunk":
@@ -115,6 +117,24 @@
               alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
               break;
           }
+        }
+      }
+
+      function pollGyro() {
+        // order is important - see parseJsonReply()
+        phi_getGyroData();
+        phi_getGyroTemp();
+      }
+
+      function toggleGyroPolling() {
+        if (bPhiInit) {                
+          bPollGyro = !bPollGyro;
+          if (bPollGyro) {
+            pollGyro();
+          }
+        } else {
+          // not initialized
+          alert("PHI is not initialized, you dummy!");
         }
       }
 
@@ -233,7 +253,11 @@
          <td class="phi_label">Pitch Rate</td>
          <td class="phi_label">Yaw Rate</td>
          <td class="phi_label">Roll Rate</td>
-      
+         <td> 
+            <input type="button" onclick="toggleGyroPolling()" value="Activate">
+         </td>
+      </tr>
+
       <tr> 
          <td>
             <canvas id="phi_pitch_ind" width="120" height="120"></canvas>
@@ -258,6 +282,8 @@
              &nbsp; (deg/s)
          </td>
       </tr>
+
+      <tr><td></td></tr>
       
       <tr> 
          <td class="phi_label">Temperature</td>
@@ -267,8 +293,7 @@
 
    </table>
 
-   <input type="button" onclick="phi_getGyroData(); phi_getGyroTemp()"
-         value="Get Gyro Data / Temp">
+   <br/>
 
    <!--
    <input type="button" onclick="debugTest()" value="Start Motor 0">
