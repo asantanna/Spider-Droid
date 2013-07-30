@@ -1,0 +1,22 @@
+#! /bin/bash
+
+echo
+echo System Information:
+echo ===================
+echo
+
+echo "OS:" `uname -a`
+echo
+
+echo "HOST:" `hostname`
+echo
+
+echo "AVAILABLE PRIORITIES:"
+echo "  "
+chrt -m
+echo
+
+echo "NETWORK INTERFACES:"
+echo
+ifconfig
+echo
