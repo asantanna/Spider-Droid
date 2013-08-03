@@ -120,9 +120,6 @@ void* phi_link_loop(void* arg)
   // DEBUG
   LOG_INFO("** Phi Link connected");
 
-  // set socket to non-blocking
-  fcntl(sock, F_SETFL, O_NONBLOCK);
-
   // loop forever
 
   UINT64 lastLoopTime = phi_upTime();
@@ -144,6 +141,11 @@ void* phi_link_loop(void* arg)
   TX_STATE txState = TX_IDLE;
 
   while (TRUE) {
+
+#if 0   // disabled
+
+  // set socket to non-blocking
+    fcntl(sock, F_SETFL, O_NONBLOCK);
     
     //
     // RECEIVE PHI CORE CMDS
@@ -214,7 +216,7 @@ void* phi_link_loop(void* arg)
       case TX_SENDING:
 
         // send async
-        nSnd = send(sock, txBuff, sizeof(txBuff) - totSent, 0);
+        nSnd = send(sock, txBuff + totSent, sizeof(txBuff) - totSent, 0);
 
         if (nSnd < 0) {
 
@@ -243,6 +245,51 @@ void* phi_link_loop(void* arg)
         txNum ++;
         txState = TX_IDLE;
     }
+
+#else   // simplified
+
+    // receive cmds (blocking)
+    
+    totRead = 0;
+    
+    while (totRead < sizeof(PHI_CMD_PACKET)) {
+      
+      nRec = recv(sock, rxBuff + totRead, sizeof(rxBuff) - totRead, 0);
+      
+      if (nRec <= 0) {
+        // error occurred
+        // TODO : do something error            
+        break;
+
+      } else {
+        
+        // got some data
+        totRead += nRec;
+      }
+    }
+
+    // send state (blocking)
+    
+    totSent = 0;
+
+    while (totSent < sizeof(PHI_STATE_PACKET)) {
+
+      nSnd = send(sock, txBuff + totSent, sizeof(txBuff) - totSent, 0);
+
+      if (nSnd <= 0) {
+        // error occurred
+        // TODO : do something error            
+        break;
+
+      } else {
+
+        // sent some data
+        totSent += nSnd;
+      }
+    }
+
+#endif
+    
 
   } // while
   
