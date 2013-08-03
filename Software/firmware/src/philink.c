@@ -30,6 +30,9 @@ BOOL startPhiLink(char* ipAddr, int port) {
     goto error_exit;
   }
 
+  // DEBUG
+  LOG_INFO("** Starting Phi Link");
+
   // create socket 
 
   if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
@@ -113,6 +116,9 @@ void* phi_link_loop(void* arg)
 
   // say connected
   setLinkState(LINK_CONNECTED);
+
+  // DEBUG
+  LOG_INFO("** Phi Link connected");
 
   // set socket to non-blocking
   fcntl(sock, F_SETFL, O_NONBLOCK);
@@ -202,6 +208,7 @@ void* phi_link_loop(void* arg)
 
       case TX_BEGIN:
         totSent = 0;
+        txState = TX_SENDING;
         break;
 
       case TX_SENDING:
