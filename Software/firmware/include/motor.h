@@ -42,6 +42,8 @@
 //  ctrl 5: idx 1: lbh
 //
 
+#define NUM_MOTORS  (4*3)
+
 #define MOTOR_NAME_TO_IDX(n) \
   ( n[2] == 'h' \
     ? 8 + (n[1] == 'f' ? 0 : 2) + (n[0] == 'r' ? 0 : 1) \

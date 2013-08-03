@@ -20,6 +20,7 @@
         // get some stuff from PHI
         sendJsonRequest("req : [ {cmd:getIpAddr}, {cmd:getUname} ]");
         sendJsonRequest("req : [ {cmd:getSysInfo}, {cmd:getPhiUptime} ]");
+        phi_getLinkState();
       }
 
       // this function parses all JSON replies
@@ -43,11 +44,10 @@
             case "getSysInfo":
 
               document.getElementById("phi_sys_uptime").innerHTML = getPrettyTime(reply.upTime);
-
-              document.getElementById("phi_load").innerHTML =
-                "1 min: " + (reply.sysLoad_1m/65535*100).toFixed(2) +
-                "%,    5 mins: " + (reply.sysLoad_5m/65535*100).toFixed(2) +
-                "%,    15 min: " + (reply.sysLoad_15m/65535*100).toFixed(2) + "%";
+              
+              document.getElementById("phi_load_1").innerHTML = (reply.sysLoad_1m/65535*100).toFixed(2) + " %";
+              document.getElementById("phi_load_5").innerHTML = (reply.sysLoad_5m/65535*100).toFixed(2) + " %";
+              document.getElementById("phi_load_15").innerHTML = (reply.sysLoad_15m/65535*100).toFixed(2) + " %";
               
               break;
               
@@ -60,12 +60,26 @@
 
               document.getElementById("phi_uptime").innerHTML = getPrettyTime(reply.mSecs / 1000);
               break;
+
+            case "getLinkState":
+
+              document.getElementById("phi_link_state").innerHTML = reply.state;
+              break;
+              
+            case "startPhiLink":
+              phi_getLinkState();
+              break;
               
             default:
               alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
               break;
           }
         }
+      }
+
+      function buttonStartLink() {
+        // phi_startPhiLink("192.168.52.1", 1122);
+        phi_startPhiLink("192.168.36.1", 1122);
       }
 
       /* function testButtonPressed() {
@@ -107,13 +121,50 @@
          <td class="phi_label">Phi Up Time</td>
          <td class="phi_value">&nbsp; <span id="phi_uptime">?</span></td>
       </tr>
+
+      <tr><td>&nbsp;</td></tr>
       
       <tr> 
-         <td class="phi_label">CPU Load</td>
-         <td class="phi_value" colspan=4>&nbsp; <span id="phi_load">?</span></td>
+         <td class="phi_label">Link State</td>
+         <td class="phi_value">
+            &nbsp; <span id="phi_link_state">?</span>
+           &nbsp; &nbsp;
+           <input type="button" onclick="buttonStartLink()" value="Activate">
+         </td>
       </tr>
 
    </table>
+
+   <br/>
+
+   <table class="phi_indent_1">
+      <col width=90>
+      <col width=30>
+      <col width=80>
+      <col width=40>
+      <col>
+      <col width=40>
+      
+      <tr>
+         <td></td>
+         <td></td>
+         <td class="phi_label" style="text-align:center;"> 1 min </td>
+         <td></td>
+         <td class="phi_label" style="text-align:center;"> 5 min </td>
+         <td></td>
+         <td class="phi_label" style="text-align:center;"> 15 min </td>
+      </tr>
+      <tr>
+         <td class="phi_label">CPU Load</td>
+         <td></td>
+         <td style="text-align:center;"><span id="phi_load_1" class="phi_value">?</span></td>
+         <td></td>
+         <td style="text-align:center;"><span id="phi_load_5" class="phi_value">?</span></td>
+         <td></td>
+         <td style="text-align:center;"><span id="phi_load_15" class="phi_value">?</span></td>
+      </tr>
+   </table>
+      
 
    <br/>
 

@@ -28,6 +28,7 @@ add_executable ( phi
   jsmn.c
   spi.c
   gyro.c
+  philink.c
 )
 
 # no libs to link

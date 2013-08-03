@@ -43,12 +43,6 @@
 #include "phi.h"
 #include "jsmn.h"
 
-// stringifying helpers
-
-#define STR(s)                #s
-#define STR_MACRO(m)          STR(m)          // two steps required to expand macro
-#define Q(s)                  "\"" #s "\""
-
 // max number of JSON tokens we support (should be way plenty)
 #define MAX_JSON_TOKENS       256
 
@@ -95,6 +89,8 @@ JSON_HANDLER(getSysInfo);
 JSON_HANDLER(getGyroData);
 JSON_HANDLER(getGyroTemp);
 JSON_HANDLER(getPhiUptime);
+JSON_HANDLER(startPhiLink);
+JSON_HANDLER(getLinkState);
 
 JSON_HANDLER(debugJunk);
 JSON_HANDLER(debugJunk2);
@@ -120,6 +116,8 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(setPower),
   CMD_ENTRY(getGyroData),
   CMD_ENTRY(getGyroTemp),
+  CMD_ENTRY(startPhiLink),
+  CMD_ENTRY(getLinkState),
 //  CMD_ENTRY(setBrake),
   CMD_ENTRY(debugJunk),
   CMD_ENTRY(debugJunk2),
@@ -540,25 +538,25 @@ JSON_HANDLER(setPower) {
   int powerVal = -1;
   BOOL bFwd = TRUE;
   int toksRead = 2;
-  
+
   while (toksRead < _numChild) {
-    
+
     if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
       sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: param name is not a primitive.) );
       goto error_exit;
     }
-    
+
     if (TOK_EQ(pTok, "motorId")) {
       // advance
       pTok ++;
       toksRead ++;
-      
+
       // get motor name
       if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
         sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorId value is not a primitive.) );
         goto error_exit;
       }
-      
+
       if (TOK_LEN(pTok) != 3) {
         sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorId length is not 3.) );
         goto error_exit;
@@ -569,7 +567,7 @@ JSON_HANDLER(setPower) {
       // advance
       pTok ++;
       toksRead ++;
-      
+
       // get power
       if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
         sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: power value is not a primitive.) );
@@ -577,16 +575,21 @@ JSON_HANDLER(setPower) {
       }
 
       int percent = atoi(TOK_START(pTok));
-      
+
       if (percent < 0) {
         bFwd = FALSE;
         percent = -percent;
       }
 
       powerVal = (percent * 255) / 100;
+
+    } else {
+      // unknown property
+      LOG_ERR("JSON.setPower: Unknown property '%s'", TOK_START(pTok));
+      goto error_exit;
     }
-    
-      // advance
+
+    // advance
     pTok ++;
     toksRead ++;
   }
@@ -598,13 +601,11 @@ JSON_HANDLER(setPower) {
 
   int motorIdx = MOTOR_NAME_TO_IDX(motorName);
   LOG_INFO("JSON.setPower: setting motor idx=%d to power=%u, dir=%s", motorIdx, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
-    
+
   setMotorPower(motorIdx, (BYTE) powerVal, bFwd);
-  
-  sprintf(_buff + strlen(_buff), Q(setPower) ":" Q(%s) "\n", "OK");
 
 quick_exit:
-  
+
   JSON_HANDLER_EPILOG();
 
 error_exit:
@@ -636,6 +637,125 @@ JSON_HANDLER(getGyroTemp) {
   JSON_HANDLER_PROLOG(getGyroTemp);
   sprintf(_buff + strlen(_buff), Q(degreesC) ":" Q(%d) "\n", gyroGetTemp());
   JSON_HANDLER_EPILOG();
+}
+
+//
+// PHI link
+//
+//  req:    { cmd : getLinkState }
+//  reply:  { state: string}
+//
+//  req:    { cmd : startPhiLink, server : ipAddr/hostname, [opt] port=num }
+//  reply:  { }
+
+JSON_HANDLER(getLinkState) {
+  JSON_HANDLER_PROLOG(getLinkState);
+  
+  char* pState;
+  switch (g_phiLinkState) {
+    case LINK_OFF:
+      pState="OFF";
+      break;
+    case LINK_STARTED:
+      pState="STARTED";
+      break;
+    case LINK_CONNECTING:
+      pState="CONNECTING";
+      break;
+    case LINK_CONNECTED:
+      pState="CONNECTED";
+      break;
+    case LINK_ERROR:
+      pState="ERROR";
+      break;
+    case LINK_CLOSED:
+      pState="CLOSED";
+      break;
+    default:
+      pState="UNKNOWN";
+      break;
+  }
+  
+  sprintf(_buff + strlen(_buff), Q(state) ":" Q(%s) "\n", pState);
+  JSON_HANDLER_EPILOG();
+}
+
+JSON_HANDLER(startPhiLink) {
+  JSON_HANDLER_PROLOG(startPhiLink);
+
+  jsmntok_t* pTok = *ppTok;
+  char hostName[257] = {0};
+  int port = DEF_PHILINK_PORT;
+  int toksRead = 2;
+
+  while (toksRead < _numChild) {
+
+    if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
+      sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.startPhiLink: param name is not a primitive.) );
+      goto error_exit;
+    }
+
+    if (TOK_EQ(pTok, "serverName")) {
+      // advance
+      pTok ++;
+      toksRead ++;
+
+      // get server name (PhiCore)
+      if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.startPhiLink: server value is not a primitive.) );
+        goto error_exit;
+      }
+
+      int len = TOK_LEN(pTok);
+      memcpy(hostName, TOK_START(pTok), len);
+      hostName[len] = 0;
+
+    } else if (TOK_EQ(pTok, "serverPort")) {
+
+      // advance
+      pTok ++;
+      toksRead ++;
+
+      // get port number
+      if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.startPhiLink: power value is not a primitive.) );
+        goto error_exit;
+      }
+
+      int port = atoi(TOK_START(pTok));
+
+    } else {
+      
+      // unknown property
+      LOG_ERR("JSON.startPhiLink: Unknown property '%s'", TOK_START(pTok));
+      goto error_exit;
+    }
+
+    // advance
+    pTok ++;
+    toksRead ++;
+  }
+
+  if (hostName[0] == 0) {
+    sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.startPhiLink: parameters missing.) );
+    goto error_exit;
+  }
+
+  LOG_INFO("JSON.startPhiLink: start linking to host='%s:%d' ...", hostName, port);
+  
+  if (startPhiLink(hostName, port) == FALSE) {
+    sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.startPhiLink: startPhiLink returned false.) );
+    goto error_exit;
+  }
+  
+quick_exit:
+
+  JSON_HANDLER_EPILOG();
+
+error_exit:
+
+  LOG_ERR("JSON.startPhiLink:  call failed");
+  goto quick_exit;
 }
 
 //

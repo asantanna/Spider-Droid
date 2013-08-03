@@ -40,6 +40,9 @@ int phi_logInit(char *filename);
 void phi_logMsg(const char* tag, const char *fmt, ...);
 void phi_logClose(void);
 
+// Phi Link
+BOOL startPhiLink(char* ipAddr, int port);
+
 //
 // MISC HARDWARE
 //

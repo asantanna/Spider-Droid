@@ -43,7 +43,7 @@
 
 #define PHI_ALLOC(D)    ((D*)phi_allocHelper(sizeof(D)))
 #define PHI_ALLOC_N(n)  phi_allocHelper(n)
-#define PHI_FREE(p)     free(p)
+#define PHI_FREE(p)     {free(p); p = NULL; }
 
 #define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
 #define PHI_ZERO_P(p,l) memset(p, 0, l)
@@ -59,17 +59,45 @@
 #define LOG_ERR(...)    phi_logMsg("ERROR: ", __VA_ARGS__)
 #define LOG_FATAL(...)  { phi_logMsg("FATAL: ", __VA_ARGS__); phi_abortProcess(-1); }
 
+// stringifying helpers
+
+#define STR(s)                #s              /* convert to string */
+#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
+#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
+
 // Linux drivers
 
 #define UART_DRIVER_NAME  "/dev/ttyAMA0"
-
 #define SPI0_DRIVER_NAME  "/dev/spidev0.0"
 #define SPI1_DRIVER_NAME  "/dev/spidev0.1"
 
-// RPi resources
+// LED colors
 
-// gyro on SPI index 0 of Rpi
-#define GYRO_SPI_IDX    0
+typedef enum {
+    OFF,
+    RED,
+    FLASH_RED,
+    YELLOW,
+    FLASH_YELLOW,
+    GREEN,
+    FLASH_GREEN
+    
+} PHI_LED_COLOR;
+
+//
+// RPi resources
+//
+
+// move this to camera file eventually
+#define CAM_WIDTH         160
+#define CAM_HEIGHT        120
+#define CAM_NUM_BYTES     (CAM_WIDTH * CAM_HEIGHT)
+
+// PhiLink
+#define DEF_PHILINK_PORT  1122
+
+// gyro on SPI index 0
+#define GYRO_SPI_IDX      0
 
 
 

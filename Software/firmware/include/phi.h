@@ -35,6 +35,8 @@
 // abstract motor (hides controller details)
 #include "motor.h"
 
+// phi link defs
+#include "philink.h"
 
 // app globals
 #include "globals.h"

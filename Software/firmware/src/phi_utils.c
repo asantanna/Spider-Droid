@@ -224,3 +224,24 @@ UINT32 phi_getHostIP() {
   return ipAddr;
 }
 
+
+void phi_setLED(PHI_LED_COLOR color) {
+  // TODO HACK
+  switch (color) {
+    case OFF:
+      break;
+    case RED:
+      break;
+    case FLASH_RED:
+      break;
+    case YELLOW:
+      break;
+    case FLASH_YELLOW:
+      break;
+    case GREEN:
+      break;
+    case FLASH_GREEN:
+      break;
+
+      }
+}

@@ -26,6 +26,14 @@ function phi_getGyroTemp() {
   sendJsonRequest("req : [ {cmd:getGyroTemp} ]");
 }
 
+function phi_startPhiLink(name, port) {
+  sendJsonRequest("req : [ {cmd:startPhiLink, serverName:" + name + ", serverPort:" + port + "} ]");
+}
+
+function phi_getLinkState() {
+  sendJsonRequest("req : [ {cmd:getLinkState} ]");
+}
+
 //
 // Utils
 //
