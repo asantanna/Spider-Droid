@@ -12,15 +12,15 @@ namespace Phi_Core
     //
 
     private const int PACKET_SIGN_LEN = 4;
-    private static byte[] STATE_PACKET_SIGN = PhiGlobals.StrToByteArray("STAP");
+    private static byte[] STATE_PACKET_SIGN = PhiGlobals.StrToByteArray("SPV1");
 
     // offsets in packetData
     private const int OFF_SIGN = 0;
-    private const int OFF_VISION_AXONS = OFF_SIGN + PACKET_SIGN_LEN;
-    private const int OFF_GYRO_AXONS = OFF_VISION_AXONS + PhiGlobals.NUM_VISION_AXONS;
-    private const int OFF_JOINT_POS_AXONS = OFF_GYRO_AXONS + PhiGlobals.NUM_GYRO_AXONS;
-    private const int OFF_TEMP_AXONS = OFF_JOINT_POS_AXONS + PhiGlobals.NUM_JOINT_POS_AXONS;
-    private const int OFF_PACKET_END = OFF_TEMP_AXONS + PhiGlobals.NUM_TEMP_AXONS;
+    private const int OFF_VISION_DATA = OFF_SIGN + PACKET_SIGN_LEN;
+    private const int OFF_GYRO_DATA = OFF_VISION_DATA + PhiGlobals.NUM_VISION_ELEM;
+    private const int OFF_JOINT_POS_DATA = OFF_GYRO_DATA + (PhiGlobals.NUM_GYRO_ELEM * 2);
+    private const int OFF_TEMP_DATA = OFF_JOINT_POS_DATA + PhiGlobals.NUM_JOINT_POS_ELEM;
+    private const int OFF_PACKET_END = OFF_TEMP_DATA + PhiGlobals.NUM_TEMP_ELEM;
 
     //
     // VARS
@@ -37,5 +37,17 @@ namespace Phi_Core
     internal PhiStatePacket() {
       // nothing to do
     }
-  }
-}
+    internal double getPitchDps() {
+      return PhiGlobals.MAKE_INT(packetData[OFF_GYRO_DATA], packetData[OFF_GYRO_DATA+1]);
+    }
+
+    internal double getRollDps() {
+      return PhiGlobals.MAKE_INT(packetData[OFF_GYRO_DATA+2], packetData[OFF_GYRO_DATA+3]);
+    }
+
+    internal double getYawDps() {
+      return PhiGlobals.MAKE_INT(packetData[OFF_GYRO_DATA+4], packetData[OFF_GYRO_DATA+6]);
+    }
+
+  } // class
+} // namespace

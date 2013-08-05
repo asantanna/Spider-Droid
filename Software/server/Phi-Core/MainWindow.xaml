@@ -7,15 +7,10 @@
         <DockPanel x:Name="TitlePanel" VerticalAlignment="Top" DockPanel.Dock="Top">
             <Image x:Name="image" HorizontalAlignment="Left" Source="Letter_Phi.jpg" Width="60"/>
             <TextBlock TextWrapping="Wrap" Text="Phi Core" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center" Margin="20,0,0,0" VerticalAlignment="Center"/>
-            <Grid DockPanel.Dock="Right">
-                <TextBox x:Name="LinkStatusLabel" TextWrapping="Wrap" Text="Link Status" VerticalAlignment="Top" Margin="39,10,0,0" HorizontalAlignment="Left" RenderTransformOrigin="0.155,0.348" BorderThickness="0" Height="20" HorizontalContentAlignment="Center"/>
-                <TextBox x:Name="LinkStatusText" HorizontalAlignment="Left" TextWrapping="Wrap" Text="OFF" VerticalAlignment="Top" RenderTransformOrigin="1.192,5.435" Margin="115,10,10,0" BorderThickness="0" Background="PaleVioletRed" Foreground="White" FontWeight="Bold" Width="157" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="LinkStatusLabel_Copy" TextWrapping="Wrap" Text="Frame Rate" VerticalAlignment="Top" Margin="40,35,0,0" HorizontalAlignment="Left" RenderTransformOrigin="0.155,0.348" BorderThickness="0" Height="20"/>
-                <TextBox x:Name="LinkFrameRateText" HorizontalAlignment="Left" TextWrapping="Wrap" Text="NC" VerticalAlignment="Top" RenderTransformOrigin="1.192,5.435" Margin="115,35,0,0" BorderThickness="0" FontWeight="Bold" Width="157" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            </Grid>
+            <Grid DockPanel.Dock="Right"/>
         </DockPanel>
-        <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Left" RenderTransformOrigin="0.123,1.565" Margin="20,10,10,0" Height="223">
-            <Canvas x:Name="Phi_Camera" Margin="10,10,298,93" Width="160" Height="120" RenderTransformOrigin="0.954,0.891">
+        <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Left" RenderTransformOrigin="0.123,1.565" Margin="20,10,10,0" Height="279">
+            <Canvas x:Name="Phi_Camera" Margin="240,33,68,126" Width="160" Height="120" RenderTransformOrigin="0.954,0.891">
                 <Canvas.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black" Offset="0"/>
@@ -23,21 +18,74 @@
                     </LinearGradientBrush>
                 </Canvas.Background>
             </Canvas>
-            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Phi Camera" VerticalAlignment="Top" Margin="57,135,0,0" DockPanel.Dock="Top" HorizontalContentAlignment="Stretch"/>
-            <DockPanel x:Name="GyroIndicator" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Top" Margin="198,10,0,0">
-                <Canvas HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="60" Margin="0" RenderTransformOrigin="1.567,1.717" DockPanel.Dock="Bottom" Background="#FFE6EEE7">
+            <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Phi Camera" VerticalAlignment="Top" Margin="291,12,0,0" DockPanel.Dock="Top" HorizontalContentAlignment="Stretch"/>
+            <DockPanel x:Name="GyroIndicator" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Top" Margin="213,170,0,0">
+                <Canvas x:Name="pitchCanvas" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="60" Margin="0" RenderTransformOrigin="1.567,1.717" DockPanel.Dock="Bottom">
+                    <Ellipse
+                        Height="60"
+                        Width="60"
+                        StrokeThickness="1"
+                        Stroke="Blue"/>
+                    <Path Stroke="Blue" StrokeThickness="1" Fill="LightBlue">
+                        <Path.Data>
+                            <PathGeometry>
+                                <PathFigure StartPoint="30 30" IsClosed="True">
+                                    <LineSegment Point="30 0" />
+                                    <ArcSegment x:Name="pitchArc" Point="0 30" Size="30 30" SweepDirection="Counterclockwise" />
+                                </PathFigure>
+                            </PathGeometry>
+                        </Path.Data>
+                    </Path>
                 </Canvas>
                 <TextBox TextWrapping="Wrap" Text="Pitch" Canvas.Left="16" Canvas.Top="-23" RenderTransformOrigin="-0.094,0.445" Margin="0" VerticalAlignment="Bottom" DockPanel.Dock="Top" HorizontalAlignment="Center" Panel.ZIndex="1" BorderThickness="0"/>
             </DockPanel>
-            <DockPanel x:Name="GyroIndicator_Copy" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Top" Margin="277,10,0,0" RenderTransformOrigin="2.183,0.592">
-                <Canvas HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="60" Margin="0" RenderTransformOrigin="1.567,1.717" DockPanel.Dock="Bottom" Background="#FFE6EEE7"/>
+            <DockPanel x:Name="GyroIndicator_Copy" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Top" Margin="292,170,0,0" RenderTransformOrigin="2.183,0.592">
+                <Canvas x:Name="yawCanvas" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="60" Margin="0" RenderTransformOrigin="1.567,1.717" DockPanel.Dock="Bottom">
+                    <Ellipse
+                        Height="60"
+                        Width="60"
+                        StrokeThickness="1"
+                        Stroke="Blue"/>
+                    <Path Stroke="Blue" StrokeThickness="1" Fill="LightBlue">
+                        <Path.Data>
+                            <PathGeometry>
+                                <PathFigure StartPoint="30 30" IsClosed="True">
+                                    <LineSegment Point="30 0" />
+                                    <ArcSegment x:Name="yawArc" Point="0 30" Size="30 30" SweepDirection="Counterclockwise" />
+                                </PathFigure>
+                            </PathGeometry>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
                 <TextBox TextWrapping="Wrap" Text="Yaw" Canvas.Left="16" Canvas.Top="-23" RenderTransformOrigin="-0.094,0.445" Margin="0" VerticalAlignment="Bottom" DockPanel.Dock="Top" HorizontalAlignment="Center" Panel.ZIndex="1" BorderThickness="0"/>
             </DockPanel>
-            <DockPanel x:Name="GyroIndicator_Copy1" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Top" Margin="360,10,0,0">
-                <Canvas HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="60" Margin="0" RenderTransformOrigin="1.567,1.717" DockPanel.Dock="Bottom" Background="#FFE6EEE7"/>
+            <DockPanel x:Name="GyroIndicator_Copy1" HorizontalAlignment="Left" LastChildFill="False" VerticalAlignment="Top" Margin="375,170,0,0">
+                <Canvas x:Name="rollCanvas" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="60" Margin="0" RenderTransformOrigin="1.567,1.717" DockPanel.Dock="Bottom">
+                    <Ellipse
+                        Height="60"
+                        Width="60"
+                        StrokeThickness="1"
+                        Stroke="Blue"/>
+                    <Path Stroke="Blue" StrokeThickness="1" Fill="LightBlue">
+                        <Path.Data>
+                            <PathGeometry>
+                                <PathFigure StartPoint="30 30" IsClosed="True">
+                                    <LineSegment Point="30 0" />
+                                    <ArcSegment x:Name="rollArc" Point="0 30" Size="30 30" SweepDirection="Counterclockwise" />
+                                </PathFigure>
+                            </PathGeometry>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
                 <TextBox TextWrapping="Wrap" Text="Roll" Canvas.Left="16" Canvas.Top="-23" RenderTransformOrigin="-0.094,0.445" Margin="0" VerticalAlignment="Bottom" DockPanel.Dock="Top" HorizontalAlignment="Center" Panel.ZIndex="1" BorderThickness="0"/>
             </DockPanel>
-            <Button x:Name="ActivateLink" Content="Enable" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,193,0,0" Click="ActivateLink_Click"/>
+            <TextBox x:Name="LinkFrameRateText" HorizontalAlignment="Left" TextWrapping="Wrap" Text="NC" VerticalAlignment="Top" RenderTransformOrigin="1.192,5.435" Margin="94,33,0,0" BorderThickness="0" FontWeight="Bold" Width="100" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="AvgIdleLabel" TextWrapping="Wrap" Text="Avg Idle" VerticalAlignment="Top" Margin="27,53,0,0" HorizontalAlignment="Left" RenderTransformOrigin="0.155,0.348" BorderThickness="0" Height="20" TextAlignment="Right"/>
+            <TextBox x:Name="AvgIdleText" HorizontalAlignment="Left" TextWrapping="Wrap" Text="NC" VerticalAlignment="Top" RenderTransformOrigin="1.192,5.435" Margin="94,53,0,0" BorderThickness="0" FontWeight="Bold" Width="100" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="LinkStatusLabel_Copy" TextWrapping="Wrap" Text="Frame Rate" VerticalAlignment="Top" Margin="10,33,0,0" HorizontalAlignment="Left" RenderTransformOrigin="0.155,0.348" BorderThickness="0" Height="20" TextAlignment="Right"/>
+            <TextBox x:Name="LinkStatusLabel" TextWrapping="Wrap" Text="Link Status" VerticalAlignment="Top" Margin="13,13,0,0" HorizontalAlignment="Left" RenderTransformOrigin="0.155,0.348" BorderThickness="0" Height="20" HorizontalContentAlignment="Center"/>
+            <TextBox x:Name="LinkStatusText" HorizontalAlignment="Left" TextWrapping="Wrap" Text="OFF" VerticalAlignment="Top" RenderTransformOrigin="1.192,5.435" Margin="94,11,0,0" BorderThickness="0" Background="PaleVioletRed" Foreground="White" FontWeight="Bold" Width="128" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Button x:Name="ActivateLink" Content="Enable" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="13,95,0,0" Click="ActivateLink_Click"/>
         </Grid>
     </DockPanel>
 

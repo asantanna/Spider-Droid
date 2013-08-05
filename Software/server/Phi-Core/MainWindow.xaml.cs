@@ -29,6 +29,8 @@ namespace Phi_Core {
     private static DispatcherTimer blinkyTimer;
     private bool blinkState = false;
 
+    private static DispatcherTimer updateTimer;
+
     //
     // CODE
     //
@@ -60,6 +62,9 @@ namespace Phi_Core {
       // CONNECTED - start comm loop
       if (phiStream != null) {
         PhiLink.startCommLoop(phiStream);
+      } else {
+        // no stream?
+        updateLinkStatus(PhiLink.PhiLinkState.LINK_ERROR);
       }
     }
 
@@ -80,8 +85,7 @@ namespace Phi_Core {
       }
     }
 
-    private void blinkNowEvent(object source, EventArgs e) 
-    {
+    private void blinkNowEvent(object source, EventArgs e) {
       // change blink state
       // HACK - color code crashes
       blinkState = !blinkState;
@@ -99,27 +103,30 @@ namespace Phi_Core {
       bool newBlinky = false;
 
       switch (state) {
-        case PhiLink.PhiLinkState.OFF:
+        case PhiLink.PhiLinkState.LINK_OFF:
           LinkStatusText.Text = " OFF ";
           break;
-        case PhiLink.PhiLinkState.INITIALIZING:
+        case PhiLink.PhiLinkState.LINK_STARTED:
           LinkStatusText.Text = " INITIALIZING ";
           newBlinky = true;
           break;
-        case PhiLink.PhiLinkState.WAITING:
+        case PhiLink.PhiLinkState.LINK_CONNECTING:
           LinkStatusText.Text = " WAITING ... ";
           newBlinky = true;
           break;
-        case PhiLink.PhiLinkState.CONNECTED:
+        case PhiLink.PhiLinkState.LINK_CONNECTED:
           LinkStatusText.Text = " CONNECTED ";
+          enableUpdateTimer(true);
           break;
-        case PhiLink.PhiLinkState.ERROR:
+        case PhiLink.PhiLinkState.LINK_ERROR:
           LinkStatusText.Text = " ERROR ";
           newBlinky = true;
+          enableUpdateTimer(false);
           break;
-        case PhiLink.PhiLinkState.CANCELLED:
+        case PhiLink.PhiLinkState.LINK_CLOSED:
           LinkStatusText.Text = " CANCELLED ";
           newBlinky = true;
+          enableUpdateTimer(false);
           break;
       }
 
@@ -132,8 +139,54 @@ namespace Phi_Core {
         PhiGlobals.bInit = true;
 
         // one time initializations
-        updateLinkStatus(PhiLink.PhiLinkState.OFF);
+        updateLinkStatus(PhiLink.PhiLinkState.LINK_OFF);
+        updateNowEvent(null, null);
       }
     }
+
+    private void enableUpdateTimer(bool bEnable) {
+
+      if (updateTimer == null) {
+        updateTimer = new DispatcherTimer(DispatcherPriority.SystemIdle);
+        updateTimer.Tick += new EventHandler(updateNowEvent);
+        updateTimer.Interval = TimeSpan.FromMilliseconds(500);
+        updateTimer.Start();
+      }
+
+      if (bEnable) {
+        // enable update timer
+        updateTimer.IsEnabled = true;
+      } else if (!bEnable && (updateTimer != null)) {
+        updateTimer.IsEnabled = false;
+      }
+    }
+
+    private void updateNowEvent(object source, EventArgs e) {
+      // update UI
+      LinkFrameRateText.Text = PhiLink.getAvgFrameRate().ToString("F1") + " Hz";
+      AvgIdleText.Text = PhiLink.getAvgIdle().ToString("F1") + " %";
+
+      drawGyroIndicator("pitch", PhiLink.getGyroPitch());
+      drawGyroIndicator("yaw", PhiLink.getGyroYaw());
+      drawGyroIndicator("roll", PhiLink.getGyroRoll());
+    }
+
+    private void drawGyroIndicator(string prefix, double percent) {
+
+      Canvas c = (Canvas) FindName(prefix + "Canvas");
+      double radius = c.ActualHeight / 2;
+      double endAngle = Math.PI * percent/100;
+
+      ArcSegment arc = (ArcSegment) FindName(prefix + "Arc");
+      double xComp = radius * Math.Cos(endAngle);
+      double yComp = radius * Math.Sin(endAngle);
+      if (yComp >= 0) {
+        arc.SweepDirection = SweepDirection.Clockwise;
+      } else {
+        arc.SweepDirection = SweepDirection.Counterclockwise;
+      }
+      arc.Point = new Point(radius + yComp, radius - xComp);
+    }
+
   }
 }

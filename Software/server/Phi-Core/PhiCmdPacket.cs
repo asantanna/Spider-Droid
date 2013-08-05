@@ -13,12 +13,12 @@ namespace Phi_Core {
     //
 
     private const int PACKET_SIGN_LEN = 4;
-    private static byte[] CMD_PACKET_SIGN = PhiGlobals.StrToByteArray("CMDP");
+    private static byte[] CMD_PACKET_SIGN = PhiGlobals.StrToByteArray("CPV1");
 
     // offsets in packetData
     private const int OFF_SIGN = 0;
     private const int OFF_MOTOR_AXONS = OFF_SIGN + PACKET_SIGN_LEN;
-    private const int OFF_PACKET_END = OFF_MOTOR_AXONS + PhiGlobals.NUM_MOTOR_AXONS;
+    private const int OFF_PACKET_END = OFF_MOTOR_AXONS + PhiGlobals.NUM_MOTOR_ELEM;
 
     //
     // VARS

@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -16,28 +17,39 @@ namespace Phi_Core {
     // CONST
     //
 
-    const string LOCAL_IP = "127.0.0.1";
     const Int32 PHI_LINK_PORT = 1122;
+    
+    const double DESIRED_LOOP_FPS = 20;
+    const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
+
+    const double LOOP_TIME_ACCUM_RATE = (1.0 / 100);
 
     //
     //  VARS
     //
 
     internal enum PhiLinkState {
-      OFF,
-      INITIALIZING,
-      WAITING,
-      CONNECTED,
-      ERROR,
-      CANCELLED
+      LINK_OFF,
+      LINK_STARTED,
+      LINK_CONNECTING,
+      LINK_CONNECTED,
+      LINK_ERROR,
+      LINK_CLOSED
     }
 
-    static PhiLinkState linkState = PhiLinkState.OFF;
-    static Task commLoopTask = null;
-    static UInt32 loopCount = 0;
+    internal static object dataLock = new object();
 
-    private static double msPerLoop = 0;
-    private static object statLock = new object();
+    internal static PhiLinkState linkState = PhiLinkState.LINK_OFF;
+
+    private static Task commLoopTask = null;
+    private static UInt32 loopCount = 0;
+    private static double secsThisLoop = 0;
+    private static double accum_secsPerLoop = DESIRED_SECS_PER_LOOP;
+    private static double accum_sleepTime = 0;
+
+    private static double accum_pitch = 0;
+    private static double accum_yaw = 0;
+    private static double accum_roll = 0;
 
     //
     // CODE
@@ -45,28 +57,31 @@ namespace Phi_Core {
 
     async static internal Task<NetworkStream> startListenerAsync() {
 
-      // start listener (ASYNC)
+      // reset some vars
+      accum_pitch = 0;
+      accum_yaw = 0;
+      accum_roll = 0;
 
-      IPAddress localAddr = IPAddress.Parse(LOCAL_IP);
-      TcpListener phiLinkListener = new TcpListener(localAddr, PHI_LINK_PORT);
+      // create listener (accept connections from any address)
+      TcpListener phiLinkListener = new TcpListener(IPAddress.Any, PHI_LINK_PORT);
       Task<TcpClient> clientTask = null;
 
       // change status to initializing
-      setLinkState(PhiLinkState.INITIALIZING);
+      setLinkState(PhiLinkState.LINK_STARTED);
 
       try {
         // enable listener
         phiLinkListener.Start();
 
         // change status to waiting
-        setLinkState(PhiLinkState.WAITING);
+        setLinkState(PhiLinkState.LINK_CONNECTING);
 
         // wait async for a phi to connect
         clientTask = phiLinkListener.AcceptTcpClientAsync();
 
       } catch (SocketException e) {
         // something went wrong
-        setLinkState(PhiLinkState.ERROR);
+        setLinkState(PhiLinkState.LINK_ERROR);
         Console.WriteLine("PhiLink.startListener: got exception when starting listener: SocketException: {0}", e);
         return null;
       }
@@ -84,7 +99,7 @@ namespace Phi_Core {
       // completes (when a connection occurs);
 
       // change status to connected
-      setLinkState(PhiLinkState.CONNECTED);
+      setLinkState(PhiLinkState.LINK_CONNECTED);
 
       // Get a stream object for reading/writing
       NetworkStream stream = client.GetStream();
@@ -130,9 +145,12 @@ namespace Phi_Core {
       // init statistics 
       double tickPeriod = 1.0 / Stopwatch.Frequency;
       Stopwatch stopWatch = Stopwatch.StartNew();
-      long lastTicks = stopWatch.ElapsedTicks;
+      double sleepError = 0;
 
       // loop forever
+      
+      long loopStartTicks = stopWatch.ElapsedTicks;
+      
       while (true) {
 
         // grab Eve outputs
@@ -144,16 +162,12 @@ namespace Phi_Core {
         // start task to read PHI's status
         Task readTask = Task.Run(() => phiStream.Read(statePacket.packetData, 0, statePacket.Length));
 
-        // HACK: for now just wait for read to complete right away
-        // This is like doing a blocking read above.
-        // In actuality, it would be better if Eve ran completely out of step with comms.  Both
-        // sides just continuous spray packets at each other.  Whenever something is received
-        // the receiver is affected by it.
-
+        // wait for read to complete - right now this is just like blocking to begin with
         readTask.Wait();
 
         // write sensor states into Eve
         // eve.writeInputs(statePacket);
+        parseState(statePacket);
 
         // step Eve
         // eve.Step();
@@ -164,22 +178,49 @@ namespace Phi_Core {
         // count loop
         loopCount++;
 
-        // compute statistics
+        // sleep to achieve desired FPS
+        long commEndTicks = stopWatch.ElapsedTicks;
+        double commSecs = (commEndTicks - loopStartTicks) * tickPeriod;
+        double sleepTime = DESIRED_SECS_PER_LOOP + sleepError - commSecs;
 
-        long currTicks = stopWatch.ElapsedTicks;
-
-        lock (statLock) {
-          // protect access
-          // Note: not very important now but will be more important when
-          // we keep arrays, lists, etc
-          msPerLoop = (currTicks - lastTicks) * tickPeriod;
+        if (sleepTime < 0) {
+          sleepTime = 0;
         }
 
-        lastTicks = currTicks;
+        Thread.Sleep((int)(sleepTime * 1000));
+
+        // compute stats
+        
+        long loopEndTicks = stopWatch.ElapsedTicks;
+
+        lock (dataLock) {
+          // protect access
+          secsThisLoop = (loopEndTicks - loopStartTicks) * tickPeriod;
+          accum_secsPerLoop = ((1-LOOP_TIME_ACCUM_RATE) * accum_secsPerLoop) + (LOOP_TIME_ACCUM_RATE * secsThisLoop);
+          accum_sleepTime =  ((1-LOOP_TIME_ACCUM_RATE) * accum_sleepTime) + (LOOP_TIME_ACCUM_RATE * sleepTime);
+        }
+
+        // compute sleep error
+        // new_error = (desired_loop + curr_error) - actual_loop
+        sleepError +=  DESIRED_SECS_PER_LOOP - secsThisLoop;
+
+        // time next
+        loopStartTicks = loopEndTicks;
       }
       
       // if we get here, loop was cancelled
       // setLinkState(PhiLinkState.CANCELLED);
+    }
+
+    private static void parseState(PhiStatePacket statePacket) {
+      double pitchDps = statePacket.getPitchDps();
+      double yawDps = statePacket.getYawDps();
+      double rollDps = statePacket.getRollDps();
+      lock (dataLock) {
+        accum_pitch += pitchDps;
+        accum_yaw += yawDps;
+        accum_roll += rollDps;
+      }
     }
 
     //
@@ -191,9 +232,37 @@ namespace Phi_Core {
       PhiGlobals.mainWindow.updateLinkStatus(state);
     }
 
-    internal static double getMsPerLoop() {
-      lock (statLock) {
-        return msPerLoop;
+    internal static double getAvgIdle() {
+      lock (dataLock) {
+        return accum_sleepTime / DESIRED_SECS_PER_LOOP;
+      }
+    }
+
+    internal static double getAvgFrameRate() {
+      lock (dataLock) {
+        return 1.0 / accum_secsPerLoop;
+      }
+    }
+
+    internal static double getLoopCount() {
+        return loopCount;
+    }
+
+    internal static double getGyroPitch() {
+      lock (dataLock) {
+        return accum_pitch;
+      }
+    }
+
+    internal static double getGyroYaw() {
+      lock (dataLock) {
+        return accum_yaw;
+      }
+    }
+
+    internal static double getGyroRoll() {
+      lock (dataLock) {
+        return accum_roll;
       }
     }
 
