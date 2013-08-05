@@ -119,8 +119,9 @@ float gyroReadDps(BYTE lowRegAddr) {
 // mounting, with the connector pins going in the left-right axis.  Therefore,
 // x = roll, y = pitch and z = yaw.
 //
-// Note: gyro is sampling at 100Hz and we *know* we wont read that fast so
-// there will be overrun.  Therefore, we don't bother checking for it.
+// TODO: must enable FIFO because we are too slow reading
+// TODO: check for overrun
+// 
 
 void gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
   

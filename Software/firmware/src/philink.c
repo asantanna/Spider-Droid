@@ -10,7 +10,7 @@
 
 void setLinkState(PHILINK_STATE state);
 void* phi_link_loop(void* arg);
-void getPhiState(PHI_STATE_PACKET *p);
+void initStatePacket(PHI_STATE_PACKET *p);
 
 
 BOOL startPhiLink(char* ipAddr, int port) {
@@ -149,8 +149,8 @@ void* phi_link_loop(void* arg)
       }
     }
 
-    // get current state
-    getPhiState((PHI_STATE_PACKET *) txBuff);
+    // set up state packet for sending
+    initStatePacket((PHI_STATE_PACKET *) txBuff);
 
     // send state (blocking)
     
@@ -206,8 +206,7 @@ void setLinkState(PHILINK_STATE state) {
   }
 }
 
-void getPhiState(PHI_STATE_PACKET *p) {
-  
+void initStatePacket(PHI_STATE_PACKET *p) {
 
   // sign
   memcpy(p -> sign, STAP_SIGN, sizeof(p->sign));
