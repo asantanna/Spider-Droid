@@ -102,15 +102,10 @@ void gyroCalcZeroRates(BYTE lowRegAddr) {
 */
 
 float gyroReadDps(BYTE lowRegAddr) {
-  BYTE txBuff[1];
-  BYTE rxBuff[2];
-  
-  txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_AUTO_INC | lowRegAddr;
-  spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 2);
 
   INT16 raw = gyroReadRawDps(lowRegAddr);
 
-  LOG_INFO("raw %c dps = %d", 'X' + (char)((lowRegAddr - GYRO_XL_ADDR) / 2), raw);
+  // LOG_INFO("raw %c dps = %d", 'X' + (char)((lowRegAddr - GYRO_XL_ADDR) / 2), raw);
 
   // see note above about why we don't substract the zeroRate
   float trueDps = raw * GYRO_250DPS_MULT;
@@ -127,37 +122,36 @@ float gyroReadDps(BYTE lowRegAddr) {
 // Note: gyro is sampling at 100Hz and we *know* we wont read that fast so
 // there will be overrun.  Therefore, we don't bother checking for it.
 
-static float prevPitchDps = 0;
-static float prevYawDps = 0;
-static float prevRollDps = 0;
-
 void gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
+  
+  float pitchDps = 0;
+  float yawDps = 0;
+  float rollDps = 0;
   
   BYTE status = gyroReadStatus();
 
-  LOG_INFO("gyro status = %02Xh", status);
+  // LOG_INFO("gyro status = %02Xh", status);
 
   if ((status & GYRO_STATUS_Y_AVAIL) != 0) {
     // have new Y (pitch) data
-    prevPitchDps = gyroReadDps(GYRO_YL_ADDR);
+    pitchDps = gyroReadDps(GYRO_YL_ADDR);
   }
 
   if ((status & GYRO_STATUS_Z_AVAIL) != 0) {
     // have new Z (yaw) data
-    prevYawDps = gyroReadDps(GYRO_ZL_ADDR);
+    yawDps = gyroReadDps(GYRO_ZL_ADDR);
   }
 
   if ((status & GYRO_STATUS_X_AVAIL) != 0) {
     // have new X (roll) data
-    prevRollDps = gyroReadDps(GYRO_XL_ADDR);
+    rollDps = gyroReadDps(GYRO_XL_ADDR);
   }
 
   // copy back
   
-  *pPitchDps = prevPitchDps;
-  *pYawDps   = prevYawDps;
-  *pRollDps  = prevRollDps;
-  
+  *pPitchDps = pitchDps;
+  *pYawDps   = yawDps;
+  *pRollDps  = rollDps;
 }
 
 INT8 gyroGetTemp() {

@@ -6,18 +6,11 @@
 
 #include "phi.h"
 
-/*
-#include <stdio.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <netinet/in.h>
-*/
+// internal
 
 void setLinkState(PHILINK_STATE state);
 void* phi_link_loop(void* arg);
+void getPhiState(PHI_STATE_PACKET *p);
 
 
 BOOL startPhiLink(char* ipAddr, int port) {
@@ -131,122 +124,10 @@ void* phi_link_loop(void* arg)
   size_t totRead = 0;
   size_t totSent = 0;
   
-  int rxNum = 0;
-  int txNum = 0;
-  
   ssize_t nRec = 0;
   ssize_t nSnd = 0;
 
-  RX_STATE rxState = RX_IDLE;
-  TX_STATE txState = TX_IDLE;
-
   while (TRUE) {
-
-#if 0   // disabled
-
-  // set socket to non-blocking
-    fcntl(sock, F_SETFL, O_NONBLOCK);
-    
-    //
-    // RECEIVE PHI CORE CMDS
-    //
-
-    switch (rxState) {
-      
-      case RX_IDLE:
-        totRead = 0;
-        rxNum ++;
-        rxState = RX_RECEIVING;
-        break;
-
-      case RX_RECEIVING:
-        
-        // receive async (phi core initiates exchanges)
-        nRec = recv(sock, rxBuff + totRead, sizeof(rxBuff) - totRead, 0);
-        
-        if (nRec == 0) {
-          // other end closed socket
-          // Note: this is an error with PhiLink
-          // TODO : do something error
-
-        } else if (nRec < 0) {
-
-          if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
-            // no data yet -- not an error
-          } else {
-            // error occurred
-            // TODO : do something error            
-          }
-
-        } else {
-          // got some data
-          totRead += nRec;
-
-          if (totRead >= sizeof(PHI_CMD_PACKET)) {
-            rxState = RX_CMD_COMPLETE;
-          }
-        }
-
-        break;
-
-      case RX_CMD_COMPLETE:
-        // execute commands
-        // TODO - do nothing for now
-        rxState = RX_IDLE;
-        break;
-    }
-
-    //
-    // TRANSMIT SENSOR STATE
-    //
-
-    switch (txState) {
-
-      case TX_IDLE:
-        if ((txNum < rxNum) && (totRead > 0)) {
-          txState = TX_BEGIN;
-        }
-        break;
-
-      case TX_BEGIN:
-        totSent = 0;
-        txState = TX_SENDING;
-        break;
-
-      case TX_SENDING:
-
-        // send async
-        nSnd = send(sock, txBuff + totSent, sizeof(txBuff) - totSent, 0);
-
-        if (nSnd < 0) {
-
-          if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
-            // not ready to send - not an error
-
-          } else {
-            // error occurred
-            // TODO - do stuff about the error
-          }
-
-        } else {
-          // some data was sent
-
-          totSent += nSnd;
-
-          if (totSent >= sizeof(PHI_STATE_PACKET)) {
-            txState = TX_COMPLETED;
-            
-          }
-        }
-
-        break;
-
-      case TX_COMPLETED:
-        txNum ++;
-        txState = TX_IDLE;
-    }
-
-#else   // simplified
 
     // receive cmds (blocking)
     
@@ -268,6 +149,9 @@ void* phi_link_loop(void* arg)
       }
     }
 
+    // get current state
+    getPhiState((PHI_STATE_PACKET *) txBuff);
+
     // send state (blocking)
     
     totSent = 0;
@@ -287,9 +171,6 @@ void* phi_link_loop(void* arg)
         totSent += nSnd;
       }
     }
-
-#endif
-    
 
   } // while
   
@@ -324,6 +205,27 @@ void setLinkState(PHILINK_STATE state) {
       break;
   }
 }
+
+void getPhiState(PHI_STATE_PACKET *p) {
+  
+
+  // sign
+  memcpy(p -> sign, STAP_SIGN, sizeof(p->sign));
+
+  // image
+  memset(p -> image, 0, sizeof(p -> image));
+
+  // gyro (return +/- percent of max reading)
+  
+  float pitchDps, yawDps, rollDps;
+  gyroGetData(&pitchDps, &yawDps, &rollDps);
+
+  p -> gyro[0] = (INT16) (pitchDps / 250.0F);
+  p -> gyro[1] = (INT16) (yawDps / 250.0F);
+  p -> gyro[2] = (INT16) (rollDps / 250.0F);
+}
+
+
 
 
 
