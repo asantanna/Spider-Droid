@@ -272,7 +272,6 @@ UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/resistor-po
 UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/resistor-ruf.lbr"
 UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/resistor-shunt.lbr"
 UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/resistor-sil.lbr"
-UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/resistor.lbr"
 UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/rf-micro-devices.lbr"
 UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/rf-solutions.lbr"
 UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/rohm.lbr"
@@ -339,11 +338,12 @@ UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/xilinx-xc9.
 UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/xilinx-xcv.lbr"
 UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/zetex.lbr"
 UsedLibrary="D:/ALS-NoBackup/Alternate Program Files/EAGLE-6.4.0/lbr/zilog.lbr"
+UsedLibrary="Phi-Libs/supply2.lbr"
 
 [Win_1]
 Type="Control Panel"
 Loc="426 197 1025 596"
-State=2
+State=1
 Number=0
 
 [Desktop]
