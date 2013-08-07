@@ -10,12 +10,13 @@
 // HAL for PHI
 //
 
-HACK("Hacky cast below ... don't know why we need this ...")
+// apparently GCC doesn't like unspecified params so we need to cast
+// the function pointers below
 
 HAL_FUNCS phiHal = {
   .pName =            "Phi HAL",
-  .initPeripherals =  PHI_initPeripherals,
-  .gyroInit =         PHI_gyroInit,
+  .initPeripherals =  (halFunc_pChar) PHI_initPeripherals,
+  .gyroInit =         (halFunc_BOOL) PHI_gyroInit,
   .gyroGetData =      PHI_gyroGetData,
   .gyroGetTemp =      PHI_gyroGetTemp,
   .setMotorPower =    (halFunc_void) PHI_setMotorPower,
@@ -27,8 +28,8 @@ HAL_FUNCS phiHal = {
 
 HAL_FUNCS genericHal = {
   .pName =            "Generic HAL",
-  .initPeripherals =  GENERIC_initPeripherals,
-  .gyroInit =         GENERIC_gyroInit,
+  .initPeripherals =  (halFunc_pChar) GENERIC_initPeripherals,
+  .gyroInit =         (halFunc_BOOL) GENERIC_gyroInit,
   .gyroGetData =      GENERIC_gyroGetData,
   .gyroGetTemp =      GENERIC_gyroGetTemp,
   .setMotorPower =    (halFunc_void) GENERIC_setMotorPower,
@@ -78,8 +79,8 @@ char* PHI_initPeripherals() {
     goto quick_exit;
   }
 
-  // set up gyroscope
-  if (!HAL_gyroInit()) {
+  // set up gyroscope with FIFO
+  if (!HAL_gyroInit(TRUE)) {
     rc = "phi_InitPeripherals: gyroscope init failed";
     goto quick_exit;
   }
@@ -102,7 +103,7 @@ char* GENERIC_initPeripherals() {
   return NULL;
 }
 
-BOOL  GENERIC_gyroInit() {
+BOOL  GENERIC_gyroInit(BOOL bEnableFifo) {
   return TRUE;
 }
 

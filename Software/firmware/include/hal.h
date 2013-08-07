@@ -26,7 +26,7 @@ typedef struct {
 
 } HAL_FUNCS;
 
-// init
+// init HAL
 void HAL_init();
 
 //
@@ -43,7 +43,7 @@ void HAL_init();
 // PHI HAL
 
 char* PHI_initPeripherals();
-BOOL  PHI_gyroInit();
+BOOL  PHI_gyroInit(BOOL bEnableFifo);
 void  PHI_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps);
 INT8  PHI_gyroGetTemp();
 void  PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
@@ -51,7 +51,7 @@ void  PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
 // generic HAL
 
 char* GENERIC_initPeripherals();
-BOOL  GENERIC_gyroInit();
+BOOL  GENERIC_gyroInit(BOOL bEnableFifo);
 void  GENERIC_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps);
 INT8  GENERIC_gyroGetTemp();
 void  GENERIC_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);

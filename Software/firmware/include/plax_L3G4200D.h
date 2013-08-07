@@ -160,6 +160,13 @@
 
 #define GYRO_FIFO_ADDR            0x2E
 
+#define GYRO_FIFO_MODE_BYPASS     0x00
+#define GYRO_FIFO_MODE_FIFO       0x20
+#define GYRO_FIFO_MODE_STREAM     0x40
+#define GYRO_FIFO_MODE_STF        0x60
+#define GYRO_FIFO_MODE_BTS        0x80
+#define GYRO_FIFO_WTM_MASK        0x1F
+
 // FIFO_CTRL_REG
 
 #define GYRO_SRC_ADDR             0x2F

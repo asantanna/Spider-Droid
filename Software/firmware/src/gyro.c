@@ -4,7 +4,7 @@
 
 #include "phi.h"
 
-BOOL PHI_gyroInit() {
+BOOL PHI_gyroInit(BOOL bEnableFifo) {
 
   BOOL rc = FALSE;
   BYTE txBuff[2];
@@ -31,7 +31,18 @@ BOOL PHI_gyroInit() {
   txBuff[1] = GYRO_CR4_BDU_EN | GYRO_CR4_LITTLE_ENDIAN | GYRO_CR4_FS_250DPS;
   spi_send(GYRO_SPI_IDX, txBuff, 2);
 
-  // CR5 - default values OK
+  // CR5 - default OK unless want FIFO (32 slot)
+
+  if (bEnableFifo == TRUE) {
+    // enable FIFO, ints off, high pass filter off
+    txBuff[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_CR5_ADDR;
+    txBuff[1] = GYRO_CR5_FIFO_EN;
+    spi_send(GYRO_SPI_IDX, txBuff, 2);
+    // set FIFO mode=stream, no watermark interrupt
+    txBuff[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_FIFO_ADDR;
+    txBuff[1] = GYRO_FIFO_MODE_STREAM;
+    spi_send(GYRO_SPI_IDX, txBuff, 2);
+  }
 
   // REFERENCE - not used
 
@@ -122,7 +133,6 @@ float gyroReadDps(BYTE lowRegAddr) {
 // Note: this function returns DPS (degrees per second)
 //
 
-TODO("must enable FIFO because we are too slow reading")
 TODO("check for overrun")
 
 void PHI_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
@@ -133,21 +143,29 @@ void PHI_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
   
   BYTE status = gyroReadStatus();
 
-  // LOG_INFO("gyro status = %02Xh", status);
+  while ((status & GYRO_STATUS_AVAIL) != 0) {
 
-  if ((status & GYRO_STATUS_Y_AVAIL) != 0) {
-    // have new Y (pitch) data
-    pitchDps = gyroReadDps(GYRO_YL_ADDR);
-  }
+    // something is available
 
-  if ((status & GYRO_STATUS_Z_AVAIL) != 0) {
-    // have new Z (yaw) data
-    yawDps = gyroReadDps(GYRO_ZL_ADDR);
-  }
+    // LOG_INFO("gyro status = %02Xh", status);
 
-  if ((status & GYRO_STATUS_X_AVAIL) != 0) {
-    // have new X (roll) data
-    rollDps = gyroReadDps(GYRO_XL_ADDR);
+    if ((status & GYRO_STATUS_Y_AVAIL) != 0) {
+      // have Y (pitch) data
+      pitchDps += gyroReadDps(GYRO_YL_ADDR);
+    }
+
+    if ((status & GYRO_STATUS_Z_AVAIL) != 0) {
+      // have Z (yaw) data
+      yawDps += gyroReadDps(GYRO_ZL_ADDR);
+    }
+
+    if ((status & GYRO_STATUS_X_AVAIL) != 0) {
+      // have X (roll) data
+      rollDps += gyroReadDps(GYRO_XL_ADDR);
+    }
+
+    // read status again to see if more in FIFO
+    BYTE status = gyroReadStatus();
   }
 
   // copy back
