@@ -115,7 +115,7 @@ static jsmnerr_t jsmn_parse_string(jsmn_parser *parser, const char *js,
 					break;
 				/* Allows escaped symbol \uXXXX */
 				case 'u':
-					/* TODO */
+					// \u not supported
 					break;
 				/* Unexpected symbol */
 				default:

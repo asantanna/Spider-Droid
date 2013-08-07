@@ -11,10 +11,8 @@
 #define EXT       extern
 #endif
 
-//
-// init state
-//
 
+// init state
 EXT BOOL g_initPeriph INIT(FALSE);        // TRUE if UART peripherals initialized
 
 // startup time (in uSecs)
@@ -34,4 +32,8 @@ EXT int g_spi0_fd INIT(-1);
 
 // PhiLink state
 EXT PHILINK_STATE g_phiLinkState INIT(OFF);
+
+// HAL
+EXT HAL_FUNCS* g_pHal INIT(NULL);
+
 

@@ -4,7 +4,7 @@
 
 #include "phi.h"
 
-BOOL gyroInit() {
+BOOL PHI_gyroInit() {
 
   BOOL rc = FALSE;
   BYTE txBuff[2];
@@ -20,7 +20,7 @@ BOOL gyroInit() {
     goto quick_exit;
   }
 
-  // CR2 - HACK - leave at default values?
+  // CR2 - leave at default values
 
   // CR3 - default values OK
 
@@ -119,11 +119,13 @@ float gyroReadDps(BYTE lowRegAddr) {
 // mounting, with the connector pins going in the left-right axis.  Therefore,
 // x = roll, y = pitch and z = yaw.
 //
-// TODO: must enable FIFO because we are too slow reading
-// TODO: check for overrun
-// 
+// Note: this function returns DPS (degrees per second)
+//
 
-void gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
+TODO("must enable FIFO because we are too slow reading")
+TODO("check for overrun")
+
+void PHI_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
   
   float pitchDps = 0;
   float yawDps = 0;
@@ -155,7 +157,7 @@ void gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
   *pRollDps  = rollDps;
 }
 
-INT8 gyroGetTemp() {
+INT8 PHI_gyroGetTemp() {
   BYTE txBuff[1];
   BYTE rxBuff[1];
 

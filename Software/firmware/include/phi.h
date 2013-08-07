@@ -38,9 +38,11 @@
 // phi link defs
 #include "philink.h"
 
-// app globals
-#include "globals.h"
+// HAL
+#include "hal.h"
 
 // misc func decls
 #include "phi_funcs.h"
 
+// app globals (THIS SHOULD BE LAST)
+#include "globals.h"

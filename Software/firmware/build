@@ -1,12 +1,21 @@
 #! /bin/bash
 
+# bash colors
+
+COL_GREEN="\e[1;32m"
+COL_YELLOW="\e[1;33m"
+COL_RED="\e[1;31m"
+COL_BLUE="\e[1;34m"
+COL_CYAN="\e[1;36m"
+COL_STOP="\e[0m"
+
 # Build Phi firmware but check some stuff first
 
-echo
+echo -e $COL_CYAN
 echo '****************'
 echo '*  Build Phi   *'
 echo '****************'
-echo
+echo -e $COL_STOP
 
 # get hostname to use as part of directory names
 HOST_NAME=`uname -n`
@@ -70,6 +79,7 @@ fi
 #
 
 echo Checking build environment ...
+echo
 
 # check that we have new version of pthread
 
@@ -79,14 +89,14 @@ if grep -q NPTL <<EOF
 $PTHREAD_IMPL
 EOF
 then
-  echo ' OK ' : PThread version is $PTHREAD_IMPL
+  echo -e "$COL_GREEN"OK"$COL_STOP" : PThread version is $PTHREAD_IMPL
 else
-  echo 'FAIL' : PThread version obsolete - version is $PTHREAD_IMPL
-exit
+  echo -e "$COL_RED"FAIL"$COL_STOP" : PThread version obsolete - version is $PTHREAD_IMPL
+  exit
 fi
 
 # OK ... everything looks good
-echo ' OK ' : All tests complete
+echo -e "$COL_GREEN"OK"$COL_STOP" : All tests complete
 echo
 
 # create makefiles with CMake
@@ -98,8 +108,6 @@ echo
 # Note2: to clean up cmake files, it is OK to
 #        "rm -rf" the tmp dirs
 
-
-echo
 echo Creating Makefiles with cmake ...
 
 cd $TMP_DIR
@@ -113,21 +121,23 @@ echo Starting build ...
 
 make
 
+MAKE_RET=$?
+
 # if successful ... copy executable to bin dir
 
-if [ $? == 0 ] ; then
-    echo "SUCCESS - copying PHI to ./$TARGET_FN"
+echo
+
+if [ $MAKE_RET == 0 ] ; then
+    echo -e "$COL_GREEN"SUCCESS"$COL_STOP - copying PHI to ./$TARGET_FN"
     cp ./src/phi "../$TARGET_FN"
 else
-    echo BUILD FAILED
+    echo -e "$COL_RED"BUILD FAILED"$COL_STOP"
+    echo
     exit
 fi
 
 # done
 
-echo 
-echo Done.
 echo
-
 exit
 

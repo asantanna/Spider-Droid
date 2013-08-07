@@ -29,6 +29,7 @@ add_executable ( phi
   spi.c
   gyro.c
   philink.c
+  hal.c
 )
 
 # no libs to link

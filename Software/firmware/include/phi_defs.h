@@ -48,6 +48,25 @@
 #define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
 #define PHI_ZERO_P(p,l) memset(p, 0, l)
 
+// preprocessor
+
+#define BASH_BLACK      "30"
+#define BASH_RED        "31"
+#define BASH_GREEN      "32"
+#define BASH_YELLOW     "33"
+#define BASH_BLUE       "34"
+#define BASH_MAGENTA    "35"
+#define BASH_CYAN       "36"
+#define BASH_WHILE      "37"
+
+#define BASH_START_COLOR(c)   "\e[1;" c "m"
+#define BASH_STOP_COLOR       "\e[0m"
+
+#define DO_PRAGMA(x)    _Pragma (#x)
+#define TODO(m)         DO_PRAGMA(message ("\n" BASH_START_COLOR(BASH_GREEN)  "TODO - " m BASH_STOP_COLOR))
+#define WARN(m)         DO_PRAGMA(message ("\n" BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
+#define HACK(m)         DO_PRAGMA(message ("\n" BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
+
 // time
 
 #define U64_1E6         ((UINT64)1e6)

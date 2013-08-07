@@ -92,9 +92,6 @@ JSON_HANDLER(getPhiUptime);
 JSON_HANDLER(startPhiLink);
 JSON_HANDLER(getLinkState);
 
-JSON_HANDLER(debugJunk);
-JSON_HANDLER(debugJunk2);
-
 // valid command list
 
 typedef struct {
@@ -119,8 +116,6 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(startPhiLink),
   CMD_ENTRY(getLinkState),
 //  CMD_ENTRY(setBrake),
-  CMD_ENTRY(debugJunk),
-  CMD_ENTRY(debugJunk2),
   { 0, 0}
 };
 
@@ -437,7 +432,7 @@ JSON_HANDLER(getInitState) {
 
 JSON_HANDLER(initPeripherals) {
   JSON_HANDLER_PROLOG(initPeripherals);
-  char* status = phi_initPeripherals();
+  char* status = HAL_initPeripherals();
   sprintf(_buff + strlen(_buff), Q(status) ":" Q(%s) "\n", status == NULL ? "OK" : status);
   JSON_HANDLER_EPILOG();
 }
@@ -602,7 +597,7 @@ JSON_HANDLER(setPower) {
   int motorIdx = MOTOR_NAME_TO_IDX(motorName);
   LOG_INFO("JSON.setPower: setting motor idx=%d to power=%u, dir=%s", motorIdx, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
 
-  setMotorPower(motorIdx, (BYTE) powerVal, bFwd);
+  HAL_setMotorPower(motorIdx, (BYTE) powerVal, bFwd);
 
 quick_exit:
 
@@ -626,7 +621,7 @@ error_exit:
 JSON_HANDLER(getGyroData) {
   JSON_HANDLER_PROLOG(getGyroData);
   float pitchDps, yawDps, rollDps;
-  gyroGetData(&pitchDps, &yawDps, &rollDps);
+  HAL_gyroGetData(&pitchDps, &yawDps, &rollDps);
   sprintf(_buff + strlen(_buff), Q(pitchDps) ":" Q(%.1f) ",\n", (double) pitchDps);
   sprintf(_buff + strlen(_buff), Q(yawDps) ":" Q(%.1f) ",\n", (double) yawDps);
   sprintf(_buff + strlen(_buff), Q(rollDps) ":" Q(%.1f) "\n", (double) rollDps);
@@ -635,7 +630,7 @@ JSON_HANDLER(getGyroData) {
 
 JSON_HANDLER(getGyroTemp) {
   JSON_HANDLER_PROLOG(getGyroTemp);
-  sprintf(_buff + strlen(_buff), Q(degreesC) ":" Q(%d) "\n", gyroGetTemp());
+  sprintf(_buff + strlen(_buff), Q(degreesC) ":" Q(%d) "\n", HAL_gyroGetTemp());
   JSON_HANDLER_EPILOG();
 }
 
@@ -758,24 +753,6 @@ error_exit:
   goto quick_exit;
 }
 
-//
-// JUNK commnds for quick tests
-//
 
-JSON_HANDLER(debugJunk) {
-  JSON_HANDLER_PROLOG(debugJunk);
-  char motorCmd[] = { MC_CMD_SIGN, MC_DEFAULT_DEVICE_NUM, MC_CMD_FWD_M0, 0x7F };
-  uart_send(motorCmd, sizeof(motorCmd));
-  sprintf(_buff + strlen(_buff), Q(status) ":" Q(%s) "\n", "OK");
-  JSON_HANDLER_EPILOG();
-}
-
-JSON_HANDLER(debugJunk2) {
-  JSON_HANDLER_PROLOG(debugJunk2);
-  char motorCmd[] = { MC_CMD_SIGN, MC_DEFAULT_DEVICE_NUM, MC_CMD_FWD_M0, 0 };
-  uart_send(motorCmd, sizeof(motorCmd));
-  sprintf(_buff + strlen(_buff), Q(status) ":" Q(%s) "\n", "OK");
-  JSON_HANDLER_EPILOG();
-}
 
 

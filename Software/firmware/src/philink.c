@@ -139,7 +139,7 @@ void* phi_link_loop(void* arg)
       
       if (nRec <= 0) {
         // error occurred
-        // TODO : do something error            
+        WARN("add error check")
         break;
 
       } else {
@@ -162,7 +162,7 @@ void* phi_link_loop(void* arg)
 
       if (nSnd <= 0) {
         // error occurred
-        // TODO : do something error            
+        WARN("add error check")
         break;
 
       } else {
@@ -217,11 +217,11 @@ void initStatePacket(PHI_STATE_PACKET *p) {
   // gyro (return +/- percent of max reading)
   
   float pitchDps, yawDps, rollDps;
-  gyroGetData(&pitchDps, &yawDps, &rollDps);
+  HAL_gyroGetData(&pitchDps, &yawDps, &rollDps);
 
-  p -> gyro[0] = (INT16) (pitchDps / 250.0F);
-  p -> gyro[1] = (INT16) (yawDps / 250.0F);
-  p -> gyro[2] = (INT16) (rollDps / 250.0F);
+  p -> gyro[0] = (INT16) pitchDps;
+  p -> gyro[1] = (INT16) yawDps;
+  p -> gyro[2] = (INT16) rollDps;
 }
 
 

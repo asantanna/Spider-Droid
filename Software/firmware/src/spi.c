@@ -68,7 +68,7 @@ error_exit:
 
 void spi_send(int spiIdx, BYTE* pTx, int txLen) {
 
-  // TODO: ignoring spiIdx
+  WARN("ignoring spiIdx in spi_send")
   
   spi0_xfer[0].rx_buf = 0;
   spi0_xfer[0].tx_buf = (UINT32) pTx;
@@ -81,7 +81,7 @@ void spi_send(int spiIdx, BYTE* pTx, int txLen) {
 
 void spi_receive(int spiIdx, BYTE* pRx, int rxLen) {
 
-  // TODO: ignoring spiIdx
+  WARN("ignoring spiIdx in spi_receive")
 
   spi0_xfer[0].rx_buf = (UINT32) pRx;
   spi0_xfer[0].tx_buf = 0;
@@ -94,7 +94,7 @@ void spi_receive(int spiIdx, BYTE* pRx, int rxLen) {
 
 void spi_sendreceive(int spiIdx, BYTE* pTx, int txLen, BYTE* pRx, int rxLen) {
 
-  // TODO: ignoring spiIdx
+  WARN("ignoring spiIdx in spi_sendreceive")
   
   spi0_xfer[0].rx_buf = 0;
   spi0_xfer[0].tx_buf = (UINT32) pTx;

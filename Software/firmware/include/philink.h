@@ -32,11 +32,10 @@ typedef struct {
 typedef struct  __attribute__ ((__packed__)) {
   char sign     [NUM_SIGN_BYTES];
   INT8 motor    [CMDP_MOTOR_ELEM];
-  
 } PHI_CMD_PACKET;
 
 #define STAP_SIGN               "SPV1"
-#define STAP_NUM_IMAGE_BYTES    CAM_NUM_BYTES
+#define STAP_NUM_IMAGE_BYTES    /*CAM_NUM_BYTES*/ 4
 #define STAP_NUM_GYRO_ELEM      3
 #define STAP_NUM_JOINT_ELEM     NUM_MOTORS
 #define STAP_TEMP_BYTES         1
@@ -44,10 +43,9 @@ typedef struct  __attribute__ ((__packed__)) {
 typedef struct __attribute__ ((__packed__)) {
   char  sign    [NUM_SIGN_BYTES];
   BYTE  image   [STAP_NUM_IMAGE_BYTES];
-  INT16 gyro    [STAP_NUM_GYRO_ELEM];
+  float gyro    [STAP_NUM_GYRO_ELEM];
   BYTE  joint   [STAP_NUM_JOINT_ELEM];
   BYTE  temp    [STAP_TEMP_BYTES];
-
 } PHI_STATE_PACKET;
 
 

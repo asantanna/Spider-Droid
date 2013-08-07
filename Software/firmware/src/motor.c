@@ -20,14 +20,17 @@ MOTOR_DEF motorDefs[] = {
   { 5, 1},    // lbh
 };
 
-void setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
+void PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
 
   MOTOR_DEF* md = &motorDefs[motorIdx];
 
   BYTE cmd = 
     bFwd ? (md -> motorIdx == 0 ? MC_CMD_FWD_M0 : MC_CMD_FWD_M1)
          : (md -> motorIdx == 0 ? MC_CMD_BCK_M0 : MC_CMD_BCK_M1);
-  
+
+  WARN("Ignoring motor controller ID")
+  TODO("Do we want 7-bit or 8-bit motor speeds?")
+    
   char motorCmd[] = {
     MC_CMD_SIGN,
     /*HACK FOR NOW md -> controllerID,*/ 9,

@@ -55,8 +55,3 @@ typedef struct {
   BYTE motorIdx;      // idx of motor in controller (0 or 1)
   
 } MOTOR_DEF;
-
-
-// functions
-
-void setMotorPower(int motorIdx, BYTE power, BOOL bFwd);

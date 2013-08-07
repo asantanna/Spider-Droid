@@ -13,10 +13,13 @@ void* phi_allocHelper(int size);
 // MISC
 //
 
-UINT64 phi_upTime();
+char* initPeripherals();
 
 void phi_abortProcess(int rc);
 void phi_abortWithMsg(const char* msg);
+
+UINT64 phi_upTime();
+double phi_rand();
 
 //
 // non-ANSI
@@ -42,24 +45,5 @@ void phi_logClose(void);
 
 // Phi Link
 BOOL startPhiLink(char* ipAddr, int port);
-
-//
-// MISC HARDWARE
-//
-
-char* phi_initPeripherals();
-
-BOOL uartInit();
-void uart_send(BYTE* pData, int dataLen);
-int uart_receive(void* pBuff, int buffLen);
-
-BOOL spiInit();
-void spi_send(int spiIdx, BYTE* pTx, int txLen);
-void spi_receive(int spiIdx, BYTE* pRx, int rxLen);
-void spi_sendreceive(int spiIdx, BYTE* pRx, int rxLen, BYTE* pTx, int txLen);
-
-BOOL gyroInit();
-void gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps);
-INT8 gyroGetTemp();
 
 

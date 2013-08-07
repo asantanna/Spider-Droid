@@ -38,16 +38,7 @@
 //      same format as the part after the "?" in the GET command.
 //
 
-//
-// TODO: fix forking
-// TODO: fix return codes because no longer forking
-// TODO: read through all code
-// TODO: print thread id in "starting message"
-// TODO: parse URL encoding ... it's easy and will save pain later
-//
-
 #include "phi.h"
-
 
 #define HTTP_BUFFSIZE           8096      // max size of HTTP request
 #define FORBIDDEN               403
@@ -362,7 +353,7 @@ void* wa_process_web_request(void* arg)
     }
   }
 
-  // TODO: check for HEAD?
+  TODO("check for HEAD?")
 
   //
   // Check for POST with JSON commands
@@ -419,6 +410,7 @@ void* wa_process_web_request(void* arg)
   // lseek back to the file start ready for reading
   lseek(pagefd, 0, SEEK_SET);
 
+  TODO("Send file time?")
   // TODO: send file time? Remember that .html files will
   // be rewritten to fill in any variables so static files
   // are *always* potentially new.  But maybe we can do

@@ -150,7 +150,7 @@ void phi_logClose(void) {
 void phi_logTimestamp() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  fprintf(phi_logfp, "T=%llu uS : ", phi_upTime());
+  fprintf(phi_logfp, "T=%.2f mS : ", ((double)phi_upTime()) / 1000);
   // no flush here
 }
 
@@ -168,7 +168,7 @@ void phi_logMsg(const char* tag, const char *fmt, ...) {
 
 // code adapted from http://man7.org/linux/man-pages/man3/getifaddrs.3.html
 
-UINT32 phi_getHostIP() {
+UINT32 getHostIP() {
   
   struct ifaddrs *ifaddr, *ifa;
   int family, s;
@@ -176,7 +176,7 @@ UINT32 phi_getHostIP() {
   UINT32 ipAddr = 0;
 
   if (getifaddrs(&ifaddr) == -1) {
-    LOG_ERR("getifaddrs() failed in phi_getHostIP()");
+    LOG_ERR("getifaddrs() failed in getHostIP()");
     return 0;
   }
 
@@ -214,7 +214,7 @@ UINT32 phi_getHostIP() {
   freeifaddrs(ifaddr);
   
   if (ipAddr == 0) {
-    LOG_ERR("interace IP address not found in phi_getHostIP()");
+    LOG_ERR("interace IP address not found in getHostIP()");
   } else {
     LOG_INFO("returning interface IP=%lu.%lu.%lu.%lu",
              ipAddr & 0xff, (ipAddr >> 8) & 0xff,
@@ -226,7 +226,9 @@ UINT32 phi_getHostIP() {
 
 
 void phi_setLED(PHI_LED_COLOR color) {
-  // TODO HACK
+  
+  TODO("Implement phi_setLED()")
+
   switch (color) {
     case OFF:
       break;
@@ -244,4 +246,8 @@ void phi_setLED(PHI_LED_COLOR color) {
       break;
 
       }
+}
+
+double phi_rand() {
+  return ((double) rand()) / RAND_MAX;
 }
