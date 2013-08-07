@@ -28,7 +28,6 @@ namespace Phi_Core {
 
     private static DispatcherTimer blinkyTimer;
     private bool blinkState = false;
-
     private static DispatcherTimer updateTimer;
 
     //
@@ -39,19 +38,11 @@ namespace Phi_Core {
 
       InitializeComponent();
 
-      //
-      // One-time init
-      //
-
       // save ref
       PhiGlobals.mainWindow = this;
     }
 
-    async private void ActivateLink_Click(object sender, RoutedEventArgs e) {
-
-      // disable button
-      ActivateLink.Content = "ACTIVE";
-      ActivateLink.IsEnabled = false;
+    async private void startPhiLink() {
 
       // start listener (ASYNC)
       Task<NetworkStream> listenTask =  PhiLink.startListenerAsync();
@@ -141,6 +132,9 @@ namespace Phi_Core {
         // one time initializations
         updateLinkStatus(PhiLink.PhiLinkState.LINK_OFF);
         updateNowEvent(null, null);
+
+        // start Phi Link listener
+        startPhiLink();
       }
     }
 
@@ -166,9 +160,9 @@ namespace Phi_Core {
       LinkFrameRateText.Text = PhiLink.getAvgFrameRate().ToString("F1") + " Hz";
       AvgIdleText.Text = PhiLink.getAvgIdle().ToString("F1") + " %";
 
-      drawGyroIndicator("pitch", PhiLink.getGyroPitch());
-      drawGyroIndicator("yaw", PhiLink.getGyroYaw());
-      drawGyroIndicator("roll", PhiLink.getGyroRoll());
+      drawGyroIndicator("pitch", PhiLink.getGyroAccumPitch());
+      drawGyroIndicator("yaw", PhiLink.getGyroAccumYaw());
+      drawGyroIndicator("roll", PhiLink.getGyroAccumRoll());
     }
 
     private void drawGyroIndicator(string prefix, double percent) {
@@ -186,6 +180,9 @@ namespace Phi_Core {
         arc.SweepDirection = SweepDirection.Counterclockwise;
       }
       arc.Point = new Point(radius + yComp, radius - xComp);
+
+      Label label = (Label) FindName(prefix + "Value");
+      label.Content = percent.ToString("F1") + " %";
     }
 
   }

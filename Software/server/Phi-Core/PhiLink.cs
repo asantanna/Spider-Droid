@@ -19,7 +19,7 @@ namespace Phi_Core {
 
     const Int32 PHI_LINK_PORT = 1122;
     
-    const double DESIRED_LOOP_FPS = 20;
+    const double DESIRED_LOOP_FPS = 50;
     const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
 
     const double LOOP_TIME_ACCUM_RATE = (1.0 / 100);
@@ -166,8 +166,8 @@ namespace Phi_Core {
         readTask.Wait();
 
         // write sensor states into Eve
-        // eve.writeInputs(statePacket);
         parseState(statePacket);
+        // eve.writeInputs();
 
         // step Eve
         // eve.Step();
@@ -248,21 +248,24 @@ namespace Phi_Core {
         return loopCount;
     }
 
-    internal static double getGyroPitch() {
+    internal static double getGyroAccumPitch() {
       lock (dataLock) {
-        return accum_pitch;
+        // return accum value [-100,100]
+        return accum_pitch / 250 * 100;
       }
     }
 
-    internal static double getGyroYaw() {
+    internal static double getGyroAccumYaw() {
       lock (dataLock) {
-        return accum_yaw;
+        // return accum value [-100,100]
+        return accum_yaw / 250 * 100;
       }
     }
 
-    internal static double getGyroRoll() {
+    internal static double getGyroAccumRoll() {
       lock (dataLock) {
-        return accum_roll;
+        // return accum value [-100,100]
+        return accum_roll / 250 * 100;
       }
     }
 
