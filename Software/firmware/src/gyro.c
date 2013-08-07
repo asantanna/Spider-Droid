@@ -165,7 +165,7 @@ void PHI_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
     }
 
     // read status again to see if more in FIFO
-    BYTE status = gyroReadStatus();
+    status = gyroReadStatus();
   }
 
   // copy back
