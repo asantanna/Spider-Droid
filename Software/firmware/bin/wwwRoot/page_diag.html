@@ -79,11 +79,6 @@
               }
               break;
               
-            case "initPeripherals":
-              document.getElementById("phi_init_request_status").innerHTML = reply.status;
-              phi_getInitState();
-              break;
-              
             case "getGyroData":
               var pitch = parseFloat(reply.pitchDps);
               var yaw = parseFloat(reply.yawDps);
@@ -199,11 +194,6 @@
          <td class="phi_label">State</td>
          <td> &nbsp; &nbsp; </td>
          <td id="phi_peripheral_init"></td>
-         <td style="padding-left:30px;">
-            <input type="button" onclick="phi_initPeripherals()" value="Initialize Now">
-         </td>
-         <td id="phi_init_request_status" class="phi_value">
-         </td>
       </tr>
 
    </table>
