@@ -20,7 +20,8 @@
 #define GYRO_SPI_MODE             (SPI_CPHA | SPI_CPOL)
 
 // 8 bits per word
-#define GYRO_SPI_BPW              8
+#define GYRO_SPI_BPW
+8
 
 // multipliers for raw dps values
 #define GYRO_250DPS_MULT          0.00875f
@@ -67,7 +68,7 @@
 #define GYRO_CR1_BW_CO_4          0x30
 
 #define GYRO_CR1_MODE_PWRDOWN     0
-#define GYRO_CR1_MODE_NORMAL	  0x08
+#define GYRO_CR1_MODE_NORMAL      0x08
 #define GYRO_CR1_Z_EN             0x04
 #define GYRO_CR1_Y_EN             0x02
 #define GYRO_CR1_X_EN             0x01
@@ -105,7 +106,7 @@
 #define GYRO_CR4_FS_MASK          0x30
 #define GYRO_CR4_FS_250DPS        0x00
 #define GYRO_CR4_FS_500DPS        0x10
-#define GYRO_CR4_FS_2000DPS       0x30
+#define GYRO_CR4_FS_2000DPS       0x20
 
 #define GYRO_CR4_STEST_MASK       0x06
 #define GYRO_CR4_SPI_3WIRE        0x01
@@ -132,14 +133,14 @@
 
 #define GYRO_STATUS_ADDR          0x27
 
-#define GYRO_STATUS_OVER           0x80
-#define GYRO_STATUS_Z_OVER         0x40
-#define GYRO_STATUS_Y_OVER         0x20
-#define GYRO_STATUS_X_OVER         0x10
-#define GYRO_STATUS_AVAIL          0x08
-#define GYRO_STATUS_Z_AVAIL        0x04
-#define GYRO_STATUS_Y_AVAIL        0x02
-#define GYRO_STATUS_X_AVAIL        0x01
+#define GYRO_STATUS_OVER          0x80
+#define GYRO_STATUS_Z_OVER        0x40
+#define GYRO_STATUS_Y_OVER        0x20
+#define GYRO_STATUS_X_OVER        0x10
+#define GYRO_STATUS_AVAIL         0x08
+#define GYRO_STATUS_Z_AVAIL       0x04
+#define GYRO_STATUS_Y_AVAIL       0x02
+#define GYRO_STATUS_X_AVAIL       0x01
 
 // OUT_X_L, OUT_X_H
 

@@ -117,6 +117,7 @@ INT16 gyroReadRawDps(BYTE lowRegAddr) {
 // This is because PHI will equalize all sensors values and quantize.
 // Therefore the noise will automatically be quantized away.
 
+TODO("implement gyro calibration and thresholding")
 
 /*
 static INT16 xZeroRate = 0;
@@ -124,7 +125,7 @@ static INT16 yZeroRate = 0;
 static INT16 zZeroRate = 0;
 
 void gyroCalcZeroRates(BYTE lowRegAddr) {
-  // not implemented because PHI has no need for it
+  // not implemented
 }
 */
 
