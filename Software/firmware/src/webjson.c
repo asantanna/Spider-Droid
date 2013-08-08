@@ -86,7 +86,7 @@ JSON_HANDLER(getIpAddr);
 JSON_HANDLER(setPower);
 JSON_HANDLER(getUname);
 JSON_HANDLER(getSysInfo);
-JSON_HANDLER(getGyroData);
+JSON_HANDLER(getGyroDeltas);
 JSON_HANDLER(getGyroTemp);
 JSON_HANDLER(getPhiUptime);
 JSON_HANDLER(startPhiLink);
@@ -111,7 +111,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(getSysInfo),
   CMD_ENTRY(getPhiUptime),
   CMD_ENTRY(setPower),
-  CMD_ENTRY(getGyroData),
+  CMD_ENTRY(getGyroDeltas),
   CMD_ENTRY(getGyroTemp),
   CMD_ENTRY(startPhiLink),
   CMD_ENTRY(getLinkState),
@@ -612,19 +612,19 @@ error_exit:
 //
 // Gyroscope
 //
-//  req:    { cmd : getGyroData }
-//  reply:  { pitchDps: -250 to 250, yawDps: -250 to 250, rollDps: -250 to 250 }
+//  req:    { cmd : getGyroDeltas }
+//  reply:  { pitchDelta: +/- deg , yawDelta: +/- deg, rollDelta: +/- deg }
 //
 //  req:    { cmd : getGyroTemp }
 //  reply:  { degreesC: -128 to 127 deg celsius (1s refresh rate) }
 
-JSON_HANDLER(getGyroData) {
-  JSON_HANDLER_PROLOG(getGyroData);
-  float pitchDps, yawDps, rollDps;
-  HAL_gyroGetData(&pitchDps, &yawDps, &rollDps);
-  sprintf(_buff + strlen(_buff), Q(pitchDps) ":" Q(%.1f) ",\n", (double) pitchDps);
-  sprintf(_buff + strlen(_buff), Q(yawDps) ":" Q(%.1f) ",\n", (double) yawDps);
-  sprintf(_buff + strlen(_buff), Q(rollDps) ":" Q(%.1f) "\n", (double) rollDps);
+JSON_HANDLER(getGyroDeltas) {
+  JSON_HANDLER_PROLOG(getGyroDeltas);
+  float pitchDelta, yawDelta, rollDelta;
+  HAL_gyroGetDeltas(&pitchDelta, &yawDelta, &rollDelta);
+  sprintf(_buff + strlen(_buff), Q(pitchDelta) ":" Q(%.1f) ",\n", (double) pitchDelta);
+  sprintf(_buff + strlen(_buff), Q(yawDelta) ":" Q(%.1f) ",\n", (double) yawDelta);
+  sprintf(_buff + strlen(_buff), Q(rollDelta) ":" Q(%.1f) "\n", (double) rollDelta);
   JSON_HANDLER_EPILOG();
 }
 

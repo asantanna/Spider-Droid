@@ -17,7 +17,7 @@ HAL_FUNCS phiHal = {
   .pName =            "Phi HAL",
   .initPeripherals =  (halFunc_pChar) PHI_initPeripherals,
   .gyroInit =         (halFunc_BOOL) PHI_gyroInit,
-  .gyroGetData =      PHI_gyroGetData,
+  .gyroGetDeltas =    PHI_gyroGetDeltas,
   .gyroGetTemp =      PHI_gyroGetTemp,
   .setMotorPower =    (halFunc_void) PHI_setMotorPower,
 };
@@ -30,7 +30,7 @@ HAL_FUNCS genericHal = {
   .pName =            "Generic HAL",
   .initPeripherals =  (halFunc_pChar) GENERIC_initPeripherals,
   .gyroInit =         (halFunc_BOOL) GENERIC_gyroInit,
-  .gyroGetData =      GENERIC_gyroGetData,
+  .gyroGetDeltas =    GENERIC_gyroGetDeltas,
   .gyroGetTemp =      GENERIC_gyroGetTemp,
   .setMotorPower =    (halFunc_void) GENERIC_setMotorPower,
 };
@@ -107,19 +107,25 @@ BOOL  GENERIC_gyroInit(BOOL bEnableFifo) {
   return TRUE;
 }
 
-void  GENERIC_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
+#define GYRO_UPDATE_EVERY 0.1
+
+void  GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+
   static double lastSecs = 0;
   double currSecs = ((double) phi_upTime()) / 1e6;
+  double elapsed = currSecs - lastSecs;
 
-  if (currSecs - lastSecs < 0.1) {
-    *pPitchDps = 0;
-    *pYawDps = 0;
-    *pRollDps = 0;
+  if ( elapsed < GYRO_UPDATE_EVERY) {
+    *pPitchDelta = 0;
+    *pYawDelta = 0;
+    *pRollDelta = 0;
     
   } else {
-    *pPitchDps = 10;
-    *pYawDps = 5;
-    *pRollDps = -10;
+    
+    *pPitchDelta = 100 * elapsed;    // 100 deg/s
+    *pYawDelta   =  50 * elapsed;    // 50 deg/s
+    *pRollDelta  = -50 * elapsed;    // -50 deg/s
+    
     lastSecs = currSecs;
   }
 }

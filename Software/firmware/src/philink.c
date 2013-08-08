@@ -156,6 +156,8 @@ void* phi_link_loop(void* arg)
     
     totSent = 0;
 
+    TODO("Figure out how to make sure data is sent immediately ... flush?")
+
     while (totSent < sizeof(PHI_STATE_PACKET)) {
 
       nSnd = send(sock, txBuff + totSent, sizeof(txBuff) - totSent, 0);
@@ -216,12 +218,12 @@ void initStatePacket(PHI_STATE_PACKET *p) {
 
   // gyro (return +/- percent of max reading)
   
-  float pitchDps, yawDps, rollDps;
-  HAL_gyroGetData(&pitchDps, &yawDps, &rollDps);
+  float pitchDelta, yawDelta, rollDelta;
+  HAL_gyroGetDeltas(&pitchDelta, &yawDelta, &rollDelta);
 
-  p -> gyro[0] = (INT16) pitchDps;
-  p -> gyro[1] = (INT16) yawDps;
-  p -> gyro[2] = (INT16) rollDps;
+  p -> gyro[0] = pitchDelta;
+  p -> gyro[1] = yawDelta;
+  p -> gyro[2] = rollDelta;
 }
 
 

@@ -18,7 +18,7 @@ typedef struct {
 
   // gyroscope
   halFunc_BOOL gyroInit;
-  halFunc_void gyroGetData;
+  halFunc_void gyroGetDeltas;
   halFunc_INT8 gyroGetTemp;
 
   // motor control
@@ -36,7 +36,7 @@ void HAL_init();
 #define HAL_name              (g_pHal -> pName)
 #define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
 #define HAL_gyroInit          (*(g_pHal -> gyroInit))
-#define HAL_gyroGetData       (*(g_pHal -> gyroGetData))
+#define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
 #define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
 #define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
 
@@ -44,7 +44,7 @@ void HAL_init();
 
 char* PHI_initPeripherals();
 BOOL  PHI_gyroInit(BOOL bEnableFifo);
-void  PHI_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps);
+void  PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
 INT8  PHI_gyroGetTemp();
 void  PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
 
@@ -52,6 +52,6 @@ void  PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
 
 char* GENERIC_initPeripherals();
 BOOL  GENERIC_gyroInit(BOOL bEnableFifo);
-void  GENERIC_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps);
+void  GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
 INT8  GENERIC_gyroGetTemp();
 void  GENERIC_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);

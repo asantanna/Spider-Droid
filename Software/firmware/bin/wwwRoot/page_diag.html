@@ -79,10 +79,10 @@
               }
               break;
               
-            case "getGyroData":
-              var pitch = parseFloat(reply.pitchDps);
-              var yaw = parseFloat(reply.yawDps);
-              var roll = parseFloat(reply.rollDps);
+            case "getGyroDeltas":
+              var pitch = parseFloat(reply.pitchDelta);
+              var yaw = parseFloat(reply.yawDelta);
+              var roll = parseFloat(reply.rollDelta);
 
               document.getElementById("phi_pitch_rate").innerHTML = pitch.toString();
               document.getElementById("phi_yaw_rate").innerHTML = yaw.toString();
@@ -121,7 +121,7 @@
 
       function pollGyro() {
         // order is important - see parseJsonReply()
-        phi_getGyroData();
+        phi_getGyroDeltas();
         phi_getGyroTemp();
       }
 

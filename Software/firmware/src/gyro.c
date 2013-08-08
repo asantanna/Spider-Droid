@@ -4,6 +4,22 @@
 
 #include "phi.h"
 
+//
+// SAMPLE/RANGE selection
+//
+// NOTE: these pairs must be adjusted together
+//
+
+#define GYRO_MAX_VALUE          250.0f
+#define GYRO_MAX_VALUE_CMD      GYRO_CR4_FS_250DPS
+#define GYRO_MAX_VALUE_MULT     GYRO_250DPS_MULT
+
+#define GYRO_SAMPLE_RATE        100.0f
+#define GYRO_SAMPLE_PERIOD      (1.0f / GYRO_SAMPLE_RATE)
+#define GYRO_SAMPLE_RATE_CMD    GYRO_CR1_DR_100HZ
+
+// end of SAMPLE/RANGE selection
+
 BOOL PHI_gyroInit(BOOL bEnableFifo) {
 
   BOOL rc = FALSE;
@@ -16,7 +32,7 @@ BOOL PHI_gyroInit(BOOL bEnableFifo) {
 
   if (rxBuff[0] != GYRO_WHOAMI_REPLY) {
     // bad (or no) reply
-    LOG_ERR("bad (or no) reply from gyroscope, reply=%02Xh", rxBuff[0]);
+    LOG_FATAL("bad (or no) reply from gyroscope, reply=%02Xh", rxBuff[0]);
     goto quick_exit;
   }
 
@@ -28,7 +44,7 @@ BOOL PHI_gyroInit(BOOL bEnableFifo) {
   // Note: bits of a byte are sent out MSB but multiple bytes are sent out LSB (little endian)
 
   txBuff[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_CR4_ADDR;
-  txBuff[1] = GYRO_CR4_BDU_EN | GYRO_CR4_LITTLE_ENDIAN | GYRO_CR4_FS_250DPS;
+  txBuff[1] = GYRO_CR4_BDU_EN | GYRO_CR4_LITTLE_ENDIAN | GYRO_MAX_VALUE_CMD;
   spi_send(GYRO_SPI_IDX, txBuff, 2);
 
   // CR5 - default OK unless want FIFO (32 slot)
@@ -54,7 +70,7 @@ BOOL PHI_gyroInit(BOOL bEnableFifo) {
 
   // CR1
   txBuff[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_CR1_ADDR;
-  txBuff[1] = GYRO_CR1_DR_100HZ | GYRO_CR1_BW_CO_1 | GYRO_CR1_MODE_NORMAL | GYRO_CR1_X_EN | GYRO_CR1_Y_EN | GYRO_CR1_Z_EN;
+  txBuff[1] = GYRO_SAMPLE_RATE_CMD | GYRO_CR1_BW_CO_1 | GYRO_CR1_MODE_NORMAL | GYRO_CR1_X_EN | GYRO_CR1_Y_EN | GYRO_CR1_Z_EN;
   spi_send(GYRO_SPI_IDX, txBuff, 2);
 
   // success
@@ -119,7 +135,7 @@ float gyroReadDps(BYTE lowRegAddr) {
   // LOG_INFO("raw %c dps = %d", 'X' + (char)((lowRegAddr - GYRO_XL_ADDR) / 2), raw);
 
   // see note above about why we don't substract the zeroRate
-  float trueDps = raw * GYRO_250DPS_MULT;
+  float trueDps = raw * GYRO_MAX_VALUE_MULT;
 
   return trueDps;
 }
@@ -130,16 +146,18 @@ float gyroReadDps(BYTE lowRegAddr) {
 // mounting, with the connector pins going in the left-right axis.  Therefore,
 // x = roll, y = pitch and z = yaw.
 //
-// Note: this function returns DPS (degrees per second)
+// Note: this function returns delta(degrees) since last read.  The delta is
+// computed by noting that each sample represents the average speed (dps) in a
+// GYRO_SAMPLE_PERIOD time span.
 //
 
 TODO("check for overrun")
 
-void PHI_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
+void PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
   
-  float pitchDps = 0;
-  float yawDps = 0;
-  float rollDps = 0;
+  float pitchDelta = 0;
+  float yawDelta = 0;
+  float rollDelta = 0;
   
   BYTE status = gyroReadStatus();
 
@@ -151,17 +169,17 @@ void PHI_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
 
     if ((status & GYRO_STATUS_Y_AVAIL) != 0) {
       // have Y (pitch) data
-      pitchDps += gyroReadDps(GYRO_YL_ADDR);
+      pitchDelta += gyroReadDps(GYRO_YL_ADDR) * GYRO_SAMPLE_PERIOD;
     }
 
     if ((status & GYRO_STATUS_Z_AVAIL) != 0) {
       // have Z (yaw) data
-      yawDps += gyroReadDps(GYRO_ZL_ADDR);
+      yawDelta += gyroReadDps(GYRO_ZL_ADDR) * GYRO_SAMPLE_PERIOD;
     }
 
     if ((status & GYRO_STATUS_X_AVAIL) != 0) {
       // have X (roll) data
-      rollDps += gyroReadDps(GYRO_XL_ADDR);
+      rollDelta += gyroReadDps(GYRO_XL_ADDR) * GYRO_SAMPLE_PERIOD;
     }
 
     // read status again to see if more in FIFO
@@ -170,9 +188,9 @@ void PHI_gyroGetData(float* pPitchDps, float* pYawDps, float* pRollDps) {
 
   // copy back
   
-  *pPitchDps = pitchDps;
-  *pYawDps   = yawDps;
-  *pRollDps  = rollDps;
+  *pPitchDelta = pitchDelta;
+  *pYawDelta   = yawDelta;
+  *pRollDelta  = rollDelta;
 }
 
 INT8 PHI_gyroGetTemp() {
