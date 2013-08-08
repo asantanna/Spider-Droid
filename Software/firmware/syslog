@@ -1,0 +1,6 @@
+#! /bin/bash
+
+echo Displaying records in syslog related to phi
+echo
+
+cat /var/log/syslog | grep phi
