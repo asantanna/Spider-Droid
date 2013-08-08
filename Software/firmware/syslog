@@ -3,4 +3,4 @@
 echo Displaying records in syslog related to phi
 echo
 
-cat /var/log/syslog | grep phi
+cat /var/log/syslog | grep phi | grep -v rpi-phi
