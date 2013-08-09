@@ -168,9 +168,14 @@
 #define GYRO_FIFO_MODE_BTS        0x80
 #define GYRO_FIFO_WTM_MASK        0x1F
 
-// FIFO_CTRL_REG
+// FIFO_SRC_REG
 
-#define GYRO_SRC_ADDR             0x2F
+#define GYRO_FIFO_SRC_ADDR        0x2F
+
+#define GYRO_FIFO_SRC_WTM         0x80
+#define GYRO_FIFO_SRC_OVRN        0x40
+#define GYRO_FIFO_SRC_EMPTY       0x20
+#define GYRO_FIFO_SRC_COUNT_MASK  0x1F
 
 // INT1_CFG
 

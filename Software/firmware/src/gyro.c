@@ -4,6 +4,9 @@
 
 #include "phi.h"
 
+// FIFO enabled flag
+BOOL bUseFifo = FALSE;
+
 //
 // SAMPLE/RANGE selection
 //
@@ -25,6 +28,9 @@ BOOL PHI_gyroInit(BOOL bEnableFifo) {
   BOOL rc = FALSE;
   BYTE txBuff[2];
   BYTE rxBuff[2];
+
+  // remember FIFO mode
+  bUseFifo = bEnableFifo;
 
   // make sure gyro is there
   txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_NO_INC | GYRO_WHOAMI_ADDR;
@@ -49,11 +55,13 @@ BOOL PHI_gyroInit(BOOL bEnableFifo) {
 
   // CR5 - default OK unless want FIFO (32 slot)
 
-  if (bEnableFifo == TRUE) {
+  if (bUseFifo == TRUE) {
+    
     // enable FIFO, ints off, high pass filter off
     txBuff[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_CR5_ADDR;
     txBuff[1] = GYRO_CR5_FIFO_EN;
     spi_send(GYRO_SPI_IDX, txBuff, 2);
+    
     // set FIFO mode=stream, no watermark interrupt
     txBuff[0] = GYRO_ADDR_WRITE | GYRO_ADDR_NO_INC | GYRO_FIFO_ADDR;
     txBuff[1] = GYRO_FIFO_MODE_STREAM;
@@ -87,6 +95,17 @@ BYTE gyroReadStatus() {
   BYTE rxBuff[1];
   
   txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_NO_INC | GYRO_STATUS_ADDR;
+  spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 1);
+
+  return rxBuff[0];
+}
+
+BYTE gyroReadFifoSrc() {
+
+  BYTE txBuff[1];
+  BYTE rxBuff[1];
+
+  txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_NO_INC | GYRO_FIFO_SRC_ADDR;
   spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 1);
 
   return rxBuff[0];
@@ -141,6 +160,25 @@ float gyroReadDps(BYTE lowRegAddr) {
   return trueDps;
 }
 
+void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
+  BYTE txBuff[1];
+  BYTE rxBuff[6];
+
+  // read six registers in sequential order to free slot
+  txBuff[0] = GYRO_ADDR_READ | GYRO_ADDR_AUTO_INC | GYRO_XL_ADDR;
+  spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 6);
+
+  // extract
+  INT16 rawX  = *((INT16 *)rxBuff);
+  INT16 rawY  = *((INT16 *)rxBuff+2);
+  INT16 rawZ  = *((INT16 *)rxBuff+4);
+  
+  // copy back
+  *pPitchDps = rawY * GYRO_MAX_VALUE_MULT;
+  *pYawDps   = rawZ * GYRO_MAX_VALUE_MULT;
+  *pRollDps  = rawX * GYRO_MAX_VALUE_MULT;
+}
+
 //
 // Gyro has three axes: x, y and z (as labeled on board). The reported values
 // relate to rotation about these axes.  Regarding PHI, the board  has a horizontal
@@ -154,7 +192,7 @@ float gyroReadDps(BYTE lowRegAddr) {
 
 TODO("check for overrun")
 
-void PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+void PHI_gyroGetDeltas_noFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
   
   float pitchDelta = 0;
   float yawDelta = 0;
@@ -192,6 +230,55 @@ void PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) 
   *pPitchDelta = pitchDelta;
   *pYawDelta   = yawDelta;
   *pRollDelta  = rollDelta;
+}
+
+void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+
+  float pitchDelta = 0;
+  float yawDelta = 0;
+  float rollDelta = 0;
+
+  BYTE fifoSrc = gyroReadFifoSrc();
+
+  // DEBUG
+  int loopCount = 0;
+  
+  // LOG_INFO("gyro FIFO SRC = %02Xh", fifoSrc);
+
+  while ((fifoSrc & GYRO_FIFO_SRC_EMPTY) == 0) {
+
+    // FIFO not empty
+    // read a FIFO slot
+    float pitchDps, yawDps, rollDps;
+    gyroReadFifoSlot(&pitchDps, &yawDps, &rollDps);
+
+    // accumulate
+    pitchDelta += pitchDps * GYRO_SAMPLE_PERIOD;
+    yawDelta   += yawDps * GYRO_SAMPLE_PERIOD;
+    rollDelta  += rollDps * GYRO_SAMPLE_PERIOD;
+
+    // read src again to see if more in FIFO
+    fifoSrc = gyroReadFifoSrc();
+
+    // DEBUG
+    LOG_INFO("gyro FIFO SRC = %02Xh", fifoSrc);
+    loopCount ++;
+  }
+
+  // DEBUG
+  LOG_INFO("FIFO loop count=%d", loopCount);
+
+  // copy back
+
+  *pPitchDelta = pitchDelta;
+  *pYawDelta   = yawDelta;
+  *pRollDelta  = rollDelta;
+}
+
+void PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+  
+  bUseFifo ? PHI_gyroGetDeltas_useFifo(pPitchDelta, pYawDelta, pRollDelta)
+           : PHI_gyroGetDeltas_noFifo (pPitchDelta, pYawDelta, pRollDelta);
 }
 
 INT8 PHI_gyroGetTemp() {
