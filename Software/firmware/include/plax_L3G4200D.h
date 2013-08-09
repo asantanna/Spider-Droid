@@ -56,6 +56,7 @@
 #define GYRO_CR1_ADDR             0x20
 
 #define GYRO_CR1_DR_MASK          0xC0
+
 #define GYRO_CR1_DR_100HZ         0x00  /* output data rate */
 #define GYRO_CR1_DR_200HZ         0x40
 #define GYRO_CR1_DR_400HZ         0x80
