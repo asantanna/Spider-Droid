@@ -20,8 +20,7 @@
 #define GYRO_SPI_MODE             (SPI_CPHA | SPI_CPOL)
 
 // 8 bits per word
-#define GYRO_SPI_BPW
-8
+#define GYRO_SPI_BPW              8
 
 // multipliers for raw dps values
 #define GYRO_250DPS_MULT          0.00875f
