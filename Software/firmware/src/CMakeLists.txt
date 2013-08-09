@@ -32,5 +32,5 @@ add_executable ( phi
   hal.c
 )
 
-# no libs to link
-# target_link_libraries (phi my_lib_name) 
+# link the math library
+target_link_libraries(phi m)
