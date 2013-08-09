@@ -170,8 +170,8 @@ void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
 
   // extract
   INT16 rawX  = *((INT16 *)rxBuff);
-  INT16 rawY  = *((INT16 *)rxBuff+2);
-  INT16 rawZ  = *((INT16 *)rxBuff+4);
+  INT16 rawY  = *((INT16 *)(rxBuff+2));
+  INT16 rawZ  = *((INT16 *)(rxBuff+4));
   
   // copy back
   *pPitchDps = rawY * GYRO_MAX_VALUE_MULT;
