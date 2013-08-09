@@ -241,7 +241,7 @@ void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRol
   BYTE fifoSrc = gyroReadFifoSrc();
 
   // DEBUG
-  int loopCount = 0;
+  // int loopCount = 0;
   
   // LOG_INFO("gyro FIFO SRC = %02Xh", fifoSrc);
 
@@ -261,12 +261,12 @@ void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRol
     fifoSrc = gyroReadFifoSrc();
 
     // DEBUG
-    LOG_INFO("gyro FIFO SRC = %02Xh", fifoSrc);
-    loopCount ++;
+    // LOG_INFO("gyro FIFO SRC = %02Xh", fifoSrc);
+    // loopCount ++;
   }
 
   // DEBUG
-  LOG_INFO("FIFO loop count=%d", loopCount);
+  // LOG_INFO("FIFO loop count=%d", loopCount);
 
   // copy back
 
