@@ -391,5 +391,16 @@ void gyroCalibrate() {
   threshZ = (INT16) (stdZ * 3);
 
   // done
+
   printf("done\n");
+  
+  printf("Gyro zeros: %.2f,%.2f,%.2f deg\n",
+    (double) (zeroX * GYRO_MAX_VALUE_MULT),
+    (double) (zeroY * GYRO_MAX_VALUE_MULT),
+    (double) (zeroZ * GYRO_MAX_VALUE_MULT));
+  
+  printf("Gyro threshold: %.2f,%.2f,%.2f deg\n",
+    (double) (threshX * GYRO_MAX_VALUE_MULT),
+    (double) (threshY * GYRO_MAX_VALUE_MULT),
+    (double) (threshZ * GYRO_MAX_VALUE_MULT));
 }

@@ -29,8 +29,11 @@
 // polulu 2s9v1 motor controller
 #include "polulu_2s9v1.h"
 
-// parallax L3G4200D gyroscope module
+// Parallax L3G4200D gyroscope module
 #include "plax_L3G4200D.h"
+
+// Microchip ADC chip
+#include "mcp3008.h"
 
 // abstract motor (hides controller details)
 #include "motor.h"
@@ -38,7 +41,7 @@
 // phi link defs
 #include "philink.h"
 
-// HAL
+// hardware abstraction layer (HAL)
 #include "hal.h"
 
 // misc func decls

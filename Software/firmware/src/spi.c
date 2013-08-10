@@ -18,16 +18,35 @@
 
 // SPI 0 SETTINGS - for gyroscope
 
-struct spi_ioc_transfer spi0_xfer[2] = {
+struct spi_ioc_transfer spi_0_xfer[2] = {
   {
-    .delay_usecs = 0,
-    .speed_hz = GYRO_SAFE_SPI_CLK,
-     .bits_per_word = GYRO_SPI_BPW,
+    .delay_usecs =    0,
+    .speed_hz =       GYRO_SAFE_SPI_CLK,
+    .bits_per_word =  GYRO_SPI_BPW,
   }, {
-    .delay_usecs = 0,
-    .speed_hz = GYRO_SAFE_SPI_CLK,
-    .bits_per_word = GYRO_SPI_BPW,
+    .delay_usecs =    0,
+    .speed_hz =       GYRO_SAFE_SPI_CLK,
+    .bits_per_word =  GYRO_SPI_BPW,
   }
+};
+
+// SPI 1 SETTINGS - for ADC
+
+struct spi_ioc_transfer spi_1_xfer[2] = {
+  {
+    .delay_usecs =    0,
+    .speed_hz =       ADC_SAFE_SPI_CLK,
+    .bits_per_word =  ADC_SPI_BPW,
+  }, {
+    .delay_usecs =    0,
+    .speed_hz =       ADC_SAFE_SPI_CLK,
+    .bits_per_word =  ADC_SPI_BPW,
+  }
+};
+
+struct spi_ioc_transfer* spi_xfer[2] = {
+  spi_0_xfer,
+  spi_1_xfer,
 };
 
 // internal
@@ -43,6 +62,15 @@ BOOL spiInit() {
   
   if (g_spi0_fd < 0) {
     LOG_ERR("spiInit: can't init device driver '%s'", SPI0_DRIVER_NAME);
+    goto error_exit;
+  }
+
+  // init SPI 1 for use by ADCs
+
+  g_spi1_fd = initSpiDriver(SPI1_DRIVER_NAME, ADC_SAFE_SPI_CLK, ADC_SPI_MODE,  ADC_SPI_BPW);
+
+  if (g_spi1_fd < 0) {
+    LOG_ERR("spiInit: can't init device driver '%s'", SPI1_DRIVER_NAME);
     goto error_exit;
   }
 
@@ -68,43 +96,48 @@ error_exit:
 
 void spi_send(int spiIdx, BYTE* pTx, int txLen) {
 
-  WARN("ignoring spiIdx in spi_send")
-  
-  spi0_xfer[0].rx_buf = 0;
-  spi0_xfer[0].tx_buf = (UINT32) pTx;
-  spi0_xfer[0].len = (UINT32) txLen;
+  spi_xfer[spiIdx][0].rx_buf = 0;
+  spi_xfer[spiIdx][0].tx_buf = (UINT32) pTx;
+  spi_xfer[spiIdx][0].len = (UINT32) txLen;
 
-  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(1), spi0_xfer) < 0) {
+  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
     LOG_ERR("spi_send: ioctl() failed");
   }
 }
 
 void spi_receive(int spiIdx, BYTE* pRx, int rxLen) {
 
-  WARN("ignoring spiIdx in spi_receive")
+  spi_xfer[spiIdx][0].rx_buf = (UINT32) pRx;
+  spi_xfer[spiIdx][0].tx_buf = 0;
+  spi_xfer[spiIdx][0].len = (UINT32) rxLen;
 
-  spi0_xfer[0].rx_buf = (UINT32) pRx;
-  spi0_xfer[0].tx_buf = 0;
-  spi0_xfer[0].len = (UINT32) rxLen;
-
-  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(1), spi0_xfer) < 0) {
+  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
     LOG_ERR("spi_receive: ioctl() failed");
   }
 }
 
 void spi_sendreceive(int spiIdx, BYTE* pTx, int txLen, BYTE* pRx, int rxLen) {
 
-  WARN("ignoring spiIdx in spi_sendreceive")
+  spi_xfer[spiIdx][0].rx_buf = 0;
+  spi_xfer[spiIdx][0].tx_buf = (UINT32) pTx;
+  spi_xfer[spiIdx][0].len = (UINT32) txLen;
   
-  spi0_xfer[0].rx_buf = 0;
-  spi0_xfer[0].tx_buf = (UINT32) pTx;
-  spi0_xfer[0].len = (UINT32) txLen;
+  spi_xfer[spiIdx][1].rx_buf = (UINT32) pRx;
+  spi_xfer[spiIdx][1].tx_buf = 0;
+  spi_xfer[spiIdx][1].len = (UINT32) rxLen;
   
-  spi0_xfer[1].rx_buf = (UINT32) pRx;
-  spi0_xfer[1].tx_buf = 0;
-  spi0_xfer[1].len = (UINT32) rxLen;
+  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(2), spi_xfer[spiIdx]) < 0) {
+    LOG_ERR("spi_sendreceive: ioctl() failed");
+  }
+}
+
+void spi_exchange(int spiIdx, BYTE* pTx, BYTE* pRx, int dataLen) {
   
-  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(2), spi0_xfer) < 0) {
+  spi_xfer[spiIdx][0].rx_buf = (UINT32) pRx;
+  spi_xfer[spiIdx][0].tx_buf = (UINT32) pTx;
+  spi_xfer[spiIdx][0].len = (UINT32) dataLen;
+
+  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
     LOG_ERR("spi_sendreceive: ioctl() failed");
   }
 }

@@ -30,6 +30,9 @@ EXT int g_uart0_fd INIT(-1);
 // SPI 0 
 EXT int g_spi0_fd INIT(-1);
 
+// SPI 0 
+EXT int g_spi1_fd INIT(-1);
+
 // PhiLink state
 EXT PHILINK_STATE g_phiLinkState INIT(OFF);
 
