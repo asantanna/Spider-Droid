@@ -27,7 +27,7 @@ namespace Phi_Core
     // TODO: separate pos and neg components?  seems like a good idea to make
     // things easier to discover
     internal const int NUM_GYRO_ELEM = 3;
-
+    
     // temp sensor DATA
     internal const int NUM_TEMP_ELEM = 1;
 

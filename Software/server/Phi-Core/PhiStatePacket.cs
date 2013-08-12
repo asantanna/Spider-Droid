@@ -38,17 +38,17 @@ namespace Phi_Core
       // nothing to do
     }
 
-    internal double getPitchDps() {
+    internal double getPitchDelta() {
       double raw = (double) PhiGlobals.MAKE_FLOAT(packetData, OFF_GYRO_DATA);
       return raw;
     }
 
-    internal double getYawDps() {
+    internal double getYawDelta() {
       double raw = (double)PhiGlobals.MAKE_FLOAT(packetData, OFF_GYRO_DATA + 4);
       return raw;
     }
 
-    internal double getRollDps() {
+    internal double getRollDelta() {
       double raw = (double)PhiGlobals.MAKE_FLOAT(packetData, OFF_GYRO_DATA + 8);
       return raw;
     }

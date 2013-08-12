@@ -17,11 +17,14 @@ namespace Phi_Core {
     // CONST
     //
 
+    // Phi Core listening port ... Lucas's bday ... :-)
     const Int32 PHI_LINK_PORT = 1122;
-    
-    const double DESIRED_LOOP_FPS = 50;
+
+    // Phi Link communication rate
+    internal const double DESIRED_LOOP_FPS = 100;
     const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
 
+    // statistics
     const double LOOP_TIME_ACCUM_RATE = (1.0 / 100);
 
     //
@@ -100,6 +103,10 @@ namespace Phi_Core {
 
       // change status to connected
       setLinkState(PhiLinkState.LINK_CONNECTED);
+
+      // turn off "Nagle" algorithm so data is sent immediately
+      Socket s = client.Client;
+      s.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
 
       // Get a stream object for reading/writing
       NetworkStream stream = client.GetStream();
@@ -197,7 +204,7 @@ namespace Phi_Core {
           // protect access
           secsThisLoop = (loopEndTicks - loopStartTicks) * tickPeriod;
           accum_secsPerLoop = ((1-LOOP_TIME_ACCUM_RATE) * accum_secsPerLoop) + (LOOP_TIME_ACCUM_RATE * secsThisLoop);
-          accum_sleepTime =  ((1-LOOP_TIME_ACCUM_RATE) * accum_sleepTime) + (LOOP_TIME_ACCUM_RATE * sleepTime);
+          accum_sleepTime =   ((1-LOOP_TIME_ACCUM_RATE) * accum_sleepTime)   + (LOOP_TIME_ACCUM_RATE * sleepTime);
         }
 
         // compute sleep error
@@ -212,16 +219,36 @@ namespace Phi_Core {
       // setLinkState(PhiLinkState.CANCELLED);
     }
 
+    private static double clampRange(double deg, double absMax) {
+
+      if (deg > absMax) {
+        deg -= absMax * 2;
+      } else if (deg < -absMax) {
+        deg += absMax * 2;
+      }
+
+      return deg;
+    }
+
     private static void parseState(PhiStatePacket statePacket) {
-      double pitchDps = statePacket.getPitchDps();
-      double yawDps = statePacket.getYawDps();
-      double rollDps = statePacket.getRollDps();
+      double pitchDelta = statePacket.getPitchDelta();
+      double yawDelta = statePacket.getYawDelta();
+      double rollDelta = statePacket.getRollDelta();
       lock (dataLock) {
-        accum_pitch += pitchDps;
-        accum_yaw += yawDps;
-        accum_roll += rollDps;
+        accum_pitch = clampRange(accum_pitch + pitchDelta, 180);
+        accum_yaw   = clampRange(accum_yaw   + yawDelta,   180);
+        accum_roll  = clampRange(accum_roll  + rollDelta,  180);
       }
     }
+
+    internal static void resetGyroAccum() {
+      lock (dataLock) {
+        accum_pitch = 0;
+        accum_yaw   = 0;
+        accum_roll  = 0;
+      }
+    }
+
 
     //
     // Misc
@@ -250,22 +277,22 @@ namespace Phi_Core {
 
     internal static double getGyroAccumPitch() {
       lock (dataLock) {
-        // return accum value [-100,100]
-        return accum_pitch / 250 * 100;
+        // return accum value [-180, 180]
+        return accum_pitch;
       }
     }
 
     internal static double getGyroAccumYaw() {
       lock (dataLock) {
-        // return accum value [-100,100]
-        return accum_yaw / 250 * 100;
+        // return accum value [-180, 180]
+        return accum_yaw;
       }
     }
 
     internal static double getGyroAccumRoll() {
       lock (dataLock) {
-        // return accum value [-100,100]
-        return accum_roll / 250 * 100;
+        // return accum value [-180, 180]
+        return accum_roll;
       }
     }
 

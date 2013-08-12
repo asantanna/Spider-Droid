@@ -157,19 +157,21 @@ namespace Phi_Core {
 
     private void updateNowEvent(object source, EventArgs e) {
       // update UI
-      LinkFrameRateText.Text = PhiLink.getAvgFrameRate().ToString("F1") + " Hz";
-      AvgIdleText.Text = PhiLink.getAvgIdle().ToString("F1") + " %";
+      LinkFrameRateText.Text = PhiLink.getAvgFrameRate().ToString("F1") + " / " + PhiLink.DESIRED_LOOP_FPS + " Hz";
+      AvgIdleText.Text = (PhiLink.getAvgIdle() * 100).ToString("F1") + " %";
 
       drawGyroIndicator("pitch", PhiLink.getGyroAccumPitch());
       drawGyroIndicator("yaw", PhiLink.getGyroAccumYaw());
       drawGyroIndicator("roll", PhiLink.getGyroAccumRoll());
     }
 
-    private void drawGyroIndicator(string prefix, double percent) {
+    private void drawGyroIndicator(string prefix, double degrees) {
 
       Canvas c = (Canvas) FindName(prefix + "Canvas");
       double radius = c.ActualHeight / 2;
-      double endAngle = Math.PI * percent/100;
+
+      // note: degrees is [-180,1]
+      double endAngle = Math.PI * degrees / 180;
 
       ArcSegment arc = (ArcSegment) FindName(prefix + "Arc");
       double xComp = radius * Math.Cos(endAngle);
@@ -182,7 +184,11 @@ namespace Phi_Core {
       arc.Point = new Point(radius + yComp, radius - xComp);
 
       Label label = (Label) FindName(prefix + "Value");
-      label.Content = percent.ToString("F1") + " %";
+      label.Content = degrees.ToString("F1") + " \u00B0";
+    }
+
+    private void BtnResetGyro_Click(object sender, RoutedEventArgs e) {
+      PhiLink.resetGyroAccum();
     }
 
   }
