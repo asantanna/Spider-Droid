@@ -22,6 +22,7 @@
 #include <sys/time.h>
 #include <sys/utsname.h>    // for uname()
 #include <sys/sysinfo.h>    // for sysinfo()
+#include <netinet/tcp.h>    // for TCP_NODELAY
 
 // useful types
 #include "phi_defs.h"

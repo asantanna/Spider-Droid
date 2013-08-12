@@ -12,7 +12,6 @@ void setLinkState(PHILINK_STATE state);
 void* phi_link_loop(void* arg);
 void initStatePacket(PHI_STATE_PACKET *p);
 
-
 BOOL startPhiLink(char* ipAddr, int port) {
   BOOL rc = TRUE;
   int sock;
@@ -30,6 +29,16 @@ BOOL startPhiLink(char* ipAddr, int port) {
 
   if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
     LOG_ERR("startPhiLink: Failed to create socket");
+    goto error_exit;
+  }
+
+  // disable the "Nagle" algorithm so the TCP stack doesn't
+  // wait to bunch up packets
+
+  int flag = 1;
+
+  if (setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag)) == -1) {
+    LOG_ERR("startPhiLink: couldn't set TCP_NODELAY");
     goto error_exit;
   }
 
@@ -155,8 +164,6 @@ void* phi_link_loop(void* arg)
     // send state (blocking)
     
     totSent = 0;
-
-    TODO("Figure out how to make sure data is sent immediately ... flush?")
 
     while (totSent < sizeof(PHI_STATE_PACKET)) {
 
