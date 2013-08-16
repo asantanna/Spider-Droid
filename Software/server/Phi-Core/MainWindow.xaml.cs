@@ -135,6 +135,34 @@ namespace Phi_Core {
 
         // start Phi Link listener
         startPhiLink();
+
+        // init gyro controls
+        PieCtrl_Pitch.titleName.Text = "Pitch";
+        PieCtrl_Yaw.titleName.Text = "Yaw";
+        PieCtrl_Roll.titleName.Text = "Roll"; 
+
+        // init leg controls
+
+        LF_Leg.legLabel.Content = "Left Front";
+        LF_Leg.hipJoint.label.Content = "H";
+        LF_Leg.thighJoint.label.Content = "T";
+        LF_Leg.kneeJoint.label.Content = "K";
+
+        RF_Leg.legLabel.Content = "Right Front";
+        RF_Leg.hipJoint.label.Content = "H";
+        RF_Leg.thighJoint.label.Content = "T";
+        RF_Leg.kneeJoint.label.Content = "K";
+
+        LB_Leg.legLabel.Content = "Left Back";
+        LB_Leg.hipJoint.label.Content = "H";
+        LB_Leg.thighJoint.label.Content = "T";
+        LB_Leg.kneeJoint.label.Content = "K";
+
+        RB_Leg.legLabel.Content = "Right Back";
+        RB_Leg.hipJoint.label.Content = "H";
+        RB_Leg.thighJoint.label.Content = "T";
+        RB_Leg.kneeJoint.label.Content = "K";
+
       }
     }
 
@@ -157,12 +185,34 @@ namespace Phi_Core {
 
     private void updateNowEvent(object source, EventArgs e) {
       // update UI
+
       LinkFrameRateText.Text = PhiLink.getAvgFrameRate().ToString("F1") + " / " + PhiLink.DESIRED_LOOP_FPS + " Hz";
       AvgIdleText.Text = (PhiLink.getAvgIdle() * 100).ToString("F1") + " %";
 
-      drawGyroIndicator("pitch", PhiLink.getGyroAccumPitch());
-      drawGyroIndicator("yaw", PhiLink.getGyroAccumYaw());
-      drawGyroIndicator("roll", PhiLink.getGyroAccumRoll());
+      PieCtrl_Pitch.update(PhiLink.getGyroAccumPitch());
+      PieCtrl_Yaw.update(PhiLink.getGyroAccumYaw());
+      PieCtrl_Roll.update(PhiLink.getGyroAccumRoll());
+
+      (LegGrid.FindName("LF_Leg") as LegBox).update(
+        -0.5, PhiLink.getJointPos(0),
+         0.2, PhiLink.getJointPos(1),
+         0.9, PhiLink.getJointPos(2));
+
+      (LegGrid.FindName("RF_Leg") as LegBox).update(
+        -1.0, PhiLink.getJointPos(3),
+        -0.9, PhiLink.getJointPos(4),
+        -0.8, PhiLink.getJointPos(5));
+
+      (LegGrid.FindName("LB_Leg") as LegBox).update(
+         1.0, PhiLink.getJointPos(6),
+         0.66, PhiLink.getJointPos(7),
+         0.33, PhiLink.getJointPos(8));
+
+      (LegGrid.FindName("RB_Leg") as LegBox).update(
+        -1.0, PhiLink.getJointPos(9),
+        -0.66, PhiLink.getJointPos(10),
+        -0.33, PhiLink.getJointPos(11));
+
     }
 
     private void drawGyroIndicator(string prefix, double degrees) {

@@ -50,9 +50,13 @@ namespace Phi_Core {
     private static double accum_secsPerLoop = DESIRED_SECS_PER_LOOP;
     private static double accum_sleepTime = 0;
 
+    // state of PHI
+
     private static double accum_pitch = 0;
     private static double accum_yaw = 0;
     private static double accum_roll = 0;
+
+    private static UInt16[] joints = new UInt16[PhiGlobals.NUM_MOTOR_ELEM];
 
     //
     // CODE
@@ -238,6 +242,7 @@ namespace Phi_Core {
         accum_pitch = clampRange(accum_pitch + pitchDelta, 180);
         accum_yaw   = clampRange(accum_yaw   + yawDelta,   180);
         accum_roll  = clampRange(accum_roll  + rollDelta,  180);
+        statePacket.getJointData(joints);
       }
     }
 
@@ -294,6 +299,11 @@ namespace Phi_Core {
         // return accum value [-180, 180]
         return accum_roll;
       }
+    }
+
+    internal static double getJointPos(int idx) {
+      // A-to-D has 10 bit precision - convert to [0, 1.0]
+      return joints[idx] / 1024.0;
     }
 
   }  // class

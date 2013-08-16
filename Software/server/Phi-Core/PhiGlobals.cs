@@ -68,8 +68,14 @@ namespace Phi_Core
       return encoding.GetBytes(str);
     }
 
-    internal static short MAKE_SHORT(byte[] ba, int offset) {
-      short[] s = new short[1];
+    internal static Int16 MAKE_INT16(byte[] ba, int offset) {
+      Int16[] s = new Int16[1];
+      Buffer.BlockCopy(ba, offset, s, 0, 2);
+      return s[0];
+    }
+
+    internal static UInt16 MAKE_UINT16(byte[] ba, int offset) {
+      UInt16[] s = new UInt16[1];
       Buffer.BlockCopy(ba, offset, s, 0, 2);
       return s[0];
     }

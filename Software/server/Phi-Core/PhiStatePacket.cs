@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Phi_Core
 {
   class PhiStatePacket {
+
     //
     // CONST
     //
@@ -19,7 +20,7 @@ namespace Phi_Core
     private const int OFF_VISION_DATA = OFF_SIGN + PACKET_SIGN_LEN;
     private const int OFF_GYRO_DATA = OFF_VISION_DATA + PhiGlobals.NUM_VISION_ELEM;
     private const int OFF_JOINT_POS_DATA = OFF_GYRO_DATA + (PhiGlobals.NUM_GYRO_ELEM * sizeof(float));
-    private const int OFF_TEMP_DATA = OFF_JOINT_POS_DATA + PhiGlobals.NUM_JOINT_POS_ELEM;
+    private const int OFF_TEMP_DATA = OFF_JOINT_POS_DATA + (PhiGlobals.NUM_JOINT_POS_ELEM * sizeof(UInt16));
     private const int OFF_PACKET_END = OFF_TEMP_DATA + PhiGlobals.NUM_TEMP_ELEM;
 
     //
@@ -51,6 +52,12 @@ namespace Phi_Core
     internal double getRollDelta() {
       double raw = (double)PhiGlobals.MAKE_FLOAT(packetData, OFF_GYRO_DATA + 8);
       return raw;
+    }
+
+    internal void getJointData(UInt16[] joints) {
+      for (int i = 0 ; i < PhiGlobals.NUM_MOTOR_ELEM ; i++) {
+        joints[i] = PhiGlobals.MAKE_UINT16(packetData, OFF_JOINT_POS_DATA + (i * sizeof(UInt16)));
+      }
     }
 
   } // class
