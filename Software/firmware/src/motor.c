@@ -57,12 +57,22 @@ UINT16 PHI_getMotorPosition(int motorIdx) {
   BYTE rxBuff[3] = {0};
 
   txBuff[0] = ADC_CMD1_START;
-  txBuff[1] = ADC_CMD2_SINGLE | (((BYTE)motorIdx) << 4);
+  txBuff[1] = ADC_CMD2_SINGLE | ( (((BYTE)motorIdx) << 4) & ADC_CMD2_ADDR_MASK) ;
   txBuff[2] = 0;
   
   spi_exchange(ADC_SPI_IDX, txBuff, rxBuff, 1);
 
-  return ( ((UINT16)(rxBuff[1] & ADC_DATA2_MASK)) << 8 ) | ((UINT16)rxBuff[2]);
+  // extract raw value [0, 1023]
+  UINT16 adcValue = (UINT16) (rxBuff[1] & ADC_DATA2_MASK);
+  adcValue <<= 8;
+  adcValue |= (UINT16) rxBuff[2];
+
+  // DEBUG
+  LOG_INFO("getMotorPosition(%d) = %02Xh", motorIdx, adcValue);
+  LOG_INFO("  outgoing:  %02Xh %02Xh %02Xh", txBuff[0], txBuff[1], txBuff[2]); 
+  LOG_INFO("  incoming:  %02Xh %02Xh %02Xh", rxBuff[0], rxBuff[1], rxBuff[2]);
+
+  return adcValue;
 }
 
 

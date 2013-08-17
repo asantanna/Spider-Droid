@@ -21,6 +21,9 @@ void phi_abortWithMsg(const char* msg);
 UINT64 phi_upTime();
 double phi_rand();
 
+// heartbeat / failsafe thread
+void* failsafe(void* arg);
+
 //
 // non-ANSI
 //

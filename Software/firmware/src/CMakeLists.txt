@@ -30,6 +30,7 @@ add_executable ( phi
   gyro.c
   philink.c
   hal.c
+  failsafe.c
 )
 
 # link the math library
