@@ -20,6 +20,11 @@ MOTOR_DEF motorDefs[] = {
   { 5, 1},    // lbh
 };
 
+//
+// Set motor power by sending a command to the appropriate
+// motor controller through the UART
+// 
+
 void PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
 
   MOTOR_DEF* md = &motorDefs[motorIdx];
@@ -40,4 +45,24 @@ void PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
     
   uart_send(motorCmd, sizeof(motorCmd));
 }
+
+//
+// Get motor (aka joint) position by sending a command to the
+// appropriate ADC through SPI 1
+//
+
+UINT16 PHI_getMotorPosition(int motorIdx) {
+  
+  BYTE txBuff[3];
+  BYTE rxBuff[3] = {0};
+
+  txBuff[0] = ADC_CMD1_START;
+  txBuff[1] = ADC_CMD2_SINGLE | (((BYTE)motorIdx) << 4);
+  txBuff[2] = 0;
+  
+  spi_exchange(ADC_SPI_IDX, txBuff, rxBuff, 1);
+
+  return ( ((UINT16)(rxBuff[1] & ADC_DATA2_MASK)) << 8 ) | ((UINT16)rxBuff[2]);
+}
+
 

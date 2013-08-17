@@ -6,6 +6,16 @@
 
 #include "phi.h"
 
+// loop state
+
+typedef enum {
+  RX_BEGIN,
+  RX_RECEIVING,
+  TX_BEGIN,
+  TX_SENDING,
+    
+} COMM_STATE;
+
 // internal
 
 void setLinkState(PHILINK_STATE state);
@@ -122,6 +132,9 @@ void* phi_link_loop(void* arg)
   // DEBUG
   LOG_INFO("** Phi Link connected");
 
+  // set socket to non-blocking
+  fcntl(sock, F_SETFL, O_NONBLOCK);
+
   // loop forever
 
   UINT64 lastLoopTime = phi_upTime();
@@ -135,50 +148,91 @@ void* phi_link_loop(void* arg)
   
   ssize_t nRec = 0;
   ssize_t nSnd = 0;
+  
+  COMM_STATE commState = RX_BEGIN;
 
   while (TRUE) {
 
-    // receive cmds (blocking)
-    
-    totRead = 0;
-    
-    while (totRead < sizeof(PHI_CMD_PACKET)) {
-      
-      nRec = recv(sock, rxBuff + totRead, sizeof(rxBuff) - totRead, 0);
-      
-      if (nRec <= 0) {
-        // error occurred
-        WARN("add error check")
+    //
+    // RECEIVE PHI CORE CMDS
+    //
+
+    switch (commState) {
+
+      case RX_BEGIN:
+        totRead = 0;
+        commState = RX_RECEIVING;
         break;
 
-      } else {
+      case RX_RECEIVING:
+
+        // receive async (phi core initiates exchanges)
+        nRec = recv(sock, rxBuff + totRead, sizeof(rxBuff) - totRead, 0);
+
+        if (nRec == 0) {
+          // other end closed socket
+          LOG_FATAL("Phi link socket closed?");
+          
+        } else if (nRec < 0) {
+
+          if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
+            // no data yet -- not an error
+          } else {
+            // error occurred
+            LOG_FATAL("Phi link unexpected read fail with errno = %d", errno);
+          }
+
+        } else {
+          
+          // got some data
+          
+          totRead += nRec;
+
+          if (totRead >= sizeof(PHI_CMD_PACKET)) {
+            // receive complete - transmit status
+            commState = TX_BEGIN;
+          }
+        }
+
+        break;
+
+      case TX_BEGIN:
+
+        // set up state packet for sending
+        initStatePacket((PHI_STATE_PACKET *) txBuff);
         
-        // got some data
-        totRead += nRec;
-      }
-    }
-
-    // set up state packet for sending
-    initStatePacket((PHI_STATE_PACKET *) txBuff);
-
-    // send state (blocking)
-    
-    totSent = 0;
-
-    while (totSent < sizeof(PHI_STATE_PACKET)) {
-
-      nSnd = send(sock, txBuff + totSent, sizeof(txBuff) - totSent, 0);
-
-      if (nSnd <= 0) {
-        // error occurred
-        WARN("add error check")
+        totSent = 0;
+        commState = TX_SENDING;
         break;
 
-      } else {
+      case TX_SENDING:
 
-        // sent some data
-        totSent += nSnd;
-      }
+        // send async
+        nSnd = send(sock, txBuff, sizeof(txBuff) - totSent, 0);
+
+        if (nSnd < 0) {
+
+          if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
+            
+            // not ready to send - not an error
+
+          } else {
+            // error occurred
+            LOG_FATAL("Phi link unexpected write fail with errno = %d", errno);
+          }
+
+        } else {
+          // some data was sent
+
+          totSent += nSnd;
+
+          if (totSent >= sizeof(PHI_STATE_PACKET)) {
+            // send complete - go back to receiving
+            commState = RX_BEGIN;
+          }
+        }
+
+        break;
     }
 
   } // while
@@ -217,6 +271,8 @@ void setLinkState(PHILINK_STATE state) {
 
 void initStatePacket(PHI_STATE_PACKET *p) {
 
+  int i;
+
   // sign
   memcpy(p -> sign, STAP_SIGN, sizeof(p->sign));
 
@@ -231,9 +287,66 @@ void initStatePacket(PHI_STATE_PACKET *p) {
   p -> gyro[0] = pitchDelta;
   p -> gyro[1] = yawDelta;
   p -> gyro[2] = rollDelta;
+
+  // joint (motor) positions
+  for (i = 0 ; i < COUNTOF(p -> joint) ; i++) {
+    p -> joint[i] = HAL_getMotorPosition(i);
+
+  }
+
+  // temp
+  TODO("Temperature not implemented");
 }
 
 
 
 
 
+/*
+  while (TRUE) {
+
+    // receive cmds (blocking)
+
+    totRead = 0;
+
+    while (totRead < sizeof(PHI_CMD_PACKET)) {
+
+      nRec = recv(sock, rxBuff + totRead, sizeof(rxBuff) - totRead, 0);
+
+      if (nRec <= 0) {
+        // error occurred
+        WARN("add error check")
+        break;
+
+      } else {
+
+        // got some data
+        totRead += nRec;
+      }
+    }
+
+    // set up state packet for sending
+    initStatePacket((PHI_STATE_PACKET *) txBuff);
+
+    // send state (blocking)
+
+    totSent = 0;
+
+    while (totSent < sizeof(PHI_STATE_PACKET)) {
+
+      nSnd = send(sock, txBuff + totSent, sizeof(txBuff) - totSent, 0);
+
+      if (nSnd <= 0) {
+        // error occurred
+        WARN("add error check")
+        break;
+
+      } else {
+
+        // sent some data
+        totSent += nSnd;
+      }
+    }
+
+  } // while
+*/

@@ -118,6 +118,9 @@ typedef enum {
 // gyro on SPI index 0
 #define GYRO_SPI_IDX      0
 
+// ADC on SPI index 1
+#define ADC_SPI_IDX       1
+
 
 
 

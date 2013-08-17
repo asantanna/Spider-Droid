@@ -41,11 +41,11 @@ typedef struct  __attribute__ ((__packed__)) {
 #define STAP_TEMP_BYTES         1
 
 typedef struct __attribute__ ((__packed__)) {
-  char  sign    [NUM_SIGN_BYTES];
-  BYTE  image   [STAP_NUM_IMAGE_BYTES];
-  float gyro    [STAP_NUM_GYRO_ELEM];
-  BYTE  joint   [STAP_NUM_JOINT_ELEM];
-  BYTE  temp    [STAP_TEMP_BYTES];
+  char   sign   [NUM_SIGN_BYTES];
+  BYTE   image  [STAP_NUM_IMAGE_BYTES];
+  float  gyro   [STAP_NUM_GYRO_ELEM];
+  UINT16 joint  [STAP_NUM_JOINT_ELEM];
+  BYTE   temp   [STAP_TEMP_BYTES];
 } PHI_STATE_PACKET;
 
 
