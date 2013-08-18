@@ -5,6 +5,9 @@
 
 #include "phi.h"
 
+// UART 0 file descriptor
+static int uartFile = -1;
+
 // At bootup, RPI pins 8 and 10 are already set to UART0_TXD, UART0_RXD (ie the alt0 function) respectively
 
 BOOL uartInit() {
@@ -26,9 +29,9 @@ BOOL uartInit() {
 
   // open UART 0 in non blocking read/write mode
   
-  g_uart0_fd = open(UART_DRIVER_NAME, O_RDWR | O_NOCTTY | O_NDELAY);		
+  uartFile = open(UART_DRIVER_NAME, O_RDWR | O_NOCTTY | O_NDELAY);		
 
-  if (g_uart0_fd == -1) {
+  if (uartFile == -1) {
     LOG_ERR("uartInit: can't open UART device driver");
     return FALSE;
   }
@@ -48,23 +51,23 @@ BOOL uartInit() {
   //	PARODD - Odd parity (else even)
 
   struct termios options;
-  tcgetattr(g_uart0_fd, &options);
+  tcgetattr(uartFile, &options);
 
   options.c_cflag = MC_DEF_BAUD | CS8 | CLOCAL;           // set baud rate, RX disabled
   options.c_iflag = IGNPAR;                               // ignore parity (RX disabled)
   options.c_oflag = 0;
   options.c_lflag = 0;
-  tcflush(g_uart0_fd, TCIFLUSH);
-  tcsetattr(g_uart0_fd, TCSANOW, &options);
+  tcflush(uartFile, TCIFLUSH);
+  tcsetattr(uartFile, TCSANOW, &options);
 
   return TRUE;
 }
 
 void uart_send(BYTE* pData, int dataLen) {
   
-  if (g_uart0_fd != -1)
+  if (uartFile != -1)
   {
-    int count = write(g_uart0_fd, pData, dataLen);
+    int count = write(uartFile, pData, dataLen);
     if (count < 0)
     {
       phi_abortWithMsg("UART TX error");
@@ -85,9 +88,9 @@ int uart_receive(void* pBuff, int buffLen) {
 
   int numRead = 0;
 
-  if (g_uart0_fd != -1)
+  if (uartFile != -1)
   {
-    numRead = read(g_uart0_fd, pBuff, buffLen);
+    numRead = read(uartFile, pBuff, buffLen);
     
     if (numRead < 0)
     {

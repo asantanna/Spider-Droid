@@ -26,7 +26,8 @@
 //   4) CS is active low.
 //
 
-#define ADC_SPI_MODE            (0|0)
+// #define ADC_SPI_MODE            (0|0)
+#define ADC_SPI_MODE            (SPI_CPHA | SPI_CPOL)
 
 // 8 bits per word
 #define ADC_SPI_BPW             8

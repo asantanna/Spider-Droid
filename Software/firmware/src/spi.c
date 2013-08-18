@@ -16,6 +16,9 @@
 #include "phi.h"
 #include <linux/spi/spidev.h>
 
+// SPI file descriptors (SPI 0 & 1)
+static int spiFile[2] = { -1, -1 };
+
 // SPI 0 SETTINGS - for gyroscope
 
 struct spi_ioc_transfer spi_0_xfer[2] = {
@@ -58,18 +61,18 @@ BOOL spiInit() {
 
   // init SPI 0 for use by gyroscope
 
-  g_spi0_fd = initSpiDriver(SPI0_DRIVER_NAME, GYRO_SAFE_SPI_CLK, GYRO_SPI_MODE,  GYRO_SPI_BPW);
+  spiFile[0] = initSpiDriver(SPI0_DRIVER_NAME, GYRO_SAFE_SPI_CLK, GYRO_SPI_MODE,  GYRO_SPI_BPW);
   
-  if (g_spi0_fd < 0) {
+  if (spiFile[0] < 0) {
     LOG_ERR("spiInit: can't init device driver '%s'", SPI0_DRIVER_NAME);
     goto error_exit;
   }
 
   // init SPI 1 for use by ADCs
 
-  g_spi1_fd = initSpiDriver(SPI1_DRIVER_NAME, ADC_SAFE_SPI_CLK, ADC_SPI_MODE,  ADC_SPI_BPW);
+  spiFile[1] = initSpiDriver(SPI1_DRIVER_NAME, ADC_SAFE_SPI_CLK, ADC_SPI_MODE,  ADC_SPI_BPW);
 
-  if (g_spi1_fd < 0) {
+  if (spiFile[1] < 0) {
     LOG_ERR("spiInit: can't init device driver '%s'", SPI1_DRIVER_NAME);
     goto error_exit;
   }
@@ -100,7 +103,7 @@ void spi_send(int spiIdx, BYTE* pTx, int txLen) {
   spi_xfer[spiIdx][0].tx_buf = (UINT32) pTx;
   spi_xfer[spiIdx][0].len = (UINT32) txLen;
 
-  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
+  if (ioctl(spiFile[spiIdx], SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
     LOG_ERR("spi_send: ioctl() failed");
   }
 }
@@ -111,7 +114,7 @@ void spi_receive(int spiIdx, BYTE* pRx, int rxLen) {
   spi_xfer[spiIdx][0].tx_buf = 0;
   spi_xfer[spiIdx][0].len = (UINT32) rxLen;
 
-  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
+  if (ioctl(spiFile[spiIdx], SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
     LOG_ERR("spi_receive: ioctl() failed");
   }
 }
@@ -126,7 +129,7 @@ void spi_sendreceive(int spiIdx, BYTE* pTx, int txLen, BYTE* pRx, int rxLen) {
   spi_xfer[spiIdx][1].tx_buf = 0;
   spi_xfer[spiIdx][1].len = (UINT32) rxLen;
   
-  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(2), spi_xfer[spiIdx]) < 0) {
+  if (ioctl(spiFile[spiIdx], SPI_IOC_MESSAGE(2), spi_xfer[spiIdx]) < 0) {
     LOG_ERR("spi_sendreceive: ioctl() failed");
   }
 }
@@ -137,7 +140,7 @@ void spi_exchange(int spiIdx, BYTE* pTx, BYTE* pRx, int dataLen) {
   spi_xfer[spiIdx][0].tx_buf = (UINT32) pTx;
   spi_xfer[spiIdx][0].len = (UINT32) dataLen;
 
-  if (ioctl(g_spi0_fd, SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
+  if (ioctl(spiFile[spiIdx], SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
     LOG_ERR("spi_sendreceive: ioctl() failed");
   }
 }

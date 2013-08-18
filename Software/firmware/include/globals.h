@@ -24,15 +24,6 @@ EXT struct utsname g_uname;              // can't init this to zero here for som
 // host IP
 EXT UINT32 g_ipAddr INIT(0);
 
-// UART 0 
-EXT int g_uart0_fd INIT(-1);
-
-// SPI 0 
-EXT int g_spi0_fd INIT(-1);
-
-// SPI 0 
-EXT int g_spi1_fd INIT(-1);
-
 // PhiLink state
 EXT PHILINK_STATE g_phiLinkState INIT(OFF);
 
