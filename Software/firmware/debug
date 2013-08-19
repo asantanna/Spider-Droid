@@ -1,0 +1,4 @@
+#! /bin/bash
+
+cd bin
+sudo gdb ../bin-debug/phi-rpi-phi
