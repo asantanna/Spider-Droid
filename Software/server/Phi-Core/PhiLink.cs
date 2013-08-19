@@ -21,11 +21,27 @@ namespace Phi_Core {
     const Int32 PHI_LINK_PORT = 1122;
 
     // Phi Link communication rate
-    internal const double DESIRED_LOOP_FPS = 100;
+    internal const double DESIRED_LOOP_FPS = 50;
     const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
 
     // statistics
     const double LOOP_TIME_ACCUM_RATE = (1.0 / 100);
+
+    // motor indices
+    internal enum MOTOR_IDX {
+      IDX_RFT = 0,
+      IDX_RFK = 1,
+      IDX_LFT = 2,
+      IDX_LFK = 3,
+      IDX_RBT = 4,
+      IDX_RBK = 5,
+      IDX_LBT = 6,
+      IDX_LBK = 7,
+      IDX_RFH = 8,
+      IDX_LFH = 9,
+      IDX_RBH = 10,
+      IDX_LBH = 11,
+    };
 
     //
     //  VARS
