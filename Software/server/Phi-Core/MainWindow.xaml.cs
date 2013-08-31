@@ -171,7 +171,7 @@ namespace Phi_Core {
       if (updateTimer == null) {
         updateTimer = new DispatcherTimer(DispatcherPriority.SystemIdle);
         updateTimer.Tick += new EventHandler(updateNowEvent);
-        updateTimer.Interval = TimeSpan.FromMilliseconds(500);
+        updateTimer.Interval = TimeSpan.FromMilliseconds(100);
         updateTimer.Start();
       }
 
@@ -194,24 +194,24 @@ namespace Phi_Core {
       PieCtrl_Roll.update(PhiLink.getGyroAccumRoll());
 
       (LegGrid.FindName("LF_Leg") as LegBox).update(
-        -0.5, PhiLink.getJointPos(0),
-         0.2, PhiLink.getJointPos(1),
-         0.9, PhiLink.getJointPos(2));
+        -0.5, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LFH),
+         0.2, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LFT),
+         0.9, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LFK));
 
       (LegGrid.FindName("RF_Leg") as LegBox).update(
-        -1.0, PhiLink.getJointPos(3),
-        -0.9, PhiLink.getJointPos(4),
-        -0.8, PhiLink.getJointPos(5));
+        -1.0, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RFH),
+        -0.9, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RFT),
+        -0.8, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RFK));
 
       (LegGrid.FindName("LB_Leg") as LegBox).update(
-         1.0, PhiLink.getJointPos(6),
-         0.66, PhiLink.getJointPos(7),
-         0.33, PhiLink.getJointPos(8));
+         1.0,  PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LBH),
+         0.66, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LBT),
+         0.33, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LBK));
 
       (LegGrid.FindName("RB_Leg") as LegBox).update(
-        -1.0, PhiLink.getJointPos(9),
-        -0.66, PhiLink.getJointPos(10),
-        -0.33, PhiLink.getJointPos(11));
+        -1.0,  PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RBH),
+        -0.66, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RBT),
+        -0.33, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RBK));
 
     }
 

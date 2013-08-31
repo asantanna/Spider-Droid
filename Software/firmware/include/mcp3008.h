@@ -17,6 +17,12 @@
 
 #define ADC_SAFE_SPI_CLK        (1000ul * 1000ul)
 
+//
+// NOTE: Exchanges with the ADC consist of 3 bytes @ 1 MHz, thus an exchange takes:
+//
+//     TIME = 3 bytes * 8 bits/byte * 1 uS/bit = 24 uS
+//
+
 // ADC SPI mode
 //
 //   1) SCLK idles LOW (CPOL = 0)

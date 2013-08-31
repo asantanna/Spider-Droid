@@ -8,6 +8,12 @@
 // 80% max for safety
 #define GYRO_SAFE_SPI_CLK         ( 8ul*1000ul*1000ul)
 
+//
+// NOTE: Exchanges with the ADC occur at 8 MHz, thus a single byte takes:
+//
+//     TIME/byte = 8 bits/byte * 1/8 uS/bit = 1 uS
+//
+
 // Gyro SPI mode
 //
 //   1) SCLK idles HIGH (CPOL = 1)

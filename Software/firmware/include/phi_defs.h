@@ -121,6 +121,14 @@ typedef enum {
 // ADC on SPI index 1
 #define ADC_SPI_IDX       1
 
+//
+// Mutexes
+//
 
-
+#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
+#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
+#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name = PHI_MUTEX_INITVAL
+#define PHI_MUTEX_GET(pSem)         pthread_mutex_lock(pSem)
+#define PHI_MUTEX_RELEASE(pSem)     pthread_mutex_unlock(pSem)
+#define PHI_MUTEX_TEST(pSem)        pthread_mutex_trylock(pSem)
 

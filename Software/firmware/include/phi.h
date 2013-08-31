@@ -17,7 +17,9 @@
 #include <unistd.h>         // for UART
 #include <fcntl.h>          // for UART
 #include <termios.h>        // for UART
-#include <pthread.h>    
+#include <pthread.h>
+#include <sched.h>
+
 #include <sys/ioctl.h>      // for driver access (SPI, etc)
 #include <sys/time.h>
 #include <sys/utsname.h>    // for uname()
