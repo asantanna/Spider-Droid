@@ -119,15 +119,15 @@ void* failsafeLoop(void* arg)
     // NOTE: this is disabled because it doesn't improve things much
     // but it DOES increase the standard deviation
     //
-    usec_error += (INT32) (LOOP_PERIOD_USEC - (usec_loopEnd - usec_loopStart));
+    // usec_error += (INT32) (LOOP_PERIOD_USEC - (usec_loopEnd - usec_loopStart));
 
     // DEBUG
-    printf("sleep time = %ld uS, error = %ld uS\n", usec_sleepTime, usec_error);
-    sleep(1);
-    usec_loopEnd = phi_upTime();
+    // printf("sleep time = %ld uS, error = %ld uS\n", usec_sleepTime, usec_error);
+    // sleep(1);
+    // usec_loopEnd = phi_upTime();
 
     // HACK HACK
-    usec_error = 0;
+    // usec_error = 0;
   }
 }
 
