@@ -20,7 +20,6 @@ typedef enum {
 
 void setLinkState(PHILINK_STATE state);
 void* phi_link_loop(void* arg);
-void initStatePacket(PHI_STATE_PACKET *p);
 
 BOOL startPhiLink(char* ipAddr, int port) {
   BOOL rc = TRUE;
@@ -169,7 +168,7 @@ void* phi_link_loop(void* arg)
     }
 
     // set up state packet for sending
-    initStatePacket((PHI_STATE_PACKET *) txBuff);
+    prepStatePacket((PHI_STATE_PACKET *) txBuff);
 
     // send state (blocking)
 
@@ -223,35 +222,6 @@ void setLinkState(PHILINK_STATE state) {
     case LINK_CLOSED:
       break;
   }
-}
-
-void initStatePacket(PHI_STATE_PACKET *p) {
-
-  int i;
-
-  // sign
-  memcpy(p -> sign, STAP_SIGN, sizeof(p->sign));
-
-  // image
-  memset(p -> image, 0, sizeof(p -> image));
-
-  // gyro (return +/- percent of max reading)
-  
-  float pitchDelta, yawDelta, rollDelta;
-  HAL_gyroGetDeltas(&pitchDelta, &yawDelta, &rollDelta);
-
-  p -> gyro[0] = pitchDelta;
-  p -> gyro[1] = yawDelta;
-  p -> gyro[2] = rollDelta;
-
-  // joint (motor) positions
-  for (i = 0 ; i < COUNTOF(p -> joint) ; i++) {
-    p -> joint[i] = HAL_getMotorPosition(i);
-
-  }
-
-  // temp
-  TODO("Temperature not implemented");
 }
 
 

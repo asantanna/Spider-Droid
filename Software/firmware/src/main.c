@@ -26,6 +26,9 @@ void main() {
   // initialize
   globalInit();
 
+  // start the failsafe thread
+  startFailsafeThread();
+
   //
   // Start web admin server
   //

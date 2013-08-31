@@ -251,3 +251,20 @@ void phi_setLED(PHI_LED_COLOR color) {
 double phi_rand() {
   return ((double) rand()) / RAND_MAX;
 }
+
+//
+// To change curr thread, use set_realtime_priority(pthread_self());
+//
+
+BOOL phi_setRealtimePrio(pthread_t thread) {
+
+  // struct sched_param is used to store the scheduling priority
+  struct sched_param params;
+  
+  // Set the priority to the maximum
+  params.sched_priority = sched_get_priority_max(SCHED_FIFO);
+
+  // Attempt to set thread real-time priority to the SCHED_FIFO policy
+  // (return TRUE if success)
+  return (pthread_setschedparam(thread, SCHED_FIFO, &params) == 0);
+}

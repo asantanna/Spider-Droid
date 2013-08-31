@@ -22,7 +22,10 @@ UINT64 phi_upTime();
 double phi_rand();
 
 // heartbeat / failsafe thread
-void* failsafe(void* arg);
+void startFailsafeThread();
+
+// set thread priority
+BOOL phi_setRealtimePrio(pthread_t thread);
 
 //
 // non-ANSI
@@ -48,5 +51,7 @@ void phi_logClose(void);
 
 // Phi Link
 BOOL startPhiLink(char* ipAddr, int port);
+void prepStatePacket(PHI_STATE_PACKET *p);
+
 
 
