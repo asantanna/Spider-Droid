@@ -68,9 +68,9 @@ UINT16 PHI_getMotorPosition(int motorIdx) {
   adcValue |= (UINT16) rxBuff[2];
 
   // DEBUG
-  LOG_INFO("getMotorPosition(%d) = %02Xh", motorIdx, adcValue);
-  LOG_INFO("  outgoing:  %02Xh %02Xh %02Xh", txBuff[0], txBuff[1], txBuff[2]); 
-  LOG_INFO("  incoming:  %02Xh %02Xh %02Xh", rxBuff[0], rxBuff[1], rxBuff[2]);
+  // LOG_INFO("getMotorPosition(%d) = %02Xh", motorIdx, adcValue);
+  // LOG_INFO("  outgoing:  %02Xh %02Xh %02Xh", txBuff[0], txBuff[1], txBuff[2]); 
+  // LOG_INFO("  incoming:  %02Xh %02Xh %02Xh", rxBuff[0], rxBuff[1], rxBuff[2]);
 
   return adcValue;
 }
