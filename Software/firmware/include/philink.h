@@ -35,7 +35,7 @@ typedef struct  __attribute__ ((__packed__)) {
 } PHI_CMD_PACKET;
 
 #define STAP_SIGN               "SPV1"
-#define STAP_NUM_IMAGE_BYTES    /*CAM_NUM_BYTES*/ 4
+#define STAP_NUM_IMAGE_BYTES    CAM_NUM_BYTES
 #define STAP_NUM_GYRO_ELEM      3
 #define STAP_NUM_JOINT_ELEM     NUM_MOTORS
 #define STAP_TEMP_BYTES         1
