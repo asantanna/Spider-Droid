@@ -66,6 +66,8 @@ namespace Phi_Core {
     private static double accum_secsPerLoop = DESIRED_SECS_PER_LOOP;
     private static double accum_sleepTime = 0;
 
+    private static UInt32 lastPacketID = 0;
+
     // state of PHI
 
     private static double accum_pitch = 0;
@@ -183,24 +185,23 @@ namespace Phi_Core {
         // grab Eve outputs
         // eve.writeOutputs(cmdPacket.packetData);
 
-        // start task to send eve outputs as command packet to PHI
-        Task writeTask = Task.Run(() => phiStream.Write(cmdPacket.packetData, 0, cmdPacket.Length));
+        // send eve outputs as command packet to PHI
+        phiStream.Write(cmdPacket.packetData, 0, cmdPacket.Length);
 
-        // start task to read PHI's status
-        Task readTask = Task.Run(() => phiStream.Read(statePacket.packetData, 0, statePacket.Length));
+        // read PHI's status
 
-        // wait for read to complete - right now this is just like blocking to begin with
-        readTask.Wait();
+        int nRead = 0;
+        while (nRead < statePacket.Length) {
+          nRead += phiStream.Read(statePacket.packetData, nRead, statePacket.Length - nRead);
+        }
 
         // write sensor states into Eve
+        
         parseState(statePacket);
         // eve.writeInputs();
 
         // step Eve
         // eve.Step();
-
-        // HACK - for now just wait for write to complete before we send the next packet
-        writeTask.Wait();
 
         // count loop
         loopCount++;
@@ -251,6 +252,7 @@ namespace Phi_Core {
     }
 
     private static void parseState(PhiStatePacket statePacket) {
+      lastPacketID = statePacket.getPacketID();
       double pitchDelta = statePacket.getPitchDelta();
       double yawDelta = statePacket.getYawDelta();
       double rollDelta = statePacket.getRollDelta();
@@ -269,7 +271,6 @@ namespace Phi_Core {
         accum_roll  = 0;
       }
     }
-
 
     //
     // Misc
@@ -293,7 +294,15 @@ namespace Phi_Core {
     }
 
     internal static double getLoopCount() {
+      lock (dataLock) {
         return loopCount;
+      }
+    }
+
+    internal static UInt32 getLastPacketID() {
+      lock (dataLock) {
+        return lastPacketID;
+      }
     }
 
     internal static double getGyroAccumPitch() {
@@ -318,8 +327,10 @@ namespace Phi_Core {
     }
 
     internal static double getJointPos(int idx) {
-      // A-to-D has 10 bit precision - convert to [0, 1.0]
-      return joints[idx] / 1024.0;
+      lock (dataLock) {
+        // A-to-D has 10 bit precision - convert to [0, 1.0]
+        return joints[idx] / 1024.0;
+      }
     }
 
   }  // class

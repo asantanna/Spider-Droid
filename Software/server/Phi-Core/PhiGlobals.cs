@@ -34,7 +34,7 @@ namespace Phi_Core
     // vision sensor DATA
     internal const int VISION_X = 160;
     internal const int VISION_Y = 120;
-    internal const int NUM_VISION_ELEM = 4; // TODO - HACK -  VISION_X * VISION_Y;
+    internal const int NUM_VISION_ELEM = VISION_X * VISION_Y;
 
     //
     // GLOBAL VARS
@@ -77,6 +77,12 @@ namespace Phi_Core
     internal static UInt16 MAKE_UINT16(byte[] ba, int offset) {
       UInt16[] s = new UInt16[1];
       Buffer.BlockCopy(ba, offset, s, 0, 2);
+      return s[0];
+    }
+
+    internal static UInt32 MAKE_UINT32(byte[] ba, int offset) {
+      UInt32[] s = new UInt32[1];
+      Buffer.BlockCopy(ba, offset, s, 0, 4);
       return s[0];
     }
 

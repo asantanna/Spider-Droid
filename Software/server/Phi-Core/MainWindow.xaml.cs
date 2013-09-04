@@ -78,7 +78,6 @@ namespace Phi_Core {
 
     private void blinkNowEvent(object source, EventArgs e) {
       // change blink state
-      // HACK - color code crashes
       blinkState = !blinkState;
       if (blinkState) {
         LinkStatusText.Foreground = Brushes.PaleVioletRed;
@@ -129,9 +128,11 @@ namespace Phi_Core {
         // don't do again
         PhiGlobals.bInit = true;
 
-        // one time initializations
+        //
+        // One time initializations
+        //
+
         updateLinkStatus(PhiLink.PhiLinkState.LINK_OFF);
-        updateNowEvent(null, null);
 
         // start Phi Link listener
         startPhiLink();
@@ -163,6 +164,8 @@ namespace Phi_Core {
         RB_Leg.thighJoint.label.Content = "T";
         RB_Leg.kneeJoint.label.Content = "K";
 
+        // refresh UI
+        updateNowEvent(null, null);
       }
     }
 
@@ -184,10 +187,13 @@ namespace Phi_Core {
     }
 
     private void updateNowEvent(object source, EventArgs e) {
+
       // update UI
 
       LinkFrameRateText.Text = PhiLink.getAvgFrameRate().ToString("F1") + " / " + PhiLink.DESIRED_LOOP_FPS + " Hz";
       AvgIdleText.Text = (PhiLink.getAvgIdle() * 100).ToString("F1") + " %";
+      ctlNumLoops.Text  = PhiLink.getLoopCount().ToString();
+      ctlPacketId.Text = PhiLink.getLastPacketID().ToString();
 
       PieCtrl_Pitch.update(PhiLink.getGyroAccumPitch());
       PieCtrl_Yaw.update(PhiLink.getGyroAccumYaw());
