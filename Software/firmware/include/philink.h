@@ -42,6 +42,7 @@ typedef struct  __attribute__ ((__packed__)) {
 
 typedef struct __attribute__ ((__packed__)) {
   char   sign   [NUM_SIGN_BYTES];
+  UINT32 id;
   BYTE   image  [STAP_NUM_IMAGE_BYTES];
   float  gyro   [STAP_NUM_GYRO_ELEM];
   UINT16 joint  [STAP_NUM_JOINT_ELEM];

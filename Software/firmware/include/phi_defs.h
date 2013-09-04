@@ -76,7 +76,7 @@
 
 #define LOG_INFO(...)   phi_logMsg("", __VA_ARGS__)
 #define LOG_ERR(...)    phi_logMsg("ERROR: ", __VA_ARGS__)
-#define LOG_FATAL(...)  { phi_logMsg("FATAL: ", __VA_ARGS__); phi_abortProcess(-1); }
+#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); phi_logMsg("FATAL: ", __VA_ARGS__); phi_abortProcess(-1); }
 
 // stringifying helpers
 

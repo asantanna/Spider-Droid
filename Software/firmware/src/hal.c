@@ -109,7 +109,7 @@ BOOL  GENERIC_gyroInit(BOOL bEnableFifo) {
   return TRUE;
 }
 
-#define GYRO_UPDATE_EVERY 0.1
+#define GYRO_UPDATE_EVERY 0.01
 
 void  GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
 
@@ -143,6 +143,6 @@ void GENERIC_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
 
 UINT16 GENERIC_getMotorPosition(int motorIdx) {
   double currSecs = ((double) phi_upTime()) / 1e6;
-  return (UINT16) ( ((long) (currSecs + motorIdx*100)) % 1024 );
+  return (UINT16) ( ((long) ((currSecs * 512) + (motorIdx*100))) % 1024 );
 }
 

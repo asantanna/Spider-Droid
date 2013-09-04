@@ -26,6 +26,8 @@ PHI_MUTEX_DECL(mtxState);
 
 PHI_STATE_PACKET phiState;
 
+UINT32 packetId = 0;
+
 //
 // CODE
 //
@@ -65,10 +67,10 @@ void startFailsafeThread() {
 
   // increase priority to make loop more even
 
-  if (phi_setRealtimePrio(thread) == FALSE) {
+/*  if (phi_setRealtimePrio(thread) == FALSE) {
     // not fatal
     LOG_ERR("set_realtime_priority() failed!");
-  }
+  } */
 }
 
 void* failsafeLoop(void* arg)
@@ -79,6 +81,7 @@ void* failsafeLoop(void* arg)
   INT32 usec_error = 0;
 
   LOG_INFO("Failsafe thread started");
+  printf("Failsafe thread started\n");
   
   usec_loopEnd = phi_upTime();
 
@@ -126,7 +129,7 @@ void* failsafeLoop(void* arg)
     // sleep(1);
     // usec_loopEnd = phi_upTime();
 
-    // HACK HACK
+    // DEBUG - uncomment to disable loop adaptation
     // usec_error = 0;
   }
 }
@@ -143,6 +146,12 @@ void updateState() {
 
   PHI_MUTEX_GET(&mtxState);
   memcpy(phiState.sign, STAP_SIGN, sizeof(phiState.sign));
+  PHI_MUTEX_RELEASE(&mtxState);
+  
+  // packet ID (increment)
+
+  PHI_MUTEX_GET(&mtxState);
+  phiState.id = packetId++;
   PHI_MUTEX_RELEASE(&mtxState);
 
   // image
@@ -180,6 +189,10 @@ void updateState() {
 }
 
 void prepStatePacket(PHI_STATE_PACKET *p) {
+
+  // DEBUG - update every request
+  // updateState();
+  
   PHI_MUTEX_GET(&mtxState);
   memcpy(p, &phiState, sizeof(phiState));
   PHI_MUTEX_RELEASE(&mtxState);
