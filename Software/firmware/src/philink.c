@@ -136,8 +136,8 @@ void* phi_link_loop(void* arg)
   UINT64 lastLoopTime = phi_upTime();
   UINT64 currTime;
   
-  char rxBuff[sizeof(PHI_CMD_PACKET)];
-  char txBuff[sizeof(PHI_STATE_PACKET)];
+  static char rxBuff[sizeof(PHI_CMD_PACKET)];
+  static char txBuff[sizeof(PHI_STATE_PACKET)];
   
   size_t totRead = 0;
   size_t totSent = 0;
