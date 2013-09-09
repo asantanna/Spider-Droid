@@ -70,9 +70,9 @@ namespace Phi_Core {
 
     // state of PHI
 
-    private static double accum_pitch = 0;
-    private static double accum_yaw = 0;
-    private static double accum_roll = 0;
+    private static double pitch = 0;
+    private static double yaw = 0;
+    private static double roll = 0;
 
     private static UInt16[] joints = new UInt16[PhiGlobals.NUM_MOTOR_ELEM];
 
@@ -83,9 +83,9 @@ namespace Phi_Core {
     async static internal Task<NetworkStream> startListenerAsync() {
 
       // reset some vars
-      accum_pitch = 0;
-      accum_yaw = 0;
-      accum_roll = 0;
+      pitch = 0;
+      yaw = 0;
+      roll = 0;
 
       // create listener (accept connections from any address)
       TcpListener phiLinkListener = new TcpListener(IPAddress.Any, PHI_LINK_PORT);
@@ -252,23 +252,20 @@ namespace Phi_Core {
     }
 
     private static void parseState(PhiStatePacket statePacket) {
-      lastPacketID = statePacket.getPacketID();
-      double pitchDelta = statePacket.getPitchDelta();
-      double yawDelta = statePacket.getYawDelta();
-      double rollDelta = statePacket.getRollDelta();
       lock (dataLock) {
-        accum_pitch = clampRange(accum_pitch + pitchDelta, 180);
-        accum_yaw   = clampRange(accum_yaw   + yawDelta,   180);
-        accum_roll  = clampRange(accum_roll  + rollDelta,  180);
+        lastPacketID = statePacket.getPacketID();
+        pitch = statePacket.getPitch();
+        yaw = statePacket.getYaw();
+        roll = statePacket.getRoll();
         statePacket.getJointData(joints);
       }
     }
 
     internal static void resetGyroAccum() {
       lock (dataLock) {
-        accum_pitch = 0;
-        accum_yaw   = 0;
-        accum_roll  = 0;
+        pitch = 0;
+        yaw   = 0;
+        roll  = 0;
       }
     }
 
@@ -308,21 +305,21 @@ namespace Phi_Core {
     internal static double getGyroAccumPitch() {
       lock (dataLock) {
         // return accum value [-180, 180]
-        return accum_pitch;
+        return pitch;
       }
     }
 
     internal static double getGyroAccumYaw() {
       lock (dataLock) {
         // return accum value [-180, 180]
-        return accum_yaw;
+        return yaw;
       }
     }
 
     internal static double getGyroAccumRoll() {
       lock (dataLock) {
         // return accum value [-180, 180]
-        return accum_roll;
+        return roll;
       }
     }
 
