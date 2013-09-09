@@ -33,9 +33,13 @@ UINT32 packetId = 0;
 //
 
 void* failsafeLoop(void* arg);
+void initState();
 void updateState();
 
 void startFailsafeThread() {
+
+  // init phi state
+  initState();
 
   // spawn thread to run the loop
   // Note2: thread is started detached and we don't keep track
@@ -138,6 +142,39 @@ void* failsafeLoop(void* arg)
 // PHI state related functions
 //
 
+void initState() {
+
+  int i;
+
+  // grab mutex
+  PHI_MUTEX_GET(&mtxState);
+  
+  // sign
+  memcpy(phiState.sign, STAP_SIGN, sizeof(phiState.sign));
+
+  // packet ID
+  phiState.id = 0;
+
+  // image
+  memset(phiState.image, 0, sizeof(phiState.image));
+
+  // gyro
+  phiState.gyro[0] = 0;
+  phiState.gyro[1] = 0;
+  phiState.gyro[2] = 0;
+
+  // joint (motor) positions
+  for (i = 0 ; i < COUNTOF(phiState.joint) ; i++) {
+    phiState.joint[i] = 0;
+  }
+
+  // temp
+  phiState.temp = 0;
+
+  // free mutex
+  PHI_MUTEX_RELEASE(&mtxState);
+}
+
 void updateState() {
 
   int i;
@@ -161,15 +198,19 @@ void updateState() {
   PHI_MUTEX_RELEASE(&mtxState);
 
   // gyro (return +/- percent of max reading)
+  //
+  // note: we actually accumulate the change in the state
+  // instead of of the change because this runs at a faster
+  // rate than the transmission so data would be lost
 
   PHI_MUTEX_GET(&mtxState);
 
   float pitchDelta, yawDelta, rollDelta;
   HAL_gyroGetDeltas(&pitchDelta, &yawDelta, &rollDelta);
 
-  phiState.gyro[0] = pitchDelta;
-  phiState.gyro[1] = yawDelta;
-  phiState.gyro[2] = rollDelta;
+  phiState.gyro[0] += pitchDelta;
+  phiState.gyro[1] += yawDelta;
+  phiState.gyro[2] += rollDelta;
 
   PHI_MUTEX_RELEASE(&mtxState);
 
@@ -182,9 +223,8 @@ void updateState() {
   }
 
   // temp
-
   PHI_MUTEX_GET(&mtxState);
-  TODO("Temperature not implemented");
+  phiState.temp = HAL_gyroGetTemp();
   PHI_MUTEX_RELEASE(&mtxState);
 }
 
