@@ -10,7 +10,7 @@
 void gyroCalibrate();
 
 // FIFO enabled flag
-BOOL bUseFifo = FALSE;
+BOOL bUseFifo = TRUE;
 
 // zero calibration values
 INT16 zeroX = 0;
