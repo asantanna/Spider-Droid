@@ -40,7 +40,7 @@
         document.getElementById("slider_val").innerHTML = percent + "%";
         // set motor speed
         motorId = document.getElementById("phi_leg").value + document.getElementById("phi_joint").value;
-        if (bPhiInit) {
+        if (bPhiInit && bSetPowerOK) {
           // disable setPower until we get reply so we don't swamp PHI
           bSetPowerOK = false;
 
