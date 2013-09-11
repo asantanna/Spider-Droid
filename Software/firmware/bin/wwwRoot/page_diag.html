@@ -21,6 +21,7 @@
       var slider;
       var bPhiInit = false;
       var bPollGyro = false;
+      var bSetPowerOK = true;
 
       function initSlider() {
         
@@ -40,6 +41,10 @@
         // set motor speed
         motorId = document.getElementById("phi_leg").value + document.getElementById("phi_joint").value;
         if (bPhiInit) {
+          // disable setPower until we get reply so we don't swamp PHI
+          bSetPowerOK = false;
+
+          // send set power command
           phi_setPower(motorId, percent);
         }
       }
@@ -107,8 +112,14 @@
 
             case "debugJunk":
             case "debugJunk2":
+              break;
+              
             case "setPower":
               // alert("got " + reply.cmd + " command reply");
+
+              // got reply ok to send next
+              bSetPowerOK = true;
+              
               break;
               
             default:
@@ -251,7 +262,8 @@
          <td class="phi_label">Yaw Rate</td>
          <td class="phi_label">Roll Rate</td>
          <td> 
-            <input type="button" onclick="toggleGyroPolling()" value="Activate">
+            <input type="button" onclick="toggleGyroPolling()"
+                  value="Toggle Polling">
          </td>
       </tr>
 
