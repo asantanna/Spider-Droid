@@ -1,0 +1,147 @@
+	TAGS	UNSORTED
+System	Phi-Core\PhiStatePacket.cs	6	using System;
+Generic	Phi-Core\PhiStatePacket.cs	39	using System.Collections.Generic;
+Linq	Phi-Core\PhiStatePacket.cs	61	using System.Linq;
+Text	Phi-Core\PhiStatePacket.cs	80	using System.Text;
+Tasks	Phi-Core\PhiStatePacket.cs	109	using System.Threading.Tasks;
+Phi_Core	Phi-Core\PhiStatePacket.cs	127	namespace Phi_Core
+Phi_Core::PhiStatePacket	Phi-Core\PhiStatePacket.cs	146	  class PhiStatePacket {
+Phi_Core::PhiStatePacket::PACKET_SIGN_LEN	Phi-Core\PhiStatePacket.cs	213	    private const int PACKET_SIGN_LEN = 4;
+Phi_Core::PhiStatePacket::STATE_PACKET_SIGN	Phi-Core\PhiStatePacket.cs	260	    private static byte[] STATE_PACKET_SIGN = PhiGlobals.StrToByteArray("SPV1");
+Phi_Core::PhiStatePacket::OFF_SIGN	Phi-Core\PhiStatePacket.cs	367	    private const int OFF_SIGN = 0;
+Phi_Core::PhiStatePacket::OFF_VISION_DATA	Phi-Core\PhiStatePacket.cs	403	    private const int OFF_VISION_DATA = OFF_SIGN + PACKET_SIGN_LEN;
+Phi_Core::PhiStatePacket::OFF_GYRO_DATA	Phi-Core\PhiStatePacket.cs	471	    private const int OFF_GYRO_DATA = OFF_VISION_DATA + PhiGlobals.NUM_VISION_ELEM;
+Phi_Core::PhiStatePacket::OFF_JOINT_POS_DATA	Phi-Core\PhiStatePacket.cs	555	    private const int OFF_JOINT_POS_DATA = OFF_GYRO_DATA + (PhiGlobals.NUM_GYRO_ELEM * sizeof(float));
+Phi_Core::PhiStatePacket::OFF_TEMP_DATA	Phi-Core\PhiStatePacket.cs	658	    private const int OFF_TEMP_DATA = OFF_JOINT_POS_DATA + PhiGlobals.NUM_JOINT_POS_ELEM;
+Phi_Core::PhiStatePacket::OFF_PACKET_END	Phi-Core\PhiStatePacket.cs	748	    private const int OFF_PACKET_END = OFF_TEMP_DATA + PhiGlobals.NUM_TEMP_ELEM;
+Phi_Core::PhiStatePacket::packetData	Phi-Core\PhiStatePacket.cs	855	    internal byte[] packetData = new byte[OFF_PACKET_END];
+Phi_Core::PhiStatePacket::PhiStatePacket	Phi-Core\PhiStatePacket.cs	992	    internal PhiStatePacket() {
+Phi_Core::PhiStatePacket::getPitchDelta	Phi-Core\PhiStatePacket.cs	1061	    internal double getPitchDelta() {
+Phi_Core::PhiStatePacket::getYawDelta	Phi-Core\PhiStatePacket.cs	1202	    internal double getYawDelta() {
+Phi_Core::PhiStatePacket::getRollDelta	Phi-Core\PhiStatePacket.cs	1344	    internal double getRollDelta() {
+System	Phi-Core\PhiLink.cs	6	using System;
+ComponentModel	Phi-Core\PhiLink.cs	27	using System.ComponentModel;
+Diagnostics	Phi-Core\PhiLink.cs	56	using System.Diagnostics;
+IO	Phi-Core\PhiLink.cs	82	using System.IO;
+Net	Phi-Core\PhiLink.cs	99	using System.Net;
+Sockets	Phi-Core\PhiLink.cs	121	using System.Net.Sockets;
+Text	Phi-Core\PhiLink.cs	143	using System.Text;
+Threading	Phi-Core\PhiLink.cs	162	using System.Threading;
+Tasks	Phi-Core\PhiLink.cs	196	using System.Threading.Tasks;
+Windows	Phi-Core\PhiLink.cs	216	using System.Windows;
+Phi_Core	Phi-Core\PhiLink.cs	236	namespace Phi_Core {
+Phi_Core::PhiLink	Phi-Core\PhiLink.cs	263	  static class PhiLink {
+Phi_Core::PhiLink::PHI_LINK_PORT	Phi-Core\PhiLink.cs	374	    const Int32 PHI_LINK_PORT = 1122;
+Phi_Core::PhiLink::DESIRED_LOOP_FPS	Phi-Core\PhiLink.cs	458	    internal const double DESIRED_LOOP_FPS = 10;
+Phi_Core::PhiLink::DESIRED_SECS_PER_LOOP	Phi-Core\PhiLink.cs	498	    const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
+Phi_Core::PhiLink::LOOP_TIME_ACCUM_RATE	Phi-Core\PhiLink.cs	582	    const double LOOP_TIME_ACCUM_RATE = (1.0 / 100);
+LINK_OFF	Phi-Core\PhiLink.cs	686	      LINK_OFF,
+LINK_STARTED	Phi-Core\PhiLink.cs	702	      LINK_STARTED,
+LINK_CONNECTING	Phi-Core\PhiLink.cs	722	      LINK_CONNECTING,
+LINK_CONNECTED	Phi-Core\PhiLink.cs	745	      LINK_CONNECTED,
+LINK_ERROR	Phi-Core\PhiLink.cs	767	      LINK_ERROR,
+LINK_CLOSED	Phi-Core\PhiLink.cs	785	      LINK_CLOSED
+Phi_Core::PhiLink::PhiLinkState	Phi-Core\PhiLink.cs	665	    internal enum PhiLinkState {
+Phi_Core::PhiLink::dataLock	Phi-Core\PhiLink.cs	831	    internal static object dataLock = new object();
+Phi_Core::PhiLink::linkState	Phi-Core\PhiLink.cs	890	    internal static PhiLinkState linkState = PhiLinkState.LINK_OFF;
+Phi_Core::PhiLink::commLoopTask	Phi-Core\PhiLink.cs	950	    private static Task commLoopTask = null;
+Phi_Core::PhiLink::loopCount	Phi-Core\PhiLink.cs	997	    private static UInt32 loopCount = 0;
+Phi_Core::PhiLink::secsThisLoop	Phi-Core\PhiLink.cs	1038	    private static double secsThisLoop = 0;
+Phi_Core::PhiLink::accum_secsPerLoop	Phi-Core\PhiLink.cs	1082	    private static double accum_secsPerLoop = DESIRED_SECS_PER_LOOP;
+Phi_Core::PhiLink::accum_sleepTime	Phi-Core\PhiLink.cs	1151	    private static double accum_sleepTime = 0;
+Phi_Core::PhiLink::accum_pitch	Phi-Core\PhiLink.cs	1199	    private static double accum_pitch = 0;
+Phi_Core::PhiLink::accum_yaw	Phi-Core\PhiLink.cs	1242	    private static double accum_yaw = 0;
+Phi_Core::PhiLink::accum_roll	Phi-Core\PhiLink.cs	1283	    private static double accum_roll = 0;
+Phi_Core::PhiLink::startListenerAsync	Phi-Core\PhiLink.cs	1373	    async static internal Task<NetworkStream> startListenerAsync() {
+Phi_Core::PhiLink::startCommLoop	Phi-Core\PhiLink.cs	3558	    internal static void startCommLoop(NetworkStream phiStream) {
+Phi_Core::PhiLink::stopCommLoop	Phi-Core\PhiLink.cs	3829	    internal static void stopCommLoop() {
+Phi_Core::PhiLink::commLoop	Phi-Core\PhiLink.cs	4053	    static void commLoop(NetworkStream phiStream) {
+Phi_Core::PhiLink::clampRange	Phi-Core\PhiLink.cs	6549	    private static double clampRange(double deg, double absMax) {
+Phi_Core::PhiLink::parseState	Phi-Core\PhiLink.cs	6930	    private static void parseState(PhiStatePacket statePacket) {
+Phi_Core::PhiLink::resetGyroAccum	Phi-Core\PhiLink.cs	7389	    internal static void resetGyroAccum() {
+Phi_Core::PhiLink::setLinkState	Phi-Core\PhiLink.cs	7575	    internal static void setLinkState(PhiLinkState state) {
+Phi_Core::PhiLink::getAvgIdle	Phi-Core\PhiLink.cs	7722	    internal static double getAvgIdle() {
+Phi_Core::PhiLink::getAvgFrameRate	Phi-Core\PhiLink.cs	7859	    internal static double getAvgFrameRate() {
+Phi_Core::PhiLink::getLoopCount	Phi-Core\PhiLink.cs	7985	    internal static double getLoopCount() {
+Phi_Core::PhiLink::getGyroAccumPitch	Phi-Core\PhiLink.cs	8062	    internal static double getGyroAccumPitch() {
+Phi_Core::PhiLink::getGyroAccumYaw	Phi-Core\PhiLink.cs	8220	    internal static double getGyroAccumYaw() {
+Phi_Core::PhiLink::getGyroAccumRoll	Phi-Core\PhiLink.cs	8374	    internal static double getGyroAccumRoll() {
+System	Phi-Core\PhiGlobals.cs	6	using System;
+Generic	Phi-Core\PhiGlobals.cs	39	using System.Collections.Generic;
+Linq	Phi-Core\PhiGlobals.cs	61	using System.Linq;
+Text	Phi-Core\PhiGlobals.cs	80	using System.Text;
+Tasks	Phi-Core\PhiGlobals.cs	109	using System.Threading.Tasks;
+Phi_Core	Phi-Core\PhiGlobals.cs	127	namespace Phi_Core
+Phi_Core::PhiGlobals	Phi-Core\PhiGlobals.cs	153	  static class PhiGlobals
+Phi_Core::PhiGlobals::PHI_VERSION	Phi-Core\PhiGlobals.cs	238	    internal static byte[] PHI_VERSION = StrToByteArray("0.9 (exp)");
+Phi_Core::PhiGlobals::NUM_LEGS	Phi-Core\PhiGlobals.cs	328	    internal const int NUM_LEGS = 4;
+Phi_Core::PhiGlobals::MOTORS_PER_LEG	Phi-Core\PhiGlobals.cs	365	    internal const int MOTORS_PER_LEG = 3;
+Phi_Core::PhiGlobals::NUM_MOTOR_ELEM	Phi-Core\PhiGlobals.cs	408	    internal const int NUM_MOTOR_ELEM = MOTORS_PER_LEG * NUM_LEGS;
+Phi_Core::PhiGlobals::NUM_JOINT_POS_ELEM	Phi-Core\PhiGlobals.cs	501	    internal const int NUM_JOINT_POS_ELEM = NUM_LEGS * MOTORS_PER_LEG;
+Phi_Core::PhiGlobals::NUM_GYRO_ELEM	Phi-Core\PhiGlobals.cs	708	    internal const int NUM_GYRO_ELEM = 3;
+Phi_Core::PhiGlobals::NUM_TEMP_ELEM	Phi-Core\PhiGlobals.cs	779	    internal const int NUM_TEMP_ELEM = 1;
+Phi_Core::PhiGlobals::VISION_X	Phi-Core\PhiGlobals.cs	848	    internal const int VISION_X = 160;
+Phi_Core::PhiGlobals::VISION_Y	Phi-Core\PhiGlobals.cs	887	    internal const int VISION_Y = 120;
+Phi_Core::PhiGlobals::NUM_VISION_ELEM	Phi-Core\PhiGlobals.cs	926	    internal const int NUM_VISION_ELEM = 4; // TODO - HACK -  VISION_X * VISION_Y;
+Phi_Core::PhiGlobals::bInit	Phi-Core\PhiGlobals.cs	1046	    internal static bool bInit = false;
+Phi_Core::PhiGlobals::mainWindow	Phi-Core\PhiGlobals.cs	1092	    internal static MainWindow mainWindow = null;
+Phi_Core::PhiGlobals::encoding	Phi-Core\PhiGlobals.cs	1156	    internal static System.Text.UTF8Encoding encoding;
+Phi_Core::PhiGlobals::phiAbort	Phi-Core\PhiGlobals.cs	1231	    internal static void phiAbort(string message)
+Phi_Core::PhiGlobals::StrToByteArray	Phi-Core\PhiGlobals.cs	1518	    internal static byte[] StrToByteArray(string str)
+Phi_Core::PhiGlobals::MAKE_SHORT	Phi-Core\PhiGlobals.cs	1711	    internal static short MAKE_SHORT(byte[] ba, int offset) {
+Phi_Core::PhiGlobals::MAKE_FLOAT	Phi-Core\PhiGlobals.cs	1876	    internal static float MAKE_FLOAT(byte[] ba, int offset) {
+System	Phi-Core\PhiCmdPacket.cs	6	using System;
+Generic	Phi-Core\PhiCmdPacket.cs	39	using System.Collections.Generic;
+Linq	Phi-Core\PhiCmdPacket.cs	61	using System.Linq;
+Text	Phi-Core\PhiCmdPacket.cs	80	using System.Text;
+Tasks	Phi-Core\PhiCmdPacket.cs	109	using System.Threading.Tasks;
+Phi_Core	Phi-Core\PhiCmdPacket.cs	127	namespace Phi_Core {
+Phi_Core::PhiCmdPacket	Phi-Core\PhiCmdPacket.cs	147	  class PhiCmdPacket {
+Phi_Core::PhiCmdPacket::PACKET_SIGN_LEN	Phi-Core\PhiCmdPacket.cs	213	    private const int PACKET_SIGN_LEN = 4;
+Phi_Core::PhiCmdPacket::CMD_PACKET_SIGN	Phi-Core\PhiCmdPacket.cs	260	    private static byte[] CMD_PACKET_SIGN = PhiGlobals.StrToByteArray("CPV1");
+Phi_Core::PhiCmdPacket::OFF_SIGN	Phi-Core\PhiCmdPacket.cs	365	    private const int OFF_SIGN = 0;
+Phi_Core::PhiCmdPacket::OFF_MOTOR_AXONS	Phi-Core\PhiCmdPacket.cs	401	    private const int OFF_MOTOR_AXONS = OFF_SIGN + PACKET_SIGN_LEN;
+Phi_Core::PhiCmdPacket::OFF_PACKET_END	Phi-Core\PhiCmdPacket.cs	469	    private const int OFF_PACKET_END = OFF_MOTOR_AXONS + PhiGlobals.NUM_MOTOR_ELEM;
+Phi_Core::PhiCmdPacket::packetData	Phi-Core\PhiCmdPacket.cs	579	    internal byte[] packetData = new byte[OFF_PACKET_END];
+Phi_Core::PhiCmdPacket::PhiCmdPacket	Phi-Core\PhiCmdPacket.cs	716	    internal PhiCmdPacket() {
+System	Phi-Core\MainWindow.xaml.cs	6	using System;
+Generic	Phi-Core\MainWindow.xaml.cs	39	using System.Collections.Generic;
+Linq	Phi-Core\MainWindow.xaml.cs	61	using System.Linq;
+Sockets	Phi-Core\MainWindow.xaml.cs	84	using System.Net.Sockets;
+Text	Phi-Core\MainWindow.xaml.cs	106	using System.Text;
+Tasks	Phi-Core\MainWindow.xaml.cs	135	using System.Threading.Tasks;
+Timers	Phi-Core\MainWindow.xaml.cs	155	using System.Timers;
+Windows	Phi-Core\MainWindow.xaml.cs	176	using System.Windows;
+Controls	Phi-Core\MainWindow.xaml.cs	206	using System.Windows.Controls;
+Data	Phi-Core\MainWindow.xaml.cs	237	using System.Windows.Data;
+Documents	Phi-Core\MainWindow.xaml.cs	264	using System.Windows.Documents;
+Input	Phi-Core\MainWindow.xaml.cs	296	using System.Windows.Input;
+Media	Phi-Core\MainWindow.xaml.cs	324	using System.Windows.Media;
+Imaging	Phi-Core\MainWindow.xaml.cs	358	using System.Windows.Media.Imaging;
+Navigation	Phi-Core\MainWindow.xaml.cs	388	using System.Windows.Navigation;
+Shapes	Phi-Core\MainWindow.xaml.cs	421	using System.Windows.Shapes;
+Threading	Phi-Core\MainWindow.xaml.cs	450	using System.Windows.Threading;
+Phi_Core	Phi-Core\MainWindow.xaml.cs	472	namespace Phi_Core {
+Phi_Core::MainWindow	Phi-Core\MainWindow.xaml.cs	583	  public partial class MainWindow : Window {
+Phi_Core::MainWindow::blinkyTimer	Phi-Core\MainWindow.xaml.cs	668	    private static DispatcherTimer blinkyTimer;
+Phi_Core::MainWindow::blinkState	Phi-Core\MainWindow.xaml.cs	698	    private bool blinkState = false;
+Phi_Core::MainWindow::updateTimer	Phi-Core\MainWindow.xaml.cs	753	    private static DispatcherTimer updateTimer;
+Phi_Core::MainWindow::MainWindow	Phi-Core\MainWindow.xaml.cs	805	    public MainWindow() {
+Phi_Core::MainWindow::startPhiLink	Phi-Core\MainWindow.xaml.cs	935	    async private void startPhiLink() {
+Phi_Core::MainWindow::enableBlinkyTimer	Phi-Core\MainWindow.xaml.cs	1407	    private void enableBlinkyTimer(bool bEnable) {
+Phi_Core::MainWindow::blinkNowEvent	Phi-Core\MainWindow.xaml.cs	1927	    private void blinkNowEvent(object source, EventArgs e) {
+Phi_Core::MainWindow::updateLinkStatus	Phi-Core\MainWindow.xaml.cs	2380	    internal void updateLinkStatus(PhiLink.PhiLinkState state) {
+Phi_Core::MainWindow::Window_Loaded	Phi-Core\MainWindow.xaml.cs	3435	    private void Window_Loaded(object sender, RoutedEventArgs e) {
+Phi_Core::MainWindow::enableUpdateTimer	Phi-Core\MainWindow.xaml.cs	3805	    private void enableUpdateTimer(bool bEnable) {
+Phi_Core::MainWindow::updateNowEvent	Phi-Core\MainWindow.xaml.cs	4325	    private void updateNowEvent(object source, EventArgs e) {
+Phi_Core::MainWindow::drawGyroIndicator	Phi-Core\MainWindow.xaml.cs	4782	    private void drawGyroIndicator(string prefix, double degrees) {
+Phi_Core::MainWindow::BtnResetGyro_Click	Phi-Core\MainWindow.xaml.cs	5543	    private void BtnResetGyro_Click(object sender, RoutedEventArgs e) {
+System	Phi-Core\App.xaml.cs	6	using System;
+Generic	Phi-Core\App.xaml.cs	39	using System.Collections.Generic;
+Configuration	Phi-Core\App.xaml.cs	61	using System.Configuration;
+Data	Phi-Core\App.xaml.cs	89	using System.Data;
+Linq	Phi-Core\App.xaml.cs	108	using System.Linq;
+Tasks	Phi-Core\App.xaml.cs	137	using System.Threading.Tasks;
+Windows	Phi-Core\App.xaml.cs	157	using System.Windows;
+Phi_Core	Phi-Core\App.xaml.cs	177	namespace Phi_Core
+Phi_Core::App	Phi-Core\App.xaml.cs	289	    public partial class App : Application
