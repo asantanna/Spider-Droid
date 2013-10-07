@@ -37,6 +37,14 @@
 
       function sliderChanged(value) {
         var percent = value - 100;
+        var maxVal = document.getElementById("max_power").value;
+        
+        if (percent > maxVal) {
+          percent = maxVal;
+        } else if (-percent > maxVal) {
+          percent = -maxVal;
+        }
+        
         document.getElementById("slider_val").innerHTML = percent + "%";
         // set motor speed
         motorId = document.getElementById("phi_leg").value + document.getElementById("phi_joint").value;
@@ -244,6 +252,11 @@
          </td>
          <td>
             <span id="slider_val"></span>
+         </td>
+         <td> &nbsp; &nbsp; &nbsp; &nbsp;
+            <strong> Max: </strong> &nbsp; &nbsp;
+            <input type="text" id="max_power" size="1" align="right"
+                   value="100">
          </td>
       </tr>
 

@@ -1,0 +1,8 @@
+#! /bin/bash
+
+echo Starting Eclipse as root ...
+
+# -S option makes sudo read the password from stdin
+# (no password in this case)
+
+

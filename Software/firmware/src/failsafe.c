@@ -203,10 +203,10 @@ void updateState() {
   // instead of of the change because this runs at a faster
   // rate than the transmission so data would be lost
 
-  PHI_MUTEX_GET(&mtxState);
-
   float pitchDelta, yawDelta, rollDelta;
   HAL_gyroGetDeltas(&pitchDelta, &yawDelta, &rollDelta);
+
+  PHI_MUTEX_GET(&mtxState);
 
   phiState.gyro[0] += pitchDelta;
   phiState.gyro[1] += yawDelta;
@@ -217,21 +217,25 @@ void updateState() {
   // joint (motor) positions
 
   for (i = 0 ; i < COUNTOF(phiState.joint) ; i++) {
+    float j = HAL_getMotorPosition(i);
     PHI_MUTEX_GET(&mtxState);
-    phiState.joint[i] = HAL_getMotorPosition(i);
+    phiState.joint[i] = j;
     PHI_MUTEX_RELEASE(&mtxState);
   }
 
   // temp
+  float t = HAL_gyroGetTemp();
   PHI_MUTEX_GET(&mtxState);
-  phiState.temp = HAL_gyroGetTemp();
+  phiState.temp = t;
   PHI_MUTEX_RELEASE(&mtxState);
 }
 
 void prepStatePacket(PHI_STATE_PACKET *p) {
 
+  //
   // DEBUG - update every request
   // updateState();
+  //
   
   PHI_MUTEX_GET(&mtxState);
   memcpy(p, &phiState, sizeof(phiState));
