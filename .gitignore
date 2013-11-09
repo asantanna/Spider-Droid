@@ -27,6 +27,7 @@ cmake.tmp.*
 phi-ubuntu
 phi-rpi-phi
 bin-debug
+*/Old-Versions*/*
 
 # eclipse stuff
 .project
