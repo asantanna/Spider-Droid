@@ -91,6 +91,7 @@ JSON_HANDLER(getGyroTemp);
 JSON_HANDLER(getPhiUptime);
 JSON_HANDLER(startPhiLink);
 JSON_HANDLER(getLinkState);
+JSON_HANDLER(setMCtlId);
 
 // valid command list
 
@@ -115,6 +116,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(getGyroTemp),
   CMD_ENTRY(startPhiLink),
   CMD_ENTRY(getLinkState),
+  CMD_ENTRY(setMCtlId),
 //  CMD_ENTRY(setBrake),
   { 0, 0}
 };
@@ -498,6 +500,8 @@ JSON_HANDLER(getPhiUptime) {
 //  req:    { cmd : setBrake, motorId : "spj" , brake : on | off | zeroMeansBrake | zeroMeansCoast }
 //  reply:  {}
 //
+//  req:    { cmd: setMCtlId, oldId: byte, newId: byte }
+//
 // where:
 //
 // motorId: 3 char code "spj" with
@@ -522,6 +526,11 @@ JSON_HANDLER(getPhiUptime) {
 //       = off              put motor in idle mode now
 //       = zeroMeansBrake   power=0% means braking mode
 //       = zeroMeansCoast   power=0% means coast (default)
+//
+// if setMCtlId:
+//
+//   oldId = byte           current id of motor controller (default factory id = 9)
+//   newId = byte           new id of motor controller
 //
 //
 
@@ -606,6 +615,68 @@ quick_exit:
 error_exit:
 
   LOG_ERR("JSON.setPower:  call failed");
+  goto quick_exit;
+}
+
+JSON_HANDLER(setMCtlId) {
+  JSON_HANDLER_PROLOG(setMCtlId);
+
+  jsmntok_t* pTok = *ppTok;
+  int oldId = MC_DEFAULT_DEVICE_NUM;
+  int newId = -1;
+  int toksRead = 2;
+
+  while (toksRead < _numChild) {
+
+    if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
+      sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setMCtlId: param name is not a primitive.) );
+      goto error_exit;
+    }
+    
+    if (TOK_EQ(pTok, "oldId")) {
+
+      // advance
+      pTok ++;
+      toksRead ++;
+
+      oldId = atoi(TOK_START(pTok));
+      
+    } else if (TOK_EQ(pTok, "newId")) {
+
+      // advance
+      pTok ++;
+      toksRead ++;
+
+      newId = atoi(TOK_START(pTok));
+
+    } else {
+
+      // unknown property
+      LOG_ERR("JSON.setMCtlId: Unknown property '%s'", TOK_START(pTok));
+      goto error_exit;
+    }
+
+    // advance
+    pTok ++;
+    toksRead ++;
+  }
+
+  if (newId == -1) {
+    sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setMCtlId: newId parameter missing.) );
+    goto error_exit;
+  }
+
+  LOG_INFO("JSON.setMCtlId: changing motor controller id '%d' to '%d'", oldId, newId);
+  
+  HAL_setControllerId(oldId, newId);
+
+quick_exit:
+
+  JSON_HANDLER_EPILOG();
+
+error_exit:
+
+  LOG_ERR("JSON.setMCtlId:  call failed");
   goto quick_exit;
 }
 

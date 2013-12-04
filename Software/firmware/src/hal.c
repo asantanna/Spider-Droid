@@ -21,6 +21,7 @@ HAL_FUNCS phiHal = {
   .gyroGetTemp =      PHI_gyroGetTemp,
   .getMotorPosition = PHI_getMotorPosition,
   .setMotorPower =    (halFunc_void) PHI_setMotorPower,
+  .setControllerId =  (halFunc_void) PHI_setControllerId,
 };
 
 //
@@ -35,6 +36,7 @@ HAL_FUNCS genericHal = {
   .gyroGetTemp =      GENERIC_gyroGetTemp,
   .getMotorPosition = GENERIC_getMotorPosition,
   .setMotorPower =    (halFunc_void) GENERIC_setMotorPower,
+  .setControllerId =  (halFunc_void) GENERIC_setControllerId,
 };
 
 void HAL_init() {
@@ -146,3 +148,5 @@ UINT16 GENERIC_getMotorPosition(int motorIdx) {
   return (UINT16) ( ((long) ((currSecs * 512) + (motorIdx*100))) % 1024 );
 }
 
+void GENERIC_setControllerId(int oldId, int newId) {
+}
