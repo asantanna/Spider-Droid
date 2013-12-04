@@ -20,7 +20,6 @@
 
       var slider;
       var bPhiInit = false;
-      var bPollGyro = false;
       var bSetPowerOK = true;
 
       function initSlider() {
@@ -76,6 +75,7 @@
         
         for (var i = 0 ; i < num ; i++) {
           var reply = obj.reply[i];
+          // DEBUG
           // alert("obj.reply[" + i + "].cmd = " + reply.cmd);
           switch (reply.cmd) {
             
@@ -108,13 +108,15 @@
             case "getGyroTemp":
               document.getElementById("phi_temp").innerHTML = reply.degreesC;
 
+              // POLLING DISABLED - not that useful
+
               // pollGyro() calls getGyroTemp() *last* - which means
               // we can reschedule if polling is active
 
-              if (bPollGyro) {
+              // if (bPollGyro) {
                 // call again soon
-                window.setTimeout(pollGyro, 500);
-              }
+                // window.setTimeout(pollGyro, 500);
+              // }
               
               break;
 
@@ -130,6 +132,10 @@
               
               break;
               
+            case "setMCtlId":
+              alert("setMCtlId complete");
+              break;
+              
             default:
               alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
               break;
@@ -143,12 +149,18 @@
         phi_getGyroTemp();
       }
 
-      function toggleGyroPolling() {
+      function refreshGyro() {
         if (bPhiInit) {                
-          bPollGyro = !bPollGyro;
-          if (bPollGyro) {
             pollGyro();
-          }
+        } else {
+          // not initialized
+          alert("PHI is not initialized, you dummy!");
+        }
+      }
+
+      function setControllerId() {
+        if (bPhiInit) {
+          phi_setMCtlId(document.getElementById("old_id"), document.getElementById("new_id"));
         } else {
           // not initialized
           alert("PHI is not initialized, you dummy!");
@@ -220,6 +232,31 @@
    
    <table class="phi_indent_1" border="0" cellpadding="5">
       <col>
+      <col>
+      
+      <tr> 
+         <td class="phi_label">Select Controller ID</td>
+         <td style="padding-left:30px;">
+            Old ID
+            <input type="text" id="old_id" size="1" align="right"
+                   value="9">
+         </td>
+         <td style="padding-left:30px;">
+            New ID
+            <input type="text" id="new_id" size="1" align="right"
+                   value="0">
+         </td>
+         <td> 
+            <input type="button" onclick="setControllerId()"
+                  value="Set ID">
+         </td>
+      </tr>
+   </table>
+
+   </br>
+   
+   <table class="phi_indent_1" border="0" cellpadding="5">
+      <col>
       <col width=250>
       
       <tr> 
@@ -238,9 +275,9 @@
          <td class="phi_label">Select Joint:</td>
          <td style="padding-left:30px;">
             <select id="phi_joint">
-               <option value="t">Thigh Flexor</option>
-               <option value="k">Knee Flexor</option>
-               <option value="h">Hip Rotator</option>
+               <option value="t">Thigh</option>
+               <option value="k">Knee</option>
+               <option value="h">Hip</option>
             </select>             
          </td>
       </tr>
@@ -275,8 +312,8 @@
          <td class="phi_label">Yaw Rate</td>
          <td class="phi_label">Roll Rate</td>
          <td> 
-            <input type="button" onclick="toggleGyroPolling()"
-                  value="Toggle Polling">
+            <input type="button" onclick="refreshGyro()"
+                  value="Refresh">
          </td>
       </tr>
 

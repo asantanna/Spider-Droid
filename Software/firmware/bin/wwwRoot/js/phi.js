@@ -34,6 +34,10 @@ function phi_getLinkState() {
   sendJsonRequest("req : [ {cmd:getLinkState} ]");
 }
 
+function phi_setMCtlId(oldId, newId) {
+  sendJsonRequest("req : [ {cmd:setMCtlId, oldId:" + oldId + ", newId:" + newId + "} ]");
+}
+
 //
 // Utils
 //
