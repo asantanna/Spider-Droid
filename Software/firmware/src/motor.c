@@ -33,14 +33,11 @@ void PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
     bFwd ? (md -> motorIdx == 0 ? MC_CMD_FWD_M0 : MC_CMD_FWD_M1)
          : (md -> motorIdx == 0 ? MC_CMD_BCK_M0 : MC_CMD_BCK_M1);
 
-  WARN("Ignoring motor controller ID")
-  TODO("Do we want 7-bit or 8-bit motor speeds?")
-    
   char motorCmd[] = {
     MC_CMD_SIGN,
-    /*HACK FOR NOW md -> controllerID,*/ 9,
+    md -> controllerId,
     cmd,
-    /*ANOTHER HACK until motor is init properly */ power > 127 ? 127 : power
+    power > 127 ? 127 : power
   };
     
   uart_send(motorCmd, sizeof(motorCmd));
@@ -76,3 +73,21 @@ UINT16 PHI_getMotorPosition(int motorIdx) {
 }
 
 
+// Controllers come from factory with ID=9, we have to set each one
+// to a different value
+
+void PHI_setControllerId(int oldId, int newId) {
+
+    char motorCmd[] = {
+    MC_CMD_SIGN,
+    oldId,
+    MC_CMD_SET_CONF,
+    MC_SCONF_PARAM_DEVICE_ID,
+    newId,
+    MC_SCONF_END_VAL_0,
+    MC_SCONF_END_VAL_1
+  };
+
+  uart_send(motorCmd, sizeof(motorCmd));
+  
+}

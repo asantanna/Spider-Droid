@@ -20,6 +20,7 @@
         // get some stuff from PHI
         sendJsonRequest("req : [ {cmd:getIpAddr}, {cmd:getUname} ]");
         sendJsonRequest("req : [ {cmd:getSysInfo}, {cmd:getPhiUptime} ]");
+        sendJsonRequest("req : [ {cmd:getVersion} ]");
         phi_getLinkState();
       }
 
@@ -49,6 +50,23 @@
               document.getElementById("phi_load_5").innerHTML = (reply.sysLoad_5m/65535*100).toFixed(2) + " %";
               document.getElementById("phi_load_15").innerHTML = (reply.sysLoad_15m/65535*100).toFixed(2) + " %";
               
+              // don't know what this means exactly
+              // document.getElementById("phi_procs").innerHTML = reply.numProcs;
+              
+              document.getElementById("phi_ram").innerHTML =
+                getPrettyByteString(reply.totalRAM) + " (" + getPrettyByteString(reply.freeRAM) + " free)";
+              
+              document.getElementById("phi_shared_ram").innerHTML = getPrettyByteString(reply.sharedRAM);
+              
+              document.getElementById("phi_swap_space").innerHTML =
+                getPrettyByteString(reply.totalSwap) + " (" + getPrettyByteString(reply.freeSwap) + " free)";
+              
+              document.getElementById("phi_buffer_ram").innerHTML = getPrettyByteString(reply.bufferRAM);
+              document.getElementById("phi_mem_unit").innerHTML = reply.memUnit + " byte(s)";
+              
+              document.getElementById("phi_high_mem").innerHTML =
+                getPrettyByteString(reply.totalHigh) + " (" + getPrettyByteString(reply.freeHigh) + " free)";
+              
               break;
               
             case "getUname":
@@ -68,6 +86,11 @@
               
             case "startPhiLink":
               phi_getLinkState();
+              break;
+
+            case "getVersion":
+              
+              document.getElementById("phi_firmware_version").innerHTML = reply.version;
               break;
               
             default:
@@ -164,10 +187,47 @@
       </tr>
    </table>
       
+   <br/>
+   
+   <h3>System</h3>
+   
+   <table class="phi_indent_1" border="0" cellpadding="5">
+      
+      <tr> 
+         <td class="phi_label">Phi Firmware Version</td>
+         <td class="phi_value">&nbsp; <span id="phi_firmware_version">?</span></td>
+      </tr>
+
+   </table>
+
+   <h3>Memory</h3>
+   
+   <table class="phi_indent_1" border="0" cellpadding="5">
+      
+      <tr> 
+         <td class="phi_label">RAM</td>
+         <td class="phi_value">&nbsp; <span id="phi_ram">?</span></td>
+         <td class="phi_label">Shared RAM</td>
+         <td class="phi_value">&nbsp; <span id="phi_shared_ram">?</span></td>
+      </tr>
+      
+      <tr> 
+         <td class="phi_label">Swap Space</td>
+         <td class="phi_value">&nbsp; <span id="phi_swap_space">?</span></td>
+         <td class="phi_label">Buffer RAM</td>
+         <td class="phi_value">&nbsp; <span id="phi_buffer_ram">?</span></td>
+      </tr>
+      
+      <tr> 
+         <td class="phi_label">Mem Unit Size</td>
+         <td class="phi_value">&nbsp; <span id="phi_mem_unit">?</span></td>
+         <td class="phi_label">High Memory</td>
+         <td class="phi_value">&nbsp; <span id="phi_high_mem">?</span></td>
+      </tr>
+
+   </table>
 
    <br/>
-
-   <!-- <input type="button" onclick="testButtonPressed()" value="Test"> -->
 
 </body>
 </html>

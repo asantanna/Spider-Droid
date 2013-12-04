@@ -52,7 +52,7 @@
 // byte 4:  PARAM_VAL     (param value)
 // byte 5:  END_VAL_0     (0x55 : these are here to prevent accidental issuing
 //                        of this command)
-// byte 5:  END_VAL_1     (0x2A)
+// byte 6:  END_VAL_1     (0x2A)
 //
 // Param indexes:
 // param 0: DEVICE_ID    (controller device ID)

@@ -27,6 +27,7 @@ typedef struct {
   // motor control
   halFunc_UINT16 getMotorPosition;
   halFunc_void   setMotorPower;
+  halFunc_void   setControllerId;
 
 } HAL_FUNCS;
 
@@ -46,6 +47,7 @@ void HAL_init();
 
 #define HAL_getMotorPosition  (*(g_pHal -> getMotorPosition))
 #define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
+#define HAL_setControllerId   (*(g_pHal -> setControllerId))
 
 // PHI HAL
 
@@ -55,6 +57,7 @@ void    PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelt
 INT8    PHI_gyroGetTemp();
 UINT16  PHI_getMotorPosition(int motorIdx);
 void    PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
+void    PHI_setControllerId(int oldId, int newId);
 
 // generic HAL
 
@@ -64,3 +67,4 @@ void    GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRoll
 INT8    GENERIC_gyroGetTemp();
 UINT16  GENERIC_getMotorPosition(int motorIdx);
 void    GENERIC_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
+void    GENERIC_setControllerId(int oldId, int newId);
