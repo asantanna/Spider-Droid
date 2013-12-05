@@ -160,7 +160,7 @@
 
       function setControllerId() {
         if (bPhiInit) {
-          phi_setMCtlId(document.getElementById("old_id"), document.getElementById("new_id"));
+          phi_setMCtlId(parseInt(document.getElementById("old_id").value), parseInt(document.getElementById("new_id").value));
         } else {
           // not initialized
           alert("PHI is not initialized, you dummy!");
