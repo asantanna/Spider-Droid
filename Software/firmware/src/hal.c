@@ -148,5 +148,6 @@ UINT16 GENERIC_getMotorPosition(int motorIdx) {
   return (UINT16) ( ((long) ((currSecs * 512) + (motorIdx*100))) % 1024 );
 }
 
-void GENERIC_setControllerId(int oldId, int newId) {
+void GENERIC_setControllerId(char oldId, char newId) {
 }
+

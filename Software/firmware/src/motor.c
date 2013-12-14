@@ -76,7 +76,7 @@ UINT16 PHI_getMotorPosition(int motorIdx) {
 // Controllers come from factory with ID=9, we have to set each one
 // to a different value
 
-void PHI_setControllerId(int oldId, int newId) {
+void PHI_setControllerId(char oldId, char newId) {
 
     char motorCmd[] = {
     MC_CMD_SIGN,
