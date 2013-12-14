@@ -13,23 +13,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Phi_Core {
+namespace Phi {
   /// <summary>
-  /// Interaction logic for LegBox.xaml
+  /// Interaction logic for JointBox.xaml
   /// </summary>
-  public partial class LegBox : UserControl {
-    public LegBox() {
+  public partial class JointBox : UserControl {
+    public JointBox() {
       InitializeComponent();
     }
 
-    internal void update(
-      double hipNeuronVal, double hipJointPos,
-      double thighNeuronVal, double thighJointPos,
-      double kneeNeuronVal, double kneeJointPos) {
-
-      hipJoint.update(hipNeuronVal, hipJointPos);
-      thighJoint.update(thighNeuronVal, thighJointPos);
-      kneeJoint.update(kneeNeuronVal, kneeJointPos);
+    public void update(double neuronVal, double jointPos) {
+      neuronBox.update(neuronVal);
+      barBox.update(jointPos);
     }
 
   }

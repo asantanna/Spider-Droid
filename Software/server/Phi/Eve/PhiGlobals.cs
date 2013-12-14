@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Phi_Core
+namespace Phi
 {
   static class PhiGlobals
   {

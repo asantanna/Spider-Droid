@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Phi_Core {
+namespace Phi {
 
   static class PhiLink {
 

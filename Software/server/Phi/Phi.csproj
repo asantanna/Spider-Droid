@@ -7,8 +7,8 @@
     <ProjectGuid>{ED94E897-C6AA-4BEA-96DE-E38C60DECF55}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Phi_Core</RootNamespace>
-    <AssemblyName>Phi-Core</AssemblyName>
+    <RootNamespace>Phi</RootNamespace>
+    <AssemblyName>Phi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -49,63 +49,64 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="UI\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="PieControl.xaml.cs">
+    <Compile Include="UI\PieControl.xaml.cs">
       <DependentUpon>PieControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NeuronBox.xaml.cs">
+    <Compile Include="UI\NeuronBox.xaml.cs">
       <DependentUpon>NeuronBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BarBox.xaml.cs">
+    <Compile Include="UI\BarBox.xaml.cs">
       <DependentUpon>BarBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="JointBox.xaml.cs">
+    <Compile Include="UI\JointBox.xaml.cs">
       <DependentUpon>JointBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LegBox.xaml.cs">
+    <Compile Include="UI\LegBox.xaml.cs">
       <DependentUpon>LegBox.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Utils\PDF.cs" />
+    <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="UI\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="PieControl.xaml">
+    <Page Include="UI\PieControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NeuronBox.xaml">
+    <Page Include="UI\NeuronBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BarBox.xaml">
+    <Page Include="UI\BarBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="JointBox.xaml">
+    <Page Include="UI\JointBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LegBox.xaml">
+    <Page Include="UI\LegBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PhiCmdPacket.cs" />
-    <Compile Include="PhiGlobals.cs" />
-    <Compile Include="PhiLink.cs" />
-    <Compile Include="PhiStatePacket.cs" />
+    <Compile Include="Eve\PhiCmdPacket.cs" />
+    <Compile Include="Eve\PhiGlobals.cs" />
+    <Compile Include="Eve\PhiLink.cs" />
+    <Compile Include="Eve\PhiStatePacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -133,8 +134,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Letter_Phi.jpg" />
+    <Resource Include="UI\Letter_Phi.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

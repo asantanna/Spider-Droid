@@ -13,18 +13,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Phi_Core {
+namespace Phi {
   /// <summary>
-  /// Interaction logic for JointBox.xaml
+  /// Interaction logic for BarBox.xaml
   /// </summary>
-  public partial class JointBox : UserControl {
-    public JointBox() {
+  public partial class BarBox : UserControl {
+    public BarBox() {
       InitializeComponent();
     }
 
-    public void update(double neuronVal, double jointPos) {
-      neuronBox.update(neuronVal);
-      barBox.update(jointPos);
+    // value has range [0, 1]
+    public void update(double value) {
+
+      double h = ActualHeight * value;
+      bar.Height = h;
+
+      if ((value < 0.1) || (value > 0.9)) {
+        bar.Fill = Brushes.Red;
+      } else {
+        bar.Fill = Brushes.Lime;
+      }
     }
 
   }

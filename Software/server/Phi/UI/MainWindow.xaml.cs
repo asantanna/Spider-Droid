@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Phi_Core {
+namespace Phi {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
