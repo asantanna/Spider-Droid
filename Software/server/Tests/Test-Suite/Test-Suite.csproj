@@ -41,8 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InfoT.cs" />
-    <Compile Include="PDF.cs" />
+    <Compile Include="..\..\Phi\Utils\InfoT.cs">
+      <Link>InfoT.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Phi\Utils\PDF.cs">
+      <Link>PDF.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

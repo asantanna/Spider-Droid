@@ -2,7 +2,7 @@
 
 namespace Phi {
 
-  class PDF {
+  public class PDF {
   
     //
     // DATA
@@ -117,7 +117,8 @@ namespace Phi {
       int[] h = new int[1] { 0 };
       int[] t = new int[1] { 1 };
 
-      Console.WriteLine("p(heads) = " + pdf.getPDF(h) + ", p(tails) = " + pdf.getPDF(t));
+      Console.WriteLine("One Coin:");
+      Console.WriteLine("p(heads) = " + pdf.getPDF(h) + ", p(tails) = " + pdf.getPDF(t) + "\n");
   
       // two coins
 
@@ -135,8 +136,9 @@ namespace Phi {
       int[] i3 = new int[2] {1,0};
       int[] i4 = new int[2] {1,1};
 
+      Console.WriteLine("Two Coins:");
       Console.WriteLine("p(heads,heads) = " + pdf.getPDF(i1) + "\np(heads,tails) = " + pdf.getPDF(i2) + 
-        "\np(tails,heads) = " + pdf.getPDF(i3) + "\np(tails,tails) = " + pdf.getPDF(i4));
+        "\np(tails,heads) = " + pdf.getPDF(i3) + "\np(tails,tails) = " + pdf.getPDF(i4) + "\n");
 
       // test offset to index conversion
 
@@ -152,7 +154,7 @@ namespace Phi {
       Console.WriteLine("i1[0] = " + i1[0] + ", i1[1] = " + i1[1]);
 
       pdf.getIdxs(3, i1);
-      Console.WriteLine("i1[0] = " + i1[0] + ", i1[1] = " + i1[1]);
+      Console.WriteLine("i1[0] = " + i1[0] + ", i1[1] = " + i1[1] + "\n");
  
       // one coin sampling
 
@@ -168,9 +170,8 @@ namespace Phi {
         counts[idxs[0]]++;
       }
 
-      Console.WriteLine("numHeads = " + counts[0] + ", numTails = " + counts[1]);
-
-      Console.ReadLine();
+      Console.WriteLine("Testing setPDF() and samplePDF():");
+      Console.WriteLine("numHeads = " + counts[0] + ", numTails = " + counts[1] + "\n");
     }
   }
 }
