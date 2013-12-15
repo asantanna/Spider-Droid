@@ -8,8 +8,8 @@ namespace Phi {
     // DATA
     //
 
-    private int numVars;
-    private int numLevels;
+    private int numObjs;
+    private int valsPerObj;
     private int sum;
     private int numElem;
     private int[] dims;
@@ -20,26 +20,30 @@ namespace Phi {
     // CODE
     //
 
+    public PDF(int _numObjs, int _valsPerObj) {
+
+      numObjs = _numObjs;
+      valsPerObj = _valsPerObj;
+      sum = 0;
+      numElem = (int)Math.Pow(valsPerObj, numObjs);
+      array = new int[numElem];
+      dims = new int[numObjs];
+
+      for (int i=0 ; i < numObjs ; i++) {
+        dims[i] = (int)Math.Pow(valsPerObj, i);
+      }
+    }
+
     private static int getRand() {
       return rand.Next(0, int.MaxValue);
     }
 
-    public PDF(int _numVars, int _numLevels) {
-
-      numVars = _numVars;
-      numLevels = _numLevels;
-      sum = 0;
-      numElem = (int)Math.Pow(numLevels, numVars);
-      array = new int[numElem];
-      dims = new int[numVars];
-
-      for (int i=0 ; i < numVars ; i++) {
-        dims[i] = (int)Math.Pow(numLevels, i);
-      }
+    public int getNumElem() {
+      return numElem;
     }
 
-    public void updatePDF(int[] levelIdx)  {
-      int off = getOff(levelIdx);
+    public void updatePDF(int[] pdfIdx)  {
+      int off = getOff(pdfIdx);
       array[off]++;
       sum++;
     }
@@ -66,22 +70,26 @@ namespace Phi {
       Console.WriteLine("HELP A BUGGER IS KILLING ME! A BUGGY BUGGER!");
     }
 
-    public void getIdxs(int off, int[] levelIdx) {
-      for(int v = numVars-1 ; v>=0 ; v--)  {
-        levelIdx[v] = off / dims[v];
+    public void getIdxs(int off, int[] pdfIdx) {
+      for(int v = numObjs-1 ; v>=0 ; v--)  {
+        pdfIdx[v] = off / dims[v];
         off %= dims[v];
       }
     }
 
-    public double getPDF(int[] levelIdx)  {
-      int off = getOff(levelIdx);
+    public double getPDF(int[] pdfIdx)  {
+      int off = getOff(pdfIdx);
       return array[off] / (double)sum;
     }
 
-    public int getOff(int[] levelIdx) {
+    public double getPDF(int off) {
+      return array[off] / (double)sum;
+    }
+
+    public int getOff(int[] pdfIdx) {
       int off = 0;
-      for (int v=0 ; v < numVars ; v++) {
-        off += dims[v] * levelIdx[v];
+      for (int v=0 ; v < numObjs ; v++) {
+        off += dims[v] * pdfIdx[v];
       }
       return off;
     }

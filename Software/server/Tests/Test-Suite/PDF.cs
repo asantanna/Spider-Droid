@@ -2,14 +2,14 @@
 
 namespace Phi {
 
-  class PDF {
+  public class PDF {
   
     //
     // DATA
     //
 
-    private int numVars;
-    private int numLevels;
+    private int numObjs;
+    private int valsPerObj;
     private int sum;
     private int numElem;
     private int[] dims;
@@ -20,26 +20,30 @@ namespace Phi {
     // CODE
     //
 
+    public PDF(int _numObjs, int _valsPerObj) {
+
+      numObjs = _numObjs;
+      valsPerObj = _valsPerObj;
+      sum = 0;
+      numElem = (int)Math.Pow(valsPerObj, numObjs);
+      array = new int[numElem];
+      dims = new int[numObjs];
+
+      for (int i=0 ; i < numObjs ; i++) {
+        dims[i] = (int)Math.Pow(valsPerObj, i);
+      }
+    }
+
     private static int getRand() {
       return rand.Next(0, int.MaxValue);
     }
 
-    public PDF(int _numVars, int _numLevels) {
-
-      numVars = _numVars;
-      numLevels = _numLevels;
-      sum = 0;
-      numElem = (int)Math.Pow(numLevels, numVars);
-      array = new int[numElem];
-      dims = new int[numVars];
-
-      for (int i=0 ; i < numVars ; i++) {
-        dims[i] = (int)Math.Pow(numLevels, i);
-      }
+    public int getNumElem() {
+      return numElem;
     }
 
-    public void updatePDF(int[] levelIdx)  {
-      int off = getOff(levelIdx);
+    public void updatePDF(int[] pdfIdx)  {
+      int off = getOff(pdfIdx);
       array[off]++;
       sum++;
     }
@@ -66,22 +70,26 @@ namespace Phi {
       Console.WriteLine("HELP A BUGGER IS KILLING ME! A BUGGY BUGGER!");
     }
 
-    public void getIdxs(int off, int[] levelIdx) {
-      for(int v = numVars-1 ; v>=0 ; v--)  {
-        levelIdx[v] = off / dims[v];
+    public void getIdxs(int off, int[] pdfIdx) {
+      for(int v = numObjs-1 ; v>=0 ; v--)  {
+        pdfIdx[v] = off / dims[v];
         off %= dims[v];
       }
     }
 
-    public double getPDF(int[] levelIdx)  {
-      int off = getOff(levelIdx);
+    public double getPDF(int[] pdfIdx)  {
+      int off = getOff(pdfIdx);
       return array[off] / (double)sum;
     }
 
-    public int getOff(int[] levelIdx) {
+    public double getPDF(int off) {
+      return array[off] / (double)sum;
+    }
+
+    public int getOff(int[] pdfIdx) {
       int off = 0;
-      for (int v=0 ; v < numVars ; v++) {
-        off += dims[v] * levelIdx[v];
+      for (int v=0 ; v < numObjs ; v++) {
+        off += dims[v] * pdfIdx[v];
       }
       return off;
     }
@@ -109,7 +117,8 @@ namespace Phi {
       int[] h = new int[1] { 0 };
       int[] t = new int[1] { 1 };
 
-      Console.WriteLine("p(heads) = " + pdf.getPDF(h) + ", p(tails) = " + pdf.getPDF(t));
+      Console.WriteLine("One Coin:");
+      Console.WriteLine("p(heads) = " + pdf.getPDF(h) + ", p(tails) = " + pdf.getPDF(t) + "\n");
   
       // two coins
 
@@ -127,8 +136,9 @@ namespace Phi {
       int[] i3 = new int[2] {1,0};
       int[] i4 = new int[2] {1,1};
 
+      Console.WriteLine("Two Coins:");
       Console.WriteLine("p(heads,heads) = " + pdf.getPDF(i1) + "\np(heads,tails) = " + pdf.getPDF(i2) + 
-        "\np(tails,heads) = " + pdf.getPDF(i3) + "\np(tails,tails) = " + pdf.getPDF(i4));
+        "\np(tails,heads) = " + pdf.getPDF(i3) + "\np(tails,tails) = " + pdf.getPDF(i4) + "\n");
 
       // test offset to index conversion
 
@@ -144,7 +154,7 @@ namespace Phi {
       Console.WriteLine("i1[0] = " + i1[0] + ", i1[1] = " + i1[1]);
 
       pdf.getIdxs(3, i1);
-      Console.WriteLine("i1[0] = " + i1[0] + ", i1[1] = " + i1[1]);
+      Console.WriteLine("i1[0] = " + i1[0] + ", i1[1] = " + i1[1] + "\n");
  
       // one coin sampling
 
@@ -160,9 +170,8 @@ namespace Phi {
         counts[idxs[0]]++;
       }
 
-      Console.WriteLine("numHeads = " + counts[0] + ", numTails = " + counts[1]);
-
-      Console.ReadLine();
+      Console.WriteLine("Testing setPDF() and samplePDF():");
+      Console.WriteLine("numHeads = " + counts[0] + ", numTails = " + counts[1] + "\n");
     }
   }
 }

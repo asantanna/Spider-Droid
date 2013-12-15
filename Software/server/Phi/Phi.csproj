@@ -68,6 +68,7 @@
     <Compile Include="UI\LegBox.xaml.cs">
       <DependentUpon>LegBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\InfoT.cs" />
     <Compile Include="Utils\PDF.cs" />
     <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
