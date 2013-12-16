@@ -10,8 +10,9 @@ namespace Phi.Utils {
     public static double entropy(PDF pdf) {
       double H = 0;
       for (int i = 0; i < pdf.getNumElem(); i++) {
-        double elem = pdf.getPDF(i);
-        H += elem * Math.Log(elem, 2);
+        double prob = pdf.getProb(i);
+        if(prob > 0.0001)
+          H += prob * Math.Log(prob, 2);
       }
       return -H;
     }

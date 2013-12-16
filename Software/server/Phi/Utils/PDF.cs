@@ -82,7 +82,7 @@ namespace Phi {
       return array[off] / (double)sum;
     }
 
-    public double getPDF(int off) {
+    public double getProb(int off) {
       return array[off] / (double)sum;
     }
 
