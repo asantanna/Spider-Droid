@@ -16,13 +16,8 @@ namespace Phi.Utils {
       return -H;
     }
 
-    public static double entropy(PDF pdf1, PDF pdf2) {
-      double H = 0;
-      return -H;
-    }
-
-    public static double mutualInfo(PDF pdf1, PDF pdf2) {
-      return entropy(pdf1) + entropy(pdf2) - entropy(pdf1, pdf2);
+    public static double mutualInfo(PDF pdf1, PDF pdf2, PDF pdfJoint) {
+      return entropy(pdf1) + entropy(pdf2) - entropy(pdfJoint);
     }
 
     public static void test() {
@@ -32,7 +27,25 @@ namespace Phi.Utils {
       for(double p = 0; p <= 1.0; p += 0.1) {
         pdf.setPDF(new double[2] { p, 1 - p });
         Console.WriteLine("H({0:F}, {1:F}) = {2:F}", p, (1-p), entropy(pdf));
-      } 
+      }
+
+      //create fair coin
+      pdf.setPDF(new double[2] {0.5, 0.5});
+
+      //create two fair coins
+      PDF pdfJoint = new PDF(2, 2);
+      pdfJoint.setPDF(new double[4] { 0.25, 0.25, 0.25, 0.25 });
+
+      Console.WriteLine("\nTest Mutual Information:\nThe mutual information between two fair coins is {0:F}", mutualInfo(pdf, pdf, pdfJoint));
+
+      pdfJoint.setPDF(new double[4] { 0.0, 0.5, 0.5, 0.0 });
+
+      Console.WriteLine("The mutual information between two entangled quantum coins is {0:F}", mutualInfo(pdf, pdf, pdfJoint));
+
+      pdfJoint.setPDF(new double[4] { 0.1, 0.4, 0.3, 0.2 });
+
+      Console.WriteLine("The mutual information between two rigged coins is {0:F}", mutualInfo(pdf, pdf, pdfJoint));
+
     }
   }
 }
