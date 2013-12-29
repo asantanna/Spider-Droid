@@ -49,9 +49,19 @@ int phi_logInit(char *filename);
 void phi_logMsg(const char* tag, const char *fmt, ...);
 void phi_logClose(void);
 
+//
 // Phi Link
+//
+
 BOOL startPhiLink(char* ipAddr, int port);
 void prepStatePacket(PHI_STATE_PACKET *p);
+
+//
+// I/O Helpers
+//
+
+int setNonblocking(int fd);
+
 
 
 

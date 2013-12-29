@@ -268,3 +268,30 @@ BOOL phi_setRealtimePrio(pthread_t thread) {
   // (return TRUE if success)
   return (pthread_setschedparam(thread, SCHED_FIFO, &params) == 0);
 }
+
+//
+// I/O control helpers
+//
+
+int setNonblocking(int fd)
+{
+  int flags;
+
+#if defined(O_NONBLOCK)
+  
+  // O_NONBLOCK exists, use the Posix way to do it
+  if ((flags = fcntl(fd, F_GETFL, 0)) == -1) {
+    // get failed - assume flags = 0
+    flags = 0;
+  }
+  
+  return fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+  
+#else
+  
+  // O_NONBLOCK does not exist, use old method
+  flags = 1;
+  return ioctl(fd, FIOBIO, &flags);
+  
+#endif
+}   
