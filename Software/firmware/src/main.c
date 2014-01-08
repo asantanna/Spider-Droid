@@ -26,8 +26,8 @@ void main() {
   // initialize
   globalInit();
 
-  // start the failsafe thread
-  startFailsafeThread();
+  // start the hardware pump threads
+  startHwPump();
 
   //
   // Start web admin server

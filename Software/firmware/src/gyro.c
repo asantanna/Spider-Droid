@@ -45,6 +45,10 @@ BOOL PHI_gyroInit(BOOL bEnableFifo) {
   BYTE txBuff[2];
   BYTE rxBuff[2];
 
+  // make sure init is atomic in case we use it arbitrarily
+  // Note: this is not needed if we just init at the beginning
+  // spi_lock(GYRO_SPI_IDX);
+
   // remember FIFO mode
   bUseFifo = bEnableFifo;
 
@@ -104,6 +108,9 @@ BOOL PHI_gyroInit(BOOL bEnableFifo) {
   rc = TRUE;
 
 quick_exit:
+
+  // release SPI
+  // spi_unlock(GYRO_SPI_IDX);
   
   return rc;
 }

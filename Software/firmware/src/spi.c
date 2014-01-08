@@ -19,6 +19,9 @@
 // SPI file descriptors (SPI 0 & 1)
 static int spiFile[2] = { -1, -1 };
 
+// mutex to sync access to SPI interface
+PHI_MUTEX_DECL(mtxSPI);
+
 // SPI 0 SETTINGS - for gyroscope
 
 struct spi_ioc_transfer spi_0_xfer[2] = {
@@ -51,6 +54,7 @@ struct spi_ioc_transfer* spi_xfer[2] = {
   spi_0_xfer,
   spi_1_xfer,
 };
+
 
 // internal
 int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw);
@@ -87,6 +91,21 @@ error_exit:
   LOG_ERR("spiInit: SPI initialization failed!");
   goto quick_exit;
 }
+
+// functions for synchronizing access to SPI
+// Note: primitive calls are NOT synchronized, the caller is
+// responsible for synchronization
+
+// void spi_lock() {
+//   PHI_MUTEX_GET(&mtxSPI);
+// }
+
+// void spi_unlock() {
+//   PHI_MUTEX_RELEASE(&mtxSPI);
+// }
+
+// primitive UART access functions
+// NOTE: these are NOT synchronized, caller must use uart_lock()/uart_unlock() if necessary
 
 // Note: the SPI_IOC_MESSAGE(N) macro specifies the number of elements
 // in the array of struct spi_ioc_transfer that is passed in to the

@@ -168,7 +168,7 @@ void* phi_link_loop(void* arg)
     }
 
     // set up state packet for sending
-    prepStatePacket((PHI_STATE_PACKET *) txBuff);
+    phi_getStateSnapshot((PHI_STATE_PACKET *) txBuff);
 
     // send state (blocking)
 

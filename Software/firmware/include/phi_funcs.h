@@ -9,20 +9,8 @@
 // clears mem, debug
 void* phi_allocHelper(int size);
 
-//
-// MISC
-//
-
-char* initPeripherals();
-
-void phi_abortProcess(int rc);
-void phi_abortWithMsg(const char* msg);
-
-UINT64 phi_upTime();
-double phi_rand();
-
-// heartbeat / failsafe thread
-void startFailsafeThread();
+// hardware pump thread
+void startHwPumpThread();
 
 // set thread priority
 BOOL phi_setRealtimePrio(pthread_t thread);
@@ -54,14 +42,55 @@ void phi_logClose(void);
 //
 
 BOOL startPhiLink(char* ipAddr, int port);
-void prepStatePacket(PHI_STATE_PACKET *p);
+void phi_getStateSnapshot(PHI_STATE_PACKET *p);
 
 //
 // I/O Helpers
 //
 
-int setNonblocking(int fd);
+int setNonBlocking(int fd);
 
+//
+// UART
+//
 
+BOOL uartInit();
+// void uart_lock();
+// void uart_unlock();
+void uart_send(BYTE* pData, int dataLen);
+int uart_receive(void* pBuff, int buffLen);
 
+//
+// SPI
+//
 
+BOOL spiInit();
+// void spi_lock();
+// void spi_unlock();
+void spi_send(int spiIdx, BYTE* pTx, int txLen);
+void spi_receive(int spiIdx, BYTE* pRx, int rxLen);
+void spi_sendreceive(int spiIdx, BYTE* pTx, int txLen, BYTE* pRx, int rxLen);
+void spi_exchange(int spiIdx, BYTE* pTx, BYTE* pRx, int dataLen);
+
+//
+// I2C
+//
+
+//
+// PHI STATE
+//
+
+void lock_state();
+void unlock_state();
+
+//
+// MISC
+//
+
+char* initPeripherals();
+
+void phi_abortProcess(int rc);
+void phi_abortWithMsg(const char* msg);
+
+UINT64 phi_upTime();
+double phi_rand();

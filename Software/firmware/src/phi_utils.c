@@ -273,11 +273,24 @@ BOOL phi_setRealtimePrio(pthread_t thread) {
 // I/O control helpers
 //
 
-int setNonblocking(int fd)
+//
+// Setting a file descriptor to non-blocking causes write and read calls
+// to return an error if the call would have blocked.  Typically a block
+// will occur with a write if the the output buffer is full.  With a read,
+// it typically occurs if there is no data available.
+//
+// The actual error returned is EAGAIN for anything but sockets.  In the
+// case of a socket, EAGAIN or EWOULDBLOCK might be returned (equivalently)
+// due to lack of clarity in the POSIX doc.
+//
+
+int setNonBlocking(int fd)
 {
   int flags;
 
 #if defined(O_NONBLOCK)
+
+  INFO("Using POSIX O_NONBLOCK in setNonBlocking()");
   
   // O_NONBLOCK exists, use the Posix way to do it
   if ((flags = fcntl(fd, F_GETFL, 0)) == -1) {
@@ -288,6 +301,8 @@ int setNonblocking(int fd)
   return fcntl(fd, F_SETFL, flags | O_NONBLOCK);
   
 #else
+  
+  INFO("Using old school method in setNonBlocking()");
   
   // O_NONBLOCK does not exist, use old method
   flags = 1;

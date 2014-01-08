@@ -39,7 +39,7 @@ void PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
     cmd,
     power > 127 ? 127 : power
   };
-    
+
   uart_send(motorCmd, sizeof(motorCmd));
 }
 
@@ -48,7 +48,7 @@ void PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
 // appropriate ADC through SPI 1
 //
 
-UINT16 PHI_getMotorPosition(int motorIdx) {
+UINT16 PHI_getJointPosition(int motorIdx) {
   
   BYTE txBuff[3];
   BYTE rxBuff[3] = {0};
@@ -65,7 +65,7 @@ UINT16 PHI_getMotorPosition(int motorIdx) {
   adcValue |= (UINT16) rxBuff[2];
 
   // DEBUG
-  // LOG_INFO("getMotorPosition(%d) = %02Xh", motorIdx, adcValue);
+  // LOG_INFO("getJointPosition(%d) = %02Xh", motorIdx, adcValue);
   // LOG_INFO("  outgoing:  %02Xh %02Xh %02Xh", txBuff[0], txBuff[1], txBuff[2]); 
   // LOG_INFO("  incoming:  %02Xh %02Xh %02Xh", rxBuff[0], rxBuff[1], rxBuff[2]);
 
@@ -89,5 +89,4 @@ void PHI_setControllerId(char oldId, char newId) {
   };
 
   uart_send(motorCmd, sizeof(motorCmd));
-  
 }
