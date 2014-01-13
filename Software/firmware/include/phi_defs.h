@@ -63,10 +63,10 @@
 #define BASH_STOP_COLOR       "\e[0m"
 
 #define DO_PRAGMA(x)    _Pragma (#x)
-#define INFO(m)         DO_PRAGMA(message ("\n" BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
-#define TODO(m)         DO_PRAGMA(message ("\n" BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
-#define WARN(m)         DO_PRAGMA(message ("\n" BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
-#define HACK(m)         DO_PRAGMA(message ("\n" BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
+#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
+#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
+#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
+#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
 
 // time
 

@@ -290,7 +290,7 @@ int setNonBlocking(int fd)
 
 #if defined(O_NONBLOCK)
 
-  INFO("Using POSIX O_NONBLOCK in setNonBlocking()");
+  // INFO("Using POSIX O_NONBLOCK in setNonBlocking()");
   
   // O_NONBLOCK exists, use the Posix way to do it
   if ((flags = fcntl(fd, F_GETFL, 0)) == -1) {
@@ -302,7 +302,7 @@ int setNonBlocking(int fd)
   
 #else
   
-  INFO("Using old school method in setNonBlocking()");
+  WARN("Using old school method in setNonBlocking()");
   
   // O_NONBLOCK does not exist, use old method
   flags = 1;

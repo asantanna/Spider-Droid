@@ -7,17 +7,23 @@
 #define DLOG_SIGN 'DLOG'
 
 typedef struct {
+  UINT32 time;
+  UINT32 elem;
+
+} PHI_DLOG_ELEM;
+
+typedef struct {
   UINT32 sign;
   int currIdx;
   int numElem;
-  UINT32* array[];
+  PHI_DLOG_ELEM elem[];
   
 } PHI_DLOG;
 
 
 PHI_DLOG* dlog_create(int numElem) {
 
-  int size = sizeof(PHI_DLOG) + numElem * sizeof(UINT32);
+  int size = sizeof(PHI_DLOG) + numElem * sizeof(PHI_DLOG_ELEM);
   PHI_DLOG* pLog = malloc(size);
 
   if (pLog == NULL) {
