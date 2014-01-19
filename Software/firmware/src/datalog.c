@@ -84,7 +84,7 @@ double dlog_avg(PHI_DLOG* pLog, int depth) {
   // average the last "depth" entries stored in the array
   if (depth < 0 || depth > pLog -> numElem) {
     LOG_FATAL("depth invalid");
-    return (double)1;
+    return 1;
 
   } else {
     int i;
