@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define UINT32          unsigned long
 #define UINT64          unsigned long long
 #define LOG_FATAL       printf
 
@@ -45,6 +46,8 @@ UINT64 phi_uptime() {
 
 #define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
 #define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
+
+#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
 
 typedef struct {
   UINT64 time;
@@ -156,7 +159,8 @@ void dlog_test()  {
   int i;
   PHI_DLOG* pLog = dlog_create(3);
 
-  printf("//\n// Running Datalog Test Suite\n//\n\nTesting dlog_avg() function: ");
+  printf("//\n// Running Datalog Test Suite\n//\n\n"
+         "Testing dlog_avg() function: ");
 
   dlog_addElem(pLog, 6);
   dlog_addElem(pLog, 8);
@@ -222,16 +226,30 @@ void dlog_test()  {
     x_guess);
 
   CLOSE_ENOUGH(guess, y_guess) ? printf(PASS "\n") : printf(FAIL " - got %g, expected %g\n", guess, y_guess);
+
+  printf("Testing Cubic Extrapolator (direct + scale): ");
+
+  guess = cubic(
+    TO_TIME64(x[0]), y[0],
+    TO_TIME64(x[1]), y[1],
+    TO_TIME64(x[2]), y[2],
+    TO_TIME64(x[3]), y[3],
+    TO_TIME64(x_guess));
+
+  CLOSE_ENOUGH(guess, y_guess) ? printf(PASS "\n") : printf(FAIL " - got %g, expected %g\n", guess, y_guess);
   
   printf("Testing Cubic Extrapolator (using dlog_predict): ");
 
   for (i=0 ; i<4 ; i++) {
-    dlog_addElem_withTime(pLog, x[i], y[i]);
+    dlog_addElem_withTime(pLog, TO_TIME64(x[i]), y[i]);
   }
 
-  guess = dlog_predict(pLog, x_guess);
+  guess = dlog_predict(pLog, TO_TIME64(x_guess));
 
   CLOSE_ENOUGH(guess, y_guess) ? printf(PASS "\n") : printf(FAIL " - got %g, expected %g\n", guess, y_guess);
+
+  // done
+  printf("\n");
 }
 
 #ifdef STANDALONE
