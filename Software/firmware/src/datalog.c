@@ -159,8 +159,9 @@ void dlog_test()  {
   int i;
   PHI_DLOG* pLog = dlog_create(3);
 
-  printf("//\n// Running Datalog Test Suite\n//\n\n"
-         "Testing dlog_avg() function: ");
+  printf("//\n// Running Datalog Test Suite\n//\n\n");
+
+  printf("Testing dlog_avg() function: ");
 
   dlog_addElem(pLog, 6);
   dlog_addElem(pLog, 8);
