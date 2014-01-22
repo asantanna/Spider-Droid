@@ -41,7 +41,6 @@ void HAL_init();
 #define HAL_name              (g_pHal   -> pName)
 #define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
 
-#define HAL_gyroInit          (*(g_pHal -> gyroInit))
 #define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
 #define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
 
@@ -52,19 +51,17 @@ void HAL_init();
 // PHI HAL
 
 char*   PHI_initPeripherals();
-BOOL    PHI_gyroInit(BOOL bEnableFifo);
 void    PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
 INT8    PHI_gyroGetTemp();
-UINT16  PHI_getJointPosition(int motorIdx);
-void    PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
+UINT16  PHI_getJointPosition(char motorName[2]);
+void    PHI_setMotorPower(char motorName[2], BYTE power, BOOL bFwd);
 void    PHI_setControllerId(char oldId, char newId);
 
 // generic HAL
 
 char*   GENERIC_initPeripherals();
-BOOL    GENERIC_gyroInit(BOOL bEnableFifo);
 void    GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
 INT8    GENERIC_gyroGetTemp();
-UINT16  GENERIC_getJointPosition(int motorIdx);
-void    GENERIC_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
+UINT16  GENERIC_getJointPosition(char motorName[2]);
+void    GENERIC_setMotorPower(char motorName[2], BYTE power, BOOL bFwd);
 void    GENERIC_setControllerId(char oldId, char newId);

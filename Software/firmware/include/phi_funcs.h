@@ -88,6 +88,7 @@ void unlock_state();
 //
 
 char* initPeripherals();
+BOOL initMotorCtrl();
 
 void phi_abortProcess(int rc);
 void phi_abortWithMsg(const char* msg);

@@ -38,8 +38,7 @@ INT16 threshZ = 0;
 
 // end of SAMPLE/RANGE selection
 
-
-BOOL PHI_gyroInit(BOOL bEnableFifo) {
+BOOL gyroInit(BOOL bEnableFifo) {
 
   BOOL rc = FALSE;
   BYTE txBuff[2];

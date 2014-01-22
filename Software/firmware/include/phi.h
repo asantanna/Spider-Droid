@@ -1,6 +1,6 @@
 
 //
-// Main include file for spiderBot
+// Main include file for PHI
 //
 
 // make sure we get thread-safe functions from libc
@@ -19,6 +19,7 @@
 #include <termios.h>        // for UART
 #include <pthread.h>
 #include <sched.h>
+#include <math.h>           // for pow()
 
 #include <sys/ioctl.h>      // for driver access (SPI, etc)
 #include <sys/time.h>

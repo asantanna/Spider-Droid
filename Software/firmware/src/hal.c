@@ -16,7 +16,6 @@
 HAL_FUNCS phiHal = {
   .pName =            "Phi HAL",
   .initPeripherals =  (halFunc_pChar) PHI_initPeripherals,
-  .gyroInit =         (halFunc_BOOL) PHI_gyroInit,
   .gyroGetDeltas =    PHI_gyroGetDeltas,
   .gyroGetTemp =      PHI_gyroGetTemp,
   .getJointPosition = PHI_getJointPosition,
@@ -31,7 +30,6 @@ HAL_FUNCS phiHal = {
 HAL_FUNCS genericHal = {
   .pName =            "Generic HAL",
   .initPeripherals =  (halFunc_pChar) GENERIC_initPeripherals,
-  .gyroInit =         (halFunc_BOOL) GENERIC_gyroInit,
   .gyroGetDeltas =    GENERIC_gyroGetDeltas,
   .gyroGetTemp =      GENERIC_gyroGetTemp,
   .getJointPosition = GENERIC_getJointPosition,
@@ -69,6 +67,7 @@ char* PHI_initPeripherals() {
 
   // NULL means success
   char *rc = NULL;
+  
   g_initPeriph = FALSE;
 
   // set up UART for communication with motor controllers
@@ -83,9 +82,15 @@ char* PHI_initPeripherals() {
     goto quick_exit;
   }
 
-  // set up gyroscope with FIFO
-  if (!HAL_gyroInit(TRUE)) {
+  // init gyroscope (FIFO enabled)
+  if (!gyroInit(TRUE)) {
     rc = "phi_InitPeripherals: gyroscope init failed";
+    goto quick_exit;
+  }
+
+  // init motor controllers
+  if (!initMotorCtrl()) {
+    rc = "phi_InitPeripherals: motor ctrl init failed";
     goto quick_exit;
   }
 
@@ -105,10 +110,6 @@ char* GENERIC_initPeripherals() {
   // NULL means success
   g_initPeriph = TRUE;
   return NULL;
-}
-
-BOOL  GENERIC_gyroInit(BOOL bEnableFifo) {
-  return TRUE;
 }
 
 #define GYRO_UPDATE_EVERY 0.01
@@ -139,13 +140,14 @@ INT8 GENERIC_gyroGetTemp(){
   return (INT8) ( ((long) currSecs) % 100 );
 }  
 
-void GENERIC_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
+void GENERIC_setMotorPower(char motorName[2], BYTE power, BOOL bFwd) {
   // do nothing for now
 }
 
-UINT16 GENERIC_getJointPosition(int motorIdx) {
+UINT16 GENERIC_getJointPosition(char motorName[2]) {
   double currSecs = ((double) phi_upTime()) / 1e6;
-  return (UINT16) ( ((long) ((currSecs * 512) + (motorIdx*100))) % 1024 );
+  int idx = MOTOR_NAME_TO_ADC_IDX(motorName);
+  return (UINT16) ( ((long) ((currSecs * 512) + (idx*100))) % 1024 );
 }
 
 void GENERIC_setControllerId(char oldId, char newId) {

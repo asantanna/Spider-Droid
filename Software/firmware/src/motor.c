@@ -5,37 +5,35 @@
 
 #include "phi.h"
 
-MOTOR_DEF motorDefs[] = {
-  { 0, 0},    // rft
-  { 0, 1},    // rfk
-  { 1, 0},    // lft
-  { 1, 1},    // lfk
-  { 2, 0},    // rbt
-  { 2, 1},    // rbk
-  { 3, 0},    // lbt
-  { 3, 1},    // lbk
-  { 4, 0},    // rfh
-  { 4, 1},    // lfh
-  { 5, 0},    // rbh
-  { 5, 1},    // lbh
-};
+// See motor.h for more info on motor names, etc.
+
+//
+// Init motor controllers
+//
+
+BOOL initMotorCtrl() {
+  LOG_FATAL("NOT IMPLEMENTED");
+  // set PWM type, failure modes, bla bla
+}
 
 //
 // Set motor power by sending a command to the appropriate
 // motor controller through the UART
-// 
+//
+// Note: power is [0, 127]
 
-void PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
+void PHI_setMotorPower(char motorName[2], BYTE power, BOOL bFwd) {
 
-  MOTOR_DEF* md = &motorDefs[motorIdx];
+  int ctrlID = MOTOR_NAME_TO_CTRL_ID (motorName);
+  int selIdx = MOTOR_NAME_TO_SEL_IDX (motorName);
 
   BYTE cmd = 
-    bFwd ? (md -> motorIdx == 0 ? MC_CMD_FWD_M0 : MC_CMD_FWD_M1)
-         : (md -> motorIdx == 0 ? MC_CMD_BCK_M0 : MC_CMD_BCK_M1);
+    bFwd ? (selIdx == 0 ? MC_CMD_FWD_M0 : MC_CMD_FWD_M1)
+         : (selIdx == 0 ? MC_CMD_BCK_M0 : MC_CMD_BCK_M1);
 
   char motorCmd[] = {
     MC_CMD_SIGN,
-    md -> controllerId,
+    ctrlID,
     cmd,
     power > 127 ? 127 : power
   };
@@ -48,13 +46,15 @@ void PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
 // appropriate ADC through SPI 1
 //
 
-UINT16 PHI_getJointPosition(int motorIdx) {
+UINT16 PHI_getJointPosition(char motorName[2]) {
+  
+  int adcIdx = MOTOR_NAME_TO_ADC_IDX (motorName);
   
   BYTE txBuff[3];
   BYTE rxBuff[3] = {0};
 
   txBuff[0] = ADC_CMD1_START;
-  txBuff[1] = ADC_CMD2_SINGLE | ( (((BYTE)motorIdx) << 4) & ADC_CMD2_ADDR_MASK) ;
+  txBuff[1] = ADC_CMD2_SINGLE | ( (((BYTE)adcIdx) << 4) & ADC_CMD2_ADDR_MASK) ;
   txBuff[2] = 0;
   
   spi_exchange(ADC_SPI_IDX, txBuff, rxBuff, COUNTOF(txBuff));

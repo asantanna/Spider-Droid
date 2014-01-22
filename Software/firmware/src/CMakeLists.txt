@@ -32,6 +32,7 @@ add_executable ( phi
   hal.c
   hw_pump.c
   datalog.c
+  cubic.c
 )
 
 # link the math library

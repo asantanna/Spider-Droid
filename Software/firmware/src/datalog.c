@@ -2,40 +2,41 @@
 // Routines for recording data for statistics
 //
 
-#define STANDALONE
+// uncomment this line to build this file standalone
+// #define STANDALONE
 
-#ifdef STANDALONE
+#ifndef STANDALONE
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+    #include "phi.h"
 
-#define UINT32          unsigned long
-#define UINT64          unsigned long long
-#define LOG_FATAL       printf
-
-UINT64 phi_uptime() {
-  static UINT64 time = 0;
-  return time++;
-}
-
-// preprocessor
-
-#define BASH_BLACK      "30"
-#define BASH_RED        "31"
-#define BASH_GREEN      "32"
-#define BASH_YELLOW     "33"
-#define BASH_BLUE       "34"
-#define BASH_MAGENTA    "35"
-#define BASH_CYAN       "36"
-#define BASH_WHITE      "37"
-
-#define BASH_START_COLOR(c)   "\e[1;" c "m"
-#define BASH_STOP_COLOR       "\e[0m"
-  
 #else
 
-#include "phi.h"
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+
+    #define UINT32          unsigned long
+    #define UINT64          unsigned long long
+    #define LOG_FATAL       printf
+
+    UINT64 phi_upTime() {
+      static UINT64 time = 0;
+      return time++;
+    }
+
+    // preprocessor
+
+    #define BASH_BLACK      "30"
+    #define BASH_RED        "31"
+    #define BASH_GREEN      "32"
+    #define BASH_YELLOW     "33"
+    #define BASH_BLUE       "34"
+    #define BASH_MAGENTA    "35"
+    #define BASH_CYAN       "36"
+    #define BASH_WHITE      "37"
+
+    #define BASH_START_COLOR(c)   "\e[1;" c "m"
+    #define BASH_STOP_COLOR       "\e[0m"
 
 #endif
 
@@ -101,7 +102,7 @@ void dlog_addElem_withTime(PHI_DLOG* pLog, UINT64 time, double data) {
 }
 
 void dlog_addElem(PHI_DLOG* pLog, double data) {
-  dlog_addElem_withTime(pLog, phi_uptime(), data);
+  dlog_addElem_withTime(pLog, phi_upTime(), data);
 }
 
 double dlog_avg(PHI_DLOG* pLog, int depth) {

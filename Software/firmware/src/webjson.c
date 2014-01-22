@@ -494,27 +494,17 @@ JSON_HANDLER(getPhiUptime) {
 //
 // Motor control
 //  
-//  req:    { cmd : setPower, motorId : "spj" , power : -100 to 100 (percent)  }
+//  req:    { cmd : setPower, motorName : "[A-F][0-1]" , power : -100 to 100 (percent)  }
 //  reply:  {}
 //
-//  req:    { cmd : setBrake, motorId : "spj" , brake : on | off | zeroMeansBrake | zeroMeansCoast }
+//  req:    { cmd : setBrake, motorName : "[A-F][0-1]" , brake : on | off | zeroMeansBrake | zeroMeansCoast }
 //  reply:  {}
 //
 //  req:    { cmd: setMCtlId, oldId: byte, newId: byte }
 //
 // where:
 //
-// motorId: 3 char code "spj" with
-//
-//    s = r       right side
-//        l       left side
-//
-//    p = f       forward
-//      = r       rear
-//
-//    j = h       hip rotator joint
-//      = t       thigh flexor joint (aka hip flexor)
-//      = k       knee flexor joint
+// motorId: see motor.c for more details
 //
 // if setPower:
 //    power = -100 to 100   negative means backwards, meaning of 0%
@@ -550,19 +540,19 @@ JSON_HANDLER(setPower) {
       goto error_exit;
     }
 
-    if (TOK_EQ(pTok, "motorId")) {
+    if (TOK_EQ(pTok, "motorName")) {
       // advance
       pTok ++;
       toksRead ++;
 
       // get motor name
       if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
-        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorId value is not a primitive.) );
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorName value is not a primitive.) );
         goto error_exit;
       }
 
-      if (TOK_LEN(pTok) != 3) {
-        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorId length is not 3.) );
+      if (TOK_LEN(pTok) != 2) {
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorName length is not 2.) );
         goto error_exit;
       }
       memcpy(motorName, TOK_START(pTok), sizeof(motorName));
@@ -585,7 +575,7 @@ JSON_HANDLER(setPower) {
         percent = -percent;
       }
 
-      powerVal = (percent * 255) / 100;
+      powerVal = (percent * 127) / 100;
 
     } else {
       // unknown property
@@ -603,10 +593,9 @@ JSON_HANDLER(setPower) {
     goto error_exit;
   }
 
-  int motorIdx = MOTOR_NAME_TO_IDX(motorName);
-  LOG_INFO("JSON.setPower: setting motor idx=%d to power=%u, dir=%s", motorIdx, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
+  LOG_INFO("JSON.setPower: setting motor %s to power=%u, dir=%s", motorName, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
 
-  HAL_setMotorPower(motorIdx, (BYTE) powerVal, bFwd);
+  HAL_setMotorPower(motorName, (BYTE) powerVal, bFwd);
 
 quick_exit:
 
