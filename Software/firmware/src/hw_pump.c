@@ -123,7 +123,7 @@ void startHwPump() {
     /*
     // increase priority to make loop more even
 
-    if (phi_setRealtimePrio(thread) == FALSE) {
+    if (PHI_setRealtimePrio(thread) == FALSE) {
       // not fatal
       LOG_ERR("set_realtime_priority() failed!");
     }
@@ -154,7 +154,7 @@ void* hwPump_SPI_thread(void* arg)
     // joint (motor) positions
 
     for (i = 0 ; i < COUNTOF(phiState.sensors.joint) ; i++) {
-      float j = HAL_getJointPosition(i);
+      float j = HAL_getJointPos(i);
       lock_state();
       phiState.sensors.joint[i] = j;
       unlock_state();
@@ -254,7 +254,7 @@ void updateState() {
   unlock_state();
 }
 
-void phi_getStateSnapshot(PHI_STATE_PACKET *p) {
+void PHI_getStateSnapshot(PHI_STATE_PACKET *p) {
 
   //
   // DEBUG - update every request
@@ -279,7 +279,7 @@ void unlock_state() {
 
 -----
 
-  usec_loopEnd = phi_upTime();
+  usec_loopEnd = PHI_upTime();
   
   while (true) {
 
@@ -304,7 +304,7 @@ void unlock_state() {
     //
 
     // time at end of work
-    usec_workEnd = phi_upTime();
+    usec_workEnd = PHI_upTime();
 
     // sleep any leftover time
 
@@ -317,7 +317,7 @@ void unlock_state() {
     }
 
     usleep(usec_sleepTime);
-    usec_loopEnd = phi_upTime();
+    usec_loopEnd = PHI_upTime();
 
     // compute error in loop time
     //
@@ -329,7 +329,7 @@ void unlock_state() {
     // DEBUG
     // printf("sleep time = %ld uS, error = %ld uS\n", usec_sleepTime, usec_error);
     // sleep(1);
-    // usec_loopEnd = phi_upTime();
+    // usec_loopEnd = PHI_upTime();
 
     // DEBUG - uncomment to disable loop adaptation
     // usec_error = 0;

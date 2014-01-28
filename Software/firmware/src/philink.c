@@ -19,7 +19,7 @@ typedef enum {
 // internal
 
 void setLinkState(PHILINK_STATE state);
-void* phi_link_loop(void* arg);
+void* PHI_link_loop(void* arg);
 
 BOOL startPhiLink(char* ipAddr, int port) {
   BOOL rc = TRUE;
@@ -41,8 +41,8 @@ BOOL startPhiLink(char* ipAddr, int port) {
     goto error_exit;
   }
 
-  // disable the "Nagle" algorithm so the TCP stack doesn't
-  // wait to bunch up packets
+  // disable the "Nagle" algorithm so the TCP stack
+  // doesn't wait to bunch up packets
 
   int flag = 1;
 
@@ -73,7 +73,7 @@ BOOL startPhiLink(char* ipAddr, int port) {
   pArgs -> port = htons(port);
 
   // create thread
-  pthread_create(&thread, &threadAttr,  &phi_link_loop, pArgs);
+  pthread_create(&thread, &threadAttr,  &PHI_link_loop, pArgs);
 
   // release thread attr because we don't use it
   pthread_attr_destroy(&threadAttr);
@@ -90,7 +90,7 @@ error_exit:
   
 }
 
-void* phi_link_loop(void* arg)
+void* PHI_link_loop(void* arg)
 {
   int sock;
   struct sockaddr_in phiServer;
@@ -133,7 +133,7 @@ void* phi_link_loop(void* arg)
 
   // loop forever
 
-  UINT64 lastLoopTime = phi_upTime();
+  UINT64 lastLoopTime = PHI_upTime();
   UINT64 currTime;
   
   static char rxBuff[sizeof(PHI_CMD_PACKET)];
@@ -168,7 +168,7 @@ void* phi_link_loop(void* arg)
     }
 
     // set up state packet for sending
-    phi_getStateSnapshot((PHI_STATE_PACKET *) txBuff);
+    PHI_getStateSnapshot((PHI_STATE_PACKET *) txBuff);
 
     // send state (blocking)
 

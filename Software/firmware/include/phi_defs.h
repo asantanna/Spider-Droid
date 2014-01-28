@@ -32,7 +32,11 @@
 #define FALSE           0
 #define TRUE            1
 
+// math macros
+
 #define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
+#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
+#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
 
 // allocation helpers
 
@@ -41,8 +45,8 @@
 #undef  ZERO
 #undef  ZERO_P
 
-#define PHI_ALLOC(D)    ((D*)phi_allocHelper(sizeof(D)))
-#define PHI_ALLOC_N(n)  phi_allocHelper(n)
+#define PHI_ALLOC(D)    ((D*)PHI_allocHelper(sizeof(D)))
+#define PHI_ALLOC_N(n)  PHI_allocHelper(n)
 #define PHI_FREE(p)     {free(p); p = NULL; }
 
 #define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
@@ -75,9 +79,9 @@
 
 // logging
 
-#define LOG_INFO(...)   phi_logMsg("", __VA_ARGS__)
-#define LOG_ERR(...)    phi_logMsg("ERROR: ", __VA_ARGS__)
-#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); phi_logMsg("FATAL: ", __VA_ARGS__); phi_abortProcess(-1); }
+#define LOG_INFO(...)   PHI_logMsg("", __VA_ARGS__)
+#define LOG_ERR(...)    PHI_logMsg("ERROR: ", __VA_ARGS__)
+#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); PHI_logMsg("FATAL: ", __VA_ARGS__); PHI_abortProcess(-1); }
 
 // stringifying helpers
 

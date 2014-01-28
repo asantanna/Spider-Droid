@@ -59,7 +59,7 @@ struct spi_ioc_transfer* spi_xfer[2] = {
 // internal
 int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw);
 
-BOOL spiInit() {
+BOOL spi_init() {
 
   BOOL rc = TRUE;
 
@@ -68,7 +68,7 @@ BOOL spiInit() {
   spiFile[0] = initSpiDriver(SPI0_DRIVER_NAME, GYRO_SAFE_SPI_CLK, GYRO_SPI_MODE,  GYRO_SPI_BPW);
   
   if (spiFile[0] < 0) {
-    LOG_ERR("spiInit: can't init device driver '%s'", SPI0_DRIVER_NAME);
+    LOG_ERR("spi_init: can't init device driver '%s'", SPI0_DRIVER_NAME);
     goto error_exit;
   }
 
@@ -77,7 +77,7 @@ BOOL spiInit() {
   spiFile[1] = initSpiDriver(SPI1_DRIVER_NAME, ADC_SAFE_SPI_CLK, ADC_SPI_MODE,  ADC_SPI_BPW);
 
   if (spiFile[1] < 0) {
-    LOG_ERR("spiInit: can't init device driver '%s'", SPI1_DRIVER_NAME);
+    LOG_ERR("spi_init: can't init device driver '%s'", SPI1_DRIVER_NAME);
     goto error_exit;
   }
 
@@ -88,7 +88,7 @@ quick_exit:
 error_exit:
 
   rc = FALSE;
-  LOG_ERR("spiInit: SPI initialization failed!");
+  LOG_ERR("spi_init: SPI initialization failed!");
   goto quick_exit;
 }
 
@@ -171,7 +171,7 @@ int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw) {
   int fd = open(pDriverName, O_RDWR);
 
   if (fd < 0) {
-    LOG_ERR("spiInit: can't open SPI device driver '%s'", pDriverName);
+    LOG_ERR("spi_init: can't open SPI device driver '%s'", pDriverName);
     goto error_exit;
   }
 
@@ -179,7 +179,7 @@ int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw) {
   // to read mode: ioctl(fd, SPI_IOC_RD_MODE, &mode);
 
   if (ioctl(fd, SPI_IOC_WR_MODE, &mode) < 0) {
-    LOG_ERR("spiInit: can't set SPI mode");
+    LOG_ERR("spi_init: can't set SPI mode");
     goto error_exit;
   }
 
@@ -187,7 +187,7 @@ int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw) {
   // to read bpw : ioctl(fd, SPI_IOC_RD_BITS_PER_WORD, &bpw;
 
   if (ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, &bpw) < 0) {
-    LOG_ERR("spiInit: can't set SPI bits per word");
+    LOG_ERR("spi_init: can't set SPI bits per word");
     goto error_exit;
   }
 
@@ -195,11 +195,11 @@ int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw) {
   // to read speed: ioctl(fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
 
   if (ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed) < 0) {
-    LOG_ERR("spiInit: can't set SPI speed");
+    LOG_ERR("spi_init: can't set SPI speed");
     goto error_exit;
   }
 
-  LOG_INFO("spiInit: init'd SPI='%s' to mode=0x%02x, bpw=%d, speed=%d",
+  LOG_INFO("spi_init: init'd SPI='%s' to mode=0x%02x, bpw=%d, speed=%d",
     pDriverName, mode, bpw, speed);
 
 

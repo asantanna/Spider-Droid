@@ -54,7 +54,23 @@
 //
 //
 
-#define MOTOR_NAME_TO_CTRL_ID(name) (name[0] - 'A')
-#define MOTOR_NAME_TO_SEL_IDX(name) (name[1] - '0')
+#define MOTOR_NAME_TO_CTRL_ID(name)             ((BYTE)(name[0] - 'A'))
+#define MOTOR_NAME_TO_SEL_IDX(name)             ((BYTE)(name[1] - '0'))
 
-#define MOTOR_NAME_TO_ADC_IDX(name) ((MOTOR_NAME_TO_CTRL_ID(name) * 2) + MOTOR_NAME_TO_SEL_IDX(name))
+//
+// ADC
+//
+
+#define MOTOR_TO_ADC_IDX(ctrlID, selIdx)        ( ((ctrlID) * 2) + (selIdx))
+
+#define ADC_MIN_VAL                             ((UINT16) 0)
+#define ADC_MAX_VAL                             ((UINT16) 1023)
+#define ADC_VAL_RANGE                           (ADC_MAX_VAL - ADC_MIN_VAL + 1)
+
+#define ADC_VAL_TO_DEG(rawVal)                  ( ((rawVal) % ADC_VAL_RANGE) * (360.0 / ((double)ADC_VAL_RANGE) ) )
+#define ADC_DEG_TO_VAL(deg)                     ( (UINT16) ((deg) * ( ((double)ADC_VAL_RANGE) / 360.0) ) )
+
+#define ADC_ABS_VAL_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_VAL_RANGE )
+
+#define PHI_getJointPos(ctrlID, selIdx)         ADC_VAL_TO_DEG( PHI_getRawJointPos(ctrlID, selIdx) ) 
+

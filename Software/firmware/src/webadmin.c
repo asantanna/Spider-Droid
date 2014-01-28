@@ -182,7 +182,7 @@ void readToSpace(char** ppData, char** ppToken);
 
 // entry point of web admin - never returns
 
-void phi_webadmin(int port, const char* wwwRoot)
+void PHI_webadmin(int port, const char* wwwRoot)
 {
   int i, listenfd, socketfd, hit;
   socklen_t length;
@@ -361,9 +361,9 @@ void* wa_process_web_request(void* arg)
 
   if (!strcasecmp(parsedHttp.pMethod, HTTP_METHOD_POST_STR)) {
     // got an HTTP POST - we expect JSON in the body
-    char* pJsonReply = phi_processJson(parsedHttp.pBody);
+    char* pJsonReply = PHI_processJson(parsedHttp.pBody);
     SEND_JSON_REPLY(pJsonReply);
-    phi_freeJsonReply(pJsonReply);
+    PHI_freeJsonReply(pJsonReply);
     goto quick_exit;
   }
 

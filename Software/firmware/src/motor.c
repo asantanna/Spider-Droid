@@ -22,10 +22,7 @@ BOOL initMotorCtrl() {
 //
 // Note: power is [0, 127]
 
-void PHI_setMotorPower(char motorName[2], BYTE power, BOOL bFwd) {
-
-  int ctrlID = MOTOR_NAME_TO_CTRL_ID (motorName);
-  int selIdx = MOTOR_NAME_TO_SEL_IDX (motorName);
+void PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 
   BYTE cmd = 
     bFwd ? (selIdx == 0 ? MC_CMD_FWD_M0 : MC_CMD_FWD_M1)
@@ -42,19 +39,52 @@ void PHI_setMotorPower(char motorName[2], BYTE power, BOOL bFwd) {
 }
 
 //
+// Stop motors
+//
+
+void stopMotor(BYTE ctrlID, BYTE selIdx) {
+  PHI_setMotorPower(ctrlID, selIdx, 0, TRUE);
+}
+
+void stopAllMotors() {
+  BYTE ctrlID;
+  BYTE selIdx;
+
+  // discard everything queued
+  uart_discardAll();
+
+  // go through each controller
+  for (ctrlID = 'A' ; ctrlID <= 'F' ; ctrlID ++) {
+    // go through each motor of this controller
+    for (selIdx = '0' ; selIdx <= '1' ; selIdx ++) {
+      // stop motor
+      stopMotor(ctrlID, selIdx);
+    }
+  }
+}
+
+//
+// Flush motor commands
+//
+
+void flushMotorCmds() {
+  uart_flush();
+}
+
+//
 // Get motor (aka joint) position by sending a command to the
 // appropriate ADC through SPI 1
 //
 
-UINT16 PHI_getJointPosition(char motorName[2]) {
+UINT16 PHI_getRawJointPos(BYTE ctrlID, BYTE selIdx) {
   
-  int adcIdx = MOTOR_NAME_TO_ADC_IDX (motorName);
+  BYTE adcIdx = MOTOR_TO_ADC_IDX(ctrlID, selIdx);
   
   BYTE txBuff[3];
   BYTE rxBuff[3] = {0};
 
   txBuff[0] = ADC_CMD1_START;
-  txBuff[1] = ADC_CMD2_SINGLE | ( (((BYTE)adcIdx) << 4) & ADC_CMD2_ADDR_MASK) ;
+  txBuff[1] = ADC_CMD2_SINGLE | ( ((adcIdx) << 4) & ADC_CMD2_ADDR_MASK) ;
   txBuff[2] = 0;
   
   spi_exchange(ADC_SPI_IDX, txBuff, rxBuff, COUNTOF(txBuff));
@@ -65,7 +95,7 @@ UINT16 PHI_getJointPosition(char motorName[2]) {
   adcValue |= (UINT16) rxBuff[2];
 
   // DEBUG
-  // LOG_INFO("getJointPosition(%d) = %02Xh", motorIdx, adcValue);
+  // LOG_INFO("getJointPos(%d) = %02Xh", motorIdx, adcValue);
   // LOG_INFO("  outgoing:  %02Xh %02Xh %02Xh", txBuff[0], txBuff[1], txBuff[2]); 
   // LOG_INFO("  incoming:  %02Xh %02Xh %02Xh", rxBuff[0], rxBuff[1], rxBuff[2]);
 
@@ -76,14 +106,14 @@ UINT16 PHI_getJointPosition(char motorName[2]) {
 // Controllers come from factory with ID=9, we have to set each one
 // to a different value
 
-void PHI_setControllerId(char oldId, char newId) {
+void PHI_setControllerId(BYTE oldId, BYTE newId) {
 
     char motorCmd[] = {
     MC_CMD_SIGN,
-    oldId,
+    (char) oldId,
     MC_CMD_SET_CONF,
     MC_SCONF_PARAM_DEVICE_ID,
-    newId,
+    (char) newId,
     MC_SCONF_END_VAL_0,
     MC_SCONF_END_VAL_1
   };

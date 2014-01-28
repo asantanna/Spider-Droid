@@ -65,6 +65,8 @@
 // param 3: TIMEOUT  (cause error if serial timeout)
 //
 
+#define MC_SCONF_WAIT_MS            4         // command takes 4 mS to complete - must wait
+
 #define MC_SCONF_END_VAL_0          0x55      // end value 0
 #define MC_SCONF_END_VAL_1          0x2A      // end value 1
 

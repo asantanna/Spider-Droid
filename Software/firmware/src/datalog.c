@@ -19,7 +19,7 @@
     #define UINT64          unsigned long long
     #define LOG_FATAL       printf
 
-    UINT64 phi_upTime() {
+    UINT64 PHI_upTime() {
       static UINT64 time = 0;
       return time++;
     }
@@ -102,7 +102,7 @@ void dlog_addElem_withTime(PHI_DLOG* pLog, UINT64 time, double data) {
 }
 
 void dlog_addElem(PHI_DLOG* pLog, double data) {
-  dlog_addElem_withTime(pLog, phi_upTime(), data);
+  dlog_addElem_withTime(pLog, PHI_upTime(), data);
 }
 
 double dlog_avg(PHI_DLOG* pLog, int depth) {
