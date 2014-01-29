@@ -81,11 +81,11 @@ void spi_exchange(int spiIdx, BYTE* pTx, BYTE* pRx, int dataLen);
 //
 
 //
-// PHI STATE
+// PHI Snapshot
 //
 
-void lock_state();
-void unlock_state();
+void lock_snapshot();
+void unlock_snapshot();
 
 //
 // Self tests
@@ -103,6 +103,8 @@ BOOL initMotorCtrl();
 void stopMotor(BYTE ctrlID, BYTE selIdx);
 void stopAllMotors();
 void flushMotorCmds();
+
+float getJointPos(BYTE adcIdx);
 
 void PHI_abortProcess(int rc);
 void PHI_abortWithMsg(const char* msg);

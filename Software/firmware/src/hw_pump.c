@@ -1,8 +1,8 @@
 
 //
-// Hardware pump thread
+// Hardware pump threads
 //
-// This loop runs on a separate thread and is responsible for:
+// Create separate threads responsible for:
 //
 // 1) Pumping data from all devices and updating a snapshot of the current state.
 // 2) Heartbeat on status LED
@@ -15,6 +15,7 @@
 // DEFINES
 //
 
+// rate at which hardware is polled to update state snapshot
 #define LOOPS_PER_SEC       100
 #define LOOP_PERIOD_USEC    ((INT32)(1e6 / LOOPS_PER_SEC))
 
@@ -22,26 +23,23 @@
 // VARS
 //
 
-// snapshot of phi state (sensors and cmds)
+// snapshot of phi (cmds and sensor states)
 
 typedef struct {
 
   PHI_CMD_PACKET cmds;
-  PHI_STATE_PACKET sensors;
+  PHI_STATE_PACKET state;
 
-} PHI_STATE;
+} PHI_SNAPSHOT;
 
-static PHI_STATE phiState;
+static PHI_SNAPSHOT phiSnapshot;
 
-// mutex to sync access to phiStateSnapshot
-static PHI_MUTEX_DECL(mtxState);
-
-// packet ID to check for missed packets
-static UINT32 packetId = 0;
+// mutex to sync access to phiSnapshot
+static PHI_MUTEX_DECL(mtxSnapshot);
 
 // internal
 
-void initState();
+void initSnapshot();
 void updateState();
 
 void* hwPump_UART_thread(void* arg);
@@ -55,23 +53,24 @@ void* hwPump_I2C_thread(void* arg);
 /*
 
   The main purpose of startHwPump is to start helper threads to continually and efficiently keep synchronized the true
-  hardware state and its snapshot in phiState.  This involves continually polling the hardware and updating phiState.
+  hardware state and its snapshot in phiSnapshot.  This involves continually polling the hardware and updating phiSnapshot.
 
   To be efficient, we must take into account that:
 
   1) We have three different interfaces to poll so they can be done in parallel (UART, SPI and I2C). For simplicity,
      we start a separate "pump" thread for each interface.
-
-  2) There are also other threads in the system that may require access to the interfaces so we must synchronize this.
   
-  3) Access to phiState must also be synchronized between threads.
+  2) Access to phiSnapshot must also be synchronized between threads.
   
 */
 
 void startHwPump() {
 
-  // init phi state
-  initState();
+  // WARN("pump disabled");
+  // return;
+
+  // init phi snapshot
+  initSnapshot();
 
   // spawn threads to pump each interface
   //
@@ -81,7 +80,6 @@ void startHwPump() {
   int iface;
 
   for (iface = 0 ; iface < 3 ; iface++) {
-
 
     pthread_t thread;
     pthread_attr_t threadAttr;
@@ -133,149 +131,334 @@ void startHwPump() {
   
 }
 
+/////////////////////////////////////////////////
+//
+// UART pump thread
+//
+// Devices serviced by UART:
+//
+//     motor controllers (TX only)
+//
+/////////////////////////////////////////////////
+
 void* hwPump_UART_thread(void* arg)
 {
   LOG_INFO("hwPump_UART_thread started");
-  printf("hwPump_UART_thread started");
+  printf("UART pump thread started\n");
+
+  // continually update motor controllers from snapshot
+  // note: we always update even if it hasn't changed because
+  //       it is simpler and more robust in case of a dropped
+  //       or corrupted command.
+
+  UINT64 usec_loopEnd = PHI_upTime();
 
   while (TRUE) {
-  }
+
+    char ctrlID;
+    char selIdx;
+    int motorIdx = 0;
+
+    // time at start of loop
+    UINT64 usec_loopStart = usec_loopEnd;
+
+    //
+    // Send motor power commands to all controllers
+    //
+
+    // go through each controller
+    for (ctrlID = 'A' ; ctrlID <= 'F' ; ctrlID ++) {
+      // go through each motor of this controller
+      for (selIdx = '0' ; selIdx <= '1' ; selIdx ++) {
+        // send out motor power command for this motor
+        lock_snapshot();
+        int power = phiSnapshot.cmds.motors[motorIdx++];
+        unlock_snapshot();
+        BYTE absPower = abs(power);
+        BOOL bFwd = (power >= 0) ? TRUE : FALSE;
+        HAL_setMotorPower(ctrlID, selIdx, absPower, bFwd);
+      }
+    }
+
+    //
+    // Sleep enough to update at desired speed
+    //
+
+    // time at end of work
+    UINT64 usec_workEnd = PHI_upTime();
+
+    // sleep any leftover time
+
+    INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
+    INT32 usec_sleepTime = (INT32) (LOOP_PERIOD_USEC - usec_workTime);
+
+    if (usec_sleepTime < 0) {
+      // no time left over
+      usec_sleepTime = 0;
+    }
+
+    usleep(usec_sleepTime);
+    usec_loopEnd = PHI_upTime();
+    
+  } // while
 }
+
+/////////////////////////////////////////////////
+//
+// SPI pump thread
+//
+// Devices serviced by SPI:
+//
+//     Gyro (SPI index 0)
+//     ADCs (SPI index 1)
+//
+/////////////////////////////////////////////////
  
 void* hwPump_SPI_thread(void* arg)
 {
   LOG_INFO("hwPump_SPI_thread started");
-  printf("hwPump_SPI_thread started");
+  printf("SPI pump thread started\n");
 
-  int i;
+  //
+  // Continually read all SPI devices
+  //
+
+  UINT64 usec_loopEnd = PHI_upTime();
 
   while (TRUE) {
+    
+    // time at start of loop
+    UINT64 usec_loopStart = usec_loopEnd;
 
-    // joint (motor) positions
+    //
+    // Read joint positions from ADCs
+    //
 
-    for (i = 0 ; i < COUNTOF(phiState.sensors.joint) ; i++) {
-      float j = HAL_getJointPos(i);
-      lock_state();
-      phiState.sensors.joint[i] = j;
-      unlock_state();
+    int adcIdx;
+
+    for (adcIdx = 0 ; adcIdx < COUNTOF(phiSnapshot.state.joints) ; adcIdx++) {
+      float pos = getJointPos(adcIdx);
+      lock_snapshot();
+      phiSnapshot.state.joints[adcIdx] = pos;
+      unlock_snapshot();
     }
-  }
+
+    //
+    // Read gyro (delta degrees)
+    //
+    // note: we accumulate the change in the snapshot because this loop
+    // runs at a different rate than the transmission
+
+    float pitchDelta, yawDelta, rollDelta;
+    HAL_gyroGetDeltas(&pitchDelta, &yawDelta, &rollDelta);
+
+    lock_snapshot();
+
+    phiSnapshot.state.gyro[0] += pitchDelta;
+    phiSnapshot.state.gyro[1] += yawDelta;
+    phiSnapshot.state.gyro[2] += rollDelta;
+
+    unlock_snapshot();
+
+    // read temperature from gyro
+    
+    float t = HAL_gyroGetTemp();
+    lock_snapshot();
+    phiSnapshot.state.temp = t;
+    unlock_snapshot();
+
+    //
+    // Sleep enough to update at desired speed
+    //
+
+    // time at end of work
+    UINT64 usec_workEnd = PHI_upTime();
+
+    // sleep any leftover time
+
+    INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
+    INT32 usec_sleepTime = (INT32) (LOOP_PERIOD_USEC - usec_workTime);
+
+    if (usec_sleepTime < 0) {
+      // no time left over
+      usec_sleepTime = 0;
+    }
+
+    usleep(usec_sleepTime);
+    usec_loopEnd = PHI_upTime();
+    
+  } // while
 }
 
 void* hwPump_I2C_thread(void* arg)
 {
   LOG_INFO("hwPump_I2C_thread started");
-  printf("hwPump_I2C_thread started");
+  printf("I2C pump thread started\n");
 
   while (TRUE) {
   }
 }
 
 //
-// PHI state init/pump functions
+// PHI snapshot functions
 //
 
-void initState() {
+// set the snapshot to its initial state
+
+void initSnapshot() {
 
   int i;
 
   // grab mutex
-  lock_state();
-  
+  lock_snapshot();
+
+  //
+  // Commands
+  //
+
   // sign
-  memcpy(phiState.sensors.sign, STAP_SIGN, sizeof(phiState.sensors.sign));
-
-  // packet ID
-  phiState.sensors.id = 0;
-
-  // image
-  memset(phiState.sensors.image, 0, sizeof(phiState.sensors.image));
-
-  // gyro
-  phiState.sensors.gyro[0] = 0;
-  phiState.sensors.gyro[1] = 0;
-  phiState.sensors.gyro[2] = 0;
-
-  // joint (motor) positions
-  for (i = 0 ; i < COUNTOF(phiState.sensors.joint) ; i++) {
-    phiState.sensors.joint[i] = 0;
+  memcpy(phiSnapshot.cmds.sign, CMDP_SIGN, sizeof(phiSnapshot.cmds.sign));
+  
+  // motor commands
+  for (i = 0 ; i < COUNTOF(phiSnapshot.cmds.motors) ; i++) {
+    phiSnapshot.cmds.motors[i] = 0;
   }
 
-  // temp
-  phiState.sensors.temp = 0;
-
-  // free state mutex
-  unlock_state();
-}
-
-void updateState() {
-
-  int i;
-
-  // sign
-
-  lock_state();
-  memcpy(phiState.sensors.sign, STAP_SIGN, sizeof(phiState.sensors.sign));
-  unlock_state();
+  //
+  // State
+  //
   
-  // packet ID (increment)
+  // sign
+  memcpy(phiSnapshot.state.sign, STAP_SIGN, sizeof(phiSnapshot.state.sign));
 
-  lock_state();
-  phiState.sensors.id = packetId++;
-  unlock_state();
+  // packet ID
+  phiSnapshot.state.packetID = 0;
 
   // image
+  memset(phiSnapshot.state.image, 0, sizeof(phiSnapshot.state.image));
 
-  lock_state();
-  memset(phiState.sensors.image, 0, sizeof(phiState.sensors.image));
-  unlock_state();
+  // joint (motor) positions
+  for (i = 0 ; i < COUNTOF(phiSnapshot.state.joints) ; i++) {
+    phiSnapshot.state.joints[i] = 0;
+  }
 
-  // gyro (return +/- percent of max reading)
-  //
-  // note: we actually accumulate the change in the state
-  // instead of of the change because this runs at a faster
-  // rate than the transmission so data would be lost
+  // gyro
+  phiSnapshot.state.gyro[0] = 0;
+  phiSnapshot.state.gyro[1] = 0;
+  phiSnapshot.state.gyro[2] = 0;
 
-  float pitchDelta, yawDelta, rollDelta;
-  HAL_gyroGetDeltas(&pitchDelta, &yawDelta, &rollDelta);
+  // accel
+  phiSnapshot.state.accel[0] = 0;
+  phiSnapshot.state.accel[1] = 0;
+  phiSnapshot.state.accel[2] = 0;
 
-  lock_state();
+  // temp
+  phiSnapshot.state.temp = 0;
 
-  phiState.sensors.gyro[0] += pitchDelta;
-  phiState.sensors.gyro[1] += yawDelta;
-  phiState.sensors.gyro[2] += rollDelta;
-
-  unlock_state();
-
-  // temperature
-  float t = HAL_gyroGetTemp();
-  lock_state();
-  phiState.sensors.temp = t;
-  unlock_state();
+  // free state mutex
+  unlock_snapshot();
 }
 
-void PHI_getStateSnapshot(PHI_STATE_PACKET *p) {
+// get state portion of PHI snapshot
+
+void getStateSnapshot(PHI_STATE_PACKET *p) {
 
   //
   // DEBUG - update every request
   // updateState();
   //
-  
-  lock_state();
-  memcpy(p, &phiState.sensors, sizeof(*p));
-  unlock_state();
+
+  // lock state updates
+  lock_snapshot();
+
+  // increment packet ID
+  phiSnapshot.state.packetID ++;
+
+  // copy state back to caller
+  memcpy(p, &phiSnapshot.state, sizeof(*p));
+
+  // unlock state updates
+  unlock_snapshot();
 }
 
-void lock_state() {
-  lock_state();
+void lock_snapshot() {
+  PHI_MUTEX_GET(&mtxSnapshot);
 }
 
-void unlock_state() {
-  unlock_state();
+void unlock_snapshot() {
+  PHI_MUTEX_RELEASE(&mtxSnapshot);
 }
 
 
-/* TMP JUNK SAVE
+/*
+ * TMP JUNK SAVE
+ *
+
+-----
+
+// read hardware and update the state structure
+//
+// note: we lock the state structure in a fine grained
+// fashion so that PHI can reply quickly to state requests
+// without being blocked here
+//
+
+void updateState() {
+
+  int i;
+
+  // sign not set here because it is not necessary and serves as a sentinel
+  // to detect a bug that might over-write it
+
+  // packet ID is not incremented here because this routine runs
+  // at a higher rate than packets are sent
+
+  // image (not implemented)
+  TODO("image sensor not implemented");
+
+  //
+  // Get joint positions
+  //
+
+  char ctrlID;
+  char selIdx;
+  int adcIdx = 0;
+
+  // go through each controller
+  for (ctrlID = 'A' ; ctrlID <= 'F' ; ctrlID ++) {
+    // go through each motor of this controller
+    for (selIdx = '0' ; selIdx <= '1' ; selIdx ++) {
+      // read and save joing position
+      double pos = getJointPos(ctrlID, selIdx);
+      lock_snapshot();
+      phiSnapshot.state.joint[adcIdx++] = 0;
+      unlock_snapshot();
+    }
+  }
+
+  // gyro (return +/- percent of max reading)
+  //
+  // note: we actually accumulate the change in the state
+  // because this runs at a faster rate than the transmission
+  // so data would be lost
+
+  float pitchDelta, yawDelta, rollDelta;
+  HAL_gyroGetDeltas(&pitchDelta, &yawDelta, &rollDelta);
+
+  lock_snapshot();
+
+  phiSnapshot.state.gyro[0] += pitchDelta;
+  phiSnapshot.state.gyro[1] += yawDelta;
+  phiSnapshot.state.gyro[2] += rollDelta;
+
+  unlock_snapshot();
+
+  // temperature
+  float t = HAL_gyroGetTemp();
+  lock_snapshot();
+  phiSnapshot.state.temp = t;
+  unlock_snapshot();
+}
 
 -----
 

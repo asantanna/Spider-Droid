@@ -61,7 +61,7 @@
 // ADC
 //
 
-#define MOTOR_TO_ADC_IDX(ctrlID, selIdx)        ( ((ctrlID) * 2) + (selIdx))
+#define MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx)     ( ((ctrlID) * 2) + (selIdx))
 
 #define ADC_MIN_VAL                             ((UINT16) 0)
 #define ADC_MAX_VAL                             ((UINT16) 1023)
@@ -72,5 +72,4 @@
 
 #define ADC_ABS_VAL_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_VAL_RANGE )
 
-#define PHI_getJointPos(ctrlID, selIdx)         ADC_VAL_TO_DEG( PHI_getRawJointPos(ctrlID, selIdx) ) 
 

@@ -114,7 +114,7 @@ BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
   BYTE power;
 
   // get current joint pos
-  orig_jointPos =  PHI_getJointPos(ctrlID, selIdx);
+  orig_jointPos =  getJointPosByMotorID(ctrlID, selIdx);
 
   // try ever increasing power until we detect movement
   for (power = JTEST_MIN_POWER ; power <= JTEST_MAX_POWER ; power += JTEST_POWER_STEPS) {
@@ -127,7 +127,7 @@ BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
         usecWait = waitMult * JTEST_WAIT_STEP_MS * 1000;
         usleep(usecWait);
         // get joint pos
-        jointPos =  PHI_getJointPos(ctrlID, selIdx);
+        jointPos =  getJointPosByMotorID(ctrlID, selIdx);
         // check if moved enough
         double diff = abs(jointPos - orig_jointPos);
         if (diff >= JTEST_JOINT_CHG_DEG) {
@@ -189,7 +189,7 @@ double moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
   double jointPos;
 
   // get current joint pos
-  prevJointPos =  PHI_getJointPos(ctrlID, selIdx);
+  prevJointPos =  getJointPosByMotorID(ctrlID, selIdx);
 
   // turn on motor at minimum necessary power for movement
   PHI_setMotorPower(ctrlID, selIdx, minPowerNeeded, bFwd);
@@ -200,7 +200,7 @@ double moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
     usleep(minWaitNeeded);
     
     // check if moved
-    jointPos =  PHI_getJointPos(ctrlID, selIdx);
+    jointPos =  getJointPosByMotorID(ctrlID, selIdx);
 
     if (bFwd) {
       // fwd

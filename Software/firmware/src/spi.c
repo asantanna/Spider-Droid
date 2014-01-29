@@ -19,9 +19,6 @@
 // SPI file descriptors (SPI 0 & 1)
 static int spiFile[2] = { -1, -1 };
 
-// mutex to sync access to SPI interface
-PHI_MUTEX_DECL(mtxSPI);
-
 // SPI 0 SETTINGS - for gyroscope
 
 struct spi_ioc_transfer spi_0_xfer[2] = {

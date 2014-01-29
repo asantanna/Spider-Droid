@@ -8,10 +8,6 @@
 // UART 0 file descriptor
 static int uartFile = -1;
 
-// mutex to sync access to UART
-PHI_MUTEX_DECL(mtxUART);
-
-
 // At bootup, RPI pins 8 and 10 are already set to UART0_TXD, UART0_RXD (ie the alt0 function) respectively
 
 BOOL uart_init() {

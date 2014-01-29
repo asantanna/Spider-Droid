@@ -54,21 +54,21 @@ typedef struct {
   UINT64 time;
   double data;
 
-} PHI_DLOG_ELEM;
+} DATALOG_ELEM;
 
 typedef struct {
   UINT32 sign;
   int currIdx;
   int numElem;
-  PHI_DLOG_ELEM elem[];
+  DATALOG_ELEM elem[];
   
-} PHI_DLOG;
+} DATALOG;
 
 
-PHI_DLOG* dlog_create(int numElem) {
+DATALOG* dlog_create(int numElem) {
 
-  int size = sizeof(PHI_DLOG) + numElem * sizeof(PHI_DLOG_ELEM);
-  PHI_DLOG* pLog = malloc(size);
+  int size = sizeof(DATALOG) + numElem * sizeof(DATALOG_ELEM);
+  DATALOG* pLog = malloc(size);
 
   if (pLog == NULL) {
     LOG_FATAL("Not enough memory to allocate log in datalog.c");
@@ -82,7 +82,7 @@ PHI_DLOG* dlog_create(int numElem) {
   return pLog;
 }
 
-void dlog_free(PHI_DLOG* pLog) {
+void dlog_free(DATALOG* pLog) {
 
   if (pLog -> sign != DLOG_SIGN) {
     LOG_FATAL("bad pointer passed to freeDlog in datalog.c");
@@ -91,7 +91,7 @@ void dlog_free(PHI_DLOG* pLog) {
   free(pLog);
 }
 
-void dlog_addElem_withTime(PHI_DLOG* pLog, UINT64 time, double data) {
+void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
   // add element to current position of array
   pLog -> elem[pLog -> currIdx].time = time;
   pLog -> elem[pLog -> currIdx].data = data;
@@ -101,11 +101,11 @@ void dlog_addElem_withTime(PHI_DLOG* pLog, UINT64 time, double data) {
   if (pLog -> currIdx > pLog -> numElem)  pLog -> currIdx = 0;
 }
 
-void dlog_addElem(PHI_DLOG* pLog, double data) {
+void dlog_addElem(DATALOG* pLog, double data) {
   dlog_addElem_withTime(pLog, PHI_upTime(), data);
 }
 
-double dlog_avg(PHI_DLOG* pLog, int depth) {
+double dlog_avg(DATALOG* pLog, int depth) {
   // average the last "depth" entries stored in the array
   if (depth < 0 || depth > pLog -> numElem) {
     LOG_FATAL("depth invalid");
@@ -137,7 +137,7 @@ double cubic(
   double y4,
   double x5);
 
-double dlog_predict(PHI_DLOG* pLog, UINT64 time) {
+double dlog_predict(DATALOG* pLog, UINT64 time) {
   // look at last "depth" entries and guess the next one
   int _currIdx = WRAP(pLog -> currIdx - 4);
 
@@ -158,7 +158,7 @@ void dlog_test()  {
   double avg;
   double guess;
   int i;
-  PHI_DLOG* pLog = dlog_create(3);
+  DATALOG* pLog = dlog_create(3);
 
   printf("//\n// Running Datalog Test Suite\n//\n\n"
          "Testing dlog_avg() function: ");

@@ -210,7 +210,7 @@ void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
 // mounting, with the connector pins going in the left-right axis.  Therefore,
 // x = roll, y = pitch and z = yaw.
 //
-// Note: this function returns delta(degrees) since last read.  The delta is
+// Note: this function returns delta (degrees) since last read.  The delta is
 // computed by noting that each sample represents the average speed (dps) in a
 // GYRO_SAMPLE_PERIOD time span.
 //
@@ -257,6 +257,8 @@ void PHI_gyroGetDeltas_noFifo(float* pPitchDelta, float* pYawDelta, float* pRoll
   *pRollDelta  = rollDelta;
 }
 
+// for more info, see comments at PHI_gyroGetDeltas_noFifo() above
+
 void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
 
   float pitchDelta = 0;
@@ -277,7 +279,7 @@ void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRol
     float pitchDps, yawDps, rollDps;
     gyroReadFifoSlot(&pitchDps, &yawDps, &rollDps);
 
-    // accumulate
+    // convert dps to delta (degrees) and accumulate 
     pitchDelta += pitchDps * GYRO_SAMPLE_PERIOD;
     yawDelta   += yawDps * GYRO_SAMPLE_PERIOD;
     rollDelta  += rollDps * GYRO_SAMPLE_PERIOD;

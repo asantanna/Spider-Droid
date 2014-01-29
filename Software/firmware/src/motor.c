@@ -72,13 +72,10 @@ void flushMotorCmds() {
 }
 
 //
-// Get motor (aka joint) position by sending a command to the
-// appropriate ADC through SPI 1
+// Get joint position by sending a command to the appropriate ADC through SPI 1
 //
 
-UINT16 PHI_getRawJointPos(BYTE ctrlID, BYTE selIdx) {
-  
-  BYTE adcIdx = MOTOR_TO_ADC_IDX(ctrlID, selIdx);
+UINT16 PHI_getRawJointPos(BYTE adcIdx) {
   
   BYTE txBuff[3];
   BYTE rxBuff[3] = {0};
@@ -95,11 +92,21 @@ UINT16 PHI_getRawJointPos(BYTE ctrlID, BYTE selIdx) {
   adcValue |= (UINT16) rxBuff[2];
 
   // DEBUG
-  // LOG_INFO("getJointPos(%d) = %02Xh", motorIdx, adcValue);
+  // LOG_INFO("getRawJointPos(%d) = %02Xh", adcIdx, adcValue);
   // LOG_INFO("  outgoing:  %02Xh %02Xh %02Xh", txBuff[0], txBuff[1], txBuff[2]); 
   // LOG_INFO("  incoming:  %02Xh %02Xh %02Xh", rxBuff[0], rxBuff[1], rxBuff[2]);
 
   return adcValue;
+}
+
+float getJointPos(BYTE adcIdx) {
+  // convert raw ADC val to degrees
+  return ADC_VAL_TO_DEG( HAL_getRawJointPos(adcIdx) );
+}
+
+float getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
+  // convert raw ADC val to degrees
+  return getJointPos(MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx));
 }
 
 

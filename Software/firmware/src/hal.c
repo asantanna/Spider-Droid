@@ -18,7 +18,7 @@ HAL_FUNCS phiHal = {
   .initPeripherals =  (halFunc_pChar) PHI_initPeripherals,
   .gyroGetDeltas =    PHI_gyroGetDeltas,
   .gyroGetTemp =      PHI_gyroGetTemp,
-  .getJointPos =      (halFunc_UINT16) PHI_getRawJointPos,
+  .getRawJointPos =   (halFunc_UINT16) PHI_getRawJointPos,
   .setMotorPower =    (halFunc_void) PHI_setMotorPower,
   .setControllerId =  (halFunc_void) PHI_setControllerId,
 };
@@ -32,7 +32,7 @@ HAL_FUNCS genericHal = {
   .initPeripherals =  (halFunc_pChar) GENERIC_initPeripherals,
   .gyroGetDeltas =    GENERIC_gyroGetDeltas,
   .gyroGetTemp =      GENERIC_gyroGetTemp,
-  .getJointPos =      (halFunc_UINT16) GENERIC_getJointPos,
+  .getRawJointPos =   (halFunc_UINT16) GENERIC_getRawJointPos,
   .setMotorPower =    (halFunc_void) GENERIC_setMotorPower,
   .setControllerId =  (halFunc_void) GENERIC_setControllerId,
 };
@@ -144,10 +144,9 @@ void GENERIC_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
   // do nothing for now
 }
 
-UINT16 GENERIC_getJointPos(BYTE ctrlID, BYTE selIdx) {
+UINT16 GENERIC_getRawJointPos(BYTE adcIdx) {
   double currSecs = ((double) PHI_upTime()) / 1e6;
-  int idx = MOTOR_TO_ADC_IDX(ctrlID, selIdx);
-  return (UINT16) ( ((long) ((currSecs * 512) + (idx*100))) % 1024 );
+  return (UINT16) ( ((long) ((currSecs * 512) + (adcIdx*100))) % 1024 );
 }
 
 void GENERIC_setControllerId(char oldId, char newId) {
