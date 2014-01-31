@@ -3,10 +3,17 @@
 //
 // Note: this interface is used for realtime control.
 //       Diagnostics uses the JSON interface.
+//
+// PhiLink is started by issuing a JSON "startPhiLink" command through
+// the diagnostics interface.  Phi then connects to the server with the
+// address specified.  The reason it is done this way instead of simply
+// listening for connections like the diagnostic interface is that this
+// method allows future changes to a UDP based link without major
+// modifications since the "startPhiLink" command provides a target address.
 
 #include "phi.h"
 
-// loop state
+// loop status
 
 typedef enum {
   RX_BEGIN,
@@ -14,18 +21,18 @@ typedef enum {
   TX_BEGIN,
   TX_SENDING,
     
-} COMM_STATE;
+} COMM_STATUS;
 
 // internal
 
-void setLinkState(PHILINK_STATE state);
+void setLinkStatus(PHILINK_STATUS status);
 void* PHI_link_loop(void* arg);
 
 BOOL startPhiLink(char* ipAddr, int port) {
   BOOL rc = TRUE;
   int sock;
 
-  if (g_phiLinkState != LINK_OFF) {
+  if (g_phiLinkStatus != LINK_OFF) {
     // already started
     LOG_ERR("startPhiLink: already started, you monkey!");
     goto error_exit;
@@ -78,6 +85,9 @@ BOOL startPhiLink(char* ipAddr, int port) {
   // release thread attr because we don't use it
   pthread_attr_destroy(&threadAttr);
 
+  // sleep a bit to allow thread to run (1/4 sec)
+  usleep(1e6/4);
+
 quick_exit:
 
   return rc;
@@ -96,7 +106,7 @@ void* PHI_link_loop(void* arg)
   struct sockaddr_in phiServer;
 
   // say link started
-  setLinkState(LINK_STARTED);
+  setLinkStatus(LINK_STARTED);
   
   // arg is PHILINK_ARGS - copy and free
 
@@ -112,7 +122,7 @@ void* PHI_link_loop(void* arg)
   PHI_FREE(pArgs);
   
   // say link connecting
-  setLinkState(LINK_CONNECTING);
+  setLinkStatus(LINK_CONNECTING);
 
   // connect (blocking)
 
@@ -126,7 +136,7 @@ void* PHI_link_loop(void* arg)
   //
 
   // say connected
-  setLinkState(LINK_CONNECTED);
+  setLinkStatus(LINK_CONNECTED);
 
   // DEBUG
   LOG_INFO("** Phi Link connected");
@@ -202,13 +212,13 @@ error_exit:
   goto quick_exit;
 }
 
-void setLinkState(PHILINK_STATE state) {
+void setLinkStatus(PHILINK_STATUS status) {
   // copy to global
-  g_phiLinkState = state;
+  g_phiLinkStatus = status;
 
   // change LED
   
-  switch (state) {
+  switch (status) {
     case LINK_OFF:
       break;
     case LINK_STARTED:

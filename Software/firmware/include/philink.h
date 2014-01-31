@@ -11,7 +11,7 @@ typedef enum {
     LINK_ERROR,
     LINK_CLOSED
 
-} PHILINK_STATE;
+} PHILINK_STATUS;
 
 typedef struct {
   int sock;

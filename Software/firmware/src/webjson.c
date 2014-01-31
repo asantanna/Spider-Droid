@@ -90,7 +90,7 @@ JSON_HANDLER(getGyroDeltas);
 JSON_HANDLER(getGyroTemp);
 JSON_HANDLER(getPhiUptime);
 JSON_HANDLER(startPhiLink);
-JSON_HANDLER(getLinkState);
+JSON_HANDLER(getLinkStatus);
 JSON_HANDLER(setMCtlId);
 JSON_HANDLER(selfTest);
 
@@ -116,7 +116,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(getGyroDeltas),
   CMD_ENTRY(getGyroTemp),
   CMD_ENTRY(startPhiLink),
-  CMD_ENTRY(getLinkState),
+  CMD_ENTRY(getLinkStatus),
   CMD_ENTRY(setMCtlId),
 //  CMD_ENTRY(setBrake),
   CMD_ENTRY(selfTest),
@@ -702,17 +702,17 @@ JSON_HANDLER(getGyroTemp) {
 //
 // PHI link
 //
-//  req:    { cmd : getLinkState }
+//  req:    { cmd : getLinkStatus }
 //  reply:  { state: string}
 //
 //  req:    { cmd : startPhiLink, server : ipAddr/hostname, [opt] port=num }
 //  reply:  { }
 
-JSON_HANDLER(getLinkState) {
-  JSON_HANDLER_PROLOG(getLinkState);
+JSON_HANDLER(getLinkStatus) {
+  JSON_HANDLER_PROLOG(getLinkStatus);
   
   char* pState;
-  switch (g_phiLinkState) {
+  switch (g_phiLinkStatus) {
     case LINK_OFF:
       pState="OFF";
       break;
@@ -801,7 +801,7 @@ JSON_HANDLER(startPhiLink) {
     goto error_exit;
   }
 
-  LOG_INFO("JSON.startPhiLink: start linking to host='%s:%d' ...", hostName, port);
+  LOG_INFO("JSON.startPhiLink: starting link to host='%s:%d' ...", hostName, port);
   
   if (startPhiLink(hostName, port) == FALSE) {
     sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.startPhiLink: startPhiLink returned false.) );

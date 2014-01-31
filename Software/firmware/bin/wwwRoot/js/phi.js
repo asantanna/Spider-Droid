@@ -30,8 +30,8 @@ function phi_startPhiLink(name, port) {
   sendJsonRequest("req : [ {cmd:startPhiLink, serverName:" + name + ", serverPort:" + port + "} ]");
 }
 
-function phi_getLinkState() {
-  sendJsonRequest("req : [ {cmd:getLinkState} ]");
+function phi_getLinkStatus() {
+  sendJsonRequest("req : [ {cmd:getLinkStatus} ]");
 }
 
 function phi_setMCtlId(oldId, newId) {
