@@ -11,43 +11,38 @@ using System.Windows;
 
 namespace Phi {
 
+  //
+  // class PhiLink represents a TCP/IP server that Phi connects to in response
+  // to the "startPhiLink" JSON command.  Once connection is established, PhiCore
+  // initiates its comm loop and is the driver of the communication.
+  //
+  // In an infinite loop, PhiCore's commLoop() sends cmdPacket, reads statePacket
+  // and then sleeps for an appropriate amount to keep up the desired comm rate.
+  //
+
   static class PhiLink {
 
     //
     // CONST
     //
 
-    // Phi Core listening port ... Lucas's bday ... :-)
+    // PhiLink listening port ... Lucas's bday ... :-)
     const Int32 PHI_LINK_PORT = 1122;
 
-    // Phi Link communication rate
+    // PhiLink communication rate
     internal const double DESIRED_LOOP_FPS = 50;
     const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
 
     // statistics
     const double LOOP_TIME_ACCUM_RATE = (1.0 / 100);
 
-    // motor indices
-    internal enum MOTOR_IDX {
-      IDX_RFT = 0,
-      IDX_RFK = 1,
-      IDX_LFT = 2,
-      IDX_LFK = 3,
-      IDX_RBT = 4,
-      IDX_RBK = 5,
-      IDX_LBT = 6,
-      IDX_LBK = 7,
-      IDX_RFH = 8,
-      IDX_LFH = 9,
-      IDX_RBH = 10,
-      IDX_LBH = 11,
-    };
-
     //
     //  VARS
     //
 
-    internal enum PhiLinkState {
+    // status of link
+    
+    internal enum PhiLinkStatus {
       LINK_OFF,
       LINK_STARTED,
       LINK_CONNECTING,
@@ -56,9 +51,7 @@ namespace Phi {
       LINK_CLOSED
     }
 
-    internal static object dataLock = new object();
-
-    internal static PhiLinkState linkState = PhiLinkState.LINK_OFF;
+    internal static PhiLinkStatus linkStatus = PhiLinkStatus.LINK_OFF;
 
     private static Task commLoopTask = null;
     private static UInt32 loopCount = 0;
@@ -68,13 +61,20 @@ namespace Phi {
 
     private static UInt32 lastPacketID = 0;
 
+    // sync object - this is used because many of the properties in this
+    // class can be accessed by two different threads: directly by the
+    // commLoop() thread in this class and by the UI thread through
+    // the accessor methods
+    
+    internal static object dataLock = new object();
+
     // state of PHI
 
     private static double pitch = 0;
     private static double yaw = 0;
     private static double roll = 0;
 
-    private static UInt16[] joints = new UInt16[PhiGlobals.NUM_MOTOR_ELEM];
+    private static float[] joints = new float[PhiGlobals.NUM_MOTOR_ELEM];
 
     //
     // CODE
@@ -92,21 +92,21 @@ namespace Phi {
       Task<TcpClient> clientTask = null;
 
       // change status to initializing
-      setLinkState(PhiLinkState.LINK_STARTED);
+      setLinkStatus(PhiLinkStatus.LINK_STARTED);
 
       try {
         // enable listener
         phiLinkListener.Start();
 
         // change status to waiting
-        setLinkState(PhiLinkState.LINK_CONNECTING);
+        setLinkStatus(PhiLinkStatus.LINK_CONNECTING);
 
         // wait async for a phi to connect
         clientTask = phiLinkListener.AcceptTcpClientAsync();
 
       } catch (SocketException e) {
         // something went wrong
-        setLinkState(PhiLinkState.LINK_ERROR);
+        setLinkStatus(PhiLinkStatus.LINK_ERROR);
         Console.WriteLine("PhiLink.startListener: got exception when starting listener: SocketException: {0}", e);
         return null;
       }
@@ -124,7 +124,7 @@ namespace Phi {
       // completes (when a connection occurs);
 
       // change status to connected
-      setLinkState(PhiLinkState.LINK_CONNECTED);
+      setLinkStatus(PhiLinkStatus.LINK_CONNECTED);
 
       // turn off "Nagle" algorithm so data is sent immediately
       Socket s = client.Client;
@@ -237,7 +237,7 @@ namespace Phi {
       }
       
       // if we get here, loop was cancelled
-      // setLinkState(PhiLinkState.CANCELLED);
+      // setLinkStatus(PhiLinkStatus.CANCELLED);
     }
 
     private static double clampRange(double deg, double absMax) {
@@ -273,9 +273,9 @@ namespace Phi {
     // Misc
     //
 
-    internal static void setLinkState(PhiLinkState state) {
-      linkState = state;
-      PhiGlobals.mainWindow.updateLinkStatus(state);
+    internal static void setLinkStatus(PhiLinkStatus status) {
+      linkStatus = status;
+      PhiGlobals.mainWindow.updateLinkStatus(status);
     }
 
     internal static double getAvgIdle() {

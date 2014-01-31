@@ -15,26 +15,21 @@ namespace Phi
     // version
     internal static byte[] PHI_VERSION = StrToByteArray("0.9 (exp)");
 
-    // leg motor axons
+    // leg motor cmds
     internal const int NUM_LEGS = 4;
     internal const int MOTORS_PER_LEG = 3;
     internal const int NUM_MOTOR_ELEM = MOTORS_PER_LEG * NUM_LEGS;
 
-    // joint sensor DATA
+    // camera sensor data
+    internal const int IMAGE_X = 160;
+    internal const int IMAGE_Y = 120;
+    internal const int NUM_IMAGE_ELEM = IMAGE_X * IMAGE_Y;
+
+    // misc sensor data
     internal const int NUM_JOINT_POS_ELEM = NUM_LEGS * MOTORS_PER_LEG;
-
-    // gyro sensor DATA
-    // TODO: separate pos and neg components?  seems like a good idea to make
-    // things easier to discover
     internal const int NUM_GYRO_ELEM = 3;
-    
-    // temp sensor DATA
+    internal const int NUM_ACCEL_ELEM = 3;
     internal const int NUM_TEMP_ELEM = 1;
-
-    // vision sensor DATA
-    internal const int VISION_X = 160;
-    internal const int VISION_Y = 120;
-    internal const int NUM_VISION_ELEM = VISION_X * VISION_Y;
 
     //
     // GLOBAL VARS

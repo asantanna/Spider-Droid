@@ -17,8 +17,8 @@ namespace Phi {
 
     // offsets in packetData
     private const int OFF_SIGN = 0;
-    private const int OFF_MOTOR_AXONS = OFF_SIGN + PACKET_SIGN_LEN;
-    private const int OFF_PACKET_END = OFF_MOTOR_AXONS + PhiGlobals.NUM_MOTOR_ELEM;
+    private const int OFF_MOTOR_POWER = OFF_SIGN + PACKET_SIGN_LEN;
+    private const int OFF_PACKET_END = OFF_MOTOR_POWER + PhiGlobals.NUM_MOTOR_ELEM;
 
     //
     // VARS
