@@ -55,7 +55,7 @@ namespace Phi {
         PhiLink.startCommLoop(phiStream);
       } else {
         // no stream?
-        updateLinkStatus(PhiLink.PhiLinkState.LINK_ERROR);
+        updateLinkStatus(PhiLink.PhiLinkStatus.LINK_ERROR);
       }
     }
 
@@ -88,32 +88,32 @@ namespace Phi {
       }
     }
 
-    internal void updateLinkStatus(PhiLink.PhiLinkState state) {
+    internal void updateLinkStatus(PhiLink.PhiLinkStatus status) {
 
       bool newBlinky = false;
 
-      switch (state) {
-        case PhiLink.PhiLinkState.LINK_OFF:
+      switch (status) {
+        case PhiLink.PhiLinkStatus.LINK_OFF:
           LinkStatusText.Text = " OFF ";
           break;
-        case PhiLink.PhiLinkState.LINK_STARTED:
+        case PhiLink.PhiLinkStatus.LINK_STARTED:
           LinkStatusText.Text = " INITIALIZING ";
           newBlinky = true;
           break;
-        case PhiLink.PhiLinkState.LINK_CONNECTING:
+        case PhiLink.PhiLinkStatus.LINK_CONNECTING:
           LinkStatusText.Text = " WAITING ... ";
           newBlinky = true;
           break;
-        case PhiLink.PhiLinkState.LINK_CONNECTED:
+        case PhiLink.PhiLinkStatus.LINK_CONNECTED:
           LinkStatusText.Text = " CONNECTED ";
           enableUpdateTimer(true);
           break;
-        case PhiLink.PhiLinkState.LINK_ERROR:
+        case PhiLink.PhiLinkStatus.LINK_ERROR:
           LinkStatusText.Text = " ERROR ";
           newBlinky = true;
           enableUpdateTimer(false);
           break;
-        case PhiLink.PhiLinkState.LINK_CLOSED:
+        case PhiLink.PhiLinkStatus.LINK_CLOSED:
           LinkStatusText.Text = " CANCELLED ";
           newBlinky = true;
           enableUpdateTimer(false);
@@ -132,7 +132,7 @@ namespace Phi {
         // One time initializations
         //
 
-        updateLinkStatus(PhiLink.PhiLinkState.LINK_OFF);
+        updateLinkStatus(PhiLink.PhiLinkStatus.LINK_OFF);
 
         // start Phi Link listener
         startPhiLink();

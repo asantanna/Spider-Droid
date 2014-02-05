@@ -144,9 +144,19 @@ void GENERIC_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
   // do nothing for now
 }
 
+//
+// Generic getRawJointPos() - return fake values that advance with time
+//
+// note: raw ADC value is [0,1023]
+//
+
 UINT16 GENERIC_getRawJointPos(BYTE adcIdx) {
-  double currSecs = ((double) PHI_upTime()) / 1e6;
-  return (UINT16) ( ((long) ((currSecs * 512) + (adcIdx*100))) % 1024 );
+  double currSecs = (PHI_upTime() / 1e6); 
+  // advance 10 deg/second
+  double deg = currSecs * 10;
+  // each index 20 deg ahead of prev
+  deg += adcIdx * 20.0;
+  return (UINT16) ( ((UINT32) deg) % 360ul );
 }
 
 void GENERIC_setControllerId(char oldId, char newId) {

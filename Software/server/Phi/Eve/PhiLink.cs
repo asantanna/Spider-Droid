@@ -325,8 +325,9 @@ namespace Phi {
 
     internal static double getJointPos(int idx) {
       lock (dataLock) {
-        // A-to-D has 10 bit precision - convert to [0, 1.0]
-        return joints[idx] / 1024.0;
+        // Phi returns [0, 360) with A-to-D 10 bit precision
+        // Convert to PhiCore's [0, 1.0)
+        return joints[idx] / 360.0;
       }
     }
 

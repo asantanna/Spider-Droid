@@ -67,7 +67,7 @@
 #define ADC_MAX_VAL                             ((UINT16) 1023)
 #define ADC_VAL_RANGE                           (ADC_MAX_VAL - ADC_MIN_VAL + 1)
 
-#define ADC_VAL_TO_DEG(rawVal)                  ( ((rawVal) % ADC_VAL_RANGE) * (360.0 / ((double)ADC_VAL_RANGE) ) )
+#define ADC_VAL_TO_DEG(rawVal)                  ( ((rawVal) % ADC_VAL_RANGE) * (360.0 / ((double)ADC_VAL_RANGE)) )
 #define ADC_DEG_TO_VAL(deg)                     ( (UINT16) ((deg) * ( ((double)ADC_VAL_RANGE) / 360.0) ) )
 
 #define ADC_ABS_VAL_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_VAL_RANGE )

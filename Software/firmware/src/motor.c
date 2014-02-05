@@ -74,6 +74,8 @@ void flushMotorCmds() {
 //
 // Get joint position by sending a command to the appropriate ADC through SPI 1
 //
+// Note; raw ADC value is [0,1023]
+//
 
 UINT16 PHI_getRawJointPos(BYTE adcIdx) {
   

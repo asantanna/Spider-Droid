@@ -22,8 +22,8 @@ namespace Phi {
       InitializeComponent();
     }
 
-    public void update(double neuronVal, double jointPos) {
-      neuronBox.update(neuronVal);
+    public void update(double motorVal, double jointPos) {
+      motorBox.update(motorVal);
       barBox.update(jointPos);
     }
 

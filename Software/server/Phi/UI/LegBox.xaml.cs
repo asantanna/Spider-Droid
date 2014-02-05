@@ -23,13 +23,13 @@ namespace Phi {
     }
 
     internal void update(
-      double hipNeuronVal, double hipJointPos,
-      double thighNeuronVal, double thighJointPos,
-      double kneeNeuronVal, double kneeJointPos) {
+      double hipMotorVal, double hipJointPos,
+      double thighMotorVal, double thighJointPos,
+      double kneeMotorVal, double kneeJointPos) {
 
-      hipJoint.update(hipNeuronVal, hipJointPos);
-      thighJoint.update(thighNeuronVal, thighJointPos);
-      kneeJoint.update(kneeNeuronVal, kneeJointPos);
+      hipJoint.update(hipMotorVal, hipJointPos);
+      thighJoint.update(thighMotorVal, thighJointPos);
+      kneeJoint.update(kneeMotorVal, kneeJointPos);
     }
 
   }
