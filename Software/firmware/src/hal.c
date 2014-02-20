@@ -16,10 +16,9 @@
 HAL_FUNCS phiHal = {
   .pName =            "Phi HAL",
   .initPeripherals =  (halFunc_pChar) PHI_initPeripherals,
-  .gyroInit =         (halFunc_BOOL) PHI_gyroInit,
   .gyroGetDeltas =    PHI_gyroGetDeltas,
   .gyroGetTemp =      PHI_gyroGetTemp,
-  .getMotorPosition = PHI_getMotorPosition,
+  .getRawJointPos =   (halFunc_UINT16) PHI_getRawJointPos,
   .setMotorPower =    (halFunc_void) PHI_setMotorPower,
   .setControllerId =  (halFunc_void) PHI_setControllerId,
 };
@@ -31,10 +30,9 @@ HAL_FUNCS phiHal = {
 HAL_FUNCS genericHal = {
   .pName =            "Generic HAL",
   .initPeripherals =  (halFunc_pChar) GENERIC_initPeripherals,
-  .gyroInit =         (halFunc_BOOL) GENERIC_gyroInit,
   .gyroGetDeltas =    GENERIC_gyroGetDeltas,
   .gyroGetTemp =      GENERIC_gyroGetTemp,
-  .getMotorPosition = GENERIC_getMotorPosition,
+  .getRawJointPos =   (halFunc_UINT16) GENERIC_getRawJointPos,
   .setMotorPower =    (halFunc_void) GENERIC_setMotorPower,
   .setControllerId =  (halFunc_void) GENERIC_setControllerId,
 };
@@ -57,7 +55,7 @@ void HAL_init() {
   }
 
   printf("Loading HAL: %s\n",  HAL_name);
-  LOG_INFO("Loading HAL: \"%s\"\n",  HAL_name);
+  LOG_INFO("Loading HAL: \"%s\"",  HAL_name);
 }
 
 
@@ -69,23 +67,30 @@ char* PHI_initPeripherals() {
 
   // NULL means success
   char *rc = NULL;
+  
   g_initPeriph = FALSE;
 
   // set up UART for communication with motor controllers
-  if (!uartInit()) {
-    rc = "phi_InitPeripherals: UART init failed. Are you running on PHI?";
+  if (!uart_init()) {
+    rc = "PHI_InitPeripherals: UART init failed. Are you running on PHI?";
     goto quick_exit;
   }
 
   // set up SPI for communication with gyroscope
-  if (!spiInit()) {
-    rc = "phi_InitPeripherals: SPI init failed";
+  if (!spi_init()) {
+    rc = "PHI_InitPeripherals: SPI init failed";
     goto quick_exit;
   }
 
-  // set up gyroscope with FIFO
-  if (!HAL_gyroInit(TRUE)) {
-    rc = "phi_InitPeripherals: gyroscope init failed";
+  // init gyroscope (FIFO enabled)
+  if (!gyroInit(TRUE)) {
+    rc = "PHI_InitPeripherals: gyroscope init failed";
+    goto quick_exit;
+  }
+
+  // init motor controllers
+  if (!initMotorCtrl()) {
+    rc = "PHI_InitPeripherals: motor ctrl init failed";
     goto quick_exit;
   }
 
@@ -107,16 +112,12 @@ char* GENERIC_initPeripherals() {
   return NULL;
 }
 
-BOOL  GENERIC_gyroInit(BOOL bEnableFifo) {
-  return TRUE;
-}
-
 #define GYRO_UPDATE_EVERY 0.01
 
 void  GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
 
   static double lastSecs = 0;
-  double currSecs = ((double) phi_upTime()) / 1e6;
+  double currSecs = ((double) PHI_upTime()) / 1e6;
   double elapsed = currSecs - lastSecs;
 
   if ( elapsed < GYRO_UPDATE_EVERY) {
@@ -135,18 +136,29 @@ void  GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDe
 }
 
 INT8 GENERIC_gyroGetTemp(){
-  double currSecs = ((double) phi_upTime()) / 1e6;
+  double currSecs = ((double) PHI_upTime()) / 1e6;
   return (INT8) ( ((long) currSecs) % 100 );
 }  
 
-void GENERIC_setMotorPower(int motorIdx, BYTE power, BOOL bFwd) {
+void GENERIC_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
   // do nothing for now
 }
 
-UINT16 GENERIC_getMotorPosition(int motorIdx) {
-  double currSecs = ((double) phi_upTime()) / 1e6;
-  return (UINT16) ( ((long) ((currSecs * 512) + (motorIdx*100))) % 1024 );
+//
+// Generic getRawJointPos() - return fake values that advance with time
+//
+// note: raw ADC value is [0,1023]
+//
+
+UINT16 GENERIC_getRawJointPos(BYTE adcIdx) {
+  double currSecs = (PHI_upTime() / 1e6); 
+  // advance 10 deg/second
+  double deg = currSecs * 10;
+  // each index 20 deg ahead of prev
+  deg += adcIdx * 20.0;
+  return (UINT16) ( ((UINT32) deg) % 360ul );
 }
 
-void GENERIC_setControllerId(int oldId, int newId) {
+void GENERIC_setControllerId(char oldId, char newId) {
 }
+

@@ -1,0 +1,48 @@
+# List-customizations created these settings 31-Jan-2014 1:41:55 am.
+
+#
+# Andre say:
+#
+# This was saved from a good set up.  It should be copied
+# onto the customizations that "list-customizations" shows.
+# It looks like epsilon reads that file from a hardwired
+# location.
+#
+
+&standard-color color class for c-comment: [0x4072FF72 on 0x0]
+&standard-color color class for c-function: [0x77FFFF on 0x0]
+&standard-color color class for c-identifier: brightwhite on black
+&standard-color color class for c-keyword: [0xFFB3AD on 0x0]
+&standard-color color class for c-number: [0xBFFFBF on 0x0]
+&standard-color color class for c-preprocessor: [0x63A0E2 on 0x0]
+&standard-color color class for c-punctuation: brightwhite on black
+&standard-color color class for c-string: [0x7068FF on 0x0]
+&standard-color color class for conf-attribute: [0xE2E2 on 0x0]
+&standard-color color class for conf-value: brightwhite on black
+&standard-color color class for menu-highlight: [0x1075FFE6 on 0xAD0D55]
+&standard-color color class for menu: [0x10BCFEFF on 0x1E1D1D]
+&standard-color color class for process-output: brightwhite on black
+&standard-color color class for text: brightwhite on black
+&standard-color color class for viewed-text: [0xFFBFC3 on 0x0]
++-our-gui-scheme short variable: standard-color
++c-align-contin-lines char variable: 0
++c-fill-column int variable: 128
++compile-c-cmd-unix char array variable: 128 "gcc \"%r\""
++indent-with-tabs buffer char variable: 0
++tab-size buffer short variable: 2
+fake-prefix-0: table
+~fake-prefix-0 "b": goto-end
+~fake-prefix-0 "d": list-definitions
+~fake-prefix-0 "i": indent-region
+~fake-prefix-0 "l": revert-file
+~fake-prefix-0 "M-<DragDrop>": drag-drop-repeat
+~fake-prefix-0 "M-<GetFocus>": get-focus
+~fake-prefix-0 "M-<LoseFocus>": lose-focus
+~fake-prefix-0 "M-<LostSel>": lost-selection
+~fake-prefix-0 "M-<MouseLeftWin>": mouse-leaving-window
+~fake-prefix-0 "M-<Move>": mouse-get-another
+~fake-prefix-0 "M-<Resize>": win-resize
+~fake-prefix-0 "M-<Wheel>": mouse-wheel-key
+~fake-prefix-0 "t": goto-beginning
+~reg-tab "C-L": fake-prefix-0
+

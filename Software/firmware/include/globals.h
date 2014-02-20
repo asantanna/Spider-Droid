@@ -13,7 +13,7 @@
 
 
 // init state
-EXT BOOL g_initPeriph INIT(FALSE);        // TRUE if UART peripherals initialized
+EXT BOOL g_initPeriph INIT(FALSE);        // TRUE if hardware peripherals initialized
 
 // startup time (in uSecs)
 EXT UINT64 g_startupTime INIT({0});
@@ -24,8 +24,8 @@ EXT struct utsname g_uname;              // can't init this to zero here for som
 // host IP
 EXT UINT32 g_ipAddr INIT(0);
 
-// PhiLink state
-EXT PHILINK_STATE g_phiLinkState INIT(OFF);
+// PhiLink status
+EXT PHILINK_STATUS g_phiLinkStatus INIT(OFF);
 
 // HAL
 EXT HAL_FUNCS* g_pHal INIT(NULL);

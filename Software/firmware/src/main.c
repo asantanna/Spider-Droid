@@ -26,8 +26,8 @@ void main() {
   // initialize
   globalInit();
 
-  // start the failsafe thread
-  startFailsafeThread();
+  // start the hardware pump threads
+  startHwPump();
 
   //
   // Start web admin server
@@ -36,10 +36,10 @@ void main() {
   // main loop.
   //
   
-  phi_webadmin(80, "./wwwRoot");
+  PHI_webadmin(80, "./wwwRoot");
 
   // never gets here
-  LOG_FATAL("phi_webadmin returned!");
+  LOG_FATAL("PHI_webadmin returned!");
   
 }
 
@@ -72,14 +72,19 @@ void globalInit() {
   g_ipAddr = getHostIP();
 
   // init log
-  if (phi_logInit(LOGFILE_NAME) == 0) {
+  if (PHI_logInit(LOGFILE_NAME) == 0) {
     // failed
     LOG_FATAL("Error: could not open log file '%s' (errno=%d)!  (Are you running as root?)\n", LOGFILE_NAME, errno);
   }
 
   // remove NL and log
   sTime[strlen(sTime)-1] = 0;
+  
+  LOG_INFO("");
+  LOG_INFO("#######");
   LOG_INFO("####### PHI startup at %s #######", sTime);
+  LOG_INFO("#######");
+  LOG_INFO("");
 
   // initialize HAL
   HAL_init();

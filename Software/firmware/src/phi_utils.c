@@ -5,33 +5,33 @@
 
 #include "phi.h"
 
-void* phi_allocHelper(int size) {
+void* PHI_allocHelper(int size) {
 
   void* p = malloc(size);
   if (p == NULL) {
-    phi_abortWithMsg("out of mem");
+    PHI_abortWithMsg("out of mem");
   }
   memset(p, 0, size);
   return p;
 }
 
-UINT64 phi_upTime() {
+UINT64 PHI_upTime() {
   // up time in uSecs
   struct timeval tv;
   gettimeofday(&tv, NULL);
   return TV_TO_USEC(tv) - g_startupTime;
 }
 
-void phi_abortProcess(int rc) {
+void PHI_abortProcess(int rc) {
   printf("***\n");
   printf("*** Aborting PHI process!\n");
   printf("***\n");
   exit(rc);
 }
 
-void phi_abortWithMsg(const char* msg) {
+void PHI_abortWithMsg(const char* msg) {
   printf(msg, 0);
-  phi_abortProcess(-1);
+  PHI_abortProcess(-1);
 }
 
 /*
@@ -92,28 +92,28 @@ char* __itoa(int value, char* result, int base) {
  *
  */
 
-FILE *phi_logfp = NULL;
+FILE *PHI_logfp = NULL;
 
-int phi_logInit(char *filename) {
+int PHI_logInit(char *filename) {
 
-  //check if phi_logfp is already open.
-  if (phi_logfp != NULL) {
-    fclose(phi_logfp);
+  //check if PHI_logfp is already open.
+  if (PHI_logfp != NULL) {
+    fclose(PHI_logfp);
   }
 
   // truncate log files that are > 1000 lines (or 500 if CRLF is used)
-  phi_logfp = fopen(filename, "r");
+  PHI_logfp = fopen(filename, "r");
 
   int lines = 0;
-  if (phi_logfp != NULL) {
+  if (PHI_logfp != NULL) {
     int c;
     //count end of lines, both of them... just in case
-    while ( (c = fgetc(phi_logfp)) != EOF ) {
+    while ( (c = fgetc(PHI_logfp)) != EOF ) {
       if (c== '\n' || c == '\r') {
         lines++;
       }
     }
-    fclose(phi_logfp);
+    fclose(PHI_logfp);
   }
 
   // reopen file handle
@@ -121,8 +121,8 @@ int phi_logInit(char *filename) {
 
   if (lines > 1000)
   {
-    phi_logfp = fopen(filename, "w");	// w will truncate the file, and then open it for writing.
-    if (phi_logfp == NULL) {
+    PHI_logfp = fopen(filename, "w");	// w will truncate the file, and then open it for writing.
+    if (PHI_logfp == NULL) {
       return 0;
     }
     else
@@ -130,8 +130,8 @@ int phi_logInit(char *filename) {
   }
   else
   {
-    phi_logfp = fopen(filename, "a"); // append, or make new file.
-    if (phi_logfp == NULL) {
+    PHI_logfp = fopen(filename, "a"); // append, or make new file.
+    if (PHI_logfp == NULL) {
       return 0;
     }
     else
@@ -140,30 +140,30 @@ int phi_logInit(char *filename) {
   return 0;
 }
 
-void phi_logClose(void) {
-  if (phi_logfp != NULL)  {
-    fclose(phi_logfp);
-    phi_logfp = NULL;
+void PHI_logClose(void) {
+  if (PHI_logfp != NULL)  {
+    fclose(PHI_logfp);
+    PHI_logfp = NULL;
   }
 }
 
-void phi_logTimestamp() {
+void PHI_logTimestamp() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  fprintf(phi_logfp, "T=%.2f mS : ", ((double)phi_upTime()) / 1000);
+  fprintf(PHI_logfp, "T=%.2f mS : ", ((double)PHI_upTime()) / 1000);
   // no flush here
 }
 
-void phi_logMsg(const char* tag, const char *fmt, ...) {
-  if (phi_logfp == NULL) return;
-  phi_logTimestamp();
-  fprintf(phi_logfp, tag, 0);  // 0 at end to placate compiler
+void PHI_logMsg(const char* tag, const char *fmt, ...) {
+  if (PHI_logfp == NULL) return;
+  PHI_logTimestamp();
+  fprintf(PHI_logfp, tag, 0);  // 0 at end to placate compiler
   va_list ap;
   va_start(ap, fmt);
-  vfprintf(phi_logfp, fmt, ap);
+  vfprintf(PHI_logfp, fmt, ap);
   va_end(ap);
-  fprintf(phi_logfp, "\n");
-  fflush(phi_logfp);
+  fprintf(PHI_logfp, "\n");
+  fflush(PHI_logfp);
 }
 
 // code adapted from http://man7.org/linux/man-pages/man3/getifaddrs.3.html
@@ -225,9 +225,9 @@ UINT32 getHostIP() {
 }
 
 
-void phi_setLED(PHI_LED_COLOR color) {
+void PHI_setLED(PHI_LED_COLOR color) {
   
-  TODO("Implement phi_setLED()")
+  TODO("Implement PHI_setLED()")
 
   switch (color) {
     case OFF:
@@ -248,7 +248,7 @@ void phi_setLED(PHI_LED_COLOR color) {
       }
 }
 
-double phi_rand() {
+double PHI_rand() {
   return ((double) rand()) / RAND_MAX;
 }
 
@@ -256,7 +256,7 @@ double phi_rand() {
 // To change curr thread, use set_realtime_priority(pthread_self());
 //
 
-BOOL phi_setRealtimePrio(pthread_t thread) {
+BOOL PHI_setRealtimePrio(pthread_t thread) {
 
   // struct sched_param is used to store the scheduling priority
   struct sched_param params;
@@ -268,3 +268,45 @@ BOOL phi_setRealtimePrio(pthread_t thread) {
   // (return TRUE if success)
   return (pthread_setschedparam(thread, SCHED_FIFO, &params) == 0);
 }
+
+//
+// I/O control helpers
+//
+
+//
+// Setting a file descriptor to non-blocking causes write and read calls
+// to return an error if the call would have blocked.  Typically a block
+// will occur with a write if the the output buffer is full.  With a read,
+// it typically occurs if there is no data available.
+//
+// The actual error returned is EAGAIN for anything but sockets.  In the
+// case of a socket, EAGAIN or EWOULDBLOCK might be returned (equivalently)
+// due to lack of clarity in the POSIX doc.
+//
+
+int setNonBlocking(int fd)
+{
+  int flags;
+
+#if defined(O_NONBLOCK)
+
+  // INFO("Using POSIX O_NONBLOCK in setNonBlocking()");
+  
+  // O_NONBLOCK exists, use the Posix way to do it
+  if ((flags = fcntl(fd, F_GETFL, 0)) == -1) {
+    // get failed - assume flags = 0
+    flags = 0;
+  }
+  
+  return fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+  
+#else
+  
+  WARN("Using old school method in setNonBlocking()");
+  
+  // O_NONBLOCK does not exist, use old method
+  flags = 1;
+  return ioctl(fd, FIOBIO, &flags);
+  
+#endif
+}   

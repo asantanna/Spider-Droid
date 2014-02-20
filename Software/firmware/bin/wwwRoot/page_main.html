@@ -21,7 +21,7 @@
         sendJsonRequest("req : [ {cmd:getIpAddr}, {cmd:getUname} ]");
         sendJsonRequest("req : [ {cmd:getSysInfo}, {cmd:getPhiUptime} ]");
         sendJsonRequest("req : [ {cmd:getVersion} ]");
-        phi_getLinkState();
+        phi_getLinkStatus();
       }
 
       // this function parses all JSON replies
@@ -79,13 +79,14 @@
               document.getElementById("phi_uptime").innerHTML = getPrettyTime(reply.mSecs / 1000);
               break;
 
-            case "getLinkState":
+            case "getLinkStatus":
 
               document.getElementById("phi_link_state").innerHTML = reply.state;
               break;
               
             case "startPhiLink":
-              phi_getLinkState();
+              
+              Phi_getLinkStatus();
               break;
 
             case "getVersion":
@@ -101,7 +102,11 @@
       }
 
       function buttonStartLink() {
-        phi_startPhiLink("192.168.1.106", 1122);
+        // var ipAddr = "192.168.36.131";
+        var ipAddr = "172.17.173.89";
+        var port = 1122;
+        alert("Sending server address " + ipAddr + ":" + port);
+        phi_startPhiLink(ipAddr, port);
       }
 
       /* function testButtonPressed() {

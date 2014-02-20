@@ -17,17 +17,17 @@ typedef struct {
   const char* pName;
 
   // init
-  halFunc_pChar initPeripherals;
+  halFunc_pChar   initPeripherals;
 
   // gyroscope
-  halFunc_BOOL gyroInit;
-  halFunc_void gyroGetDeltas;
-  halFunc_INT8 gyroGetTemp;
+  halFunc_BOOL    gyroInit;
+  halFunc_void    gyroGetDeltas;
+  halFunc_INT8    gyroGetTemp;
 
   // motor control
-  halFunc_UINT16 getMotorPosition;
-  halFunc_void   setMotorPower;
-  halFunc_void   setControllerId;
+  halFunc_UINT16  getRawJointPos;
+  halFunc_void    setMotorPower;
+  halFunc_void    setControllerId;
 
 } HAL_FUNCS;
 
@@ -41,30 +41,27 @@ void HAL_init();
 #define HAL_name              (g_pHal   -> pName)
 #define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
 
-#define HAL_gyroInit          (*(g_pHal -> gyroInit))
 #define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
 #define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
 
-#define HAL_getMotorPosition  (*(g_pHal -> getMotorPosition))
+#define HAL_getRawJointPos    (*(g_pHal -> getRawJointPos))
 #define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
 #define HAL_setControllerId   (*(g_pHal -> setControllerId))
 
 // PHI HAL
 
 char*   PHI_initPeripherals();
-BOOL    PHI_gyroInit(BOOL bEnableFifo);
 void    PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
 INT8    PHI_gyroGetTemp();
-UINT16  PHI_getMotorPosition(int motorIdx);
-void    PHI_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
-void    PHI_setControllerId(int oldId, int newId);
+UINT16  PHI_getRawJointPos(BYTE adcIdx);
+void    PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd);
+void    PHI_setControllerId(BYTE oldId, BYTE newId);
 
 // generic HAL
 
 char*   GENERIC_initPeripherals();
-BOOL    GENERIC_gyroInit(BOOL bEnableFifo);
 void    GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
 INT8    GENERIC_gyroGetTemp();
-UINT16  GENERIC_getMotorPosition(int motorIdx);
-void    GENERIC_setMotorPower(int motorIdx, BYTE power, BOOL bFwd);
-void    GENERIC_setControllerId(int oldId, int newId);
+UINT16  GENERIC_getRawJointPos(BYTE adcIdx);
+void    GENERIC_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd);
+void    GENERIC_setControllerId(char oldId, char newId);

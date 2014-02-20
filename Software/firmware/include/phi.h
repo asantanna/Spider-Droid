@@ -1,6 +1,6 @@
 
 //
-// Main include file for spiderBot
+// Main include file for PHI
 //
 
 // make sure we get thread-safe functions from libc
@@ -19,6 +19,7 @@
 #include <termios.h>        // for UART
 #include <pthread.h>
 #include <sched.h>
+#include <math.h>           // for pow()
 
 #include <sys/ioctl.h>      // for driver access (SPI, etc)
 #include <sys/time.h>
@@ -27,7 +28,7 @@
 #include <netinet/tcp.h>    // for TCP_NODELAY
 
 // useful types
-#include "phi_defs.h"
+#include "PHI_defs.h"
 
 // polulu 2s9v1 motor controller
 #include "polulu_2s9v1.h"
@@ -48,7 +49,7 @@
 #include "hal.h"
 
 // misc func decls
-#include "phi_funcs.h"
+#include "PHI_funcs.h"
 
 // app globals (THIS SHOULD BE LAST)
 #include "globals.h"

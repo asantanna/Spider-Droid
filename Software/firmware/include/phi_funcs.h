@@ -7,25 +7,13 @@
 //
 
 // clears mem, debug
-void* phi_allocHelper(int size);
+void* PHI_allocHelper(int size);
 
-//
-// MISC
-//
-
-char* initPeripherals();
-
-void phi_abortProcess(int rc);
-void phi_abortWithMsg(const char* msg);
-
-UINT64 phi_upTime();
-double phi_rand();
-
-// heartbeat / failsafe thread
-void startFailsafeThread();
+// hardware pump thread
+void startHwPumpThread();
 
 // set thread priority
-BOOL phi_setRealtimePrio(pthread_t thread);
+BOOL PHI_setRealtimePrio(pthread_t thread);
 
 //
 // non-ANSI
@@ -37,21 +25,89 @@ char* __itoa(int value, char* result, int base);
 // WEB ADMIN
 //
 
-void phi_webadmin(int port, const char* wwwRoot);
-char* phi_processJson(char *pJsonReq);
-void phi_freeJsonReply(char* pJsonReply);
+void PHI_webadmin(int port, const char* wwwRoot);
+char* PHI_processJson(char *pJsonReq);
+void PHI_freeJsonReply(char* pJsonReply);
 
 //
 // LOGGING
 //
 
-int phi_logInit(char *filename);
-void phi_logMsg(const char* tag, const char *fmt, ...);
-void phi_logClose(void);
+int PHI_logInit(char *filename);
+void PHI_logMsg(const char* tag, const char *fmt, ...);
+void PHI_logClose(void);
 
+//
 // Phi Link
+//
+
 BOOL startPhiLink(char* ipAddr, int port);
-void prepStatePacket(PHI_STATE_PACKET *p);
+void PHI_getStateSnapshot(PHI_STATE_PACKET *p);
 
+//
+// I/O Helpers
+//
 
+int setNonBlocking(int fd);
 
+//
+// UART
+//
+
+BOOL uart_init();
+// void uart_lock();
+// void uart_unlock();
+void uart_send(BYTE* pData, int dataLen);
+int uart_receive(void* pBuff, int buffLen);
+void uart_flush();
+void uart_discardInput();
+void uart_discardOutput();
+void uart_discardAll();
+
+//
+// SPI
+//
+
+BOOL spi_init();
+// void spi_lock();
+// void spi_unlock();
+void spi_send(int spiIdx, BYTE* pTx, int txLen);
+void spi_receive(int spiIdx, BYTE* pRx, int rxLen);
+void spi_sendreceive(int spiIdx, BYTE* pTx, int txLen, BYTE* pRx, int rxLen);
+void spi_exchange(int spiIdx, BYTE* pTx, BYTE* pRx, int dataLen);
+
+//
+// I2C
+//
+
+//
+// PHI Snapshot
+//
+
+void lock_snapshot();
+void unlock_snapshot();
+
+//
+// Self tests
+//
+
+char* selfTest(int mode);
+
+//
+// MISC
+//
+
+char* initPeripherals();
+
+BOOL initMotorCtrl();
+void stopMotor(BYTE ctrlID, BYTE selIdx);
+void stopAllMotors();
+void flushMotorCmds();
+
+float getJointPos(BYTE adcIdx);
+
+void PHI_abortProcess(int rc);
+void PHI_abortWithMsg(const char* msg);
+
+UINT64 PHI_upTime();
+double PHI_rand();

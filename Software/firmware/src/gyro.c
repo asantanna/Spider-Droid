@@ -38,12 +38,15 @@ INT16 threshZ = 0;
 
 // end of SAMPLE/RANGE selection
 
-
-BOOL PHI_gyroInit(BOOL bEnableFifo) {
+BOOL gyroInit(BOOL bEnableFifo) {
 
   BOOL rc = FALSE;
   BYTE txBuff[2];
   BYTE rxBuff[2];
+
+  // make sure init is atomic in case we use it arbitrarily
+  // Note: this is not needed if we just init at the beginning
+  // spi_lock(GYRO_SPI_IDX);
 
   // remember FIFO mode
   bUseFifo = bEnableFifo;
@@ -104,6 +107,9 @@ BOOL PHI_gyroInit(BOOL bEnableFifo) {
   rc = TRUE;
 
 quick_exit:
+
+  // release SPI
+  // spi_unlock(GYRO_SPI_IDX);
   
   return rc;
 }
@@ -204,7 +210,7 @@ void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
 // mounting, with the connector pins going in the left-right axis.  Therefore,
 // x = roll, y = pitch and z = yaw.
 //
-// Note: this function returns delta(degrees) since last read.  The delta is
+// Note: this function returns delta (degrees) since last read.  The delta is
 // computed by noting that each sample represents the average speed (dps) in a
 // GYRO_SAMPLE_PERIOD time span.
 //
@@ -251,6 +257,8 @@ void PHI_gyroGetDeltas_noFifo(float* pPitchDelta, float* pYawDelta, float* pRoll
   *pRollDelta  = rollDelta;
 }
 
+// for more info, see comments at PHI_gyroGetDeltas_noFifo() above
+
 void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
 
   float pitchDelta = 0;
@@ -271,7 +279,7 @@ void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRol
     float pitchDps, yawDps, rollDps;
     gyroReadFifoSlot(&pitchDps, &yawDps, &rollDps);
 
-    // accumulate
+    // convert dps to delta (degrees) and accumulate 
     pitchDelta += pitchDps * GYRO_SAMPLE_PERIOD;
     yawDelta   += yawDps * GYRO_SAMPLE_PERIOD;
     rollDelta  += rollDps * GYRO_SAMPLE_PERIOD;

@@ -90,8 +90,9 @@ JSON_HANDLER(getGyroDeltas);
 JSON_HANDLER(getGyroTemp);
 JSON_HANDLER(getPhiUptime);
 JSON_HANDLER(startPhiLink);
-JSON_HANDLER(getLinkState);
+JSON_HANDLER(getLinkStatus);
 JSON_HANDLER(setMCtlId);
+JSON_HANDLER(selfTest);
 
 // valid command list
 
@@ -115,9 +116,10 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(getGyroDeltas),
   CMD_ENTRY(getGyroTemp),
   CMD_ENTRY(startPhiLink),
-  CMD_ENTRY(getLinkState),
+  CMD_ENTRY(getLinkStatus),
   CMD_ENTRY(setMCtlId),
 //  CMD_ENTRY(setBrake),
+  CMD_ENTRY(selfTest),
   { 0, 0}
 };
 
@@ -139,7 +141,7 @@ char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON requ
 // Note: the caller MUST free the reply after transmitting
 // it to the client.
 
-char* phi_processJson(char *pJsonReq) {
+char* PHI_processJson(char *pJsonReq) {
   
   jsmntok_t tokens[MAX_JSON_TOKENS];
   jsmn_parser parser;
@@ -149,7 +151,7 @@ char* phi_processJson(char *pJsonReq) {
   // reply (pJsonReply) that is returned to the caller.
   //
   // Note: the caller must free pJsonReply when done with
-  // it using phi_freeJsonReply()
+  // it using PHI_freeJsonReply()
 
   char* pJsonReply = NULL;
   PHI_JSON_CMD_REPLY_TYPE* pRepHead = NULL;
@@ -329,7 +331,7 @@ quick_exit:
 err_exit:
 
   if (pJsonReply != NULL) {
-    phi_freeJsonReply(pJsonReply);
+    PHI_freeJsonReply(pJsonReply);
   }
 
   pJsonReply = PHI_ALLOC_N(strlen(jsonParseError));
@@ -338,7 +340,7 @@ err_exit:
   
 }
 
-void phi_freeJsonReply(char* pJsonReply) {
+void PHI_freeJsonReply(char* pJsonReply) {
   PHI_FREE(pJsonReply);
 }
 
@@ -487,34 +489,24 @@ JSON_HANDLER(getSysInfo) {
 
 JSON_HANDLER(getPhiUptime) {
   JSON_HANDLER_PROLOG(getPhiUptime);
-  sprintf(_buff + strlen(_buff), Q(mSecs) ":" Q(%lu) "\n", (UINT32) (phi_upTime() / 1000));
+  sprintf(_buff + strlen(_buff), Q(mSecs) ":" Q(%lu) "\n", (UINT32) (PHI_upTime() / 1000));
   JSON_HANDLER_EPILOG();
 }
 
 //
 // Motor control
 //  
-//  req:    { cmd : setPower, motorId : "spj" , power : -100 to 100 (percent)  }
+//  req:    { cmd : setPower, motorName : "[A-F][0-1]" , power : -100 to 100 (percent)  }
 //  reply:  {}
 //
-//  req:    { cmd : setBrake, motorId : "spj" , brake : on | off | zeroMeansBrake | zeroMeansCoast }
+//  req:    { cmd : setBrake, motorName : "[A-F][0-1]" , brake : on | off | zeroMeansBrake | zeroMeansCoast }
 //  reply:  {}
 //
 //  req:    { cmd: setMCtlId, oldId: byte, newId: byte }
 //
 // where:
 //
-// motorId: 3 char code "spj" with
-//
-//    s = r       right side
-//        l       left side
-//
-//    p = f       forward
-//      = r       rear
-//
-//    j = h       hip rotator joint
-//      = t       thigh flexor joint (aka hip flexor)
-//      = k       knee flexor joint
+// motorId: see motor.c for more details
 //
 // if setPower:
 //    power = -100 to 100   negative means backwards, meaning of 0%
@@ -550,19 +542,19 @@ JSON_HANDLER(setPower) {
       goto error_exit;
     }
 
-    if (TOK_EQ(pTok, "motorId")) {
+    if (TOK_EQ(pTok, "motorName")) {
       // advance
       pTok ++;
       toksRead ++;
 
       // get motor name
       if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
-        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorId value is not a primitive.) );
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorName value is not a primitive.) );
         goto error_exit;
       }
 
-      if (TOK_LEN(pTok) != 3) {
-        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorId length is not 3.) );
+      if (TOK_LEN(pTok) != 2) {
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: motorName length is not 2.) );
         goto error_exit;
       }
       memcpy(motorName, TOK_START(pTok), sizeof(motorName));
@@ -585,7 +577,7 @@ JSON_HANDLER(setPower) {
         percent = -percent;
       }
 
-      powerVal = (percent * 255) / 100;
+      powerVal = (percent * 127) / 100;
 
     } else {
       // unknown property
@@ -603,10 +595,12 @@ JSON_HANDLER(setPower) {
     goto error_exit;
   }
 
-  int motorIdx = MOTOR_NAME_TO_IDX(motorName);
-  LOG_INFO("JSON.setPower: setting motor idx=%d to power=%u, dir=%s", motorIdx, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
+  LOG_INFO("JSON.setPower: setting motor %s to power=%u, dir=%s", motorName, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
 
-  HAL_setMotorPower(motorIdx, (BYTE) powerVal, bFwd);
+  HAL_setMotorPower(
+    MOTOR_NAME_TO_CTRL_ID(motorName),
+    MOTOR_NAME_TO_SEL_IDX(motorName),
+    (BYTE) powerVal, bFwd);
 
 quick_exit:
 
@@ -708,17 +702,17 @@ JSON_HANDLER(getGyroTemp) {
 //
 // PHI link
 //
-//  req:    { cmd : getLinkState }
+//  req:    { cmd : getLinkStatus }
 //  reply:  { state: string}
 //
 //  req:    { cmd : startPhiLink, server : ipAddr/hostname, [opt] port=num }
 //  reply:  { }
 
-JSON_HANDLER(getLinkState) {
-  JSON_HANDLER_PROLOG(getLinkState);
+JSON_HANDLER(getLinkStatus) {
+  JSON_HANDLER_PROLOG(getLinkStatus);
   
   char* pState;
-  switch (g_phiLinkState) {
+  switch (g_phiLinkStatus) {
     case LINK_OFF:
       pState="OFF";
       break;
@@ -807,7 +801,7 @@ JSON_HANDLER(startPhiLink) {
     goto error_exit;
   }
 
-  LOG_INFO("JSON.startPhiLink: start linking to host='%s:%d' ...", hostName, port);
+  LOG_INFO("JSON.startPhiLink: starting link to host='%s:%d' ...", hostName, port);
   
   if (startPhiLink(hostName, port) == FALSE) {
     sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.startPhiLink: startPhiLink returned false.) );
@@ -823,6 +817,69 @@ error_exit:
   LOG_ERR("JSON.startPhiLink:  call failed");
   goto quick_exit;
 }
+
+//
+// Self Test Functions
+//
+//
+//  req:    { cmd : selfTest, [opt] mode=full }
+//  reply:  { verboseResult : string }
+//
+
+JSON_HANDLER(selfTest) {
+  JSON_HANDLER_PROLOG(selfTest);
+
+  jsmntok_t* pTok = *ppTok;
+  int toksRead = 2;
+
+  while (toksRead < _numChild) {
+
+    if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
+      sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.selfTest: param name is not a primitive.) );
+      goto error_exit;
+    }
+
+    if (TOK_EQ(pTok, "mode")) {
+      // advance
+      pTok ++;
+      toksRead ++;
+
+      // get mode
+      if (TOK_TYPE(pTok) != JSMN_PRIMITIVE) {
+        sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.selfTest: mode value is not a primitive.) );
+        goto error_exit;
+      }
+
+      // do nothing with mode for now
+      // int len = TOK_LEN(pTok);
+
+    } else {
+
+      // unknown property
+      LOG_ERR("JSON.selfTest: Unknown property '%s'", TOK_START(pTok));
+      goto error_exit;
+    }
+
+    // advance
+    pTok ++;
+    toksRead ++;
+  }
+
+  // start self test
+  char* pVerbose = selfTest(0);
+
+quick_exit:
+
+  sprintf(_buff + strlen(_buff), Q(verboseResult) ":" Q(%s) "\n", pVerbose);
+  JSON_HANDLER_EPILOG();
+
+error_exit:
+
+  LOG_ERR("JSON.selfTest:  call failed");
+  goto quick_exit;
+  
+}
+
 
 
 

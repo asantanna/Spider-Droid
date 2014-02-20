@@ -14,7 +14,7 @@ include_directories (${PHI_SOURCE_DIR}/include)
 #       you want to.  Sometimes you don't care if it works or not.
 #
 
-set (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread -Wextra -Wdouble-promotion -Wno-unused-result")
+set (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread -Wextra -Wdouble-promotion -Wno-unused-result -Wno-multichar")
 
 # Specify we're building an executable and the files that compose it (no src lib files)
 
@@ -30,7 +30,10 @@ add_executable ( phi
   gyro.c
   philink.c
   hal.c
-  failsafe.c
+  hw_pump.c
+  datalog.c
+  cubic.c
+  selftest.c
 )
 
 # link the math library
