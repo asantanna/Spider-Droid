@@ -21,6 +21,7 @@
 
 # temp files
 *.tmp
+*.asv
 
 # specific files and dirs
 cmake.tmp.*
@@ -30,6 +31,7 @@ bin-debug
 */Old-Versions*/*
 Cubify
 datalog
+FormLabs
 
 # eclipse stuff
 .project
