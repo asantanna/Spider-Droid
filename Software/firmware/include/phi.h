@@ -28,7 +28,7 @@
 #include <netinet/tcp.h>    // for TCP_NODELAY
 
 // useful types
-#include "PHI_defs.h"
+#include "phi_defs.h"
 
 // polulu 2s9v1 motor controller
 #include "polulu_2s9v1.h"
@@ -49,7 +49,7 @@
 #include "hal.h"
 
 // misc func decls
-#include "PHI_funcs.h"
+#include "phi_funcs.h"
 
 // app globals (THIS SHOULD BE LAST)
 #include "globals.h"
