@@ -12,8 +12,71 @@
 //
 
 BOOL initMotorCtrl() {
-  LOG_FATAL("NOT IMPLEMENTED");
-  // set PWM type, failure modes, bla bla
+
+  // WARN("initMotorCtrl() disabled!");
+  // return;
+
+  // configure all motor controllers
+
+  char ctrlID;
+
+  for (ctrlID = 0 ; ctrlID < NUM_MOTOR_CTRL ; ctrlID++) {
+
+    // set PWM type (7-bit, low frequency)
+    //
+    // Note: 7-bit choice is in case we want to use a byte to encode
+    //       the motor power (8th bit is avail for direction)
+    // Note: low frequency choice is for reduced switching power consumption
+    //       (don't know that it matters all that much)
+
+    char motorCmd[] = {
+      MC_CMD_SIGN,
+      ctrlID,
+      MC_CMD_SET_CONF,
+      MC_SCONF_PARAM_PWM_MODE,
+      MC_SCONF_SPD_7BIT | MC_SCONF_LOW_FREQ,
+      MC_SCONF_END_VAL_0,
+      MC_SCONF_END_VAL_1
+    };
+
+    uart_send(motorCmd, sizeof(motorCmd));
+
+    // disable motor shutdown on error
+    //
+    // Note: we do this because errors might occur here and there and we do not
+    //       want the motors to freeze if this happens.  Remember that we are
+    //       continually updating all motors so a new command will come very
+    //       soon and presumably be accepted.
+    
+    char motorCmd2[] = {
+      MC_CMD_SIGN,
+      ctrlID,
+      MC_CMD_SET_CONF,
+      MC_SCONF_PARAM_ERR_MODE,
+      MC_SCONF_IGNORE_ERR,
+      MC_SCONF_END_VAL_0,
+      MC_SCONF_END_VAL_1
+    };
+    
+    uart_send(motorCmd2, sizeof(motorCmd2));
+
+    // disable serial timeouts
+    //
+    // Note: done for same reason as above.
+    
+    char motorCmd3[] = {
+      MC_CMD_SIGN,
+      ctrlID,
+      MC_CMD_SET_CONF,
+      MC_SCONF_PARAM_TIMEOUT,
+      MC_SCONF_TIMEOUT_DISABLE,
+      MC_SCONF_END_VAL_0,
+      MC_SCONF_END_VAL_1
+    };
+
+    uart_send(motorCmd3, sizeof(motorCmd3));
+    
+  }
 }
 
 //
@@ -23,6 +86,9 @@ BOOL initMotorCtrl() {
 // Note: power is [0, 127]
 
 void PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+
+  // WARN("ctrlID hack enabled!");
+  // ctrlID = 9;
 
   BYTE cmd = 
     bFwd ? (selIdx == 0 ? MC_CMD_FWD_M0 : MC_CMD_FWD_M1)
@@ -34,8 +100,15 @@ void PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
     cmd,
     power > 127 ? 127 : power
   };
-
+  
   uart_send(motorCmd, sizeof(motorCmd));
+
+  // DEBUG
+  // int i;
+  // printf("sent motor cmd: ");
+  // for (i = 0 ; i < sizeof(motorCmd) ; i++) printf("%02X ", motorCmd[i]);
+  // printf("\n");
+
 }
 
 //
