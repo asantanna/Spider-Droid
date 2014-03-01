@@ -595,7 +595,7 @@ JSON_HANDLER(setPower) {
     goto error_exit;
   }
 
-  LOG_INFO("JSON.setPower: setting motor %s to power=%u, dir=%s", motorName, (BYTE) powerVal, bFwd ? "FWD" : "BACK");
+  LOG_INFO("JSON.setPower: setting motor %c%c to power=%u, dir=%s", motorName[0], motorName[1], (BYTE) powerVal, bFwd ? "FWD" : "BACK");
 
   HAL_setMotorPower(
     MOTOR_NAME_TO_CTRL_ID(motorName),
@@ -831,6 +831,8 @@ JSON_HANDLER(selfTest) {
 
   jsmntok_t* pTok = *ppTok;
   int toksRead = 2;
+  
+  char* pResult = "FAIL";
 
   while (toksRead < _numChild) {
 
@@ -866,11 +868,11 @@ JSON_HANDLER(selfTest) {
   }
 
   // start self test
-  char* pVerbose = selfTest(0);
+  pResult = selfTest(0);
 
 quick_exit:
 
-  sprintf(_buff + strlen(_buff), Q(verboseResult) ":" Q(%s) "\n", pVerbose);
+  sprintf(_buff + strlen(_buff), Q(verboseResult) ":" Q(%s) "\n", pResult);
   JSON_HANDLER_EPILOG();
 
 error_exit:
