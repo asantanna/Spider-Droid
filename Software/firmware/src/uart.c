@@ -24,7 +24,7 @@ BOOL uart_init() {
   // set non-blocking mode
   // Note: this is done so that when the UART driver buffer fills, writes do not block
   // and instead return EAGAIN.
-  
+
   if (setNonBlocking(uartFile) < 0) {
     LOG_FATAL("uart_init: can't set UART fd to non-blocking");
     return FALSE;
@@ -80,7 +80,6 @@ BOOL uart_init() {
   options.c_iflag = IGNPAR;                               // ignore parity errors (btw RX is disabled already above)
   options.c_oflag = 0;
   options.c_lflag = 0;
-  uart_discardAll();
 
   //  tcsetattr() sets the parameters associated with  the  terminal  (unless
   //    support is required from the underlying hardware that is not available)
@@ -101,7 +100,8 @@ BOOL uart_init() {
   //    received  but  not  read  will be discarded before the change is
   //    made.
   //  
-  
+
+  uart_discardAll();
   tcsetattr(uartFile, TCSANOW, &options);
 
   return TRUE;
@@ -125,7 +125,7 @@ BOOL uart_init() {
 
 void uart_send(BYTE* pData, int dataLen) {
   
-  if (uartFile < 0)
+  if (uartFile >= 0)
   {
     int count = write(uartFile, pData, dataLen);
     if (count < 0)
@@ -149,7 +149,7 @@ int uart_receive(void* pBuff, int buffLen) {
 
   int numRead = 0;
 
-  if (uartFile < 0)
+  if (uartFile >= 0)
   {
     numRead = read(uartFile, pBuff, buffLen);
     
