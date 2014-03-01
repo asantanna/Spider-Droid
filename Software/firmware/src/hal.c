@@ -76,17 +76,23 @@ char* PHI_initPeripherals() {
     goto quick_exit;
   }
 
-  // set up SPI for communication with gyroscope
+  // set up SPI for communication with gyroscope and ADCs
   if (!spi_init()) {
     rc = "PHI_InitPeripherals: SPI init failed";
     goto quick_exit;
   }
+
+  // set up I2C for communication with accelerometer
+  TODO("i2c_init not implemented");
 
   // init gyroscope (FIFO enabled)
   if (!gyroInit(TRUE)) {
     rc = "PHI_InitPeripherals: gyroscope init failed";
     goto quick_exit;
   }
+
+  // init accelerometer
+  TODO("accelInit() nit not implemented");
 
   // init motor controllers
   if (!initMotorCtrl()) {
