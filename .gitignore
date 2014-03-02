@@ -27,6 +27,7 @@
 cmake.tmp.*
 phi-ubuntu
 phi-rpi-phi
+phi-rpi-phi-2
 bin-debug
 */Old-Versions*/*
 Cubify
