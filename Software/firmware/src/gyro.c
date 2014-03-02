@@ -308,7 +308,7 @@ void PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) 
            : PHI_gyroGetDeltas_noFifo (pPitchDelta, pYawDelta, pRollDelta);
 }
 
-INT8 PHI_gyroGetTemp() {
+INT8 gyroGetRawTemp() {
   BYTE txBuff[1];
   BYTE rxBuff[1];
 
@@ -318,6 +318,9 @@ INT8 PHI_gyroGetTemp() {
   return rxBuff[0];
 }
 
+float PHI_gyroGetTemp() {
+  return GYRO_TEMP_RAW_TO_CANON(gyroGetRawTemp());
+}
 
 // gyroscope can have a systematic error and thus zero dps might not
 // get reported as 0.  This function should be called with a *stationary*
