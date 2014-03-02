@@ -66,7 +66,10 @@ void* hwPump_I2C_thread(void* arg);
 
 void startHwPump() {
 
+  // DEBUG
+  //
   // WARN("pump disabled");
+  // printf("*** Hw pump disabled ***\n");
   // return;
 
   // init phi snapshot
@@ -151,16 +154,14 @@ void* hwPump_UART_thread(void* arg)
   //       it is simpler and more robust in case of a dropped
   //       or corrupted command.
 
-  UINT64 usec_loopEnd = PHI_upTime();
+  // time at start of loop
+  UINT64 usec_loopStart = PHI_upTime();
 
   while (TRUE) {
 
     char ctrlID;
     char selIdx;
     int motorIdx = 0;
-
-    // time at start of loop
-    UINT64 usec_loopStart = usec_loopEnd;
 
     //
     // Send motor power commands to all controllers
@@ -171,9 +172,11 @@ void* hwPump_UART_thread(void* arg)
       // go through each motor of this controller
       for (selIdx = '0' ; selIdx <= '1' ; selIdx ++) {
         // send out motor power command for this motor
+        
         lock_snapshot();
         int power = phiSnapshot.cmds.motors[motorIdx++];
         unlock_snapshot();
+        
         BYTE absPower = abs(power);
         BOOL bFwd = (power >= 0) ? TRUE : FALSE;
         HAL_setMotorPower(ctrlID, selIdx, absPower, bFwd);
@@ -197,8 +200,11 @@ void* hwPump_UART_thread(void* arg)
       usec_sleepTime = 0;
     }
 
+    // always sleep (even if zero) so we at least give up our time slice
     usleep(usec_sleepTime);
-    usec_loopEnd = PHI_upTime();
+
+    // new loop start
+    usec_loopStart = PHI_upTime();
     
   } // while
 }
@@ -223,12 +229,10 @@ void* hwPump_SPI_thread(void* arg)
   // Continually read all SPI devices
   //
 
-  UINT64 usec_loopEnd = PHI_upTime();
+  // time at start of loop
+  UINT64 usec_loopStart = PHI_upTime();
 
   while (TRUE) {
-    
-    // time at start of loop
-    UINT64 usec_loopStart = usec_loopEnd;
 
     //
     // Read joint positions from ADCs
@@ -284,8 +288,11 @@ void* hwPump_SPI_thread(void* arg)
       usec_sleepTime = 0;
     }
 
+    // always sleep (even if zero) so we at least give up our time slice
     usleep(usec_sleepTime);
-    usec_loopEnd = PHI_upTime();
+
+    // new loop start
+    usec_loopStart = PHI_upTime();
     
   } // while
 }
