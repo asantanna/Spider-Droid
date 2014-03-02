@@ -150,7 +150,7 @@ void flushMotorCmds() {
 // Note; raw ADC value is [0,1023]
 //
 
-UINT16 PHI_getRawJointPos(BYTE adcIdx) {
+UINT16 getRawJointPos(BYTE adcIdx) {
   
   BYTE txBuff[3];
   BYTE rxBuff[3] = {0};
@@ -174,14 +174,14 @@ UINT16 PHI_getRawJointPos(BYTE adcIdx) {
   return adcValue;
 }
 
-float getJointPos(BYTE adcIdx) {
-  // convert raw ADC val to degrees
-  return ADC_VAL_TO_DEG( HAL_getRawJointPos(adcIdx) );
+float PHI_getJointPos(BYTE adcIdx) {
+  // convert raw ADC val to canonical
+  return ADC_RAW_TO_CANON(getRawJointPos(adcIdx) );
 }
 
-float getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
-  // convert raw ADC val to degrees
-  return getJointPos(MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx));
+float PHI_getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
+  // convert raw ADC val to canonical
+  return PHI_getJointPos(MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx));
 }
 
 
