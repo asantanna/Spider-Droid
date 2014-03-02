@@ -21,7 +21,8 @@
    
 */
 
-#define NUM_MOTORS  (4*3)
+#define NUM_MOTOR_CTRL    6
+#define NUM_MOTORS        (NUM_MOTOR_CTRL * 2)    // 12
 
 //
 // Motor names are of type char[2]:
@@ -60,16 +61,18 @@
 //
 // ADC
 //
+// Note: ADC functions use and return values in the canonical range [0,1]
+//
 
 #define MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx)     ( ((ctrlID) * 2) + (selIdx))
 
-#define ADC_MIN_VAL                             ((UINT16) 0)
-#define ADC_MAX_VAL                             ((UINT16) 1023)
-#define ADC_VAL_RANGE                           (ADC_MAX_VAL - ADC_MIN_VAL + 1)
+#define ADC_MIN_RAW                             ((UINT16) 0)
+#define ADC_MAX_RAW                             ((UINT16) 1023)
+#define ADC_RAW_RANGE                           (ADC_MAX_RAW - ADC_MIN_RAW + 1)
 
-#define ADC_VAL_TO_DEG(rawVal)                  ( ((rawVal) % ADC_VAL_RANGE) * (360.0 / ((double)ADC_VAL_RANGE)) )
-#define ADC_DEG_TO_VAL(deg)                     ( (UINT16) ((deg) * ( ((double)ADC_VAL_RANGE) / 360.0) ) )
+#define ADC_RAW_TO_CANON(rawVal)                ( ((rawVal) % ADC_RAW_RANGE) / ((double)ADC_RAW_RANGE) )
+#define ADC_CANON_TO_RAW(canonVal)              ( (UINT16) ((canonVal) * ((double)ADC_RAW_RANGE)) )
 
-#define ADC_ABS_VAL_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_VAL_RANGE )
+#define ADC_ABS_RAW_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_RAW_RANGE )
 
 
