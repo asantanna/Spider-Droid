@@ -14,8 +14,8 @@ function phi_initPeripherals() {
   sendJsonRequest("req : [ {cmd:initPeripherals} ]");
 }
 
-function phi_setPower(motorId, percent) {
-  sendJsonRequest("req : [ {cmd:setPower, motorId:" + motorId + ", power:" + percent + " } ]");
+function phi_setPower(motorName, percent) {
+  sendJsonRequest("req : [ {cmd:setPower, motorName:" + motorName + ", power:" + percent + " } ]");
 }
 
 function phi_getGyroDeltas() {
