@@ -1,5 +1,9 @@
 #! /bin/bash
 
+# delete log file
+echo Deleting log file ...
+sudo rm /var/log/phi.log
+
 # set name of trace file if memory debug is on
 
 # run host-specific version of program (release)
