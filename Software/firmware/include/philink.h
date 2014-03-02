@@ -41,13 +41,18 @@ typedef struct  __attribute__ ((__packed__)) {
 #define STAP_NUM_ACCEL_ELEM     3
 
 typedef struct __attribute__ ((__packed__)) {
-  char   sign   [NUM_SIGN_BYTES];
-  UINT32 packetID;
-  BYTE   image  [STAP_NUM_IMAGE_BYTES];
-  float  joints [STAP_NUM_JOINT_ELEM];
-  float  gyro   [STAP_NUM_GYRO_ELEM];
-  float  accel  [STAP_NUM_ACCEL_ELEM];
-  BYTE   temp;
+  
+  char      sign   [NUM_SIGN_BYTES];
+  UINT32    packetID;
+  BYTE      image  [STAP_NUM_IMAGE_BYTES];
+
+  // everything below here is stored as a float
+  // and encoded into the canonical range [0,1]
+  
+  float     joints [STAP_NUM_JOINT_ELEM];
+  float     gyro   [STAP_NUM_GYRO_ELEM];
+  float     accel  [STAP_NUM_ACCEL_ELEM];
+  float     temp;
   
 } PHI_STATE_PACKET;
 
