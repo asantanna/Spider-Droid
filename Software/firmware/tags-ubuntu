@@ -1,0 +1,536 @@
+	TAGS	UNSORTED
+MC_DEF_BAUD	include/polulu_2s9v1.h	107	#define MC_DEF_BAUD   B38400
+MC_CMD_SIGN	include/polulu_2s9v1.h	513	#define MC_CMD_SIGN                 0xAA
+MC_DEFAULT_DEVICE_NUM	include/polulu_2s9v1.h	554	#define MC_DEFAULT_DEVICE_NUM       9
+MC_CMD_GET_VERSION	include/polulu_2s9v1.h	593	#define MC_CMD_GET_VERSION          1         // not used
+MC_CMD_GET_ERR_BYTE	include/polulu_2s9v1.h	651	#define MC_CMD_GET_ERR_BYTE         2         // not used
+MC_CMD_GET_CONF	include/polulu_2s9v1.h	709	#define MC_CMD_GET_CONF             3         // not used
+MC_CMD_SET_CONF	include/polulu_2s9v1.h	767	#define MC_CMD_SET_CONF             4         // configure
+MC_CMD_UNKNOWN	include/polulu_2s9v1.h	826	#define MC_CMD_UNKNOWN              5         // not doc
+MC_CMD_COAST_M0	include/polulu_2s9v1.h	883	#define MC_CMD_COAST_M0             6         // no resist motor 0
+MC_CMD_COAST_M1	include/polulu_2s9v1.h	950	#define MC_CMD_COAST_M1             7         // no resist motor 1
+MC_CMD_FWD_M0	include/polulu_2s9v1.h	1018	#define MC_CMD_FWD_M0               8         // set M0 speed (forward)
+MC_CMD_FWD_8BIT_M0	include/polulu_2s9v1.h	1090	#define MC_CMD_FWD_8BIT_M0          9         // set M0 8-bit speed+128 (forward)
+MC_CMD_BCK_M0	include/polulu_2s9v1.h	1172	#define MC_CMD_BCK_M0             0xA         // set M0 speed (backward)
+MC_CMD_BCK_8BIT_M0	include/polulu_2s9v1.h	1245	#define MC_CMD_BCK_8BIT_M0        0xB         // set M0 8-bit speed+128 (backward)
+MC_CMD_FWD_M1	include/polulu_2s9v1.h	1329	#define MC_CMD_FWD_M1             0xC         // set M1 speed (forward)
+MC_CMD_FWD_8BIT_M1	include/polulu_2s9v1.h	1401	#define MC_CMD_FWD_8BIT_M1        0xD         // set M1 8-bit speed+128 (forward)
+MC_CMD_BCK_M1	include/polulu_2s9v1.h	1483	#define MC_CMD_BCK_M1             0xE         // set M1 speed (backward)
+MC_CMD_BCK_8BIT_M1	include/polulu_2s9v1.h	1556	#define MC_CMD_BCK_8BIT_M1        0xF         // set M1 8-bit speed+128 (backward)
+MC_SCONF_WAIT_MS	include/polulu_2s9v1.h	2613	#define MC_SCONF_WAIT_MS            4         // command takes 4 mS to complete - must wait
+MC_SCONF_END_VAL_0	include/polulu_2s9v1.h	2706	#define MC_SCONF_END_VAL_0          0x55      // end value 0
+MC_SCONF_END_VAL_1	include/polulu_2s9v1.h	2767	#define MC_SCONF_END_VAL_1          0x2A      // end value 1
+MC_SCONF_PARAM_DEVICE_ID	include/polulu_2s9v1.h	2829	#define MC_SCONF_PARAM_DEVICE_ID    0         // set motor speed
+MC_SCONF_PARAM_PWM_MODE	include/polulu_2s9v1.h	2894	#define MC_SCONF_PARAM_PWM_MODE     1         // set PWM mode
+MC_SCONF_PARAM_ERR_MODE	include/polulu_2s9v1.h	2956	#define MC_SCONF_PARAM_ERR_MODE     2         // set error mode
+MC_SCONF_PARAM_TIMEOUT	include/polulu_2s9v1.h	3020	#define MC_SCONF_PARAM_TIMEOUT      3         // set serial timeout
+MC_SCONF_SPD_7BIT	include/polulu_2s9v1.h	3107	#define MC_SCONF_SPD_7BIT           0         // use 7 bit motor speed - max is 0x7f
+MC_SCONF_SPD_8BIT	include/polulu_2s9v1.h	3192	#define MC_SCONF_SPD_8BIT           1         // use 8 bit motor speed - max is 0xff
+MC_SCONF_HIGH_FREQ	include/polulu_2s9v1.h	3277	#define MC_SCONF_HIGH_FREQ          0         // higher pitched noise - more power consumption
+MC_SCONF_LOW_FREQ	include/polulu_2s9v1.h	3372	#define MC_SCONF_LOW_FREQ           2         // lower/louder pitched noise - less power consumption
+MC_SCONF_IGNORE_ERR	include/polulu_2s9v1.h	3492	#define MC_SCONF_IGNORE_ERR         0         // ignore errors - keep running
+MC_SCONF_STOP_ON_ERR	include/polulu_2s9v1.h	3570	#define MC_SCONF_STOP_ON_ERR        1         // stop motors if error or timeout
+MC_SCONF_TIMEOUT_DISABLE	include/polulu_2s9v1.h	3669	#define MC_SCONF_TIMEOUT_DISABLE    0         // disable error on timeout
+MC_SCONF_TO_MULT_MASK	include/polulu_2s9v1.h	3743	#define MC_SCONF_TO_MULT_MASK       0x0F      // low 4 bits are "multiplier"
+MC_SCONF_TO_SHIFT_MASK	include/polulu_2s9v1.h	3820	#define MC_SCONF_TO_SHIFT_MASK      0x70      // next 3 bits are "shift"
+GYRO_MAX_SPI_CLK	include/plax_L3G4200D.h	76	#define GYRO_MAX_SPI_CLK          (10ul*1000ul*1000ul)
+GYRO_SAFE_SPI_CLK	include/plax_L3G4200D.h	154	#define GYRO_SAFE_SPI_CLK         ( 8ul*1000ul*1000ul)
+GYRO_SPI_MODE	include/plax_L3G4200D.h	571	#define GYRO_SPI_MODE             (SPI_CPHA | SPI_CPOL)
+GYRO_SPI_BPW	include/plax_L3G4200D.h	647	#define GYRO_SPI_BPW              8
+GYRO_250DPS_MULT	include/plax_L3G4200D.h	718	#define GYRO_250DPS_MULT          0.00875f
+GYRO_500DPS_MULT	include/plax_L3G4200D.h	761	#define GYRO_500DPS_MULT          0.0175f
+GYRO_2000DPS_MULT	include/plax_L3G4200D.h	803	#define GYRO_2000DPS_MULT         0.07f
+GYRO_ADDR_READ	include/plax_L3G4200D.h	886	#define GYRO_ADDR_READ            0x80
+GYRO_ADDR_WRITE	include/plax_L3G4200D.h	925	#define GYRO_ADDR_WRITE           0
+GYRO_ADDR_AUTO_INC	include/plax_L3G4200D.h	962	#define GYRO_ADDR_AUTO_INC        0x40
+GYRO_ADDR_NO_INC	include/plax_L3G4200D.h	1001	#define GYRO_ADDR_NO_INC          0
+GYRO_ADDR_MASK	include/plax_L3G4200D.h	1038	#define GYRO_ADDR_MASK            0x3F
+GYRO_WHOAMI_ADDR	include/plax_L3G4200D.h	1119	#define GYRO_WHOAMI_ADDR          0x0F
+GYRO_WHOAMI_REPLY	include/plax_L3G4200D.h	1158	#define GYRO_WHOAMI_REPLY         0xD3
+GYRO_CR1_ADDR	include/plax_L3G4200D.h	1212	#define GYRO_CR1_ADDR             0x20
+GYRO_CR1_DR_MASK	include/plax_L3G4200D.h	1252	#define GYRO_CR1_DR_MASK          0xC0
+GYRO_CR1_DR_100HZ	include/plax_L3G4200D.h	1292	#define GYRO_CR1_DR_100HZ         0x00  /* output data rate */
+GYRO_CR1_DR_200HZ	include/plax_L3G4200D.h	1355	#define GYRO_CR1_DR_200HZ         0x40
+GYRO_CR1_DR_400HZ	include/plax_L3G4200D.h	1394	#define GYRO_CR1_DR_400HZ         0x80
+GYRO_CR1_DR_800HZ	include/plax_L3G4200D.h	1433	#define GYRO_CR1_DR_800HZ         0xC0
+GYRO_CR1_BW_MASK	include/plax_L3G4200D.h	1473	#define GYRO_CR1_BW_MASK          0x30  /* cutoff freqs - see datasheet */
+GYRO_CR1_BW_CO_1	include/plax_L3G4200D.h	1548	#define GYRO_CR1_BW_CO_1          0x00
+GYRO_CR1_BW_CO_2	include/plax_L3G4200D.h	1587	#define GYRO_CR1_BW_CO_2          0x10
+GYRO_CR1_BW_CO_3	include/plax_L3G4200D.h	1626	#define GYRO_CR1_BW_CO_3          0x20
+GYRO_CR1_BW_CO_4	include/plax_L3G4200D.h	1665	#define GYRO_CR1_BW_CO_4          0x30
+GYRO_CR1_MODE_PWRDOWN	include/plax_L3G4200D.h	1705	#define GYRO_CR1_MODE_PWRDOWN     0
+GYRO_CR1_MODE_NORMAL	include/plax_L3G4200D.h	1741	#define GYRO_CR1_MODE_NORMAL      0x08
+GYRO_CR1_Z_EN	include/plax_L3G4200D.h	1780	#define GYRO_CR1_Z_EN             0x04
+GYRO_CR1_Y_EN	include/plax_L3G4200D.h	1819	#define GYRO_CR1_Y_EN             0x02
+GYRO_CR1_X_EN	include/plax_L3G4200D.h	1858	#define GYRO_CR1_X_EN             0x01
+GYRO_CR2_ADDR	include/plax_L3G4200D.h	1912	#define GYRO_CR2_ADDR             0x21
+GYRO_CR2_RSVD_MASK	include/plax_L3G4200D.h	1952	#define GYRO_CR2_RSVD_MASK        0xC0  /* these bits must not be changed */
+GYRO_CR2_HPM_MASK	include/plax_L3G4200D.h	2029	#define GYRO_CR2_HPM_MASK         0x30  /* see datasheet */
+GYRO_CR2_HPCF_MASK	include/plax_L3G4200D.h	2089	#define GYRO_CR2_HPCF_MASK        0x0F
+GYRO_CR3_ADDR	include/plax_L3G4200D.h	2143	#define GYRO_CR3_ADDR             0x22
+GYRO_CR3_INT1_EN	include/plax_L3G4200D.h	2183	#define GYRO_CR3_INT1_EN          0x80
+GYRO_CR3_INT1_BOOT_EN	include/plax_L3G4200D.h	2222	#define GYRO_CR3_INT1_BOOT_EN     0x40
+GYRO_CR3_INT1_LOW	include/plax_L3G4200D.h	2261	#define GYRO_CR3_INT1_LOW         0x20
+GYRO_CR3_OPEN_DRAIN	include/plax_L3G4200D.h	2300	#define GYRO_CR3_OPEN_DRAIN       0x10
+GYRO_CR3_INT2_DRDY_EN	include/plax_L3G4200D.h	2339	#define GYRO_CR3_INT2_DRDY_EN     0x08
+GYRO_CR3_INT2_FWI_EN	include/plax_L3G4200D.h	2378	#define GYRO_CR3_INT2_FWI_EN      0x04
+GYRO_CR3_INT2_OI_EN	include/plax_L3G4200D.h	2417	#define GYRO_CR3_INT2_OI_EN       0x02
+GYRO_CR3_INT2_FEMPTY_EN	include/plax_L3G4200D.h	2456	#define GYRO_CR3_INT2_FEMPTY_EN   0x01
+GYRO_CR4_ADDR	include/plax_L3G4200D.h	2511	#define GYRO_CR4_ADDR             0x23
+GYRO_CR4_BDU_EN	include/plax_L3G4200D.h	2551	#define GYRO_CR4_BDU_EN           0x80
+GYRO_CR4_BIG_ENDIAN	include/plax_L3G4200D.h	2590	#define GYRO_CR4_BIG_ENDIAN       0x40
+GYRO_CR4_LITTLE_ENDIAN	include/plax_L3G4200D.h	2629	#define GYRO_CR4_LITTLE_ENDIAN    0
+GYRO_CR4_FS_MASK	include/plax_L3G4200D.h	2666	#define GYRO_CR4_FS_MASK          0x30
+GYRO_CR4_FS_250DPS	include/plax_L3G4200D.h	2705	#define GYRO_CR4_FS_250DPS        0x00
+GYRO_CR4_FS_500DPS	include/plax_L3G4200D.h	2744	#define GYRO_CR4_FS_500DPS        0x10
+GYRO_CR4_FS_2000DPS	include/plax_L3G4200D.h	2783	#define GYRO_CR4_FS_2000DPS       0x20
+GYRO_CR4_STEST_MASK	include/plax_L3G4200D.h	2823	#define GYRO_CR4_STEST_MASK       0x06
+GYRO_CR4_SPI_3WIRE	include/plax_L3G4200D.h	2862	#define GYRO_CR4_SPI_3WIRE        0x01
+GYRO_CR5_ADDR	include/plax_L3G4200D.h	2916	#define GYRO_CR5_ADDR             0x24
+GYRO_CR5_REBOOT	include/plax_L3G4200D.h	2956	#define GYRO_CR5_REBOOT           0x80
+GYRO_CR5_FIFO_EN	include/plax_L3G4200D.h	2995	#define GYRO_CR5_FIFO_EN          0x40
+GYRO_CR5_HP_EN	include/plax_L3G4200D.h	3034	#define GYRO_CR5_HP_EN            0x10
+GYRO_CR5_INT1_SEL_MASK	include/plax_L3G4200D.h	3073	#define GYRO_CR5_INT1_SEL_MASK    0x0C
+GYRO_CR5_OUT_SEL_MASK	include/plax_L3G4200D.h	3112	#define GYRO_CR5_OUT_SEL_MASK     0x03
+GYRO_REF_ADDR	include/plax_L3G4200D.h	3178	#define GYRO_REF_ADDR             0x25
+GYRO_TEMP_ADDR	include/plax_L3G4200D.h	3231	#define GYRO_TEMP_ADDR            0x26
+GYRO_TEMP_MIN	include/plax_L3G4200D.h	3271	#define GYRO_TEMP_MIN             (-40)
+GYRO_TEMP_MAX	include/plax_L3G4200D.h	3311	#define GYRO_TEMP_MAX             85
+GYRO_TEMP_RANGE	include/plax_L3G4200D.h	3348	#define GYRO_TEMP_RANGE           (GYRO_TEMP_MAX - GYRO_TEMP_MIN + 1)
+GYRO_TEMP_RAW_TO_CANON	include/plax_L3G4200D.h	3419	#define GYRO_TEMP_RAW_TO_CANON(raw) \
+GYRO_STATUS_ADDR	include/plax_L3G4200D.h	3535	#define GYRO_STATUS_ADDR          0x27
+GYRO_STATUS_OVER	include/plax_L3G4200D.h	3575	#define GYRO_STATUS_OVER          0x80
+GYRO_STATUS_Z_OVER	include/plax_L3G4200D.h	3614	#define GYRO_STATUS_Z_OVER        0x40
+GYRO_STATUS_Y_OVER	include/plax_L3G4200D.h	3653	#define GYRO_STATUS_Y_OVER        0x20
+GYRO_STATUS_X_OVER	include/plax_L3G4200D.h	3692	#define GYRO_STATUS_X_OVER        0x10
+GYRO_STATUS_AVAIL	include/plax_L3G4200D.h	3731	#define GYRO_STATUS_AVAIL         0x08
+GYRO_STATUS_Z_AVAIL	include/plax_L3G4200D.h	3770	#define GYRO_STATUS_Z_AVAIL       0x04
+GYRO_STATUS_Y_AVAIL	include/plax_L3G4200D.h	3809	#define GYRO_STATUS_Y_AVAIL       0x02
+GYRO_STATUS_X_AVAIL	include/plax_L3G4200D.h	3848	#define GYRO_STATUS_X_AVAIL       0x01
+GYRO_XL_ADDR	include/plax_L3G4200D.h	3909	#define GYRO_XL_ADDR              0x28
+GYRO_XH_ADDR	include/plax_L3G4200D.h	3948	#define GYRO_XH_ADDR              0x29
+GYRO_YL_ADDR	include/plax_L3G4200D.h	4009	#define GYRO_YL_ADDR              0x2A
+GYRO_YH_ADDR	include/plax_L3G4200D.h	4048	#define GYRO_YH_ADDR              0x2B
+GYRO_ZL_ADDR	include/plax_L3G4200D.h	4109	#define GYRO_ZL_ADDR              0x2C
+GYRO_ZH_ADDR	include/plax_L3G4200D.h	4148	#define GYRO_ZH_ADDR              0x2D
+GYRO_FIFO_ADDR	include/plax_L3G4200D.h	4206	#define GYRO_FIFO_ADDR            0x2E
+GYRO_FIFO_MODE_BYPASS	include/plax_L3G4200D.h	4246	#define GYRO_FIFO_MODE_BYPASS     0x00
+GYRO_FIFO_MODE_FIFO	include/plax_L3G4200D.h	4285	#define GYRO_FIFO_MODE_FIFO       0x20
+GYRO_FIFO_MODE_STREAM	include/plax_L3G4200D.h	4324	#define GYRO_FIFO_MODE_STREAM     0x40
+GYRO_FIFO_MODE_STF	include/plax_L3G4200D.h	4363	#define GYRO_FIFO_MODE_STF        0x60
+GYRO_FIFO_MODE_BTS	include/plax_L3G4200D.h	4402	#define GYRO_FIFO_MODE_BTS        0x80
+GYRO_FIFO_WTM_MASK	include/plax_L3G4200D.h	4441	#define GYRO_FIFO_WTM_MASK        0x1F
+GYRO_FIFO_SRC_ADDR	include/plax_L3G4200D.h	4498	#define GYRO_FIFO_SRC_ADDR        0x2F
+GYRO_FIFO_SRC_WTM	include/plax_L3G4200D.h	4538	#define GYRO_FIFO_SRC_WTM         0x80
+GYRO_FIFO_SRC_OVRN	include/plax_L3G4200D.h	4577	#define GYRO_FIFO_SRC_OVRN        0x40
+GYRO_FIFO_SRC_EMPTY	include/plax_L3G4200D.h	4616	#define GYRO_FIFO_SRC_EMPTY       0x20
+GYRO_FIFO_SRC_COUNT_MASK	include/plax_L3G4200D.h	4655	#define GYRO_FIFO_SRC_COUNT_MASK  0x1F
+GYRO_RSRC_ADDR	include/plax_L3G4200D.h	4708	#define GYRO_RSRC_ADDR            0x2F
+PHI_VERSION	include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
+LOGFILE_NAME	include/phi_defs.h	88	#define LOGFILE_NAME    "/var/log/phi.log"
+VERBOSE_LOG	include/phi_defs.h	131	#define VERBOSE_LOG     1
+INT8	include/phi_defs.h	173	#define INT8            char
+INT16	include/phi_defs.h	202	#define INT16           short
+INT32	include/phi_defs.h	232	#define INT32           long
+INT64	include/phi_defs.h	261	#define INT64           long long
+UINT	include/phi_defs.h	313	#define UINT            unsigned int
+UINT8	include/phi_defs.h	350	#define UINT8           unsigned char
+UINT16	include/phi_defs.h	388	#define UINT16          unsigned short
+UINT32	include/phi_defs.h	427	#define UINT32          unsigned long
+UINT64	include/phi_defs.h	465	#define UINT64          unsigned long long
+BYTE	include/phi_defs.h	533	#define BYTE            UINT8
+WORD	include/phi_defs.h	563	#define WORD            UINT16
+DWORD	include/phi_defs.h	594	#define DWORD           UINT32
+BOOL	include/phi_defs.h	625	#define BOOL            UINT8
+FALSE	include/phi_defs.h	656	#define FALSE           0
+TRUE	include/phi_defs.h	682	#define TRUE            1
+COUNTOF	include/phi_defs.h	725	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
+MIN	include/phi_defs.h	789	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
+MAX	include/phi_defs.h	841	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
+PHI_ALLOC	include/phi_defs.h	1004	#define PHI_ALLOC(D)    ((D*)PHI_allocHelper(sizeof(D)))
+PHI_ALLOC_N	include/phi_defs.h	1061	#define PHI_ALLOC_N(n)  PHI_allocHelper(n)
+PHI_FREE	include/phi_defs.h	1104	#define PHI_FREE(p)     {free(p); p = NULL; }
+PHI_ZERO	include/phi_defs.h	1151	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
+PHI_ZERO_P	include/phi_defs.h	1202	#define PHI_ZERO_P(p,l) memset(p, 0, l)
+BASH_BLACK	include/phi_defs.h	1260	#define BASH_BLACK      "30"
+BASH_RED	include/phi_defs.h	1289	#define BASH_RED        "31"
+BASH_GREEN	include/phi_defs.h	1318	#define BASH_GREEN      "32"
+BASH_YELLOW	include/phi_defs.h	1347	#define BASH_YELLOW     "33"
+BASH_BLUE	include/phi_defs.h	1376	#define BASH_BLUE       "34"
+BASH_MAGENTA	include/phi_defs.h	1405	#define BASH_MAGENTA    "35"
+BASH_CYAN	include/phi_defs.h	1434	#define BASH_CYAN       "36"
+BASH_WHITE	include/phi_defs.h	1463	#define BASH_WHITE      "37"
+BASH_START_COLOR	include/phi_defs.h	1493	#define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	include/phi_defs.h	1537	#define BASH_STOP_COLOR       "\e[0m"
+DO_PRAGMA	include/phi_defs.h	1576	#define DO_PRAGMA(x)    _Pragma (#x)
+INFO	include/phi_defs.h	1613	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
+TODO	include/phi_defs.h	1716	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
+WARN	include/phi_defs.h	1818	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
+HACK	include/phi_defs.h	1927	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
+U64_1E6	include/phi_defs.h	2037	#define U64_1E6         ((UINT64)1e6)
+TV_TO_USEC	include/phi_defs.h	2075	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
+LOG_INFO	include/phi_defs.h	2171	#define LOG_INFO(...)   PHI_logMsg("", __VA_ARGS__)
+LOG_ERR	include/phi_defs.h	2223	#define LOG_ERR(...)    PHI_logMsg("ERROR: ", __VA_ARGS__)
+LOG_FATAL	include/phi_defs.h	2282	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); PHI_logMsg("FATAL: ", __VA_ARGS__); PHI_abortProcess(-1); }
+STR	include/phi_defs.h	2448	#define STR(s)                #s              /* convert to string */
+STR_MACRO	include/phi_defs.h	2518	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
+Q	include/phi_defs.h	2641	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
+UART_DRIVER_NAME	include/phi_defs.h	2737	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
+SPI0_DRIVER_NAME	include/phi_defs.h	2778	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
+SPI1_DRIVER_NAME	include/phi_defs.h	2821	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
+OFF	include/phi_defs.h	2891	    OFF,
+RED	include/phi_defs.h	2900	    RED,
+FLASH_RED	include/phi_defs.h	2909	    FLASH_RED,
+YELLOW	include/phi_defs.h	2924	    YELLOW,
+FLASH_YELLOW	include/phi_defs.h	2936	    FLASH_YELLOW,
+GREEN	include/phi_defs.h	2954	    GREEN,
+FLASH_GREEN	include/phi_defs.h	2965	    FLASH_GREEN
+PHI_LED_COLOR	include/phi_defs.h	2984	} PHI_LED_COLOR;
+CAM_WIDTH	include/phi_defs.h	3071	#define CAM_WIDTH         160
+CAM_HEIGHT	include/phi_defs.h	3101	#define CAM_HEIGHT        120
+CAM_NUM_BYTES	include/phi_defs.h	3131	#define CAM_NUM_BYTES     (CAM_WIDTH * CAM_HEIGHT)
+DEF_PHILINK_PORT	include/phi_defs.h	3194	#define DEF_PHILINK_PORT  1122
+GYRO_SPI_IDX	include/phi_defs.h	3249	#define GYRO_SPI_IDX      0
+ADC_SPI_IDX	include/phi_defs.h	3300	#define ADC_SPI_IDX       1
+PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3347	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
+PHI_MUTEX_INITVAL	include/phi_defs.h	3399	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
+PHI_MUTEX_DECL	include/phi_defs.h	3461	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name = PHI_MUTEX_INITVAL
+PHI_MUTEX_GET	include/phi_defs.h	3541	#define PHI_MUTEX_GET(pSem)         pthread_mutex_lock(pSem)
+PHI_MUTEX_RELEASE	include/phi_defs.h	3602	#define PHI_MUTEX_RELEASE(pSem)     pthread_mutex_unlock(pSem)
+PHI_MUTEX_TEST	include/phi_defs.h	3665	#define PHI_MUTEX_TEST(pSem)        pthread_mutex_trylock(pSem)
+LINK_OFF	include/philink.h	43	    LINK_OFF,
+LINK_STARTED	include/philink.h	57	    LINK_STARTED,
+LINK_CONNECTING	include/philink.h	75	    LINK_CONNECTING,
+LINK_CONNECTED	include/philink.h	96	    LINK_CONNECTED,
+LINK_ERROR	include/philink.h	116	    LINK_ERROR,
+LINK_CLOSED	include/philink.h	132	    LINK_CLOSED
+PHILINK_STATUS	include/philink.h	147	} PHILINK_STATUS;
+sock	include/philink.h	187	  int sock;
+ipAddr	include/philink.h	205	  in_addr_t ipAddr;
+port	include/philink.h	224	  uint16_t port;
+PHILINK_ARGS	include/philink.h	233	} PHILINK_ARGS;
+NUM_SIGN_BYTES	include/philink.h	274	#define NUM_SIGN_BYTES          4
+CMDP_SIGN	include/philink.h	309	#define CMDP_SIGN               "CPV1"
+CMDP_MOTOR_ELEM	include/philink.h	348	#define CMDP_MOTOR_ELEM         NUM_MOTORS
+PHI_CMD_PACKET	include/philink.h	502	} PHI_CMD_PACKET;
+STAP_SIGN	include/philink.h	527	#define STAP_SIGN               "SPV1"
+STAP_NUM_IMAGE_BYTES	include/philink.h	566	#define STAP_NUM_IMAGE_BYTES    CAM_NUM_BYTES
+STAP_NUM_JOINT_ELEM	include/philink.h	612	#define STAP_NUM_JOINT_ELEM     NUM_MOTORS
+STAP_NUM_GYRO_ELEM	include/philink.h	655	#define STAP_NUM_GYRO_ELEM      3
+STAP_NUM_ACCEL_ELEM	include/philink.h	689	#define STAP_NUM_ACCEL_ELEM     3
+PHI_STATE_PACKET	include/philink.h	1115	} PHI_STATE_PACKET;
+_REENTRANT	include/phi.h	97	#define _REENTRANT 1
+ACCEL_I2C_CLK	include/osepp_adxl345.h	66	#define ACCEL_I2C_CLK             ( 400ul*1000ul )
+GYRO_SAFE_SPI_CLK	include/osepp_adxl345.h	140	#define GYRO_SAFE_SPI_CLK         ( 8ul*1000ul*1000ul)
+NUM_MOTOR_CTRL	include/motor.h	697	#define NUM_MOTOR_CTRL    6
+NUM_MOTORS	include/motor.h	725	#define NUM_MOTORS        (NUM_MOTOR_CTRL * 2)    // 12
+MOTOR_NAME_TO_CTRL_ID	include/motor.h	1711	#define MOTOR_NAME_TO_CTRL_ID(name)             ((BYTE)(name[0] - 'A'))
+MOTOR_NAME_TO_SEL_IDX	include/motor.h	1783	#define MOTOR_NAME_TO_SEL_IDX(name)             ((BYTE)(name[1] - '0'))
+MOTOR_ID_TO_ADC_IDX	include/motor.h	1947	#define MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx)     ( ((ctrlID) * 2) + (selIdx))
+ADC_MIN_RAW	include/motor.h	2025	#define ADC_MIN_RAW                             ((UINT16) 0)
+ADC_MAX_RAW	include/motor.h	2086	#define ADC_MAX_RAW                             ((UINT16) 1023)
+ADC_RAW_RANGE	include/motor.h	2150	#define ADC_RAW_RANGE                           (ADC_MAX_RAW - ADC_MIN_RAW + 1)
+ADC_RAW_TO_CANON	include/motor.h	2231	#define ADC_RAW_TO_CANON(rawVal)                ( ((rawVal) % ADC_RAW_RANGE) / ((double)ADC_RAW_RANGE) )
+ADC_CANON_TO_RAW	include/motor.h	2336	#define ADC_CANON_TO_RAW(canonVal)              ( (UINT16) ((canonVal) * ((double)ADC_RAW_RANGE)) )
+ADC_ABS_RAW_DIFF	include/motor.h	2437	#define ADC_ABS_RAW_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_RAW_RANGE )
+ADC_MIN_SPI_CLK	include/mcp3008.h	364	#define ADC_MIN_SPI_CLK         (10ul   * 1000ul)
+ADC_MAX_SPI_CLK	include/mcp3008.h	414	#define ADC_MAX_SPI_CLK         (1350ul * 1000ul)
+ADC_SAFE_SPI_CLK	include/mcp3008.h	465	#define ADC_SAFE_SPI_CLK        (1000ul * 1000ul)
+ADC_SPI_MODE	include/mcp3008.h	929	#define ADC_SPI_MODE            (SPI_CPHA | SPI_CPOL)
+ADC_SPI_BPW	include/mcp3008.h	1003	#define ADC_SPI_BPW             8
+ADC_RAW_TO_VOLTS	include/mcp3008.h	1078	#define ADC_RAW_TO_VOLTS(val, v_ref)      ( ((float)(val)) * ((float)(v_ref)) / 1024.0f )
+ADC_CMD1_START	include/mcp3008.h	1400	#define ADC_CMD1_START          0x01      // this is the "start bit"
+ADC_CMD2_SINGLE	include/mcp3008.h	1513	#define ADC_CMD2_SINGLE         0x80      // use single ended inputs (8x)
+ADC_CMD2_DIFF	include/mcp3008.h	1587	#define ADC_CMD2_DIFF           0x00      // use differential inputs (4x)
+ADC_CMD2_ADDR_MASK	include/mcp3008.h	1661	#define ADC_CMD2_ADDR_MASK      0x70      // address mask (bits = [0,7])
+ADC_DATA2_NOT_USED_MASK	include/mcp3008.h	1735	#define ADC_DATA2_NOT_USED_MASK 0x08      // this bit is not used
+ADC_DATA2_NULL_MASK	include/mcp3008.h	1801	#define ADC_DATA2_NULL_MASK     0x04      // this bit will be zero
+ADC_DATA2_MASK	include/mcp3008.h	1868	#define ADC_DATA2_MASK          0x03      // these bits are the result's high bits
+ADC_DATA3_MASK	include/mcp3008.h	1974	#define ADC_DATA3_MASK          0xFF      // these bits are the result's low bits
+__JSMN_H_	include/jsmn.h	26	#define __JSMN_H_
+JSMN_PRIMITIVE	include/jsmn.h	201		JSMN_PRIMITIVE = 0,
+JSMN_OBJECT	include/jsmn.h	222		JSMN_OBJECT = 1,
+JSMN_ARRAY	include/jsmn.h	240		JSMN_ARRAY = 2,
+JSMN_STRING	include/jsmn.h	257		JSMN_STRING = 3
+jsmntype_t	include/jsmn.h	275	} jsmntype_t;
+JSMN_ERROR_NOMEM	include/jsmn.h	343		JSMN_ERROR_NOMEM = -1,
+JSMN_ERROR_INVAL	include/jsmn.h	411		JSMN_ERROR_INVAL = -2,
+JSMN_ERROR_PART	include/jsmn.h	500		JSMN_ERROR_PART = -3,
+JSMN_SUCCESS	include/jsmn.h	550		JSMN_SUCCESS = 0
+jsmnerr_t	include/jsmn.h	569	} jsmnerr_t;
+type	include/jsmn.h	796		jsmntype_t type;
+start	include/jsmn.h	807		int start;
+end	include/jsmn.h	819		int end;
+size	include/jsmn.h	829		int size;
+parent	include/jsmn.h	865		int parent;
+jsmntok_t	include/jsmn.h	882	} jsmntok_t;
+pos	include/jsmn.h	1073		unsigned int pos; /* offset in the JSON string */
+toknext	include/jsmn.h	1115		int toknext; /* next token to allocate */
+toksuper	include/jsmn.h	1158		int toksuper; /* superior token node, e.g parent object or array */
+jsmn_parser	include/jsmn.h	1224	} jsmn_parser;
+halFunc_void	include/hal.h	54	typedef void   (*halFunc_void)   ();
+halFunc_int	include/hal.h	91	typedef int    (*halFunc_int)    ();
+halFunc_pChar	include/hal.h	128	typedef char*  (*halFunc_pChar)  ();
+halFunc_BOOL	include/hal.h	166	typedef BOOL   (*halFunc_BOOL)   ();
+halFunc_INT8	include/hal.h	203	typedef INT8   (*halFunc_INT8)   ();
+halFunc_UINT8	include/hal.h	240	typedef UINT8  (*halFunc_UINT8)  ();
+halFunc_UINT16	include/hal.h	277	typedef UINT16 (*halFunc_UINT16) ();
+pName	include/hal.h	340	  const char* pName;
+initPeripherals	include/hal.h	376	  halFunc_pChar   initPeripherals;
+gyroInit	include/hal.h	427	  halFunc_BOOL    gyroInit;
+gyroGetDeltas	include/hal.h	455	  halFunc_void    gyroGetDeltas;
+gyroGetTemp	include/hal.h	488	  halFunc_INT8    gyroGetTemp;
+getRawJointPos	include/hal.h	539	  halFunc_UINT16  getRawJointPos;
+setMotorPower	include/hal.h	573	  halFunc_void    setMotorPower;
+setControllerId	include/hal.h	606	  halFunc_void    setControllerId;
+HAL_FUNCS	include/hal.h	626	} HAL_FUNCS;
+HAL_name	include/hal.h	719	#define HAL_name              (g_pHal   -> pName)
+HAL_initPeripherals	include/hal.h	769	#define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
+HAL_gyroGetDeltas	include/hal.h	831	#define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
+HAL_gyroGetTemp	include/hal.h	890	#define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
+HAL_getRawJointPos	include/hal.h	948	#define HAL_getRawJointPos    (*(g_pHal -> getRawJointPos))
+HAL_setMotorPower	include/hal.h	1008	#define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
+HAL_setControllerId	include/hal.h	1067	#define HAL_setControllerId   (*(g_pHal -> setControllerId))
+INIT	include/globals.h	77	#define INIT(v)   = v
+EXT	include/globals.h	99	#define EXT       // nothing
+INIT	include/globals.h	134	#define INIT(v)   // nothing
+EXT	include/globals.h	163	#define EXT       extern
+g_uname	include/globals.h	388	EXT struct utsname g_uname;              // can't init this to zero here for some reason
+MAX_JSON_TOKENS	src/webjson.c	913	#define MAX_JSON_TOKENS       256
+PARSER_NUM_TOK	src/webjson.c	979	#define PARSER_NUM_TOK(parser)  ((parser).toknext)
+TOK_START	src/webjson.c	1031	#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
+TOK_LEN	src/webjson.c	1088	#define TOK_LEN(pTok)         ((pTok)->end - (pTok)->start)
+TOK_TYPE	src/webjson.c	1148	#define TOK_TYPE(pTok)        ((pTok)->type)
+TOK_NUM_CHILD	src/webjson.c	1193	#define TOK_NUM_CHILD(pTok)   ((pTok)->size)
+TOK_EQ	src/webjson.c	1239	#define TOK_EQ(pTok,s) \
+_jsonCmdReply_t	src/webjson.c	1404	typedef struct _jsonCmdReply_t {
+_jsonCmdReply_t::pReply	src/webjson.c	1430	  char* pReply;
+_jsonCmdReply_t::pNext	src/webjson.c	1464	  struct _jsonCmdReply_t* pNext;
+PHI_JSON_CMD_REPLY_TYPE	src/webjson.c	1474	} PHI_JSON_CMD_REPLY_TYPE;
+jsonCmdHandler	src/webjson.c	1535	typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok, char* pJsonReq);
+JSON_HANDLER	src/webjson.c	1707	#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok, char* pJsonReq)
+pCmd	src/webjson.c	2217	  char *pCmd;
+handler	src/webjson.c	2240	  jsonCmdHandler handler;
+PHI_JSON_CMD_TYPE	src/webjson.c	2254	} PHI_JSON_CMD_TYPE;
+CMD_ENTRY	src/webjson.c	2282	#define CMD_ENTRY(c) { STR(c) , json_ ## c }
+validCmds	src/webjson.c	2338	PHI_JSON_CMD_TYPE validCmds[] = {
+jsonReply_start	src/webjson.c	2794	char jsonReply_start[] = "{" Q(reply) ": [\n";
+jsonReply_end	src/webjson.c	2841	char jsonReply_end[]   = "] }";
+jsonReplyObject_start	src/webjson.c	2941	char jsonReplyObject_start[] = "{\n" Q(cmd) ":" Q(%s) ",\n";
+jsonReplyObject_end	src/webjson.c	3002	char jsonReplyObject_end[]   = "}";
+jsonParseError	src/webjson.c	3112	char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON request.  It''s probably your fault btw.) " }\n";
+PHI_processJson	src/webjson.c	3393	char* PHI_processJson(char *pJsonReq) {
+PHI_freeJsonReply	src/webjson.c	8148	void PHI_freeJsonReply(char* pJsonReply) {
+getJsonHandler	src/webjson.c	8228	jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
+JSON_TMP_BUFFSIZE	src/webjson.c	9141	#define JSON_TMP_BUFFSIZE     1024
+JSON_HANDLER_PROLOG	src/webjson.c	9177	#define JSON_HANDLER_PROLOG(cmd) \
+JSON_HANDLER_EPILOG	src/webjson.c	9570	#define JSON_HANDLER_EPILOG() \
+JSON_HANDLER	src/webjson.c	10530	JSON_HANDLER(getInitState) {
+JSON_HANDLER	src/webjson.c	10730	JSON_HANDLER(initPeripherals) {
+JSON_HANDLER	src/webjson.c	10962	JSON_HANDLER(getVersion) {
+JSON_HANDLER	src/webjson.c	11126	JSON_HANDLER(getIpAddr) {
+JSON_HANDLER	src/webjson.c	11386	JSON_HANDLER(getUname) {
+JSON_HANDLER	src/webjson.c	11878	JSON_HANDLER(getSysInfo) {
+JSON_HANDLER	src/webjson.c	13169	JSON_HANDLER(getPhiUptime) {
+JSON_HANDLER	src/webjson.c	14284	JSON_HANDLER(setPower) {
+JSON_HANDLER	src/webjson.c	16410	JSON_HANDLER(setMCtlId) {
+JSON_HANDLER	src/webjson.c	17868	JSON_HANDLER(getGyroDeltas) {
+JSON_HANDLER	src/webjson.c	18319	JSON_HANDLER(getGyroTemp) {
+JSON_HANDLER	src/webjson.c	18672	JSON_HANDLER(getLinkStatus) {
+JSON_HANDLER	src/webjson.c	19296	JSON_HANDLER(startPhiLink) {
+JSON_HANDLER	src/webjson.c	21310	JSON_HANDLER(selfTest) {
+HTTP_BUFFSIZE	src/webadmin.c	1201	#define HTTP_BUFFSIZE           8096      // max size of HTTP request
+FORBIDDEN	src/webadmin.c	1271	#define FORBIDDEN               403
+NOTFOUND	src/webadmin.c	1307	#define NOTFOUND                404
+HTTP_METHOD_HEAD_STR	src/webadmin.c	1344	#define HTTP_METHOD_HEAD_STR		"HEAD"
+HTTP_METHOD_GET_STR	src/webadmin.c	1381	#define HTTP_METHOD_GET_STR			"GET"
+HTTP_METHOD_POST_STR	src/webadmin.c	1417	#define HTTP_METHOD_POST_STR		"POST"
+HTTP_CONT_LEN	src/webadmin.c	1454	#define HTTP_CONT_LEN						"Content-Length"
+HTTP_SERVER_NAME	src/webadmin.c	1498	#define HTTP_SERVER_NAME        "Phi Web Admin V" PHI_VERSION
+pFileExt	src/webadmin.c	1569		char *pFileExt;
+pContentType	src/webadmin.c	1586		char *pContentType;
+wa_extensions	src/webadmin.c	1602	} wa_extensions [] = {
+pMethod	src/webadmin.c	1974	  char* pMethod;
+pPath	src/webadmin.c	1991	  char* pPath;
+pGetParams	src/webadmin.c	2006	  char* pGetParams;
+pHdrContentLength	src/webadmin.c	2026	  char* pHdrContentLength;
+pBody	src/webadmin.c	2053	  char* pBody;
+PHI_PARSED_HTTP	src/webadmin.c	2062	} PHI_PARSED_HTTP;
+wa_response_ok_hdr	src/webadmin.c	2085	char wa_response_ok_hdr[] =
+wa_response_json_hdr	src/webadmin.c	2282	char wa_response_json_hdr[] =
+wa_response_forbidden_hdr	src/webadmin.c	2495	char wa_response_forbidden_hdr[] =
+wa_response_forbidden_body	src/webadmin.c	2683	char wa_response_forbidden_body[] =
+wa_response_notfound_hdr	src/webadmin.c	2933	char wa_response_notfound_hdr[] =
+wa_response_notfound_body	src/webadmin.c	3120	char wa_response_notfound_body[] =
+wa_response_servererror_hdr	src/webadmin.c	3352	char wa_response_servererror_hdr[] =
+wa_response_servererror_body	src/webadmin.c	3548	char wa_response_servererror_body[] =
+SEND_ERROR_REPLY	src/webadmin.c	4065	#define SEND_ERROR_REPLY(replyType) \
+SEND_JSON_REPLY	src/webadmin.c	4360	#define SEND_JSON_REPLY(pJson) \
+PHI_webadmin	src/webadmin.c	4895	void PHI_webadmin(int port, const char* wwwRoot)
+wa_process_web_request	src/webadmin.c	7212	void* wa_process_web_request(void* arg)
+wa_parseHttpRequest	src/webadmin.c	11657	int wa_parseHttpRequest(char* pReq, PHI_PARSED_HTTP* pParsed) {
+readToken	src/webadmin.c	13783	char readToken(char** ppData, char** ppToken) {
+readToSpace	src/webadmin.c	15216	void readToSpace(char** ppData, char** ppToken) {
+readToEol	src/webadmin.c	15523	void readToEol(char** ppData, char** ppToken) {
+uartFile	src/uart.c	102	static int uartFile = -1;
+uart_init	src/uart.c	232	BOOL uart_init() {
+uart_send	src/uart.c	3942	void uart_send(BYTE* pData, int dataLen) {
+uart_receive	src/uart.c	4338	int uart_receive(void* pBuff, int buffLen) {
+uart_flush	src/uart.c	5029	void uart_flush() {
+uart_discardInput	src/uart.c	5636	void uart_discardInput() {
+uart_discardOutput	src/uart.c	5697	void uart_discardOutput() {
+uart_discardAll	src/uart.c	5759	void uart_discardAll() {
+spiFile	src/spi.c	445	static int spiFile[2] = { -1, -1 };
+spi_0_xfer	src/spi.c	530	struct spi_ioc_transfer spi_0_xfer[2] = {
+spi_1_xfer	src/spi.c	824	struct spi_ioc_transfer spi_1_xfer[2] = {
+spi_xfer	src/spi.c	1086	struct spi_ioc_transfer* spi_xfer[2] = {
+spi_init	src/spi.c	1226	BOOL spi_init() {
+spi_send	src/spi.c	2704	void spi_send(int spiIdx, BYTE* pTx, int txLen) {
+spi_receive	src/spi.c	3001	void spi_receive(int spiIdx, BYTE* pRx, int rxLen) {
+spi_sendreceive	src/spi.c	3304	void spi_sendreceive(int spiIdx, BYTE* pTx, int txLen, BYTE* pRx, int rxLen) {
+spi_exchange	src/spi.c	3765	void spi_exchange(int spiIdx, BYTE* pTx, BYTE* pRx, int dataLen) {
+initSpiDriver	src/spi.c	4113	int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw) {
+JTEST_MIN_POWER	src/selftest.c	233	#define JTEST_MIN_POWER         10
+JTEST_MAX_POWER	src/selftest.c	268	#define JTEST_MAX_POWER         60
+JTEST_POWER_STEPS	src/selftest.c	303	#define JTEST_POWER_STEPS       10
+JTEST_WAIT_STEP_MS	src/selftest.c	339	#define JTEST_WAIT_STEP_MS      10
+JTEST_WAIT_MAX_MULT	src/selftest.c	374	#define JTEST_WAIT_MAX_MULT     25
+JTEST_JOINT_CHG_DEG	src/selftest.c	410	#define JTEST_JOINT_CHG_DEG     5
+minPowerNeeded	src/selftest.c	460	BYTE minPowerNeeded = 0;
+minWaitNeeded	src/selftest.c	486	INT32 minWaitNeeded = 0;
+selfTest	src/selftest.c	761	char* selfTest(int mode) {
+testAllJoints	src/selftest.c	925	void testAllJoints() {
+testJointMovement	src/selftest.c	2026	BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
+testJointRange	src/selftest.c	3605	BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
+moveJointToStop	src/selftest.c	4073	double moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
+PHI_allocHelper	src/phi_utils.c	52	void* PHI_allocHelper(int size) {
+PHI_upTime	src/phi_utils.c	210	UINT64 PHI_upTime() {
+PHI_abortProcess	src/phi_utils.c	344	void PHI_abortProcess(int rc) {
+PHI_abortWithMsg	src/phi_utils.c	470	void PHI_abortWithMsg(const char* msg) {
+__itoa	src/phi_utils.c	649	char* __itoa(int value, char* result, int base) {
+PHI_logfp	src/phi_utils.c	1596	FILE *PHI_logfp = NULL;
+PHI_logInit	src/phi_utils.c	1619	int PHI_logInit(char *filename) {
+PHI_logClose	src/phi_utils.c	2551	void PHI_logClose(void) {
+PHI_logTimestamp	src/phi_utils.c	2657	void PHI_logTimestamp() {
+PHI_logMsg	src/phi_utils.c	2822	void PHI_logMsg(const char* tag, const char *fmt, ...) {
+getHostIP	src/phi_utils.c	3209	UINT32 getHostIP() {
+PHI_setLED	src/phi_utils.c	4621	void PHI_setLED(PHI_LED_COLOR color) {
+PHI_rand	src/phi_utils.c	4947	double PHI_rand() {
+PHI_setRealtimePrio	src/phi_utils.c	5083	BOOL PHI_setRealtimePrio(pthread_t thread) {
+setNonBlocking	src/phi_utils.c	6005	int setNonBlocking(int fd)
+RX_BEGIN	src/philink.c	619	  RX_BEGIN,
+RX_RECEIVING	src/philink.c	631	  RX_RECEIVING,
+TX_BEGIN	src/philink.c	647	  TX_BEGIN,
+TX_SENDING	src/philink.c	659	  TX_SENDING,
+COMM_STATUS	src/philink.c	678	} COMM_STATUS;
+startPhiLink	src/philink.c	786	BOOL startPhiLink(char* ipAddr, int port) {
+PHI_link_loop	src/philink.c	2402	void* PHI_link_loop(void* arg)
+setLinkStatus	src/philink.c	4535	void setLinkStatus(PHILINK_STATUS status) {
+initMotorCtrl	src/motor.c	144	BOOL initMotorCtrl() {
+PHI_setMotorPower	src/motor.c	1965	void PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+stopMotor	src/motor.c	2540	void stopMotor(BYTE ctrlID, BYTE selIdx) {
+stopAllMotors	src/motor.c	2632	void stopAllMotors() {
+flushMotorCmds	src/motor.c	3020	void flushMotorCmds() {
+getRawJointPos	src/motor.c	3190	UINT16 getRawJointPos(BYTE adcIdx) {
+PHI_getJointPos	src/motor.c	3866	float PHI_getJointPos(BYTE adcIdx) {
+PHI_getJointPosByMotorID	src/motor.c	3996	float PHI_getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
+PHI_setControllerId	src/motor.c	4252	void PHI_setControllerId(BYTE oldId, BYTE newId) {
+GLOBAL_INIT	src/main.c	64	#define GLOBAL_INIT
+main	src/main.c	356	void main() {
+globalInit	src/main.c	661	void globalInit() {
+jsmn_alloc_token	src/jsmn.c	121	static jsmntok_t *jsmn_alloc_token(jsmn_parser *parser, 
+jsmn_fill_token	src/jsmn.c	475	static void jsmn_fill_token(jsmntok_t *token, jsmntype_t type, 
+jsmn_parse_primitive	src/jsmn.c	737	static jsmnerr_t jsmn_parse_primitive(jsmn_parser *parser, const char *js,
+jsmn_parse_string	src/jsmn.c	1819	static jsmnerr_t jsmn_parse_string(jsmn_parser *parser, const char *js,
+jsmn_parse	src/jsmn.c	2989	jsmnerr_t jsmn_parse(jsmn_parser *parser, const char *js, jsmntok_t *tokens, 
+jsmn_init	src/jsmn.c	5938	void jsmn_init(jsmn_parser *parser) {
+LOOPS_PER_SEC	src/hw_pump.c	368	#define LOOPS_PER_SEC       100
+LOOP_PERIOD_USEC	src/hw_pump.c	400	#define LOOP_PERIOD_USEC    ((INT32)(1e6 / LOOPS_PER_SEC))
+cmds	src/hw_pump.c	547	  PHI_CMD_PACKET cmds;
+state	src/hw_pump.c	572	  PHI_STATE_PACKET state;
+PHI_SNAPSHOT	src/hw_pump.c	582	} PHI_SNAPSHOT;
+phiSnapshot	src/hw_pump.c	617	static PHI_SNAPSHOT phiSnapshot;
+startHwPump	src/hw_pump.c	1448	void startHwPump() {
+hwPump_UART_thread	src/hw_pump.c	3077	void* hwPump_UART_thread(void* arg)
+hwPump_SPI_thread	src/hw_pump.c	4939	void* hwPump_SPI_thread(void* arg)
+hwPump_I2C_thread	src/hw_pump.c	6657	void* hwPump_I2C_thread(void* arg)
+initSnapshot	src/hw_pump.c	6873	void initSnapshot() {
+getStateSnapshot	src/hw_pump.c	7904	void getStateSnapshot(PHI_STATE_PACKET *p) {
+lock_snapshot	src/hw_pump.c	8245	void lock_snapshot() {
+unlock_snapshot	src/hw_pump.c	8302	void unlock_snapshot() {
+phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
+genericHal	src/hal.c	672	HAL_FUNCS genericHal = {
+HAL_init	src/hal.c	1069	void HAL_init() {
+PHI_initPeripherals	src/hal.c	1554	char* PHI_initPeripherals() {
+GENERIC_initPeripherals	src/hal.c	2514	char* GENERIC_initPeripherals() {
+GYRO_UPDATE_EVERY	src/hal.c	2615	#define GYRO_UPDATE_EVERY 0.01
+GENERIC_gyroGetDeltas	src/hal.c	2645	void  GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+GENERIC_gyroGetTemp	src/hal.c	3162	INT8 GENERIC_gyroGetTemp(){
+GENERIC_setMotorPower	src/hal.c	3291	void GENERIC_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+GENERIC_getRawJointPos	src/hal.c	3515	UINT16 GENERIC_getRawJointPos(BYTE adcIdx) {
+GENERIC_setControllerId	src/hal.c	3768	void GENERIC_setControllerId(char oldId, char newId) {
+bUseFifo	src/gyro.c	137	BOOL bUseFifo = TRUE;
+zeroX	src/gyro.c	188	INT16 zeroX = 0;
+zeroY	src/gyro.c	205	INT16 zeroY = 0;
+zeroZ	src/gyro.c	222	INT16 zeroZ = 0;
+threshX	src/gyro.c	267	INT16 threshX = 0;
+threshY	src/gyro.c	286	INT16 threshY = 0;
+threshZ	src/gyro.c	305	INT16 threshZ = 0;
+GYRO_MAX_VALUE	src/gyro.c	410	#define GYRO_MAX_VALUE          250.0f
+GYRO_MAX_VALUE_CMD	src/gyro.c	449	#define GYRO_MAX_VALUE_CMD      GYRO_CR4_FS_250DPS
+GYRO_MAX_VALUE_MULT	src/gyro.c	500	#define GYRO_MAX_VALUE_MULT     GYRO_250DPS_MULT
+GYRO_SAMPLE_RATE	src/gyro.c	550	#define GYRO_SAMPLE_RATE        100.0f
+GYRO_SAMPLE_PERIOD	src/gyro.c	589	#define GYRO_SAMPLE_PERIOD      (1.0f / GYRO_SAMPLE_RATE)
+GYRO_SAMPLE_RATE_CMD	src/gyro.c	647	#define GYRO_SAMPLE_RATE_CMD    GYRO_CR1_DR_100HZ
+gyroInit	src/gyro.c	729	BOOL gyroInit(BOOL bEnableFifo) {
+gyroReadStatus	src/gyro.c	2719	BYTE gyroReadStatus() {
+gyroReadFifoSrc	src/gyro.c	2932	BYTE gyroReadFifoSrc() {
+gyroReadRawDps	src/gyro.c	3145	INT16 gyroReadRawDps(BYTE lowRegAddr) {
+gyroReadDps	src/gyro.c	3375	float gyroReadDps(BYTE lowRegAddr) {
+gyroReadFifoSlot_raw	src/gyro.c	3671	void gyroReadFifoSlot_raw(INT16* pX_dps, INT16* pY_dps, INT16* pZ_dps) {
+gyroReadFifoSlot	src/gyro.c	4085	void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
+PHI_gyroGetDeltas_noFifo	src/gyro.c	5179	void PHI_gyroGetDeltas_noFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+PHI_gyroGetDeltas_useFifo	src/gyro.c	6209	void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+PHI_gyroGetDeltas	src/gyro.c	7212	void PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+gyroGetRawTemp	src/gyro.c	7451	INT8 gyroGetRawTemp() {
+PHI_gyroGetTemp	src/gyro.c	7658	float PHI_gyroGetTemp() {
+gyroCalibrate	src/gyro.c	7970	void gyroCalibrate() {
+UINT32	src/datalog.c	262	    #define UINT32          unsigned long
+UINT64	src/datalog.c	304	    #define UINT64          unsigned long long
+LOG_FATAL	src/datalog.c	351	    #define LOG_FATAL       printf
+PHI_upTime	src/datalog.c	386	    UINT64 PHI_upTime() {
+BASH_BLACK	src/datalog.c	492	    #define BASH_BLACK      "30"
+BASH_RED	src/datalog.c	525	    #define BASH_RED        "31"
+BASH_GREEN	src/datalog.c	558	    #define BASH_GREEN      "32"
+BASH_YELLOW	src/datalog.c	591	    #define BASH_YELLOW     "33"
+BASH_BLUE	src/datalog.c	624	    #define BASH_BLUE       "34"
+BASH_MAGENTA	src/datalog.c	657	    #define BASH_MAGENTA    "35"
+BASH_CYAN	src/datalog.c	690	    #define BASH_CYAN       "36"
+BASH_WHITE	src/datalog.c	723	    #define BASH_WHITE      "37"
+BASH_START_COLOR	src/datalog.c	757	    #define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	src/datalog.c	805	    #define BASH_STOP_COLOR       "\e[0m"
+DLOG_SIGN	src/datalog.c	852	#define DLOG_SIGN 'DLOG'
+PASS	src/datalog.c	878	#define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
+FAIL	src/datalog.c	943	#define FAIL BASH_START_COLOR(BASH_RED) "FAIL" BASH_STOP_COLOR
+WRAP	src/datalog.c	1007	#define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
+CLOSE_ENOUGH	src/datalog.c	1086	#define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
+TO_TIME64	src/datalog.c	1138	#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
+time	src/datalog.c	1210	  UINT64 time;
+data	src/datalog.c	1225	  double data;
+DATALOG_ELEM	src/datalog.c	1234	} DATALOG_ELEM;
+sign	src/datalog.c	1275	  UINT32 sign;
+currIdx	src/datalog.c	1287	  int currIdx;
+numElem	src/datalog.c	1302	  int numElem;
+elem	src/datalog.c	1326	  DATALOG_ELEM elem[];
+DATALOG	src/datalog.c	1339	} DATALOG;
+dlog_create	src/datalog.c	1359	DATALOG* dlog_create(int numElem) {
+dlog_free	src/datalog.c	1704	void dlog_free(DATALOG* pLog) {
+dlog_addElem_withTime	src/datalog.c	1856	void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
+dlog_addElem	src/datalog.c	2240	void dlog_addElem(DATALOG* pLog, double data) {
+dlog_avg	src/datalog.c	2344	double dlog_avg(DATALOG* pLog, int depth) {
+dlog_predict	src/datalog.c	2949	double dlog_predict(DATALOG* pLog, UINT64 time) {
+dlog_test	src/datalog.c	3456	void dlog_test()  {
+main	src/datalog.c	5760	int main()  {
+UINT32	src/cubic.c	229	    #define UINT32          unsigned long
+UINT64	src/cubic.c	271	    #define UINT64          unsigned long long
+cubic	src/cubic.c	345	double cubic(
