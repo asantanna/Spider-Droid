@@ -58,10 +58,12 @@ BOOL startPhiLink(char* ipAddr, int port) {
     goto error_exit;
   }
 
-  // spawn thread to run the link
+  //
+  // Spawn thread to run the PhiLink
   //
   // Note2: thread is started detached and we don't keep track
   // of the pthread_t, thread is "fire and forget"
+  //
 
   pthread_t thread;
   pthread_attr_t threadAttr;
@@ -84,7 +86,7 @@ BOOL startPhiLink(char* ipAddr, int port) {
 
   // release thread attr because we don't use it
   pthread_attr_destroy(&threadAttr);
-
+  
   // sleep a bit to allow thread to run (1/4 sec)
   usleep(1e6/4);
 
@@ -141,7 +143,15 @@ void* PHI_link_loop(void* arg)
   // DEBUG
   LOG_INFO("** Phi Link connected");
 
-  // loop forever
+  //
+  // Start the hardware pump threads
+  //
+
+  startHwPump();
+
+  //
+  // PHILINK comm loop (loop forever)
+  //
 
   UINT64 lastLoopTime = PHI_upTime();
   UINT64 currTime;
