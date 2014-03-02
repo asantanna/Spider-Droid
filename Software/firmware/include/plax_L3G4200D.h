@@ -135,6 +135,13 @@
 
 #define GYRO_TEMP_ADDR            0x26
 
+#define GYRO_TEMP_MIN             (-40)
+#define GYRO_TEMP_MAX             85
+#define GYRO_TEMP_RANGE           (GYRO_TEMP_MAX - GYRO_TEMP_MIN + 1)
+
+#define GYRO_TEMP_RAW_TO_CANON(raw) \
+    ( ( ((double)(raw)) - GYRO_TEMP_MIN ) / GYRO_TEMP_RANGE )
+
 // STATUS_REG
 
 #define GYRO_STATUS_ADDR          0x27
