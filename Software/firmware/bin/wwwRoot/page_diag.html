@@ -46,13 +46,13 @@
         
         document.getElementById("slider_val").innerHTML = percent + "%";
         // set motor speed
-        motorId = document.getElementById("phi_leg").value + document.getElementById("phi_joint").value;
+        motorName = document.getElementById("phi_motor").value;
         if (bPhiInit && bSetPowerOK) {
           // disable setPower until we get reply so we don't swamp PHI
           bSetPowerOK = false;
 
           // send set power command
-          phi_setPower(motorId, percent);
+          phi_setPower(motorName, percent);
         }
       }
 
@@ -189,7 +189,7 @@
           alert("PHI is not initialized, you dummy!");
           return;
         }
-        phi_setPower("rft", 100);
+        phi_setPower("A0", 50);
       }
 
       function debugTest2() {
@@ -198,7 +198,7 @@
           alert("PHI is not initialized, you dummy!");
           return;
         }
-        phi_setPower("rft", 0);
+        phi_setPower("A0", 0);
       }
 
    </script>
@@ -260,24 +260,21 @@
       <col width=250>
       
       <tr> 
-         <td class="phi_label">Select Leg:</td>
+         <td class="phi_label">Select Motor:</td>
          <td style="padding-left:30px;">
-            <select id="phi_leg">
-               <option value="rf">Right Front</option>
-               <option value="lf">Left Front</option>
-               <option value="rb">Right Back</option>
-               <option value="lb">Left Back</option>
-            </select>             
-         </td>
-      </tr>
-
-      <tr> 
-         <td class="phi_label">Select Joint:</td>
-         <td style="padding-left:30px;">
-            <select id="phi_joint">
-               <option value="t">Thigh</option>
-               <option value="k">Knee</option>
-               <option value="h">Hip</option>
+            <select id="phi_motor">
+               <option value="A0"> A0: Front Left Thigh</option>
+               <option value="A1"> A1: Front Left Shin</option>
+               <option value="B0"> B0: Front Right Thigh</option>
+               <option value="B1"> B1: Front Right Shin</option>
+               <option value="C0"> C0: Back Left Thigh</option>
+               <option value="C1"> C1: Back Left Shin</option>
+               <option value="D0"> D0: Back Right Thigh</option>
+               <option value="D1"> D1: Back Right Shin</option>
+               <option value="E0"> E0: Front Left Hip</option>
+               <option value="E1"> E1: Front Right Hip</option>
+               <option value="F0"> F0: Back Left Hip</option>
+               <option value="F1"> F1: Back Right Hip</option>
             </select>             
          </td>
       </tr>
@@ -293,7 +290,7 @@
          <td> &nbsp; &nbsp; &nbsp; &nbsp;
             <strong> Max: </strong> &nbsp; &nbsp;
             <input type="text" id="max_power" size="1" align="right"
-                   value="100">
+                   value="30">
          </td>
       </tr>
 
