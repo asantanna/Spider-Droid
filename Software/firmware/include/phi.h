@@ -47,6 +47,8 @@
 
 // hardware abstraction layer (HAL)
 #include "hal.h"
+#include "hal_stub.h"
+#include "hal_phi.h"
 
 // misc func decls
 #include "phi_funcs.h"

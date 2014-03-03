@@ -217,7 +217,7 @@ void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
 
 TODO("check for overrun")
 
-void PHI_gyroGetDeltas_noFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+void gyroGetDeltaDegrees_noFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
   
   float pitchDelta = 0;
   float yawDelta = 0;
@@ -257,9 +257,9 @@ void PHI_gyroGetDeltas_noFifo(float* pPitchDelta, float* pYawDelta, float* pRoll
   *pRollDelta  = rollDelta;
 }
 
-// for more info, see comments at PHI_gyroGetDeltas_noFifo() above
+// for more info, see comments at gyroGetDeltaDegrees_noFifo() above
 
-void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+void gyroGetDeltaDegrees_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
 
   float pitchDelta = 0;
   float yawDelta = 0;
@@ -302,10 +302,10 @@ void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRol
   *pRollDelta  = rollDelta;
 }
 
-void PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-  
-  bUseFifo ? PHI_gyroGetDeltas_useFifo(pPitchDelta, pYawDelta, pRollDelta)
-           : PHI_gyroGetDeltas_noFifo (pPitchDelta, pYawDelta, pRollDelta);
+void gyroGetDeltaDegrees(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+
+  bUseFifo ? gyroGetDeltaDegrees_useFifo(pPitchDelta, pYawDelta, pRollDelta)
+           : gyroGetDeltaDegrees_noFifo (pPitchDelta, pYawDelta, pRollDelta);
 }
 
 INT8 gyroGetRawTemp() {
@@ -316,10 +316,6 @@ INT8 gyroGetRawTemp() {
   spi_sendreceive(GYRO_SPI_IDX, txBuff, 1, rxBuff, 1);
 
   return rxBuff[0];
-}
-
-float PHI_gyroGetTemp() {
-  return GYRO_TEMP_RAW_TO_CANON(gyroGetRawTemp());
 }
 
 // gyroscope can have a systematic error and thus zero dps might not

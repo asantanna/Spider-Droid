@@ -15,12 +15,12 @@
 
 HAL_FUNCS phiHal = {
   .pName =            "Phi HAL",
-  .initPeripherals =  (halFunc_pChar) PHI_initPeripherals,
-  .gyroGetDeltas =    PHI_gyroGetDeltas,
-  .gyroGetTemp =      PHI_gyroGetTemp,
-  .getRawJointPos =   (halFunc_UINT16) PHI_getRawJointPos,
-  .setMotorPower =    (halFunc_void) PHI_setMotorPower,
-  .setControllerId =  (halFunc_void) PHI_setControllerId,
+  .initPeripherals =  (halFunc_pChar)     HAL_PHI_initPeripherals,
+  .gyroGetDeltas =                        HAL_PHI_gyroGetDeltas,
+  .gyroGetTemp =                          HAL_PHI_gyroGetTemp,
+  .getJointPos =      (halFunc_float)     HAL_PHI_getJointPos,
+  .setMotorPower =    (halFunc_void)      HAL_PHI_setMotorPower,
+  .setControllerId =  (halFunc_void)      HAL_PHI_setControllerId,
 };
 
 //
@@ -28,13 +28,13 @@ HAL_FUNCS phiHal = {
 //
 
 HAL_FUNCS genericHal = {
-  .pName =            "Generic HAL",
-  .initPeripherals =  (halFunc_pChar) GENERIC_initPeripherals,
-  .gyroGetDeltas =    GENERIC_gyroGetDeltas,
-  .gyroGetTemp =      GENERIC_gyroGetTemp,
-  .getRawJointPos =   (halFunc_UINT16) GENERIC_getRawJointPos,
-  .setMotorPower =    (halFunc_void) GENERIC_setMotorPower,
-  .setControllerId =  (halFunc_void) GENERIC_setControllerId,
+  .pName =            "Stub HAL",
+  .initPeripherals =  (halFunc_pChar)     HAL_STUB_initPeripherals,
+  .gyroGetDeltas =                        HAL_STUB_gyroGetDeltas,
+  .gyroGetTemp =                          HAL_STUB_gyroGetTemp,
+  .getJointPos =      (halFunc_float)     HAL_STUB_getJointPos,
+  .setMotorPower =    (halFunc_void)      HAL_STUB_setMotorPower,
+  .setControllerId =  (halFunc_void)      HAL_STUB_setControllerId,
 };
 
 void HAL_init() {
@@ -58,113 +58,4 @@ void HAL_init() {
   LOG_INFO("Loading HAL: \"%s\"",  HAL_name);
 }
 
-
-//
-// PHI HAL
-//
-
-char* PHI_initPeripherals() {
-
-  // NULL means success
-  char *rc = NULL;
-  
-  g_initPeriph = FALSE;
-
-  // set up UART for communication with motor controllers
-  if (!uart_init()) {
-    rc = "PHI_InitPeripherals: UART init failed. Are you running on PHI?";
-    goto quick_exit;
-  }
-
-  // set up SPI for communication with gyroscope and ADCs
-  if (!spi_init()) {
-    rc = "PHI_InitPeripherals: SPI init failed";
-    goto quick_exit;
-  }
-
-  // set up I2C for communication with accelerometer
-  TODO("i2c_init not implemented");
-
-  // init gyroscope (FIFO enabled)
-  if (!gyroInit(TRUE)) {
-    rc = "PHI_InitPeripherals: gyroscope init failed";
-    goto quick_exit;
-  }
-
-  // init accelerometer
-  TODO("accelInit() nit not implemented");
-
-  // init motor controllers
-  if (!initMotorCtrl()) {
-    rc = "PHI_InitPeripherals: motor ctrl init failed";
-    goto quick_exit;
-  }
-
-  // success
-  g_initPeriph = TRUE;
-
-quick_exit:
-
-  return rc;
-}
-
-//
-// GENERIC HAL
-//
-
-char* GENERIC_initPeripherals() {
-  // NULL means success
-  g_initPeriph = TRUE;
-  return NULL;
-}
-
-#define GYRO_UPDATE_EVERY 0.01
-
-void  GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-
-  static double lastSecs = 0;
-  double currSecs = ((double) PHI_upTime()) / 1e6;
-  double elapsed = currSecs - lastSecs;
-
-  if ( elapsed < GYRO_UPDATE_EVERY) {
-    *pPitchDelta = 0;
-    *pYawDelta = 0;
-    *pRollDelta = 0;
-    
-  } else {
-    
-    *pPitchDelta = 100 * elapsed;    // 100 deg/s
-    *pYawDelta   =  50 * elapsed;    // 50 deg/s
-    *pRollDelta  = -50 * elapsed;    // -50 deg/s
-    
-    lastSecs = currSecs;
-  }
-}
-
-INT8 GENERIC_gyroGetTemp(){
-  double currSecs = ((double) PHI_upTime()) / 1e6;
-  return (INT8) ( ((long) currSecs) % 100 );
-}  
-
-void GENERIC_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
-  // do nothing for now
-}
-
-//
-// Generic getRawJointPos() - return fake values that advance with time
-//
-// note: raw ADC value is [0,1023]
-//
-
-UINT16 GENERIC_getRawJointPos(BYTE adcIdx) {
-  double currSecs = (PHI_upTime() / 1e6); 
-  // advance 10 deg/second
-  double deg = currSecs * 10;
-  // each index 20 deg ahead of prev
-  deg += adcIdx * 20.0;
-  return (UINT16) ( ((UINT32) deg) % 360ul );
-}
-
-void GENERIC_setControllerId(char oldId, char newId) {
-}
 

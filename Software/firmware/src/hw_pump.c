@@ -124,7 +124,7 @@ void startHwPump() {
     /*
     // increase priority to make loop more even
 
-    if (PHI_setRealtimePrio(thread) == FALSE) {
+    if (setRealtimePrio(thread) == FALSE) {
       // not fatal
       LOG_ERR("set_realtime_priority() failed!");
     }
@@ -155,7 +155,7 @@ void* hwPump_UART_thread(void* arg)
   //       or corrupted command.
 
   // time at start of loop
-  UINT64 usec_loopStart = PHI_upTime();
+  UINT64 usec_loopStart = phiUpTime();
 
   while (TRUE) {
 
@@ -188,7 +188,7 @@ void* hwPump_UART_thread(void* arg)
     //
 
     // time at end of work
-    UINT64 usec_workEnd = PHI_upTime();
+    UINT64 usec_workEnd = phiUpTime();
 
     // sleep any leftover time
 
@@ -204,7 +204,7 @@ void* hwPump_UART_thread(void* arg)
     usleep(usec_sleepTime);
 
     // new loop start
-    usec_loopStart = PHI_upTime();
+    usec_loopStart = phiUpTime();
     
   } // while
 }
@@ -230,7 +230,7 @@ void* hwPump_SPI_thread(void* arg)
   //
 
   // time at start of loop
-  UINT64 usec_loopStart = PHI_upTime();
+  UINT64 usec_loopStart = phiUpTime();
 
   while (TRUE) {
 
@@ -276,7 +276,7 @@ void* hwPump_SPI_thread(void* arg)
     //
 
     // time at end of work
-    UINT64 usec_workEnd = PHI_upTime();
+    UINT64 usec_workEnd = phiUpTime();
 
     // sleep any leftover time
 
@@ -292,7 +292,7 @@ void* hwPump_SPI_thread(void* arg)
     usleep(usec_sleepTime);
 
     // new loop start
-    usec_loopStart = PHI_upTime();
+    usec_loopStart = phiUpTime();
     
   } // while
 }
@@ -469,7 +469,7 @@ void updateState() {
 
 -----
 
-  usec_loopEnd = PHI_upTime();
+  usec_loopEnd = phiUpTime();
   
   while (true) {
 
@@ -494,7 +494,7 @@ void updateState() {
     //
 
     // time at end of work
-    usec_workEnd = PHI_upTime();
+    usec_workEnd = phiUpTime();
 
     // sleep any leftover time
 
@@ -507,7 +507,7 @@ void updateState() {
     }
 
     usleep(usec_sleepTime);
-    usec_loopEnd = PHI_upTime();
+    usec_loopEnd = phiUpTime();
 
     // compute error in loop time
     //
@@ -519,7 +519,7 @@ void updateState() {
     // DEBUG
     // printf("sleep time = %ld uS, error = %ld uS\n", usec_sleepTime, usec_error);
     // sleep(1);
-    // usec_loopEnd = PHI_upTime();
+    // usec_loopEnd = phiUpTime();
 
     // DEBUG - uncomment to disable loop adaptation
     // usec_error = 0;

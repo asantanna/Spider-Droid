@@ -4,12 +4,8 @@
 
 typedef void   (*halFunc_void)   ();
 typedef int    (*halFunc_int)    ();
+typedef float  (*halFunc_float)  ();
 typedef char*  (*halFunc_pChar)  ();
-
-typedef BOOL   (*halFunc_BOOL)   ();
-typedef INT8   (*halFunc_INT8)   ();
-typedef UINT8  (*halFunc_UINT8)  ();
-typedef UINT16 (*halFunc_UINT16) ();
 
 typedef struct {
 
@@ -20,14 +16,15 @@ typedef struct {
   halFunc_pChar   initPeripherals;
 
   // gyroscope
-  halFunc_BOOL    gyroInit;
   halFunc_void    gyroGetDeltas;
-  halFunc_INT8    gyroGetTemp;
+  halFunc_float   gyroGetTemp;
 
-  // motor control
-  halFunc_UINT16  getRawJointPos;
+  // motor controllers
   halFunc_void    setMotorPower;
   halFunc_void    setControllerId;
+
+  // ADCs
+  halFunc_float   getJointPos;
 
 } HAL_FUNCS;
 
@@ -44,24 +41,7 @@ void HAL_init();
 #define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
 #define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
 
-#define HAL_getRawJointPos    (*(g_pHal -> getRawJointPos))
 #define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
 #define HAL_setControllerId   (*(g_pHal -> setControllerId))
 
-// PHI HAL
-
-char*   PHI_initPeripherals();
-void    PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
-INT8    PHI_gyroGetTemp();
-UINT16  PHI_getRawJointPos(BYTE adcIdx);
-void    PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd);
-void    PHI_setControllerId(BYTE oldId, BYTE newId);
-
-// generic HAL
-
-char*   GENERIC_initPeripherals();
-void    GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
-INT8    GENERIC_gyroGetTemp();
-UINT16  GENERIC_getRawJointPos(BYTE adcIdx);
-void    GENERIC_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd);
-void    GENERIC_setControllerId(char oldId, char newId);
+#define HAL_getJointPos       (*(g_pHal -> getJointPos))

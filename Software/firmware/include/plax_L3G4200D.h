@@ -142,6 +142,9 @@
 #define GYRO_TEMP_RAW_TO_CANON(raw) \
     ( ( ((double)(raw)) - GYRO_TEMP_MIN ) / GYRO_TEMP_RANGE )
 
+#define GYRO_TEMP_CANON_TO_RAW(canon) \
+    ( ( ((double)(canon)) * GYRO_TEMP_RANGE) + GYRO_TEMP_MIN)
+
 // STATUS_REG
 
 #define GYRO_STATUS_ADDR          0x27

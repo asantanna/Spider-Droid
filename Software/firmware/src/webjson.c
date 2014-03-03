@@ -141,7 +141,7 @@ char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON requ
 // Note: the caller MUST free the reply after transmitting
 // it to the client.
 
-char* PHI_processJson(char *pJsonReq) {
+char* processJson(char *pJsonReq) {
   
   jsmntok_t tokens[MAX_JSON_TOKENS];
   jsmn_parser parser;
@@ -151,7 +151,7 @@ char* PHI_processJson(char *pJsonReq) {
   // reply (pJsonReply) that is returned to the caller.
   //
   // Note: the caller must free pJsonReply when done with
-  // it using PHI_freeJsonReply()
+  // it using freeJsonReply()
 
   char* pJsonReply = NULL;
   PHI_JSON_CMD_REPLY_TYPE* pRepHead = NULL;
@@ -331,7 +331,7 @@ quick_exit:
 err_exit:
 
   if (pJsonReply != NULL) {
-    PHI_freeJsonReply(pJsonReply);
+    freeJsonReply(pJsonReply);
   }
 
   pJsonReply = PHI_ALLOC_N(strlen(jsonParseError));
@@ -340,7 +340,7 @@ err_exit:
   
 }
 
-void PHI_freeJsonReply(char* pJsonReply) {
+void freeJsonReply(char* pJsonReply) {
   PHI_FREE(pJsonReply);
 }
 
@@ -489,7 +489,7 @@ JSON_HANDLER(getSysInfo) {
 
 JSON_HANDLER(getPhiUptime) {
   JSON_HANDLER_PROLOG(getPhiUptime);
-  sprintf(_buff + strlen(_buff), Q(mSecs) ":" Q(%lu) "\n", (UINT32) (PHI_upTime() / 1000));
+  sprintf(_buff + strlen(_buff), Q(mSecs) ":" Q(%lu) "\n", (UINT32) (phiUpTime() / 1000));
   JSON_HANDLER_EPILOG();
 }
 
@@ -695,7 +695,7 @@ JSON_HANDLER(getGyroDeltas) {
 
 JSON_HANDLER(getGyroTemp) {
   JSON_HANDLER_PROLOG(getGyroTemp);
-  sprintf(_buff + strlen(_buff), Q(degreesC) ":" Q(%d) "\n", HAL_gyroGetTemp());
+  sprintf(_buff + strlen(_buff), Q(degreesC) ":" Q(%d) "\n", (int) GYRO_TEMP_CANON_TO_RAW(HAL_gyroGetTemp()) );
   JSON_HANDLER_EPILOG();
 }
 

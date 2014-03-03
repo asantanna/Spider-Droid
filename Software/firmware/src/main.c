@@ -33,10 +33,10 @@ void main() {
   // main loop.
   //
   
-  PHI_webadmin(80, "./wwwRoot");
+  webAdmin(80, "./wwwRoot");
 
   // never gets here
-  LOG_FATAL("PHI_webadmin returned!");
+  LOG_FATAL("webAdmin returned!");
   
 }
 
@@ -69,7 +69,7 @@ void globalInit() {
   g_ipAddr = getHostIP();
 
   // init log
-  if (PHI_logInit(LOGFILE_NAME) == 0) {
+  if (logInit(LOGFILE_NAME) == 0) {
     // failed
     LOG_FATAL("Error: could not open log file '%s' (errno=%d)!  (Are you running as root?)\n", LOGFILE_NAME, errno);
   }

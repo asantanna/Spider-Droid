@@ -131,7 +131,7 @@ void uart_send(BYTE* pData, int dataLen) {
     if (count < 0)
     {
       perror("UART TX error");
-      PHI_abortProcess(-1);
+      abortProcess(-1);
     }
   }
 }

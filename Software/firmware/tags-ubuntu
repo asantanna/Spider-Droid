@@ -1,4 +1,7 @@
 	TAGS	UNSORTED
+phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
+genericHal	src/hal.c	750	HAL_FUNCS genericHal = {
+HAL_init	src/hal.c	1204	void HAL_init() {
 MC_DEF_BAUD	include/polulu_2s9v1.h	107	#define MC_DEF_BAUD   B38400
 MC_CMD_SIGN	include/polulu_2s9v1.h	513	#define MC_CMD_SIGN                 0xAA
 MC_DEFAULT_DEVICE_NUM	include/polulu_2s9v1.h	554	#define MC_DEFAULT_DEVICE_NUM       9
@@ -147,57 +150,57 @@ TRUE	include/phi_defs.h	682	#define TRUE            1
 COUNTOF	include/phi_defs.h	725	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
 MIN	include/phi_defs.h	789	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
 MAX	include/phi_defs.h	841	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
-PHI_ALLOC	include/phi_defs.h	1004	#define PHI_ALLOC(D)    ((D*)PHI_allocHelper(sizeof(D)))
-PHI_ALLOC_N	include/phi_defs.h	1061	#define PHI_ALLOC_N(n)  PHI_allocHelper(n)
-PHI_FREE	include/phi_defs.h	1104	#define PHI_FREE(p)     {free(p); p = NULL; }
-PHI_ZERO	include/phi_defs.h	1151	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
-PHI_ZERO_P	include/phi_defs.h	1202	#define PHI_ZERO_P(p,l) memset(p, 0, l)
-BASH_BLACK	include/phi_defs.h	1260	#define BASH_BLACK      "30"
-BASH_RED	include/phi_defs.h	1289	#define BASH_RED        "31"
-BASH_GREEN	include/phi_defs.h	1318	#define BASH_GREEN      "32"
-BASH_YELLOW	include/phi_defs.h	1347	#define BASH_YELLOW     "33"
-BASH_BLUE	include/phi_defs.h	1376	#define BASH_BLUE       "34"
-BASH_MAGENTA	include/phi_defs.h	1405	#define BASH_MAGENTA    "35"
-BASH_CYAN	include/phi_defs.h	1434	#define BASH_CYAN       "36"
-BASH_WHITE	include/phi_defs.h	1463	#define BASH_WHITE      "37"
-BASH_START_COLOR	include/phi_defs.h	1493	#define BASH_START_COLOR(c)   "\e[1;" c "m"
-BASH_STOP_COLOR	include/phi_defs.h	1537	#define BASH_STOP_COLOR       "\e[0m"
-DO_PRAGMA	include/phi_defs.h	1576	#define DO_PRAGMA(x)    _Pragma (#x)
-INFO	include/phi_defs.h	1613	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
-TODO	include/phi_defs.h	1716	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
-WARN	include/phi_defs.h	1818	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
-HACK	include/phi_defs.h	1927	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
-U64_1E6	include/phi_defs.h	2037	#define U64_1E6         ((UINT64)1e6)
-TV_TO_USEC	include/phi_defs.h	2075	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
-LOG_INFO	include/phi_defs.h	2171	#define LOG_INFO(...)   PHI_logMsg("", __VA_ARGS__)
-LOG_ERR	include/phi_defs.h	2223	#define LOG_ERR(...)    PHI_logMsg("ERROR: ", __VA_ARGS__)
-LOG_FATAL	include/phi_defs.h	2282	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); PHI_logMsg("FATAL: ", __VA_ARGS__); PHI_abortProcess(-1); }
-STR	include/phi_defs.h	2448	#define STR(s)                #s              /* convert to string */
-STR_MACRO	include/phi_defs.h	2518	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
-Q	include/phi_defs.h	2641	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
-UART_DRIVER_NAME	include/phi_defs.h	2737	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
-SPI0_DRIVER_NAME	include/phi_defs.h	2778	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
-SPI1_DRIVER_NAME	include/phi_defs.h	2821	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
-OFF	include/phi_defs.h	2891	    OFF,
-RED	include/phi_defs.h	2900	    RED,
-FLASH_RED	include/phi_defs.h	2909	    FLASH_RED,
-YELLOW	include/phi_defs.h	2924	    YELLOW,
-FLASH_YELLOW	include/phi_defs.h	2936	    FLASH_YELLOW,
-GREEN	include/phi_defs.h	2954	    GREEN,
-FLASH_GREEN	include/phi_defs.h	2965	    FLASH_GREEN
-PHI_LED_COLOR	include/phi_defs.h	2984	} PHI_LED_COLOR;
-CAM_WIDTH	include/phi_defs.h	3071	#define CAM_WIDTH         160
-CAM_HEIGHT	include/phi_defs.h	3101	#define CAM_HEIGHT        120
-CAM_NUM_BYTES	include/phi_defs.h	3131	#define CAM_NUM_BYTES     (CAM_WIDTH * CAM_HEIGHT)
-DEF_PHILINK_PORT	include/phi_defs.h	3194	#define DEF_PHILINK_PORT  1122
-GYRO_SPI_IDX	include/phi_defs.h	3249	#define GYRO_SPI_IDX      0
-ADC_SPI_IDX	include/phi_defs.h	3300	#define ADC_SPI_IDX       1
-PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3347	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
-PHI_MUTEX_INITVAL	include/phi_defs.h	3399	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
-PHI_MUTEX_DECL	include/phi_defs.h	3461	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name = PHI_MUTEX_INITVAL
-PHI_MUTEX_GET	include/phi_defs.h	3541	#define PHI_MUTEX_GET(pSem)         pthread_mutex_lock(pSem)
-PHI_MUTEX_RELEASE	include/phi_defs.h	3602	#define PHI_MUTEX_RELEASE(pSem)     pthread_mutex_unlock(pSem)
-PHI_MUTEX_TEST	include/phi_defs.h	3665	#define PHI_MUTEX_TEST(pSem)        pthread_mutex_trylock(pSem)
+PHI_ALLOC	include/phi_defs.h	1004	#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
+PHI_ALLOC_N	include/phi_defs.h	1057	#define PHI_ALLOC_N(n)  allocHelper(n)
+PHI_FREE	include/phi_defs.h	1096	#define PHI_FREE(p)     {free(p); p = NULL; }
+PHI_ZERO	include/phi_defs.h	1143	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
+PHI_ZERO_P	include/phi_defs.h	1194	#define PHI_ZERO_P(p,l) memset(p, 0, l)
+BASH_BLACK	include/phi_defs.h	1252	#define BASH_BLACK      "30"
+BASH_RED	include/phi_defs.h	1281	#define BASH_RED        "31"
+BASH_GREEN	include/phi_defs.h	1310	#define BASH_GREEN      "32"
+BASH_YELLOW	include/phi_defs.h	1339	#define BASH_YELLOW     "33"
+BASH_BLUE	include/phi_defs.h	1368	#define BASH_BLUE       "34"
+BASH_MAGENTA	include/phi_defs.h	1397	#define BASH_MAGENTA    "35"
+BASH_CYAN	include/phi_defs.h	1426	#define BASH_CYAN       "36"
+BASH_WHITE	include/phi_defs.h	1455	#define BASH_WHITE      "37"
+BASH_START_COLOR	include/phi_defs.h	1485	#define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	include/phi_defs.h	1529	#define BASH_STOP_COLOR       "\e[0m"
+DO_PRAGMA	include/phi_defs.h	1568	#define DO_PRAGMA(x)    _Pragma (#x)
+INFO	include/phi_defs.h	1605	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
+TODO	include/phi_defs.h	1708	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
+WARN	include/phi_defs.h	1810	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
+HACK	include/phi_defs.h	1919	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
+U64_1E6	include/phi_defs.h	2029	#define U64_1E6         ((UINT64)1e6)
+TV_TO_USEC	include/phi_defs.h	2067	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
+LOG_INFO	include/phi_defs.h	2163	#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
+LOG_ERR	include/phi_defs.h	2211	#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
+LOG_FATAL	include/phi_defs.h	2266	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
+STR	include/phi_defs.h	2424	#define STR(s)                #s              /* convert to string */
+STR_MACRO	include/phi_defs.h	2494	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
+Q	include/phi_defs.h	2617	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
+UART_DRIVER_NAME	include/phi_defs.h	2713	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
+SPI0_DRIVER_NAME	include/phi_defs.h	2754	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
+SPI1_DRIVER_NAME	include/phi_defs.h	2797	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
+OFF	include/phi_defs.h	2867	    OFF,
+RED	include/phi_defs.h	2876	    RED,
+FLASH_RED	include/phi_defs.h	2885	    FLASH_RED,
+YELLOW	include/phi_defs.h	2900	    YELLOW,
+FLASH_YELLOW	include/phi_defs.h	2912	    FLASH_YELLOW,
+GREEN	include/phi_defs.h	2930	    GREEN,
+FLASH_GREEN	include/phi_defs.h	2941	    FLASH_GREEN
+PHI_LED_COLOR	include/phi_defs.h	2960	} PHI_LED_COLOR;
+CAM_WIDTH	include/phi_defs.h	3047	#define CAM_WIDTH         160
+CAM_HEIGHT	include/phi_defs.h	3077	#define CAM_HEIGHT        120
+CAM_NUM_BYTES	include/phi_defs.h	3107	#define CAM_NUM_BYTES     (CAM_WIDTH * CAM_HEIGHT)
+DEF_PHILINK_PORT	include/phi_defs.h	3170	#define DEF_PHILINK_PORT  1122
+GYRO_SPI_IDX	include/phi_defs.h	3225	#define GYRO_SPI_IDX      0
+ADC_SPI_IDX	include/phi_defs.h	3276	#define ADC_SPI_IDX       1
+PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3323	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
+PHI_MUTEX_INITVAL	include/phi_defs.h	3375	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
+PHI_MUTEX_DECL	include/phi_defs.h	3437	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name = PHI_MUTEX_INITVAL
+PHI_MUTEX_GET	include/phi_defs.h	3517	#define PHI_MUTEX_GET(pSem)         pthread_mutex_lock(pSem)
+PHI_MUTEX_RELEASE	include/phi_defs.h	3578	#define PHI_MUTEX_RELEASE(pSem)     pthread_mutex_unlock(pSem)
+PHI_MUTEX_TEST	include/phi_defs.h	3641	#define PHI_MUTEX_TEST(pSem)        pthread_mutex_trylock(pSem)
 LINK_OFF	include/philink.h	43	    LINK_OFF,
 LINK_STARTED	include/philink.h	57	    LINK_STARTED,
 LINK_CONNECTING	include/philink.h	75	    LINK_CONNECTING,
@@ -277,20 +280,19 @@ halFunc_UINT8	include/hal.h	240	typedef UINT8  (*halFunc_UINT8)  ();
 halFunc_UINT16	include/hal.h	277	typedef UINT16 (*halFunc_UINT16) ();
 pName	include/hal.h	340	  const char* pName;
 initPeripherals	include/hal.h	376	  halFunc_pChar   initPeripherals;
-gyroInit	include/hal.h	427	  halFunc_BOOL    gyroInit;
-gyroGetDeltas	include/hal.h	455	  halFunc_void    gyroGetDeltas;
-gyroGetTemp	include/hal.h	488	  halFunc_INT8    gyroGetTemp;
-getRawJointPos	include/hal.h	539	  halFunc_UINT16  getRawJointPos;
-setMotorPower	include/hal.h	573	  halFunc_void    setMotorPower;
-setControllerId	include/hal.h	606	  halFunc_void    setControllerId;
-HAL_FUNCS	include/hal.h	626	} HAL_FUNCS;
-HAL_name	include/hal.h	719	#define HAL_name              (g_pHal   -> pName)
-HAL_initPeripherals	include/hal.h	769	#define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
-HAL_gyroGetDeltas	include/hal.h	831	#define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
-HAL_gyroGetTemp	include/hal.h	890	#define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
-HAL_getRawJointPos	include/hal.h	948	#define HAL_getRawJointPos    (*(g_pHal -> getRawJointPos))
-HAL_setMotorPower	include/hal.h	1008	#define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
-HAL_setControllerId	include/hal.h	1067	#define HAL_setControllerId   (*(g_pHal -> setControllerId))
+gyroGetDeltas	include/hal.h	427	  halFunc_void    gyroGetDeltas;
+gyroGetTemp	include/hal.h	460	  halFunc_float   gyroGetTemp;
+setMotorPower	include/hal.h	515	  halFunc_void    setMotorPower;
+setControllerId	include/hal.h	548	  halFunc_void    setControllerId;
+getJointPos	include/hal.h	594	  halFunc_float   getJointPos;
+HAL_FUNCS	include/hal.h	610	} HAL_FUNCS;
+HAL_name	include/hal.h	703	#define HAL_name              (g_pHal   -> pName)
+HAL_initPeripherals	include/hal.h	753	#define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
+HAL_gyroGetDeltas	include/hal.h	815	#define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
+HAL_gyroGetTemp	include/hal.h	874	#define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
+HAL_setMotorPower	include/hal.h	932	#define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
+HAL_setControllerId	include/hal.h	991	#define HAL_setControllerId   (*(g_pHal -> setControllerId))
+HAL_getJointPos	include/hal.h	1053	#define HAL_getJointPos       (*(g_pHal -> getJointPos))
 INIT	include/globals.h	77	#define INIT(v)   = v
 EXT	include/globals.h	99	#define EXT       // nothing
 INIT	include/globals.h	134	#define INIT(v)   // nothing
@@ -319,26 +321,26 @@ jsonReply_end	src/webjson.c	2841	char jsonReply_end[]   = "] }";
 jsonReplyObject_start	src/webjson.c	2941	char jsonReplyObject_start[] = "{\n" Q(cmd) ":" Q(%s) ",\n";
 jsonReplyObject_end	src/webjson.c	3002	char jsonReplyObject_end[]   = "}";
 jsonParseError	src/webjson.c	3112	char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON request.  It''s probably your fault btw.) " }\n";
-PHI_processJson	src/webjson.c	3393	char* PHI_processJson(char *pJsonReq) {
-PHI_freeJsonReply	src/webjson.c	8148	void PHI_freeJsonReply(char* pJsonReply) {
-getJsonHandler	src/webjson.c	8228	jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
-JSON_TMP_BUFFSIZE	src/webjson.c	9141	#define JSON_TMP_BUFFSIZE     1024
-JSON_HANDLER_PROLOG	src/webjson.c	9177	#define JSON_HANDLER_PROLOG(cmd) \
-JSON_HANDLER_EPILOG	src/webjson.c	9570	#define JSON_HANDLER_EPILOG() \
-JSON_HANDLER	src/webjson.c	10530	JSON_HANDLER(getInitState) {
-JSON_HANDLER	src/webjson.c	10730	JSON_HANDLER(initPeripherals) {
-JSON_HANDLER	src/webjson.c	10962	JSON_HANDLER(getVersion) {
-JSON_HANDLER	src/webjson.c	11126	JSON_HANDLER(getIpAddr) {
-JSON_HANDLER	src/webjson.c	11386	JSON_HANDLER(getUname) {
-JSON_HANDLER	src/webjson.c	11878	JSON_HANDLER(getSysInfo) {
-JSON_HANDLER	src/webjson.c	13169	JSON_HANDLER(getPhiUptime) {
-JSON_HANDLER	src/webjson.c	14284	JSON_HANDLER(setPower) {
-JSON_HANDLER	src/webjson.c	16410	JSON_HANDLER(setMCtlId) {
-JSON_HANDLER	src/webjson.c	17868	JSON_HANDLER(getGyroDeltas) {
-JSON_HANDLER	src/webjson.c	18319	JSON_HANDLER(getGyroTemp) {
-JSON_HANDLER	src/webjson.c	18672	JSON_HANDLER(getLinkStatus) {
-JSON_HANDLER	src/webjson.c	19296	JSON_HANDLER(startPhiLink) {
-JSON_HANDLER	src/webjson.c	21310	JSON_HANDLER(selfTest) {
+processJson	src/webjson.c	3393	char* processJson(char *pJsonReq) {
+freeJsonReply	src/webjson.c	8136	void freeJsonReply(char* pJsonReply) {
+getJsonHandler	src/webjson.c	8212	jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
+JSON_TMP_BUFFSIZE	src/webjson.c	9125	#define JSON_TMP_BUFFSIZE     1024
+JSON_HANDLER_PROLOG	src/webjson.c	9161	#define JSON_HANDLER_PROLOG(cmd) \
+JSON_HANDLER_EPILOG	src/webjson.c	9554	#define JSON_HANDLER_EPILOG() \
+JSON_HANDLER	src/webjson.c	10514	JSON_HANDLER(getInitState) {
+JSON_HANDLER	src/webjson.c	10714	JSON_HANDLER(initPeripherals) {
+JSON_HANDLER	src/webjson.c	10946	JSON_HANDLER(getVersion) {
+JSON_HANDLER	src/webjson.c	11110	JSON_HANDLER(getIpAddr) {
+JSON_HANDLER	src/webjson.c	11370	JSON_HANDLER(getUname) {
+JSON_HANDLER	src/webjson.c	11862	JSON_HANDLER(getSysInfo) {
+JSON_HANDLER	src/webjson.c	13153	JSON_HANDLER(getPhiUptime) {
+JSON_HANDLER	src/webjson.c	14267	JSON_HANDLER(setPower) {
+JSON_HANDLER	src/webjson.c	16393	JSON_HANDLER(setMCtlId) {
+JSON_HANDLER	src/webjson.c	17851	JSON_HANDLER(getGyroDeltas) {
+JSON_HANDLER	src/webjson.c	18302	JSON_HANDLER(getGyroTemp) {
+JSON_HANDLER	src/webjson.c	18655	JSON_HANDLER(getLinkStatus) {
+JSON_HANDLER	src/webjson.c	19279	JSON_HANDLER(startPhiLink) {
+JSON_HANDLER	src/webjson.c	21293	JSON_HANDLER(selfTest) {
 HTTP_BUFFSIZE	src/webadmin.c	1201	#define HTTP_BUFFSIZE           8096      // max size of HTTP request
 FORBIDDEN	src/webadmin.c	1271	#define FORBIDDEN               403
 NOTFOUND	src/webadmin.c	1307	#define NOTFOUND                404
@@ -366,20 +368,20 @@ wa_response_servererror_hdr	src/webadmin.c	3352	char wa_response_servererror_hdr
 wa_response_servererror_body	src/webadmin.c	3548	char wa_response_servererror_body[] =
 SEND_ERROR_REPLY	src/webadmin.c	4065	#define SEND_ERROR_REPLY(replyType) \
 SEND_JSON_REPLY	src/webadmin.c	4360	#define SEND_JSON_REPLY(pJson) \
-PHI_webadmin	src/webadmin.c	4895	void PHI_webadmin(int port, const char* wwwRoot)
-wa_process_web_request	src/webadmin.c	7212	void* wa_process_web_request(void* arg)
-wa_parseHttpRequest	src/webadmin.c	11657	int wa_parseHttpRequest(char* pReq, PHI_PARSED_HTTP* pParsed) {
-readToken	src/webadmin.c	13783	char readToken(char** ppData, char** ppToken) {
-readToSpace	src/webadmin.c	15216	void readToSpace(char** ppData, char** ppToken) {
-readToEol	src/webadmin.c	15523	void readToEol(char** ppData, char** ppToken) {
+webAdmin	src/webadmin.c	4895	void webAdmin(int port, const char* wwwRoot)
+wa_process_web_request	src/webadmin.c	7208	void* wa_process_web_request(void* arg)
+wa_parseHttpRequest	src/webadmin.c	11645	int wa_parseHttpRequest(char* pReq, PHI_PARSED_HTTP* pParsed) {
+readToken	src/webadmin.c	13771	char readToken(char** ppData, char** ppToken) {
+readToSpace	src/webadmin.c	15204	void readToSpace(char** ppData, char** ppToken) {
+readToEol	src/webadmin.c	15511	void readToEol(char** ppData, char** ppToken) {
 uartFile	src/uart.c	102	static int uartFile = -1;
 uart_init	src/uart.c	232	BOOL uart_init() {
 uart_send	src/uart.c	3942	void uart_send(BYTE* pData, int dataLen) {
-uart_receive	src/uart.c	4338	int uart_receive(void* pBuff, int buffLen) {
-uart_flush	src/uart.c	5029	void uart_flush() {
-uart_discardInput	src/uart.c	5636	void uart_discardInput() {
-uart_discardOutput	src/uart.c	5697	void uart_discardOutput() {
-uart_discardAll	src/uart.c	5759	void uart_discardAll() {
+uart_receive	src/uart.c	4334	int uart_receive(void* pBuff, int buffLen) {
+uart_flush	src/uart.c	5025	void uart_flush() {
+uart_discardInput	src/uart.c	5632	void uart_discardInput() {
+uart_discardOutput	src/uart.c	5693	void uart_discardOutput() {
+uart_discardAll	src/uart.c	5755	void uart_discardAll() {
 spiFile	src/spi.c	445	static int spiFile[2] = { -1, -1 };
 spi_0_xfer	src/spi.c	530	struct spi_ioc_transfer spi_0_xfer[2] = {
 spi_1_xfer	src/spi.c	824	struct spi_ioc_transfer spi_1_xfer[2] = {
@@ -401,43 +403,43 @@ minWaitNeeded	src/selftest.c	486	INT32 minWaitNeeded = 0;
 selfTest	src/selftest.c	761	char* selfTest(int mode) {
 testAllJoints	src/selftest.c	925	void testAllJoints() {
 testJointMovement	src/selftest.c	2026	BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
-testJointRange	src/selftest.c	3605	BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
-moveJointToStop	src/selftest.c	4073	double moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
-PHI_allocHelper	src/phi_utils.c	52	void* PHI_allocHelper(int size) {
-PHI_upTime	src/phi_utils.c	210	UINT64 PHI_upTime() {
-PHI_abortProcess	src/phi_utils.c	344	void PHI_abortProcess(int rc) {
-PHI_abortWithMsg	src/phi_utils.c	470	void PHI_abortWithMsg(const char* msg) {
-__itoa	src/phi_utils.c	649	char* __itoa(int value, char* result, int base) {
-PHI_logfp	src/phi_utils.c	1596	FILE *PHI_logfp = NULL;
-PHI_logInit	src/phi_utils.c	1619	int PHI_logInit(char *filename) {
-PHI_logClose	src/phi_utils.c	2551	void PHI_logClose(void) {
-PHI_logTimestamp	src/phi_utils.c	2657	void PHI_logTimestamp() {
-PHI_logMsg	src/phi_utils.c	2822	void PHI_logMsg(const char* tag, const char *fmt, ...) {
-getHostIP	src/phi_utils.c	3209	UINT32 getHostIP() {
-PHI_setLED	src/phi_utils.c	4621	void PHI_setLED(PHI_LED_COLOR color) {
-PHI_rand	src/phi_utils.c	4947	double PHI_rand() {
-PHI_setRealtimePrio	src/phi_utils.c	5083	BOOL PHI_setRealtimePrio(pthread_t thread) {
-setNonBlocking	src/phi_utils.c	6005	int setNonBlocking(int fd)
+testJointRange	src/selftest.c	3601	BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
+moveJointToStop	src/selftest.c	4069	double moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
+allocHelper	src/phi_utils.c	52	void* allocHelper(int size) {
+PhiUpTime	src/phi_utils.c	202	UINT64 PhiUpTime() {
+abortProcess	src/phi_utils.c	335	void abortProcess(int rc) {
+abortWithMsg	src/phi_utils.c	457	void abortWithMsg(const char* msg) {
+__itoa	src/phi_utils.c	628	char* __itoa(int value, char* result, int base) {
+logfp	src/phi_utils.c	1575	FILE *logfp = NULL;
+logInit	src/phi_utils.c	1594	int logInit(char *filename) {
+logClose	src/phi_utils.c	2478	void logClose(void) {
+logTimestamp	src/phi_utils.c	2568	void logTimestamp() {
+logMsg	src/phi_utils.c	2724	void logMsg(const char* tag, const char *fmt, ...) {
+getHostIP	src/phi_utils.c	3083	UINT32 getHostIP() {
+setLED	src/phi_utils.c	4495	void setLED(PHI_LED_COLOR color) {
+PhiRand	src/phi_utils.c	4813	double PhiRand() {
+setRealtimePrio	src/phi_utils.c	4948	BOOL setRealtimePrio(pthread_t thread) {
+setNonBlocking	src/phi_utils.c	5866	int setNonBlocking(int fd)
 RX_BEGIN	src/philink.c	619	  RX_BEGIN,
 RX_RECEIVING	src/philink.c	631	  RX_RECEIVING,
 TX_BEGIN	src/philink.c	647	  TX_BEGIN,
 TX_SENDING	src/philink.c	659	  TX_SENDING,
 COMM_STATUS	src/philink.c	678	} COMM_STATUS;
-startPhiLink	src/philink.c	786	BOOL startPhiLink(char* ipAddr, int port) {
-PHI_link_loop	src/philink.c	2402	void* PHI_link_loop(void* arg)
-setLinkStatus	src/philink.c	4535	void setLinkStatus(PHILINK_STATUS status) {
+startPhiLink	src/philink.c	785	BOOL startPhiLink(char* ipAddr, int port) {
+phiLink_loop	src/philink.c	2400	void* phiLink_loop(void* arg)
+setLinkStatus	src/philink.c	4531	void setLinkStatus(PHILINK_STATUS status) {
 initMotorCtrl	src/motor.c	144	BOOL initMotorCtrl() {
-PHI_setMotorPower	src/motor.c	1965	void PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
-stopMotor	src/motor.c	2540	void stopMotor(BYTE ctrlID, BYTE selIdx) {
-stopAllMotors	src/motor.c	2632	void stopAllMotors() {
-flushMotorCmds	src/motor.c	3020	void flushMotorCmds() {
-getRawJointPos	src/motor.c	3190	UINT16 getRawJointPos(BYTE adcIdx) {
-PHI_getJointPos	src/motor.c	3866	float PHI_getJointPos(BYTE adcIdx) {
-PHI_getJointPosByMotorID	src/motor.c	3996	float PHI_getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
-PHI_setControllerId	src/motor.c	4252	void PHI_setControllerId(BYTE oldId, BYTE newId) {
+setMotorPower	src/motor.c	1965	void setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+stopMotor	src/motor.c	2536	void stopMotor(BYTE ctrlID, BYTE selIdx) {
+stopAllMotors	src/motor.c	2624	void stopAllMotors() {
+flushMotorCmds	src/motor.c	3012	void flushMotorCmds() {
+getRawJointPos	src/motor.c	3182	UINT16 getRawJointPos(BYTE adcIdx) {
+getJointPos	src/motor.c	3858	float getJointPos(BYTE adcIdx) {
+getJointPosByMotorID	src/motor.c	3984	float getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
+setControllerId	src/motor.c	4232	void setControllerId(BYTE oldId, BYTE newId) {
 GLOBAL_INIT	src/main.c	64	#define GLOBAL_INIT
 main	src/main.c	356	void main() {
-globalInit	src/main.c	661	void globalInit() {
+globalInit	src/main.c	653	void globalInit() {
 jsmn_alloc_token	src/jsmn.c	121	static jsmntok_t *jsmn_alloc_token(jsmn_parser *parser, 
 jsmn_fill_token	src/jsmn.c	475	static void jsmn_fill_token(jsmntok_t *token, jsmntype_t type, 
 jsmn_parse_primitive	src/jsmn.c	737	static jsmnerr_t jsmn_parse_primitive(jsmn_parser *parser, const char *js,
@@ -451,24 +453,23 @@ state	src/hw_pump.c	572	  PHI_STATE_PACKET state;
 PHI_SNAPSHOT	src/hw_pump.c	582	} PHI_SNAPSHOT;
 phiSnapshot	src/hw_pump.c	617	static PHI_SNAPSHOT phiSnapshot;
 startHwPump	src/hw_pump.c	1448	void startHwPump() {
-hwPump_UART_thread	src/hw_pump.c	3077	void* hwPump_UART_thread(void* arg)
-hwPump_SPI_thread	src/hw_pump.c	4939	void* hwPump_SPI_thread(void* arg)
-hwPump_I2C_thread	src/hw_pump.c	6657	void* hwPump_I2C_thread(void* arg)
-initSnapshot	src/hw_pump.c	6873	void initSnapshot() {
-getStateSnapshot	src/hw_pump.c	7904	void getStateSnapshot(PHI_STATE_PACKET *p) {
-lock_snapshot	src/hw_pump.c	8245	void lock_snapshot() {
-unlock_snapshot	src/hw_pump.c	8302	void unlock_snapshot() {
-phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
-genericHal	src/hal.c	672	HAL_FUNCS genericHal = {
-HAL_init	src/hal.c	1069	void HAL_init() {
-PHI_initPeripherals	src/hal.c	1554	char* PHI_initPeripherals() {
-GENERIC_initPeripherals	src/hal.c	2514	char* GENERIC_initPeripherals() {
-GYRO_UPDATE_EVERY	src/hal.c	2615	#define GYRO_UPDATE_EVERY 0.01
-GENERIC_gyroGetDeltas	src/hal.c	2645	void  GENERIC_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-GENERIC_gyroGetTemp	src/hal.c	3162	INT8 GENERIC_gyroGetTemp(){
-GENERIC_setMotorPower	src/hal.c	3291	void GENERIC_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
-GENERIC_getRawJointPos	src/hal.c	3515	UINT16 GENERIC_getRawJointPos(BYTE adcIdx) {
-GENERIC_setControllerId	src/hal.c	3768	void GENERIC_setControllerId(char oldId, char newId) {
+hwPump_UART_thread	src/hw_pump.c	3073	void* hwPump_UART_thread(void* arg)
+hwPump_SPI_thread	src/hw_pump.c	4932	void* hwPump_SPI_thread(void* arg)
+hwPump_I2C_thread	src/hw_pump.c	6647	void* hwPump_I2C_thread(void* arg)
+initSnapshot	src/hw_pump.c	6863	void initSnapshot() {
+getStateSnapshot	src/hw_pump.c	7894	void getStateSnapshot(PHI_STATE_PACKET *p) {
+lock_snapshot	src/hw_pump.c	8235	void lock_snapshot() {
+unlock_snapshot	src/hw_pump.c	8292	void unlock_snapshot() {
+HAL_STUB_initPeripherals	src/hal_stub.c	45	char* HAL_STUB_initPeripherals() {
+GYRO_UPDATE_EVERY	src/hal_stub.c	147	#define GYRO_UPDATE_EVERY 0.01
+HAL_STUB_gyroGetDeltas	src/hal_stub.c	177	void  HAL_STUB_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+HAL_STUB_gyroGetTemp	src/hal_stub.c	682	INT8 HAL_STUB_gyroGetTemp(){
+HAL_STUB_setMotorPower	src/hal_stub.c	811	void HAL_STUB_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+HAL_STUB_getRawJointPos	src/hal_stub.c	1036	UINT16 HAL_STUB_getRawJointPos(BYTE adcIdx) {
+HAL_STUB_setControllerId	src/hal_stub.c	1289	void HAL_STUB_setControllerId(char oldId, char newId) {
+HAL_PHI_initPeripherals	src/hal_phi.c	43	char* HAL_PHI_initPeripherals() {
+HAL_PHI_gyroGetDeltas	src/hal_phi.c	998	void HAL_PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+HAL_PHI_gyroGetTemp	src/hal_phi.c	1232	float HAL_PHI_gyroGetTemp() {
 bUseFifo	src/gyro.c	137	BOOL bUseFifo = TRUE;
 zeroX	src/gyro.c	188	INT16 zeroX = 0;
 zeroY	src/gyro.c	205	INT16 zeroY = 0;
@@ -489,48 +490,46 @@ gyroReadRawDps	src/gyro.c	3145	INT16 gyroReadRawDps(BYTE lowRegAddr) {
 gyroReadDps	src/gyro.c	3375	float gyroReadDps(BYTE lowRegAddr) {
 gyroReadFifoSlot_raw	src/gyro.c	3671	void gyroReadFifoSlot_raw(INT16* pX_dps, INT16* pY_dps, INT16* pZ_dps) {
 gyroReadFifoSlot	src/gyro.c	4085	void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
-PHI_gyroGetDeltas_noFifo	src/gyro.c	5179	void PHI_gyroGetDeltas_noFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-PHI_gyroGetDeltas_useFifo	src/gyro.c	6209	void PHI_gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-PHI_gyroGetDeltas	src/gyro.c	7212	void PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-gyroGetRawTemp	src/gyro.c	7451	INT8 gyroGetRawTemp() {
-PHI_gyroGetTemp	src/gyro.c	7658	float PHI_gyroGetTemp() {
-gyroCalibrate	src/gyro.c	7970	void gyroCalibrate() {
+gyroGetDeltas_noFifo	src/gyro.c	5179	void gyroGetDeltas_noFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+gyroGetDeltas_useFifo	src/gyro.c	6201	void gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+gyroGetRawTemp	src/gyro.c	7200	INT8 gyroGetRawTemp() {
+gyroCalibrate	src/gyro.c	7639	void gyroCalibrate() {
 UINT32	src/datalog.c	262	    #define UINT32          unsigned long
 UINT64	src/datalog.c	304	    #define UINT64          unsigned long long
 LOG_FATAL	src/datalog.c	351	    #define LOG_FATAL       printf
-PHI_upTime	src/datalog.c	386	    UINT64 PHI_upTime() {
-BASH_BLACK	src/datalog.c	492	    #define BASH_BLACK      "30"
-BASH_RED	src/datalog.c	525	    #define BASH_RED        "31"
-BASH_GREEN	src/datalog.c	558	    #define BASH_GREEN      "32"
-BASH_YELLOW	src/datalog.c	591	    #define BASH_YELLOW     "33"
-BASH_BLUE	src/datalog.c	624	    #define BASH_BLUE       "34"
-BASH_MAGENTA	src/datalog.c	657	    #define BASH_MAGENTA    "35"
-BASH_CYAN	src/datalog.c	690	    #define BASH_CYAN       "36"
-BASH_WHITE	src/datalog.c	723	    #define BASH_WHITE      "37"
-BASH_START_COLOR	src/datalog.c	757	    #define BASH_START_COLOR(c)   "\e[1;" c "m"
-BASH_STOP_COLOR	src/datalog.c	805	    #define BASH_STOP_COLOR       "\e[0m"
-DLOG_SIGN	src/datalog.c	852	#define DLOG_SIGN 'DLOG'
-PASS	src/datalog.c	878	#define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
-FAIL	src/datalog.c	943	#define FAIL BASH_START_COLOR(BASH_RED) "FAIL" BASH_STOP_COLOR
-WRAP	src/datalog.c	1007	#define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
-CLOSE_ENOUGH	src/datalog.c	1086	#define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
-TO_TIME64	src/datalog.c	1138	#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
-time	src/datalog.c	1210	  UINT64 time;
-data	src/datalog.c	1225	  double data;
-DATALOG_ELEM	src/datalog.c	1234	} DATALOG_ELEM;
-sign	src/datalog.c	1275	  UINT32 sign;
-currIdx	src/datalog.c	1287	  int currIdx;
-numElem	src/datalog.c	1302	  int numElem;
-elem	src/datalog.c	1326	  DATALOG_ELEM elem[];
-DATALOG	src/datalog.c	1339	} DATALOG;
-dlog_create	src/datalog.c	1359	DATALOG* dlog_create(int numElem) {
-dlog_free	src/datalog.c	1704	void dlog_free(DATALOG* pLog) {
-dlog_addElem_withTime	src/datalog.c	1856	void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
-dlog_addElem	src/datalog.c	2240	void dlog_addElem(DATALOG* pLog, double data) {
-dlog_avg	src/datalog.c	2344	double dlog_avg(DATALOG* pLog, int depth) {
-dlog_predict	src/datalog.c	2949	double dlog_predict(DATALOG* pLog, UINT64 time) {
-dlog_test	src/datalog.c	3456	void dlog_test()  {
-main	src/datalog.c	5760	int main()  {
+PhiUpTime	src/datalog.c	386	    UINT64 PhiUpTime() {
+BASH_BLACK	src/datalog.c	491	    #define BASH_BLACK      "30"
+BASH_RED	src/datalog.c	524	    #define BASH_RED        "31"
+BASH_GREEN	src/datalog.c	557	    #define BASH_GREEN      "32"
+BASH_YELLOW	src/datalog.c	590	    #define BASH_YELLOW     "33"
+BASH_BLUE	src/datalog.c	623	    #define BASH_BLUE       "34"
+BASH_MAGENTA	src/datalog.c	656	    #define BASH_MAGENTA    "35"
+BASH_CYAN	src/datalog.c	689	    #define BASH_CYAN       "36"
+BASH_WHITE	src/datalog.c	722	    #define BASH_WHITE      "37"
+BASH_START_COLOR	src/datalog.c	756	    #define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	src/datalog.c	804	    #define BASH_STOP_COLOR       "\e[0m"
+DLOG_SIGN	src/datalog.c	851	#define DLOG_SIGN 'DLOG'
+PASS	src/datalog.c	877	#define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
+FAIL	src/datalog.c	942	#define FAIL BASH_START_COLOR(BASH_RED) "FAIL" BASH_STOP_COLOR
+WRAP	src/datalog.c	1006	#define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
+CLOSE_ENOUGH	src/datalog.c	1085	#define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
+TO_TIME64	src/datalog.c	1137	#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
+time	src/datalog.c	1209	  UINT64 time;
+data	src/datalog.c	1224	  double data;
+DATALOG_ELEM	src/datalog.c	1233	} DATALOG_ELEM;
+sign	src/datalog.c	1274	  UINT32 sign;
+currIdx	src/datalog.c	1286	  int currIdx;
+numElem	src/datalog.c	1301	  int numElem;
+elem	src/datalog.c	1325	  DATALOG_ELEM elem[];
+DATALOG	src/datalog.c	1338	} DATALOG;
+dlog_create	src/datalog.c	1358	DATALOG* dlog_create(int numElem) {
+dlog_free	src/datalog.c	1703	void dlog_free(DATALOG* pLog) {
+dlog_addElem_withTime	src/datalog.c	1855	void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
+dlog_addElem	src/datalog.c	2239	void dlog_addElem(DATALOG* pLog, double data) {
+dlog_avg	src/datalog.c	2342	double dlog_avg(DATALOG* pLog, int depth) {
+dlog_predict	src/datalog.c	2947	double dlog_predict(DATALOG* pLog, UINT64 time) {
+dlog_test	src/datalog.c	3454	void dlog_test()  {
+main	src/datalog.c	5758	int main()  {
 UINT32	src/cubic.c	229	    #define UINT32          unsigned long
 UINT64	src/cubic.c	271	    #define UINT64          unsigned long long
 cubic	src/cubic.c	345	double cubic(

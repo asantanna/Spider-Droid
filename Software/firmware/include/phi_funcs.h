@@ -7,13 +7,13 @@
 //
 
 // clears mem, debug
-void* PHI_allocHelper(int size);
+void* allocHelper(int size);
 
 // hardware pump thread
 void startHwPumpThread();
 
 // set thread priority
-BOOL PHI_setRealtimePrio(pthread_t thread);
+BOOL setRealtimePrio(pthread_t thread);
 
 //
 // non-ANSI
@@ -25,24 +25,24 @@ char* __itoa(int value, char* result, int base);
 // WEB ADMIN
 //
 
-void PHI_webadmin(int port, const char* wwwRoot);
-char* PHI_processJson(char *pJsonReq);
-void PHI_freeJsonReply(char* pJsonReply);
+void webAdmin(int port, const char* wwwRoot);
+char* processJson(char *pJsonReq);
+void freeJsonReply(char* pJsonReply);
 
 //
 // LOGGING
 //
 
-int PHI_logInit(char *filename);
-void PHI_logMsg(const char* tag, const char *fmt, ...);
-void PHI_logClose(void);
+int logInit(char *filename);
+void logMsg(const char* tag, const char *fmt, ...);
+void logClose(void);
 
 //
 // Phi Link
 //
 
 BOOL startPhiLink(char* ipAddr, int port);
-void PHI_getStateSnapshot(PHI_STATE_PACKET *p);
+void getStateSnapshot(PHI_STATE_PACKET *p);
 
 //
 // I/O Helpers
@@ -93,6 +93,11 @@ void unlock_snapshot();
 
 char* selfTest(int mode);
 
+// gyro
+
+void gyroGetDeltaDegrees(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
+INT8 gyroGetRawTemp();
+
 //
 // MISC
 //
@@ -106,8 +111,8 @@ void flushMotorCmds();
 
 float getJointPos(BYTE adcIdx);
 
-void PHI_abortProcess(int rc);
-void PHI_abortWithMsg(const char* msg);
+void abortProcess(int rc);
+void abortWithMsg(const char* msg);
 
-UINT64 PHI_upTime();
-double PHI_rand();
+UINT64 phiUpTime();
+double phiRand();

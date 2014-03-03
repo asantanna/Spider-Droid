@@ -182,7 +182,7 @@ void readToSpace(char** ppData, char** ppToken);
 
 // entry point of web admin - never returns
 
-void PHI_webadmin(int port, const char* wwwRoot)
+void webAdmin(int port, const char* wwwRoot)
 {
   int i, listenfd, socketfd, hit;
   socklen_t length;
@@ -194,7 +194,7 @@ void PHI_webadmin(int port, const char* wwwRoot)
   PHI_ZERO(serv_addr);
 
   // debug
-  LOG_INFO("PHI webadmin starting - wwwRoot='%s'", (char*) wwwRoot);
+  LOG_INFO("PHI webAdmin starting - wwwRoot='%s'", (char*) wwwRoot);
 
   // change dir to www doc root
   if (chdir(wwwRoot) == -1) { 
@@ -304,7 +304,7 @@ void* wa_process_web_request(void* arg)
     goto quick_exit;
   }
 
-  LOG_INFO("webadmin: HTTP request follows:\n%s\n", buffer);
+  LOG_INFO("webAdmin: HTTP request follows:\n%s\n", buffer);
 
   // parse web request
 
@@ -361,9 +361,9 @@ void* wa_process_web_request(void* arg)
 
   if (!strcasecmp(parsedHttp.pMethod, HTTP_METHOD_POST_STR)) {
     // got an HTTP POST - we expect JSON in the body
-    char* pJsonReply = PHI_processJson(parsedHttp.pBody);
+    char* pJsonReply = processJson(parsedHttp.pBody);
     SEND_JSON_REPLY(pJsonReply);
-    PHI_freeJsonReply(pJsonReply);
+    freeJsonReply(pJsonReply);
     goto quick_exit;
   }
 
@@ -397,12 +397,12 @@ void* wa_process_web_request(void* arg)
   }
   
   if ((pagefd = open(pFname, O_RDONLY)) == -1) {
-    LOG_ERR("webadmin failed to open file '%s'", pFname);
+    LOG_ERR("webAdmin failed to open file '%s'", pFname);
     SEND_ERROR_REPLY(notfound);
     goto quick_exit;
   }
 
-  LOG_INFO("webadmin: file requested='%s'", pFname);
+  LOG_INFO("webAdmin: file requested='%s'", pFname);
 
   // lseek to the file end to find the length
   len = lseek(pagefd, 0, SEEK_END);
@@ -419,7 +419,7 @@ void* wa_process_web_request(void* arg)
 
   // send header plus blank line
   sprintf(buffer, wa_response_ok_hdr, len, pContentType);
-  LOG_INFO("webadmin: reply header follows:\n%s\n", buffer);
+  LOG_INFO("webAdmin: reply header follows:\n%s\n", buffer);
   write(socketfd, buffer, strlen(buffer));
 
   // send file in 8KB blocks - last block may be smaller

@@ -45,8 +45,8 @@
 #undef  ZERO
 #undef  ZERO_P
 
-#define PHI_ALLOC(D)    ((D*)PHI_allocHelper(sizeof(D)))
-#define PHI_ALLOC_N(n)  PHI_allocHelper(n)
+#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
+#define PHI_ALLOC_N(n)  allocHelper(n)
 #define PHI_FREE(p)     {free(p); p = NULL; }
 
 #define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
@@ -79,9 +79,9 @@
 
 // logging
 
-#define LOG_INFO(...)   PHI_logMsg("", __VA_ARGS__)
-#define LOG_ERR(...)    PHI_logMsg("ERROR: ", __VA_ARGS__)
-#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); PHI_logMsg("FATAL: ", __VA_ARGS__); PHI_abortProcess(-1); }
+#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
+#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
+#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
 
 // stringifying helpers
 

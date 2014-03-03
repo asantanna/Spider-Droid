@@ -37,7 +37,7 @@ INT32 minWaitNeeded = 0;
 void testAllJoints();
 BOOL testJointMovement(BYTE ctrlID, BYTE selIdx);
 BOOL testJointRange(BYTE ctrlID, BYTE selIdx);
-double moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd);
+float moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd);
 
 //
 // CODE
@@ -108,8 +108,8 @@ BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
 
   int waitMult;
   INT32 usecWait;
-  double orig_jointPos;
-  double jointPos;
+  float orig_jointPos;
+  float jointPos;
   BOOL dirFwd;
   BYTE power;
 
@@ -121,7 +121,7 @@ BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
     // alternate directions in case we are at max range
     for (dirFwd = FALSE ; dirFwd <= TRUE ; dirFwd++) {
       // try current direction with this power
-      PHI_setMotorPower(ctrlID, selIdx, power, dirFwd);
+      setMotorPower(ctrlID, selIdx, power, dirFwd);
       for (waitMult = 1 ; waitMult <= 25 ; waitMult ++) {
         // sleep a bit
         usecWait = waitMult * JTEST_WAIT_STEP_MS * 1000;
@@ -129,7 +129,7 @@ BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
         // get joint pos
         jointPos =  getJointPosByMotorID(ctrlID, selIdx);
         // check if moved enough
-        double diff = abs(jointPos - orig_jointPos);
+        float diff = abs(jointPos - orig_jointPos);
         if (diff >= JTEST_JOINT_CHG_DEG) {
           // joint moved enough
           goto ok_exit;
@@ -164,8 +164,8 @@ ok_exit:
 
 BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
   
-  double maxFwdPos;
-  double maxRevPos;
+  float maxFwdPos;
+  float maxRevPos;
 
   // find max forward pos
   maxFwdPos = moveJointToStop(ctrlID, selIdx, TRUE);
@@ -174,7 +174,7 @@ BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
   maxRevPos = moveJointToStop(ctrlID, selIdx, FALSE);
 
   LOG_INFO("Joint %c%c range: min=%g, max=%d",
-    ctrlID, selIdx, maxRevPos, maxFwdPos);
+    ctrlID, selIdx, (double) maxRevPos, (double) maxFwdPos);
 
   WARN("Save this range info somewhere");
   WARN("Use range info to prevent joint damage");
@@ -183,16 +183,16 @@ BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
   return TRUE;
 }
 
-double moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
+float moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
 
-  double prevJointPos;
-  double jointPos;
+  float prevJointPos;
+  float jointPos;
 
   // get current joint pos
   prevJointPos =  getJointPosByMotorID(ctrlID, selIdx);
 
   // turn on motor at minimum necessary power for movement
-  PHI_setMotorPower(ctrlID, selIdx, minPowerNeeded, bFwd);
+  setMotorPower(ctrlID, selIdx, minPowerNeeded, bFwd);
 
   while(TRUE) {
     

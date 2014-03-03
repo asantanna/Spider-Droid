@@ -85,7 +85,7 @@ BOOL initMotorCtrl() {
 //
 // Note: power is [0, 127]
 
-void PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+void setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 
   // WARN("ctrlID hack enabled!");
   // ctrlID = 9;
@@ -116,7 +116,7 @@ void PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 //
 
 void stopMotor(BYTE ctrlID, BYTE selIdx) {
-  PHI_setMotorPower(ctrlID, selIdx, 0, TRUE);
+  setMotorPower(ctrlID, selIdx, 0, TRUE);
 }
 
 void stopAllMotors() {
@@ -174,21 +174,21 @@ UINT16 getRawJointPos(BYTE adcIdx) {
   return adcValue;
 }
 
-float PHI_getJointPos(BYTE adcIdx) {
+float getJointPos(BYTE adcIdx) {
   // convert raw ADC val to canonical
   return ADC_RAW_TO_CANON(getRawJointPos(adcIdx) );
 }
 
-float PHI_getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
-  // convert raw ADC val to canonical
-  return PHI_getJointPos(MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx));
+float getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
+  // convert motor ID to matching ADC index and grab canon ADC value
+  return getJointPos(MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx));
 }
 
 
 // Controllers come from factory with ID=9, we have to set each one
 // to a different value
 
-void PHI_setControllerId(BYTE oldId, BYTE newId) {
+void setControllerId(BYTE oldId, BYTE newId) {
 
     char motorCmd[] = {
     MC_CMD_SIGN,

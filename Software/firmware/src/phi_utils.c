@@ -5,33 +5,33 @@
 
 #include "phi.h"
 
-void* PHI_allocHelper(int size) {
+void* allocHelper(int size) {
 
   void* p = malloc(size);
   if (p == NULL) {
-    PHI_abortWithMsg("out of mem");
+    abortWithMsg("out of mem");
   }
   memset(p, 0, size);
   return p;
 }
 
-UINT64 PHI_upTime() {
+UINT64 phiUpTime() {
   // up time in uSecs
   struct timeval tv;
   gettimeofday(&tv, NULL);
   return TV_TO_USEC(tv) - g_startupTime;
 }
 
-void PHI_abortProcess(int rc) {
+void abortProcess(int rc) {
   printf("***\n");
   printf("*** Aborting PHI process!\n");
   printf("***\n");
   exit(rc);
 }
 
-void PHI_abortWithMsg(const char* msg) {
+void abortWithMsg(const char* msg) {
   printf(msg, 0);
-  PHI_abortProcess(-1);
+  abortProcess(-1);
 }
 
 /*
@@ -92,28 +92,28 @@ char* __itoa(int value, char* result, int base) {
  *
  */
 
-FILE *PHI_logfp = NULL;
+FILE *logfp = NULL;
 
-int PHI_logInit(char *filename) {
+int logInit(char *filename) {
 
-  //check if PHI_logfp is already open.
-  if (PHI_logfp != NULL) {
-    fclose(PHI_logfp);
+  //check if logfp is already open.
+  if (logfp != NULL) {
+    fclose(logfp);
   }
 
   // truncate log files that are > 1000 lines (or 500 if CRLF is used)
-  PHI_logfp = fopen(filename, "r");
+  logfp = fopen(filename, "r");
 
   int lines = 0;
-  if (PHI_logfp != NULL) {
+  if (logfp != NULL) {
     int c;
     //count end of lines, both of them... just in case
-    while ( (c = fgetc(PHI_logfp)) != EOF ) {
+    while ( (c = fgetc(logfp)) != EOF ) {
       if (c== '\n' || c == '\r') {
         lines++;
       }
     }
-    fclose(PHI_logfp);
+    fclose(logfp);
   }
 
   // reopen file handle
@@ -121,8 +121,8 @@ int PHI_logInit(char *filename) {
 
   if (lines > 1000)
   {
-    PHI_logfp = fopen(filename, "w");	// w will truncate the file, and then open it for writing.
-    if (PHI_logfp == NULL) {
+    logfp = fopen(filename, "w");	// w will truncate the file, and then open it for writing.
+    if (logfp == NULL) {
       return 0;
     }
     else
@@ -130,8 +130,8 @@ int PHI_logInit(char *filename) {
   }
   else
   {
-    PHI_logfp = fopen(filename, "a"); // append, or make new file.
-    if (PHI_logfp == NULL) {
+    logfp = fopen(filename, "a"); // append, or make new file.
+    if (logfp == NULL) {
       return 0;
     }
     else
@@ -140,30 +140,30 @@ int PHI_logInit(char *filename) {
   return 0;
 }
 
-void PHI_logClose(void) {
-  if (PHI_logfp != NULL)  {
-    fclose(PHI_logfp);
-    PHI_logfp = NULL;
+void logClose(void) {
+  if (logfp != NULL)  {
+    fclose(logfp);
+    logfp = NULL;
   }
 }
 
-void PHI_logTimestamp() {
+void logTimestamp() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  fprintf(PHI_logfp, "T=%.2f mS : ", ((double)PHI_upTime()) / 1000);
+  fprintf(logfp, "T=%.2f mS : ", ((double)phiUpTime()) / 1000);
   // no flush here
 }
 
-void PHI_logMsg(const char* tag, const char *fmt, ...) {
-  if (PHI_logfp == NULL) return;
-  PHI_logTimestamp();
-  fprintf(PHI_logfp, tag, 0);  // 0 at end to placate compiler
+void logMsg(const char* tag, const char *fmt, ...) {
+  if (logfp == NULL) return;
+  logTimestamp();
+  fprintf(logfp, tag, 0);  // 0 at end to placate compiler
   va_list ap;
   va_start(ap, fmt);
-  vfprintf(PHI_logfp, fmt, ap);
+  vfprintf(logfp, fmt, ap);
   va_end(ap);
-  fprintf(PHI_logfp, "\n");
-  fflush(PHI_logfp);
+  fprintf(logfp, "\n");
+  fflush(logfp);
 }
 
 // code adapted from http://man7.org/linux/man-pages/man3/getifaddrs.3.html
@@ -225,9 +225,9 @@ UINT32 getHostIP() {
 }
 
 
-void PHI_setLED(PHI_LED_COLOR color) {
+void setLED(PHI_LED_COLOR color) {
   
-  TODO("Implement PHI_setLED()")
+  TODO("Implement setLED()")
 
   switch (color) {
     case OFF:
@@ -248,7 +248,7 @@ void PHI_setLED(PHI_LED_COLOR color) {
       }
 }
 
-double PHI_rand() {
+double phiRand() {
   return ((double) rand()) / RAND_MAX;
 }
 
@@ -256,7 +256,7 @@ double PHI_rand() {
 // To change curr thread, use set_realtime_priority(pthread_self());
 //
 
-BOOL PHI_setRealtimePrio(pthread_t thread) {
+BOOL setRealtimePrio(pthread_t thread) {
 
   // struct sched_param is used to store the scheduling priority
   struct sched_param params;

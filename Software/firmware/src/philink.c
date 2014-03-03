@@ -26,7 +26,7 @@ typedef enum {
 // internal
 
 void setLinkStatus(PHILINK_STATUS status);
-void* PHI_link_loop(void* arg);
+void* phiLink_loop(void* arg);
 
 BOOL startPhiLink(char* ipAddr, int port) {
   BOOL rc = TRUE;
@@ -82,7 +82,7 @@ BOOL startPhiLink(char* ipAddr, int port) {
   pArgs -> port = htons(port);
 
   // create thread
-  pthread_create(&thread, &threadAttr,  &PHI_link_loop, pArgs);
+  pthread_create(&thread, &threadAttr,  &phiLink_loop, pArgs);
 
   // release thread attr because we don't use it
   pthread_attr_destroy(&threadAttr);
@@ -102,7 +102,7 @@ error_exit:
   
 }
 
-void* PHI_link_loop(void* arg)
+void* phiLink_loop(void* arg)
 {
   int sock;
   struct sockaddr_in phiServer;
@@ -153,7 +153,7 @@ void* PHI_link_loop(void* arg)
   // PHILINK comm loop (loop forever)
   //
 
-  UINT64 lastLoopTime = PHI_upTime();
+  UINT64 lastLoopTime = phiUpTime();
   UINT64 currTime;
   
   static char rxBuff[sizeof(PHI_CMD_PACKET)];

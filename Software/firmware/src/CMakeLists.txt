@@ -34,6 +34,8 @@ add_executable ( phi
   datalog.c
   cubic.c
   selftest.c
+  hal_stub.c
+  hal_phi.c
 )
 
 # link the math library
