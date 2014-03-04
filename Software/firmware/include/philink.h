@@ -25,13 +25,24 @@ typedef struct {
 //
 
 #define NUM_SIGN_BYTES          4
-
 #define CMDP_SIGN               "CPV1"
+
 #define CMDP_MOTOR_ELEM         NUM_MOTORS
 
 typedef struct  __attribute__ ((__packed__)) {
-  char sign     [NUM_SIGN_BYTES];
-  INT8 motors   [CMDP_MOTOR_ELEM];
+  
+  char      sign     [NUM_SIGN_BYTES];
+  UINT32    packetID;
+
+  // values = [-127, 127] - couldn't decide if should make canonical [0,1]
+  // prob should be canon but with separate fwd and back so:
+  //    0,0 = coast
+  //    x,x = brake
+  //    x,y = power at x-y
+  //
+  
+  INT8      motors   [CMDP_MOTOR_ELEM];
+  
 } PHI_CMD_PACKET;
 
 #define STAP_SIGN               "SPV1"
@@ -39,6 +50,11 @@ typedef struct  __attribute__ ((__packed__)) {
 #define STAP_NUM_JOINT_ELEM     NUM_MOTORS
 #define STAP_NUM_GYRO_ELEM      3
 #define STAP_NUM_ACCEL_ELEM     3
+
+TODO("think about GYRO AND ACCEL ELEM");
+// - should be split into pos and neg?
+// - should return change
+// - is gyro returning change? if so, change name
 
 typedef struct __attribute__ ((__packed__)) {
   

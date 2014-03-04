@@ -241,7 +241,7 @@ void* hwPump_SPI_thread(void* arg)
     int adcIdx;
 
     for (adcIdx = 0 ; adcIdx < COUNTOF(phiSnapshot.state.joints) ; adcIdx++) {
-      float pos = getJointPos(adcIdx);
+      float pos = HAL_getJointPos(adcIdx);
       lock_snapshot();
       phiSnapshot.state.joints[adcIdx] = pos;
       unlock_snapshot();

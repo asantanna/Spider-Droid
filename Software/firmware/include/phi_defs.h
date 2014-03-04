@@ -112,10 +112,10 @@ typedef enum {
 // RPi resources
 //
 
-// move this to camera file eventually
-#define CAM_WIDTH         160
-#define CAM_HEIGHT        120
-#define CAM_NUM_BYTES     (CAM_WIDTH * CAM_HEIGHT)
+// move to cam file when it exists
+#define CAM_WIDTH               160
+#define CAM_HEIGHT              120
+#define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
 
 // PhiLink
 #define DEF_PHILINK_PORT  1122

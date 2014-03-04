@@ -14,7 +14,7 @@
 // the function pointers below
 
 HAL_FUNCS phiHal = {
-  .pName =            "Phi HAL",
+  .pName =            "PHI Hardware",
   .initPeripherals =  (halFunc_pChar)     HAL_PHI_initPeripherals,
   .gyroGetDeltas =                        HAL_PHI_gyroGetDeltas,
   .gyroGetTemp =                          HAL_PHI_gyroGetTemp,
@@ -28,7 +28,7 @@ HAL_FUNCS phiHal = {
 //
 
 HAL_FUNCS genericHal = {
-  .pName =            "Stub HAL",
+  .pName =            "*STUB*",
   .initPeripherals =  (halFunc_pChar)     HAL_STUB_initPeripherals,
   .gyroGetDeltas =                        HAL_STUB_gyroGetDeltas,
   .gyroGetTemp =                          HAL_STUB_gyroGetTemp,

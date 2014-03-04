@@ -15,6 +15,12 @@
 
    <script>
 
+      // server IP is hardwired since it is ALWAYS running on Windows
+      // at a specific machine
+      
+      var serverIP   = "10.0.0.5";
+      var serverPort = 1122;  // Lucas's bday
+      
       function pageLoaded()
       {
         // get some stuff from PHI
@@ -22,6 +28,9 @@
         sendJsonRequest("req : [ {cmd:getSysInfo}, {cmd:getPhiUptime} ]");
         sendJsonRequest("req : [ {cmd:getVersion} ]");
         phi_getLinkStatus();
+
+        // show server IP
+        document.getElementById("phi_server_ip").innerHTML = serverIP + "&nbsp; : &nbsp;" + serverPort;
       }
 
       // this function parses all JSON replies
@@ -102,11 +111,8 @@
       }
 
       function buttonStartLink() {
-        // var ipAddr = "192.168.36.131";
-        var ipAddr = "172.17.173.89";
-        var port = 1122;
-        alert("Sending server address " + ipAddr + ":" + port);
-        phi_startPhiLink(ipAddr, port);
+        alert("Sending server address " + serverIP + ":" + serverPort);
+        phi_startPhiLink(serverIP, serverPort);
       }
 
       /* function testButtonPressed() {
@@ -121,8 +127,7 @@
 <body onload="pageLoaded()">
 
    <table style="background-color:black;" border="0" cellpadding="5">
-      <col width=65
-           0>
+      <col width=650>
       <tr><td class="phi_page_title"> Status </td></tr>
    </table>
    
@@ -132,6 +137,11 @@
       <col>
       <col>
       <col width=50>
+      
+      <tr>
+         <td class="phi_label">Firmware Version</td>
+         <td class="phi_value">&nbsp; <span id="phi_firmware_version">?</span></td>
+      </tr>
       
       <tr> 
          <td class="phi_label">Host Name</td>
@@ -149,28 +159,18 @@
          <td class="phi_value">&nbsp; <span id="phi_uptime">?</span></td>
       </tr>
 
-      <tr><td>&nbsp;</td></tr>
-      
-      <tr> 
-         <td class="phi_label">Link State</td>
-         <td class="phi_value">
-            &nbsp; <span id="phi_link_state">?</span>
-           &nbsp; &nbsp;
-           <input type="button" onclick="buttonStartLink()" value="Activate">
-         </td>
-      </tr>
-
    </table>
 
    <br/>
 
    <table class="phi_indent_1">
       <col width=90>
-      <col width=30>
-      <col width=80>
+      <col width=50>
+      <col width=100>
       <col width=40>
-      <col>
+      <col width=100>
       <col width=40>
+      <col width=100>
       
       <tr>
          <td></td>
@@ -181,6 +181,9 @@
          <td></td>
          <td class="phi_label" style="text-align:center;"> 15 min </td>
       </tr>
+      
+      <br/>
+      
       <tr>
          <td class="phi_label">CPU Load</td>
          <td></td>
@@ -191,18 +194,24 @@
          <td style="text-align:center;"><span id="phi_load_15" class="phi_value">?</span></td>
       </tr>
    </table>
-      
-   <br/>
    
-   <h3>System</h3>
+   <h3>Phi Link</h3>
    
    <table class="phi_indent_1" border="0" cellpadding="5">
-      
+      <col>
+      <col>
+      <col width=50>
       <tr> 
-         <td class="phi_label">Phi Firmware Version</td>
-         <td class="phi_value">&nbsp; <span id="phi_firmware_version">?</span></td>
+         <td class="phi_label">Hardwired Server IP</td>
+         <td class="phi_value">&nbsp; <span id="phi_server_ip">?</span></td>
+         <td></td>
+         <td class="phi_label">Link State</td>
+         <td class="phi_value">
+            &nbsp; <span id="phi_link_state">?</span>
+           &nbsp; &nbsp;
+           <input type="button" onclick="buttonStartLink()" value="Activate">
+         </td>
       </tr>
-
    </table>
 
    <h3>Memory</h3>

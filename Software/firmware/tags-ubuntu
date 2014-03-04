@@ -1,4 +1,76 @@
 	TAGS	UNSORTED
+PHI_VERSION	include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
+LOGFILE_NAME	include/phi_defs.h	88	#define LOGFILE_NAME    "/var/log/phi.log"
+VERBOSE_LOG	include/phi_defs.h	131	#define VERBOSE_LOG     1
+INT8	include/phi_defs.h	173	#define INT8            char
+INT16	include/phi_defs.h	202	#define INT16           short
+INT32	include/phi_defs.h	232	#define INT32           long
+INT64	include/phi_defs.h	261	#define INT64           long long
+UINT	include/phi_defs.h	313	#define UINT            unsigned int
+UINT8	include/phi_defs.h	350	#define UINT8           unsigned char
+UINT16	include/phi_defs.h	388	#define UINT16          unsigned short
+UINT32	include/phi_defs.h	427	#define UINT32          unsigned long
+UINT64	include/phi_defs.h	465	#define UINT64          unsigned long long
+BYTE	include/phi_defs.h	533	#define BYTE            UINT8
+WORD	include/phi_defs.h	563	#define WORD            UINT16
+DWORD	include/phi_defs.h	594	#define DWORD           UINT32
+BOOL	include/phi_defs.h	625	#define BOOL            UINT8
+FALSE	include/phi_defs.h	656	#define FALSE           0
+TRUE	include/phi_defs.h	682	#define TRUE            1
+COUNTOF	include/phi_defs.h	725	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
+MIN	include/phi_defs.h	789	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
+MAX	include/phi_defs.h	841	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
+PHI_ALLOC	include/phi_defs.h	1004	#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
+PHI_ALLOC_N	include/phi_defs.h	1057	#define PHI_ALLOC_N(n)  allocHelper(n)
+PHI_FREE	include/phi_defs.h	1096	#define PHI_FREE(p)     {free(p); p = NULL; }
+PHI_ZERO	include/phi_defs.h	1143	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
+PHI_ZERO_P	include/phi_defs.h	1194	#define PHI_ZERO_P(p,l) memset(p, 0, l)
+BASH_BLACK	include/phi_defs.h	1252	#define BASH_BLACK      "30"
+BASH_RED	include/phi_defs.h	1281	#define BASH_RED        "31"
+BASH_GREEN	include/phi_defs.h	1310	#define BASH_GREEN      "32"
+BASH_YELLOW	include/phi_defs.h	1339	#define BASH_YELLOW     "33"
+BASH_BLUE	include/phi_defs.h	1368	#define BASH_BLUE       "34"
+BASH_MAGENTA	include/phi_defs.h	1397	#define BASH_MAGENTA    "35"
+BASH_CYAN	include/phi_defs.h	1426	#define BASH_CYAN       "36"
+BASH_WHITE	include/phi_defs.h	1455	#define BASH_WHITE      "37"
+BASH_START_COLOR	include/phi_defs.h	1485	#define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	include/phi_defs.h	1529	#define BASH_STOP_COLOR       "\e[0m"
+DO_PRAGMA	include/phi_defs.h	1568	#define DO_PRAGMA(x)    _Pragma (#x)
+INFO	include/phi_defs.h	1605	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
+TODO	include/phi_defs.h	1708	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
+WARN	include/phi_defs.h	1810	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
+HACK	include/phi_defs.h	1919	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
+U64_1E6	include/phi_defs.h	2029	#define U64_1E6         ((UINT64)1e6)
+TV_TO_USEC	include/phi_defs.h	2067	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
+LOG_INFO	include/phi_defs.h	2163	#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
+LOG_ERR	include/phi_defs.h	2211	#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
+LOG_FATAL	include/phi_defs.h	2266	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
+STR	include/phi_defs.h	2424	#define STR(s)                #s              /* convert to string */
+STR_MACRO	include/phi_defs.h	2494	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
+Q	include/phi_defs.h	2617	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
+UART_DRIVER_NAME	include/phi_defs.h	2713	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
+SPI0_DRIVER_NAME	include/phi_defs.h	2754	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
+SPI1_DRIVER_NAME	include/phi_defs.h	2797	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
+OFF	include/phi_defs.h	2867	    OFF,
+RED	include/phi_defs.h	2876	    RED,
+FLASH_RED	include/phi_defs.h	2885	    FLASH_RED,
+YELLOW	include/phi_defs.h	2900	    YELLOW,
+FLASH_YELLOW	include/phi_defs.h	2912	    FLASH_YELLOW,
+GREEN	include/phi_defs.h	2930	    GREEN,
+FLASH_GREEN	include/phi_defs.h	2941	    FLASH_GREEN
+PHI_LED_COLOR	include/phi_defs.h	2960	} PHI_LED_COLOR;
+CAM_WIDTH	include/phi_defs.h	3043	#define CAM_WIDTH               160
+CAM_HEIGHT	include/phi_defs.h	3079	#define CAM_HEIGHT              120
+CAM_NUM_BYTES	include/phi_defs.h	3115	#define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
+DEF_PHILINK_PORT	include/phi_defs.h	3184	#define DEF_PHILINK_PORT  1122
+GYRO_SPI_IDX	include/phi_defs.h	3239	#define GYRO_SPI_IDX      0
+ADC_SPI_IDX	include/phi_defs.h	3290	#define ADC_SPI_IDX       1
+PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3337	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
+PHI_MUTEX_INITVAL	include/phi_defs.h	3389	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
+PHI_MUTEX_DECL	include/phi_defs.h	3451	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name = PHI_MUTEX_INITVAL
+PHI_MUTEX_GET	include/phi_defs.h	3531	#define PHI_MUTEX_GET(pSem)         pthread_mutex_lock(pSem)
+PHI_MUTEX_RELEASE	include/phi_defs.h	3592	#define PHI_MUTEX_RELEASE(pSem)     pthread_mutex_unlock(pSem)
+PHI_MUTEX_TEST	include/phi_defs.h	3655	#define PHI_MUTEX_TEST(pSem)        pthread_mutex_trylock(pSem)
 phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
 genericHal	src/hal.c	750	HAL_FUNCS genericHal = {
 HAL_init	src/hal.c	1204	void HAL_init() {
@@ -129,78 +201,6 @@ GYRO_FIFO_SRC_OVRN	include/plax_L3G4200D.h	4577	#define GYRO_FIFO_SRC_OVRN      
 GYRO_FIFO_SRC_EMPTY	include/plax_L3G4200D.h	4616	#define GYRO_FIFO_SRC_EMPTY       0x20
 GYRO_FIFO_SRC_COUNT_MASK	include/plax_L3G4200D.h	4655	#define GYRO_FIFO_SRC_COUNT_MASK  0x1F
 GYRO_RSRC_ADDR	include/plax_L3G4200D.h	4708	#define GYRO_RSRC_ADDR            0x2F
-PHI_VERSION	include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
-LOGFILE_NAME	include/phi_defs.h	88	#define LOGFILE_NAME    "/var/log/phi.log"
-VERBOSE_LOG	include/phi_defs.h	131	#define VERBOSE_LOG     1
-INT8	include/phi_defs.h	173	#define INT8            char
-INT16	include/phi_defs.h	202	#define INT16           short
-INT32	include/phi_defs.h	232	#define INT32           long
-INT64	include/phi_defs.h	261	#define INT64           long long
-UINT	include/phi_defs.h	313	#define UINT            unsigned int
-UINT8	include/phi_defs.h	350	#define UINT8           unsigned char
-UINT16	include/phi_defs.h	388	#define UINT16          unsigned short
-UINT32	include/phi_defs.h	427	#define UINT32          unsigned long
-UINT64	include/phi_defs.h	465	#define UINT64          unsigned long long
-BYTE	include/phi_defs.h	533	#define BYTE            UINT8
-WORD	include/phi_defs.h	563	#define WORD            UINT16
-DWORD	include/phi_defs.h	594	#define DWORD           UINT32
-BOOL	include/phi_defs.h	625	#define BOOL            UINT8
-FALSE	include/phi_defs.h	656	#define FALSE           0
-TRUE	include/phi_defs.h	682	#define TRUE            1
-COUNTOF	include/phi_defs.h	725	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
-MIN	include/phi_defs.h	789	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
-MAX	include/phi_defs.h	841	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
-PHI_ALLOC	include/phi_defs.h	1004	#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
-PHI_ALLOC_N	include/phi_defs.h	1057	#define PHI_ALLOC_N(n)  allocHelper(n)
-PHI_FREE	include/phi_defs.h	1096	#define PHI_FREE(p)     {free(p); p = NULL; }
-PHI_ZERO	include/phi_defs.h	1143	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
-PHI_ZERO_P	include/phi_defs.h	1194	#define PHI_ZERO_P(p,l) memset(p, 0, l)
-BASH_BLACK	include/phi_defs.h	1252	#define BASH_BLACK      "30"
-BASH_RED	include/phi_defs.h	1281	#define BASH_RED        "31"
-BASH_GREEN	include/phi_defs.h	1310	#define BASH_GREEN      "32"
-BASH_YELLOW	include/phi_defs.h	1339	#define BASH_YELLOW     "33"
-BASH_BLUE	include/phi_defs.h	1368	#define BASH_BLUE       "34"
-BASH_MAGENTA	include/phi_defs.h	1397	#define BASH_MAGENTA    "35"
-BASH_CYAN	include/phi_defs.h	1426	#define BASH_CYAN       "36"
-BASH_WHITE	include/phi_defs.h	1455	#define BASH_WHITE      "37"
-BASH_START_COLOR	include/phi_defs.h	1485	#define BASH_START_COLOR(c)   "\e[1;" c "m"
-BASH_STOP_COLOR	include/phi_defs.h	1529	#define BASH_STOP_COLOR       "\e[0m"
-DO_PRAGMA	include/phi_defs.h	1568	#define DO_PRAGMA(x)    _Pragma (#x)
-INFO	include/phi_defs.h	1605	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
-TODO	include/phi_defs.h	1708	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
-WARN	include/phi_defs.h	1810	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
-HACK	include/phi_defs.h	1919	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
-U64_1E6	include/phi_defs.h	2029	#define U64_1E6         ((UINT64)1e6)
-TV_TO_USEC	include/phi_defs.h	2067	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
-LOG_INFO	include/phi_defs.h	2163	#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
-LOG_ERR	include/phi_defs.h	2211	#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
-LOG_FATAL	include/phi_defs.h	2266	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
-STR	include/phi_defs.h	2424	#define STR(s)                #s              /* convert to string */
-STR_MACRO	include/phi_defs.h	2494	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
-Q	include/phi_defs.h	2617	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
-UART_DRIVER_NAME	include/phi_defs.h	2713	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
-SPI0_DRIVER_NAME	include/phi_defs.h	2754	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
-SPI1_DRIVER_NAME	include/phi_defs.h	2797	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
-OFF	include/phi_defs.h	2867	    OFF,
-RED	include/phi_defs.h	2876	    RED,
-FLASH_RED	include/phi_defs.h	2885	    FLASH_RED,
-YELLOW	include/phi_defs.h	2900	    YELLOW,
-FLASH_YELLOW	include/phi_defs.h	2912	    FLASH_YELLOW,
-GREEN	include/phi_defs.h	2930	    GREEN,
-FLASH_GREEN	include/phi_defs.h	2941	    FLASH_GREEN
-PHI_LED_COLOR	include/phi_defs.h	2960	} PHI_LED_COLOR;
-CAM_WIDTH	include/phi_defs.h	3047	#define CAM_WIDTH         160
-CAM_HEIGHT	include/phi_defs.h	3077	#define CAM_HEIGHT        120
-CAM_NUM_BYTES	include/phi_defs.h	3107	#define CAM_NUM_BYTES     (CAM_WIDTH * CAM_HEIGHT)
-DEF_PHILINK_PORT	include/phi_defs.h	3170	#define DEF_PHILINK_PORT  1122
-GYRO_SPI_IDX	include/phi_defs.h	3225	#define GYRO_SPI_IDX      0
-ADC_SPI_IDX	include/phi_defs.h	3276	#define ADC_SPI_IDX       1
-PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3323	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
-PHI_MUTEX_INITVAL	include/phi_defs.h	3375	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
-PHI_MUTEX_DECL	include/phi_defs.h	3437	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name = PHI_MUTEX_INITVAL
-PHI_MUTEX_GET	include/phi_defs.h	3517	#define PHI_MUTEX_GET(pSem)         pthread_mutex_lock(pSem)
-PHI_MUTEX_RELEASE	include/phi_defs.h	3578	#define PHI_MUTEX_RELEASE(pSem)     pthread_mutex_unlock(pSem)
-PHI_MUTEX_TEST	include/phi_defs.h	3641	#define PHI_MUTEX_TEST(pSem)        pthread_mutex_trylock(pSem)
 LINK_OFF	include/philink.h	43	    LINK_OFF,
 LINK_STARTED	include/philink.h	57	    LINK_STARTED,
 LINK_CONNECTING	include/philink.h	75	    LINK_CONNECTING,
