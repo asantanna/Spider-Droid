@@ -50,6 +50,9 @@
 #include "hal_stub.h"
 #include "hal_phi.h"
 
+// datalog types
+#include "datalog.h"
+
 // misc func decls
 #include "phi_funcs.h"
 

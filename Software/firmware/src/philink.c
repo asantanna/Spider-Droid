@@ -13,6 +13,12 @@
 
 #include "phi.h"
 
+TODO("think about GYRO AND ACCEL ELEM");
+// - should be split into pos and neg?
+// - should return change
+// - is gyro returning change? if so, change name
+
+
 // loop status
 
 typedef enum {

@@ -93,6 +93,7 @@ JSON_HANDLER(startPhiLink);
 JSON_HANDLER(getLinkStatus);
 JSON_HANDLER(setMCtlId);
 JSON_HANDLER(selfTest);
+JSON_HANDLER(getPumpStats);
 
 // valid command list
 
@@ -120,6 +121,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(setMCtlId),
 //  CMD_ENTRY(setBrake),
   CMD_ENTRY(selfTest),
+  CMD_ENTRY(getPumpStats),
   { 0, 0}
 };
 
@@ -882,7 +884,129 @@ error_exit:
   
 }
 
+//
+// Performance/Statistics Functions
+//
+//
+//  req:    { cmd : getPumpStats }
+//  reply:  { logs:
+//            [
+//              {
+//                  name      : string,
+//                  unit      : string,
+//                  epochSecs : double,                 (num secs of logging)
+//                  numElem   : int,
+//                  depths    : [ double, ... ],        (depths used for each of min, max, etc..)
+//                  min       : [ double, ... ],
+//                  max       : [ double, ... ],
+//                  avg       : [ double, ... ],
+//                  std       : [ double, ... ],
+//              }
+//            , ..... optional extra logs follow
+//              {
+//                  ..... optional
+//              }
+//            ]
+//          }
+//
 
+JSON_HANDLER(getPumpStats) {
+  JSON_HANDLER_PROLOG(getPumpStats);
 
+  sprintf(_buff + strlen(_buff), Q(logs) ": [\n");
 
+  // grab pump datalogs
 
+  int i, j;
+  
+  int depths[] = {
+    PERFLOG_HWPUMP_ELEM_1SEC,
+    PERFLOG_HWPUMP_ELEM_5SEC,
+    PERFLOG_HWPUMP_ELEM_15SEC,
+    0
+  };
+
+  WARN("only doing one because of buffer overflow");
+  
+  for (i = 0 ; i < 1 ; i++) {
+    DATALOG* pLog;
+    BOOL bDiff;
+    
+    switch (i) {
+      case 0: pLog = g_pDlog_hwPump_UART_wakeup;    bDiff = TRUE;   break;
+      case 1: pLog = g_pDlog_hwPump_SPI_wakeup;     bDiff = TRUE;   break;
+      case 2: pLog = g_pDlog_hwPump_I2C_wakeup;     bDiff = TRUE;   break;
+      case 3: pLog = g_pDlog_hwPump_UART_workTime;  bDiff = FALSE;  break;
+      case 4: pLog = g_pDlog_hwPump_SPI_workTime;   bDiff = FALSE;  break;
+      case 5: pLog = g_pDlog_hwPump_I2C_workTime;   bDiff = FALSE;  break;
+      default: LOG_FATAL("getPumpStats switch");
+    }
+
+    if (i != 0) sprintf(_buff + strlen(_buff), ",\n");
+    
+    sprintf(_buff + strlen(_buff),
+      "{\n"
+      Q(name) ":" Q(%s%s) ",\n"
+      Q(unit) ":" Q(%s) ",\n"
+      Q(epochSecs) ": %g,\n",
+      pLog -> pName,
+      bDiff ? " (diff)" : "",
+      pLog -> pUnit,
+      pLog -> epochSecs);
+
+    int numDepths = 0;
+    
+    sprintf(_buff + strlen(_buff), Q(depths) ": [");
+    for (j = 0 ; depths[j] != 0 ; j++) {
+      sprintf(_buff + strlen(_buff), "%d, ", depths[j]);
+      numDepths++;
+    }
+    sprintf(_buff + strlen(_buff) - 2, "],\n");
+
+    // get stats at all requested depths
+    
+    double minVal[10], maxVal[10], avgVal[10], stdVal[10];
+
+    for (j = 0 ; j < numDepths ; j++) {
+      if (j >= 10) {
+        LOG_FATAL("Too many depths in getPumpStats() - sheesh");
+      }
+      dlog_getStats(pLog, depths[j], bDiff, minVal+j, maxVal+j, avgVal+j, stdVal+j);
+    }
+
+    // min
+    sprintf(_buff + strlen(_buff), Q(min) ": [");
+    for (j = 0 ; j < numDepths ; j++) {
+      sprintf(_buff + strlen(_buff), "%g, ", minVal[j]);
+    }
+    sprintf(_buff + strlen(_buff) - 2, "],\n");
+
+    // max
+    sprintf(_buff + strlen(_buff), Q(max) ": [");
+    for (j = 0 ; j < numDepths ; j++) {
+      sprintf(_buff + strlen(_buff), "%g, ", maxVal[j]);
+    }
+    sprintf(_buff + strlen(_buff) - 2, "],\n");
+
+    // avg
+    sprintf(_buff + strlen(_buff), Q(avg) ": [");
+    for (j = 0 ; j < numDepths ; j++) {
+      sprintf(_buff + strlen(_buff), "%g, ", avgVal[j]);
+    }
+    sprintf(_buff + strlen(_buff) - 2, "],\n");
+
+    // std dev
+    sprintf(_buff + strlen(_buff), Q(std) ": [");
+    for (j = 0 ; j < numDepths ; j++) {
+      sprintf(_buff + strlen(_buff), "%g, ", stdVal[j]);
+    }
+    sprintf(_buff + strlen(_buff) - 2, "]\n");
+    
+    sprintf(_buff + strlen(_buff), "}\n");
+    
+  } // foreach DATALOG
+  
+  sprintf(_buff + strlen(_buff), "]");
+
+  JSON_HANDLER_EPILOG();
+}

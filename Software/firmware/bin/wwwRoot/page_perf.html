@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+   
+   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+   <title>PHI Admin Console: Performance</title>
+
+   <!-- shared PHI stuff -->
+   <script src="js/phi.js"></script>
+   <link rel="stylesheet" type="text/css" href="css/phi.css">
+
+   <script>
+      
+      function pageLoaded()
+      {
+        // nothing yet
+      }
+
+      // this function parses all JSON replies
+      
+      function parseJsonReply(obj) {
+        
+        var num = obj.reply.length;
+        
+        for (var i = 0 ; i < num ; i++) {
+          
+          var reply = obj.reply[i];
+          // alert("obj.reply[" + i + "].cmd = " + reply.cmd);
+          
+          switch (reply.cmd) {
+
+            case "getVersion":
+              
+              document.getElementById("phi_firmware_version").innerHTML = reply.version;
+              break;
+
+            case "getPumpStats":
+
+              
+//  req:    { cmd : getPumpStats }
+//  reply:  { logs:
+//            [
+//              {
+//                  name      : string,
+//                  unit      : string,
+//                  epochSecs : double,                 (num secs of logging)
+//                  numElem   : int,
+//                  depths    : [ double, ... ],        (depths used for each of min, max, etc..)
+//                  min       : [ double, ... ],
+//                  max       : [ double, ... ],
+//                  avg       : [ double, ... ],
+//                  std       : [ double, ... ],
+//              }
+//            , ..... optional extra logs follow
+//              {
+//                  ..... optional
+//              }
+//            ]
+//          }
+
+              for (var idx = 0 ; idx < reply.logs.length ; idx++) {
+                
+                var suffix = String.fromCharCode("A".charCodeAt(0) + idx);
+                document.getElementById("phi_pump_name_" + suffix).innerHTML = reply.logs[idx].name;
+                document.getElementById("phi_pump_unit_" + suffix).innerHTML = reply.logs[idx].unit;
+                
+                for (var epoch = 0 ; epoch < reply.logs[idx].depths.length ; epoch ++) {
+                  
+                  var content =
+                    "min: " + reply.logs[idx].min[epoch] + "<br\>" +
+                    "max: " + reply.logs[idx].max[epoch] + "<br\>" +
+                    "avg: " + reply.logs[idx].avg[epoch] + "<br\>" +
+                    "std: " + reply.logs[idx].std[epoch] + "<br\>";
+                  
+                  var label = "phi_pump_epoch" + String.fromCharCode("1".charCodeAt(0) + epoch) + "_" + suffix;
+                  document.getElementById(label).innerHTML = content;
+                }
+              }
+
+              break;
+              
+            default:
+              alert("unknown JSON reply - cmd: '" + reply.cmd + "'");
+              break;
+          }
+        }
+      }
+
+      function getPumpStats() {
+        phi_getPumpStats();
+      }
+
+   </script>
+
+</head>
+
+<body onload="pageLoaded()">
+
+   <table style="background-color:black;" border="0" cellpadding="5">
+      <col width=650>
+      <tr><td class="phi_page_title"> Performance Logs </td></tr>
+   </table>
+
+   <br/>
+   
+   <h3>Hardware Pumps
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      <input type="button" onclick="getPumpStats()" value="Refresh">
+   </h3>
+
+   <table>
+      <col width=140>
+      <col width=200>
+      <col width=200>
+      <col width=200>
+      <col width=200>
+      
+      <tr>
+         <td class="phi_label" style="text-align:center;">Name</td>
+         <td class="phi_label" style="text-align:center;">Unit</td>
+         <td class="phi_label" style="text-align:center;"> 1 sec </td>
+         <td class="phi_label" style="text-align:center;"> 5 secs </td>
+         <td class="phi_label" style="text-align:center;"> 15 secs </td>
+      </tr>
+      
+      <br/>
+
+      <!-- HW PUMP LINE A -->
+      <tr>
+         <td style="text-align:center;"><span id="phi_pump_name_A" class="phi_value">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_unit_A">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch1_A">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch2_A">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch3_A">?</span></td>
+      </tr>
+
+      <!-- HW PUMP LINE B -->
+      <tr style="background-color:#c0c0c0;">
+         <td style="text-align:center;"><span id="phi_pump_name_B" class="phi_value">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_unit_B">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch1_B">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch2_B">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch3_B">?</span></td>
+      </tr>
+
+      <!-- HW PUMP LINE C -->
+      <tr>
+         <td style="text-align:center;"><span id="phi_pump_name_C" class="phi_value">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_unit_C">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch1_C">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch2_C">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch3_C">?</span></td>
+      </tr>
+
+      <!-- HW PUMP LINE D -->
+      <tr style="background-color:#c0c0c0;">
+         <td style="text-align:center;"><span id="phi_pump_name_D" class="phi_value">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_unit_D">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch1_D">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch2_D">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch3_D">?</span></td>
+      </tr>
+
+      <!-- HW PUMP LINE E -->
+      <tr>
+         <td style="text-align:center;"><span id="phi_pump_name_E" class="phi_value">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_unit_E">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch1_E">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch2_E">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch3_E">?</span></td>
+      </tr>
+
+      <!-- HW PUMP LINE F -->
+      <tr style="background-color:#c0c0c0;">
+         <td style="text-align:center;"><span id="phi_pump_name_F" class="phi_value">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_unit_F">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch1_F">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch2_F">?</span></td>
+         <td style="text-align:center;"><span id="phi_pump_epoch3_F">?</span></td>
+      </tr>
+      
+   </table>
+
+   <br/>
+
+</body>
+</html>

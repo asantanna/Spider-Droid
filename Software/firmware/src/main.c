@@ -86,7 +86,24 @@ void globalInit() {
   // initialize HAL
   HAL_init();
 
-  // init peripherals
+  //
+  // Init performance logs for hardware pumps
+  //
+
+  // time of entry
+  g_pDlog_hwPump_UART_wakeup = dlog_create("UART Wakeup", "uSec", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);  
+  g_pDlog_hwPump_SPI_wakeup  = dlog_create("SPI Wakeup",  "uSec", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);
+  g_pDlog_hwPump_I2C_wakeup  = dlog_create("I2C Wakeup",  "uSec", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);
+
+  // work duration
+  g_pDlog_hwPump_UART_workTime = dlog_create("UART Worktime", "uSec", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);
+  g_pDlog_hwPump_SPI_workTime  = dlog_create("SPI Worktime",  "uSec", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);
+  g_pDlog_hwPump_I2C_workTime  = dlog_create("I2C Worktime",  "uSec", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);
+
+  //
+  // Init peripherals
+  //
+  
   char* p = HAL_initPeripherals();
 
   if (p != NULL) {

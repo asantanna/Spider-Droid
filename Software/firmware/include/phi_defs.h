@@ -33,7 +33,6 @@
 #define TRUE            1
 
 // math macros
-
 #define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
 #define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
 #define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
@@ -73,24 +72,20 @@
 #define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
 
 // time
-
 #define U64_1E6         ((UINT64)1e6)
 #define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
 
 // logging
-
 #define LOG_INFO(...)   logMsg("", __VA_ARGS__)
 #define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
 #define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
 
 // stringifying helpers
-
 #define STR(s)                #s              /* convert to string */
 #define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
 #define Q(s)                  "\"" #s "\""    /* convert to quoted string */
 
 // Linux drivers
-
 #define UART_DRIVER_NAME  "/dev/ttyAMA0"
 #define SPI0_DRIVER_NAME  "/dev/spidev0.0"
 #define SPI1_DRIVER_NAME  "/dev/spidev0.1"
@@ -108,11 +103,7 @@ typedef enum {
     
 } PHI_LED_COLOR;
 
-//
-// RPi resources
-//
-
-// move to cam file when it exists
+// cam info (move to cam file when it exists)
 #define CAM_WIDTH               160
 #define CAM_HEIGHT              120
 #define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
@@ -120,20 +111,30 @@ typedef enum {
 // PhiLink
 #define DEF_PHILINK_PORT  1122
 
-// gyro on SPI index 0
-#define GYRO_SPI_IDX      0
+// SPI indexes
+#define GYRO_SPI_IDX      0         // gyro at idx 0
+#define ADC_SPI_IDX       1         // ADCs at idx 1
 
-// ADC on SPI index 1
-#define ADC_SPI_IDX       1
-
-//
-// Mutexes
-//
+// mutex macros
 
 #define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
 #define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
-#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name = PHI_MUTEX_INITVAL
-#define PHI_MUTEX_GET(pSem)         pthread_mutex_lock(pSem)
-#define PHI_MUTEX_RELEASE(pSem)     pthread_mutex_unlock(pSem)
-#define PHI_MUTEX_TEST(pSem)        pthread_mutex_trylock(pSem)
+#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name
+#define PHI_MUTEX_DECL_INIT(name)   PHI_MUTEX_DECL(name) = PHI_MUTEX_INITVAL
+#define PHI_MUTEX_INIT(pMtx)        pthread_mutex_init(pMtx, NULL)
+#define PHI_MUTEX_GET(pMtx)         pthread_mutex_lock(pMtx)
+#define PHI_MUTEX_RELEASE(pMtx)     pthread_mutex_unlock(pMtx)
+#define PHI_MUTEX_TRYGET(pMtx)      pthread_mutex_trylock(pMtx)   // ret 0 if get successful, ret != if failed
+
+// hardware pumping rate
+#define HWPUMP_LOOPS_PER_SEC        100
+#define HW_PUMP_LOOP_PERIOD_USEC    ((INT32)(1e6 / HWPUMP_LOOPS_PER_SEC))
+
+// performance monitoring
+
+#define PERFLOG_HWPUMP_ELEM_1SEC      HWPUMP_LOOPS_PER_SEC
+#define PERFLOG_HWPUMP_ELEM_5SEC      (5 * PERFLOG_HWPUMP_ELEM_1SEC)
+#define PERFLOG_HWPUMP_ELEM_15SEC     (15 * PERFLOG_HWPUMP_ELEM_1SEC)
+#define PERFLOG_HWPUMP_NUM_ELEM       PERFLOG_HWPUMP_ELEM_15SEC
+#define PERFLOG_HWPUMP_EPOCH          15
 

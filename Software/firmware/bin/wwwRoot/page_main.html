@@ -30,7 +30,7 @@
         phi_getLinkStatus();
 
         // show server IP
-        document.getElementById("phi_server_ip").innerHTML = serverIP + "&nbsp; : &nbsp;" + serverPort;
+        document.getElementById("phi_server_ip").innerHTML = serverIP + " : " + serverPort;
       }
 
       // this function parses all JSON replies
@@ -94,6 +94,9 @@
               break;
               
             case "startPhiLink":
+
+              // HACK
+              sleep(500);
               
               Phi_getLinkStatus();
               break;
@@ -111,7 +114,7 @@
       }
 
       function buttonStartLink() {
-        alert("Sending server address " + serverIP + ":" + serverPort);
+        // alert("Sending server address " + serverIP + ":" + serverPort);
         phi_startPhiLink(serverIP, serverPort);
       }
 

@@ -40,7 +40,8 @@
 
 #endif
 
-#define DLOG_SIGN 'DLOG'
+#define DLOG_SIGN       'DLOG'
+#define DLOG_SIGN_FREE  'DLXX'
 
 #define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
 #define FAIL BASH_START_COLOR(BASH_RED) "FAIL" BASH_STOP_COLOR
@@ -50,22 +51,15 @@
 
 #define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
 
-typedef struct {
-  UINT64 time;
-  double data;
+double cubic(
+   double x1, double y1,
+   double x2, double y2,
+   double x3, double y3,
+   double x4, double y4,
+   double x5);
+    
 
-} DATALOG_ELEM;
-
-typedef struct {
-  UINT32 sign;
-  int currIdx;
-  int numElem;
-  DATALOG_ELEM elem[];
-  
-} DATALOG;
-
-
-DATALOG* dlog_create(int numElem) {
+DATALOG* dlog_create(char* pName, char* pUnit, int numElem, double epochSecs) {
 
   int size = sizeof(DATALOG) + numElem * sizeof(DATALOG_ELEM);
   DATALOG* pLog = malloc(size);
@@ -75,9 +69,14 @@ DATALOG* dlog_create(int numElem) {
   }
 
   memset(pLog, 0, size);
+  
   pLog -> sign = DLOG_SIGN;
-  pLog -> currIdx = 0;
+  PHI_MUTEX_INIT(&(pLog -> mutex));
+  pLog -> pName = pName;
+  pLog -> pUnit = pUnit;
+  pLog -> epochSecs = epochSecs;
   pLog -> numElem = numElem;
+  pLog -> currIdx = 0;
 
   return pLog;
 }
@@ -88,10 +87,33 @@ void dlog_free(DATALOG* pLog) {
     LOG_FATAL("bad pointer passed to freeDlog in datalog.c");
   }
 
+  // mark as freed
+  pLog -> sign = DLOG_SIGN_FREE;
+
   free(pLog);
 }
 
+void lock_dlog(DATALOG* pLog) {
+  if (pLog -> sign != DLOG_SIGN) {
+    LOG_FATAL("bad pointer passed to lockDlog() in datalog.c");
+    return;
+  }
+  PHI_MUTEX_GET(&(pLog -> mutex));
+}
+
+void unlock_dlog(DATALOG* pLog) {
+  if (pLog -> sign != DLOG_SIGN) {
+    LOG_FATAL("bad pointer passed to unlockDlog() in datalog.c");
+    return;
+  }
+  PHI_MUTEX_RELEASE(&(pLog -> mutex));
+}
+
 void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
+
+  // lock
+  lock_dlog(pLog);
+    
   // add element to current position of array
   pLog -> elem[pLog -> currIdx].time = time;
   pLog -> elem[pLog -> currIdx].data = data;
@@ -99,6 +121,9 @@ void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
 
   // advance current position and wrap to beginning if past end
   if (pLog -> currIdx > pLog -> numElem)  pLog -> currIdx = 0;
+  
+  // unlock
+  unlock_dlog(pLog);
 }
 
 void dlog_addElem(DATALOG* pLog, double data) {
@@ -106,12 +131,21 @@ void dlog_addElem(DATALOG* pLog, double data) {
 }
 
 double dlog_avg(DATALOG* pLog, int depth) {
+
+  // lock
+  lock_dlog(pLog);
+  
   // average the last "depth" entries stored in the array
   if (depth < 0 || depth > pLog -> numElem) {
     LOG_FATAL("depth invalid");
+
+    // unlock
+    unlock_dlog(pLog);
+    
     return 1;
 
   } else {
+    
     int i;
     double sum = 0;
     int _currIdx = pLog -> currIdx;
@@ -122,26 +156,43 @@ double dlog_avg(DATALOG* pLog, int depth) {
       _currIdx = WRAP(_currIdx + 1);
     }
 
+    // unlock
+    unlock_dlog(pLog);
+
     return ((double)sum) / depth;
   }
 }
 
-double cubic(
-  double x1,
-  double y1,
-  double x2,
-  double y2,
-  double x3,
-  double y3,
-  double x4,
-  double y4,
-  double x5);
+TODO("dlog_getStats() not fully impl");
+
+void dlog_getStats(DATALOG* pLog, int depth, BOOL bDiff,
+   double* pMinVal, double* pMaxVal, double* pAvgVal, double* pStdVal) {
+
+  // first get average
+  double avgVal = dlog_avg(pLog, depth);
+
+  // compute other stats
+
+  double minVal = 0;
+  double maxVal = 0;
+  double stdVal = 0;
+
+  // copy back
+  *pMinVal = minVal;
+  *pMaxVal = maxVal;
+  *pAvgVal = avgVal;
+  *pStdVal = stdVal;
+}
 
 double dlog_predict(DATALOG* pLog, UINT64 time) {
+
+  // lock
+  lock_dlog(pLog);
+  
   // look at last "depth" entries and guess the next one
   int _currIdx = WRAP(pLog -> currIdx - 4);
 
-  return cubic(
+  double val = cubic(
     pLog -> elem[_currIdx].time,
     pLog -> elem[_currIdx].data,
     pLog -> elem[WRAP(_currIdx + 1)].time,
@@ -152,13 +203,17 @@ double dlog_predict(DATALOG* pLog, UINT64 time) {
     pLog -> elem[WRAP(_currIdx + 3)].data,
     time);
   
+  // unlock
+  unlock_dlog(pLog);
+
+  return val;
 }
 
 void dlog_test()  {
   double avg;
   double guess;
   int i;
-  DATALOG* pLog = dlog_create(3);
+  DATALOG* pLog = dlog_create("test 1", "unit1", 3, 1);
 
   printf("//\n// Running Datalog Test Suite\n//\n\n");
 
@@ -212,7 +267,7 @@ void dlog_test()  {
   
   printf("Testing Cubic Extrapolator (direct): ");
 
-  pLog = dlog_create(4);
+  pLog = dlog_create("test 2", "unit 2", 4, 1);
 
   double x[] = { -3.8280, -2.5065, 1.3328, 4.1670 };
   double y[] = { 2.5192, 3.2189, 4.5950, 7.8150 };

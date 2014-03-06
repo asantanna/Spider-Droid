@@ -93,13 +93,27 @@ void unlock_snapshot();
 
 char* selfTest(int mode);
 
-// gyro
+//
+// Gyro
+//
 
 void gyroGetDeltaDegrees(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
 INT8 gyroGetRawTemp();
 
 //
-// MISC
+// Data Logging
+//
+
+DATALOG* dlog_create(char* pName, char* pUnit, int numElem, double epochSecs);
+void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data);
+void dlog_addElem(DATALOG* pLog, double data);
+double dlog_avg(DATALOG* pLog, int depth);
+double dlog_predict(DATALOG* pLog, UINT64 time);
+void dlog_getStats(DATALOG* pLog, int depth, BOOL bDiff,
+   double* pMinVal, double* pMaxVal, double* pAvgVal, double* pStdVal);
+
+//
+// Peripherals
 //
 
 char* initPeripherals();
@@ -110,6 +124,10 @@ void stopAllMotors();
 void flushMotorCmds();
 
 float getJointPos(BYTE adcIdx);
+
+//
+// Misc
+//
 
 void abortProcess(int rc);
 void abortWithMsg(const char* msg);

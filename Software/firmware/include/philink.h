@@ -21,7 +21,7 @@ typedef struct {
 } PHILINK_ARGS;
 
 //
-// Packets
+// CMD PACKET
 //
 
 #define NUM_SIGN_BYTES          4
@@ -45,16 +45,15 @@ typedef struct  __attribute__ ((__packed__)) {
   
 } PHI_CMD_PACKET;
 
+//
+// STATE PACKET
+//
+
 #define STAP_SIGN               "SPV1"
 #define STAP_NUM_IMAGE_BYTES    CAM_NUM_BYTES
 #define STAP_NUM_JOINT_ELEM     NUM_MOTORS
 #define STAP_NUM_GYRO_ELEM      3
 #define STAP_NUM_ACCEL_ELEM     3
-
-TODO("think about GYRO AND ACCEL ELEM");
-// - should be split into pos and neg?
-// - should return change
-// - is gyro returning change? if so, change name
 
 typedef struct __attribute__ ((__packed__)) {
   

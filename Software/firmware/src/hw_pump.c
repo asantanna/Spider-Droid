@@ -15,10 +15,6 @@
 // DEFINES
 //
 
-// rate at which hardware is polled to update state snapshot
-#define LOOPS_PER_SEC       100
-#define LOOP_PERIOD_USEC    ((INT32)(1e6 / LOOPS_PER_SEC))
-
 //
 // VARS
 //
@@ -35,7 +31,7 @@ typedef struct {
 static PHI_SNAPSHOT phiSnapshot;
 
 // mutex to sync access to phiSnapshot
-static PHI_MUTEX_DECL(mtxSnapshot);
+static PHI_MUTEX_DECL_INIT(mtxSnapshot);
 
 // internal
 
@@ -193,7 +189,7 @@ void* hwPump_UART_thread(void* arg)
     // sleep any leftover time
 
     INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
-    INT32 usec_sleepTime = (INT32) (LOOP_PERIOD_USEC - usec_workTime);
+    INT32 usec_sleepTime = (INT32) (HW_PUMP_LOOP_PERIOD_USEC - usec_workTime);
 
     if (usec_sleepTime < 0) {
       // no time left over
@@ -205,9 +201,14 @@ void* hwPump_UART_thread(void* arg)
 
     // new loop start
     usec_loopStart = phiUpTime();
+
+    // log wake up time and work time
+    dlog_addElem(g_pDlog_hwPump_UART_wakeup, usec_loopStart);
+    dlog_addElem(g_pDlog_hwPump_UART_workTime, usec_workTime);
     
   } // while
-}
+  
+} // hwPump_UART_thread
 
 /////////////////////////////////////////////////
 //
@@ -281,7 +282,7 @@ void* hwPump_SPI_thread(void* arg)
     // sleep any leftover time
 
     INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
-    INT32 usec_sleepTime = (INT32) (LOOP_PERIOD_USEC - usec_workTime);
+    INT32 usec_sleepTime = (INT32) (HW_PUMP_LOOP_PERIOD_USEC - usec_workTime);
 
     if (usec_sleepTime < 0) {
       // no time left over
@@ -293,18 +294,61 @@ void* hwPump_SPI_thread(void* arg)
 
     // new loop start
     usec_loopStart = phiUpTime();
+
+    // log wake up time and work time
+    dlog_addElem(g_pDlog_hwPump_SPI_wakeup, usec_loopStart);
+    dlog_addElem(g_pDlog_hwPump_SPI_workTime, usec_workTime);
     
   } // while
-}
+  
+} // hwPump_SPI_thread
 
 void* hwPump_I2C_thread(void* arg)
 {
   LOG_INFO("hwPump_I2C_thread started");
   printf("I2C pump thread started\n");
 
+  //
+  // Continually read all I2C devices
+  //
+
+  // time at start of loop
+  UINT64 usec_loopStart = phiUpTime();
+
   while (TRUE) {
-  }
-}
+
+    // READ I2C DEVICES HERE - TODO - HACK
+
+    //
+    // Sleep enough to update at desired speed
+    //
+
+    // time at end of work
+    UINT64 usec_workEnd = phiUpTime();
+
+    // sleep any leftover time
+
+    INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
+    INT32 usec_sleepTime = (INT32) (HW_PUMP_LOOP_PERIOD_USEC - usec_workTime);
+
+    if (usec_sleepTime < 0) {
+      // no time left over
+      usec_sleepTime = 0;
+    }
+
+    // always sleep (even if zero) so we at least give up our time slice
+    usleep(usec_sleepTime);
+
+    // new loop start
+    usec_loopStart = phiUpTime();
+
+    // log wake up time and work time
+    dlog_addElem(g_pDlog_hwPump_I2C_wakeup, usec_loopStart);
+    dlog_addElem(g_pDlog_hwPump_I2C_workTime, usec_workTime);
+
+  } // while
+
+} // hwPump_I2C_thread
 
 //
 // PHI snapshot functions
@@ -499,7 +543,7 @@ void updateState() {
     // sleep any leftover time
 
     INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
-    INT32 usec_sleepTime = (INT32) (LOOP_PERIOD_USEC - usec_workTime + usec_error);
+    INT32 usec_sleepTime = (INT32) (HW_PUMP_LOOP_PERIOD_USEC - usec_workTime + usec_error);
 
     if (usec_sleepTime < 0) {
       // no time left over
@@ -514,7 +558,7 @@ void updateState() {
     // NOTE: this is disabled because it doesn't improve things much
     // but it DOES increase the standard deviation
     //
-    // usec_error += (INT32) (LOOP_PERIOD_USEC - (usec_loopEnd - usec_loopStart));
+    // usec_error += (INT32) (HW_PUMP_LOOP_PERIOD_USEC - (usec_loopEnd - usec_loopStart));
 
     // DEBUG
     // printf("sleep time = %ld uS, error = %ld uS\n", usec_sleepTime, usec_error);

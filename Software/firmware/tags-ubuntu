@@ -1,79 +1,4 @@
 	TAGS	UNSORTED
-PHI_VERSION	include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
-LOGFILE_NAME	include/phi_defs.h	88	#define LOGFILE_NAME    "/var/log/phi.log"
-VERBOSE_LOG	include/phi_defs.h	131	#define VERBOSE_LOG     1
-INT8	include/phi_defs.h	173	#define INT8            char
-INT16	include/phi_defs.h	202	#define INT16           short
-INT32	include/phi_defs.h	232	#define INT32           long
-INT64	include/phi_defs.h	261	#define INT64           long long
-UINT	include/phi_defs.h	313	#define UINT            unsigned int
-UINT8	include/phi_defs.h	350	#define UINT8           unsigned char
-UINT16	include/phi_defs.h	388	#define UINT16          unsigned short
-UINT32	include/phi_defs.h	427	#define UINT32          unsigned long
-UINT64	include/phi_defs.h	465	#define UINT64          unsigned long long
-BYTE	include/phi_defs.h	533	#define BYTE            UINT8
-WORD	include/phi_defs.h	563	#define WORD            UINT16
-DWORD	include/phi_defs.h	594	#define DWORD           UINT32
-BOOL	include/phi_defs.h	625	#define BOOL            UINT8
-FALSE	include/phi_defs.h	656	#define FALSE           0
-TRUE	include/phi_defs.h	682	#define TRUE            1
-COUNTOF	include/phi_defs.h	725	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
-MIN	include/phi_defs.h	789	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
-MAX	include/phi_defs.h	841	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
-PHI_ALLOC	include/phi_defs.h	1004	#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
-PHI_ALLOC_N	include/phi_defs.h	1057	#define PHI_ALLOC_N(n)  allocHelper(n)
-PHI_FREE	include/phi_defs.h	1096	#define PHI_FREE(p)     {free(p); p = NULL; }
-PHI_ZERO	include/phi_defs.h	1143	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
-PHI_ZERO_P	include/phi_defs.h	1194	#define PHI_ZERO_P(p,l) memset(p, 0, l)
-BASH_BLACK	include/phi_defs.h	1252	#define BASH_BLACK      "30"
-BASH_RED	include/phi_defs.h	1281	#define BASH_RED        "31"
-BASH_GREEN	include/phi_defs.h	1310	#define BASH_GREEN      "32"
-BASH_YELLOW	include/phi_defs.h	1339	#define BASH_YELLOW     "33"
-BASH_BLUE	include/phi_defs.h	1368	#define BASH_BLUE       "34"
-BASH_MAGENTA	include/phi_defs.h	1397	#define BASH_MAGENTA    "35"
-BASH_CYAN	include/phi_defs.h	1426	#define BASH_CYAN       "36"
-BASH_WHITE	include/phi_defs.h	1455	#define BASH_WHITE      "37"
-BASH_START_COLOR	include/phi_defs.h	1485	#define BASH_START_COLOR(c)   "\e[1;" c "m"
-BASH_STOP_COLOR	include/phi_defs.h	1529	#define BASH_STOP_COLOR       "\e[0m"
-DO_PRAGMA	include/phi_defs.h	1568	#define DO_PRAGMA(x)    _Pragma (#x)
-INFO	include/phi_defs.h	1605	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
-TODO	include/phi_defs.h	1708	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
-WARN	include/phi_defs.h	1810	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
-HACK	include/phi_defs.h	1919	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
-U64_1E6	include/phi_defs.h	2029	#define U64_1E6         ((UINT64)1e6)
-TV_TO_USEC	include/phi_defs.h	2067	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
-LOG_INFO	include/phi_defs.h	2163	#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
-LOG_ERR	include/phi_defs.h	2211	#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
-LOG_FATAL	include/phi_defs.h	2266	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
-STR	include/phi_defs.h	2424	#define STR(s)                #s              /* convert to string */
-STR_MACRO	include/phi_defs.h	2494	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
-Q	include/phi_defs.h	2617	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
-UART_DRIVER_NAME	include/phi_defs.h	2713	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
-SPI0_DRIVER_NAME	include/phi_defs.h	2754	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
-SPI1_DRIVER_NAME	include/phi_defs.h	2797	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
-OFF	include/phi_defs.h	2867	    OFF,
-RED	include/phi_defs.h	2876	    RED,
-FLASH_RED	include/phi_defs.h	2885	    FLASH_RED,
-YELLOW	include/phi_defs.h	2900	    YELLOW,
-FLASH_YELLOW	include/phi_defs.h	2912	    FLASH_YELLOW,
-GREEN	include/phi_defs.h	2930	    GREEN,
-FLASH_GREEN	include/phi_defs.h	2941	    FLASH_GREEN
-PHI_LED_COLOR	include/phi_defs.h	2960	} PHI_LED_COLOR;
-CAM_WIDTH	include/phi_defs.h	3043	#define CAM_WIDTH               160
-CAM_HEIGHT	include/phi_defs.h	3079	#define CAM_HEIGHT              120
-CAM_NUM_BYTES	include/phi_defs.h	3115	#define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
-DEF_PHILINK_PORT	include/phi_defs.h	3184	#define DEF_PHILINK_PORT  1122
-GYRO_SPI_IDX	include/phi_defs.h	3239	#define GYRO_SPI_IDX      0
-ADC_SPI_IDX	include/phi_defs.h	3290	#define ADC_SPI_IDX       1
-PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3337	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
-PHI_MUTEX_INITVAL	include/phi_defs.h	3389	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
-PHI_MUTEX_DECL	include/phi_defs.h	3451	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name = PHI_MUTEX_INITVAL
-PHI_MUTEX_GET	include/phi_defs.h	3531	#define PHI_MUTEX_GET(pSem)         pthread_mutex_lock(pSem)
-PHI_MUTEX_RELEASE	include/phi_defs.h	3592	#define PHI_MUTEX_RELEASE(pSem)     pthread_mutex_unlock(pSem)
-PHI_MUTEX_TEST	include/phi_defs.h	3655	#define PHI_MUTEX_TEST(pSem)        pthread_mutex_trylock(pSem)
-phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
-genericHal	src/hal.c	750	HAL_FUNCS genericHal = {
-HAL_init	src/hal.c	1204	void HAL_init() {
 MC_DEF_BAUD	include/polulu_2s9v1.h	107	#define MC_DEF_BAUD   B38400
 MC_CMD_SIGN	include/polulu_2s9v1.h	513	#define MC_CMD_SIGN                 0xAA
 MC_DEFAULT_DEVICE_NUM	include/polulu_2s9v1.h	554	#define MC_DEFAULT_DEVICE_NUM       9
@@ -173,34 +98,115 @@ GYRO_TEMP_MIN	include/plax_L3G4200D.h	3271	#define GYRO_TEMP_MIN             (-4
 GYRO_TEMP_MAX	include/plax_L3G4200D.h	3311	#define GYRO_TEMP_MAX             85
 GYRO_TEMP_RANGE	include/plax_L3G4200D.h	3348	#define GYRO_TEMP_RANGE           (GYRO_TEMP_MAX - GYRO_TEMP_MIN + 1)
 GYRO_TEMP_RAW_TO_CANON	include/plax_L3G4200D.h	3419	#define GYRO_TEMP_RAW_TO_CANON(raw) \
-GYRO_STATUS_ADDR	include/plax_L3G4200D.h	3535	#define GYRO_STATUS_ADDR          0x27
-GYRO_STATUS_OVER	include/plax_L3G4200D.h	3575	#define GYRO_STATUS_OVER          0x80
-GYRO_STATUS_Z_OVER	include/plax_L3G4200D.h	3614	#define GYRO_STATUS_Z_OVER        0x40
-GYRO_STATUS_Y_OVER	include/plax_L3G4200D.h	3653	#define GYRO_STATUS_Y_OVER        0x20
-GYRO_STATUS_X_OVER	include/plax_L3G4200D.h	3692	#define GYRO_STATUS_X_OVER        0x10
-GYRO_STATUS_AVAIL	include/plax_L3G4200D.h	3731	#define GYRO_STATUS_AVAIL         0x08
-GYRO_STATUS_Z_AVAIL	include/plax_L3G4200D.h	3770	#define GYRO_STATUS_Z_AVAIL       0x04
-GYRO_STATUS_Y_AVAIL	include/plax_L3G4200D.h	3809	#define GYRO_STATUS_Y_AVAIL       0x02
-GYRO_STATUS_X_AVAIL	include/plax_L3G4200D.h	3848	#define GYRO_STATUS_X_AVAIL       0x01
-GYRO_XL_ADDR	include/plax_L3G4200D.h	3909	#define GYRO_XL_ADDR              0x28
-GYRO_XH_ADDR	include/plax_L3G4200D.h	3948	#define GYRO_XH_ADDR              0x29
-GYRO_YL_ADDR	include/plax_L3G4200D.h	4009	#define GYRO_YL_ADDR              0x2A
-GYRO_YH_ADDR	include/plax_L3G4200D.h	4048	#define GYRO_YH_ADDR              0x2B
-GYRO_ZL_ADDR	include/plax_L3G4200D.h	4109	#define GYRO_ZL_ADDR              0x2C
-GYRO_ZH_ADDR	include/plax_L3G4200D.h	4148	#define GYRO_ZH_ADDR              0x2D
-GYRO_FIFO_ADDR	include/plax_L3G4200D.h	4206	#define GYRO_FIFO_ADDR            0x2E
-GYRO_FIFO_MODE_BYPASS	include/plax_L3G4200D.h	4246	#define GYRO_FIFO_MODE_BYPASS     0x00
-GYRO_FIFO_MODE_FIFO	include/plax_L3G4200D.h	4285	#define GYRO_FIFO_MODE_FIFO       0x20
-GYRO_FIFO_MODE_STREAM	include/plax_L3G4200D.h	4324	#define GYRO_FIFO_MODE_STREAM     0x40
-GYRO_FIFO_MODE_STF	include/plax_L3G4200D.h	4363	#define GYRO_FIFO_MODE_STF        0x60
-GYRO_FIFO_MODE_BTS	include/plax_L3G4200D.h	4402	#define GYRO_FIFO_MODE_BTS        0x80
-GYRO_FIFO_WTM_MASK	include/plax_L3G4200D.h	4441	#define GYRO_FIFO_WTM_MASK        0x1F
-GYRO_FIFO_SRC_ADDR	include/plax_L3G4200D.h	4498	#define GYRO_FIFO_SRC_ADDR        0x2F
-GYRO_FIFO_SRC_WTM	include/plax_L3G4200D.h	4538	#define GYRO_FIFO_SRC_WTM         0x80
-GYRO_FIFO_SRC_OVRN	include/plax_L3G4200D.h	4577	#define GYRO_FIFO_SRC_OVRN        0x40
-GYRO_FIFO_SRC_EMPTY	include/plax_L3G4200D.h	4616	#define GYRO_FIFO_SRC_EMPTY       0x20
-GYRO_FIFO_SRC_COUNT_MASK	include/plax_L3G4200D.h	4655	#define GYRO_FIFO_SRC_COUNT_MASK  0x1F
-GYRO_RSRC_ADDR	include/plax_L3G4200D.h	4708	#define GYRO_RSRC_ADDR            0x2F
+GYRO_TEMP_CANON_TO_RAW	include/plax_L3G4200D.h	3520	#define GYRO_TEMP_CANON_TO_RAW(canon) \
+GYRO_STATUS_ADDR	include/plax_L3G4200D.h	3638	#define GYRO_STATUS_ADDR          0x27
+GYRO_STATUS_OVER	include/plax_L3G4200D.h	3678	#define GYRO_STATUS_OVER          0x80
+GYRO_STATUS_Z_OVER	include/plax_L3G4200D.h	3717	#define GYRO_STATUS_Z_OVER        0x40
+GYRO_STATUS_Y_OVER	include/plax_L3G4200D.h	3756	#define GYRO_STATUS_Y_OVER        0x20
+GYRO_STATUS_X_OVER	include/plax_L3G4200D.h	3795	#define GYRO_STATUS_X_OVER        0x10
+GYRO_STATUS_AVAIL	include/plax_L3G4200D.h	3834	#define GYRO_STATUS_AVAIL         0x08
+GYRO_STATUS_Z_AVAIL	include/plax_L3G4200D.h	3873	#define GYRO_STATUS_Z_AVAIL       0x04
+GYRO_STATUS_Y_AVAIL	include/plax_L3G4200D.h	3912	#define GYRO_STATUS_Y_AVAIL       0x02
+GYRO_STATUS_X_AVAIL	include/plax_L3G4200D.h	3951	#define GYRO_STATUS_X_AVAIL       0x01
+GYRO_XL_ADDR	include/plax_L3G4200D.h	4012	#define GYRO_XL_ADDR              0x28
+GYRO_XH_ADDR	include/plax_L3G4200D.h	4051	#define GYRO_XH_ADDR              0x29
+GYRO_YL_ADDR	include/plax_L3G4200D.h	4112	#define GYRO_YL_ADDR              0x2A
+GYRO_YH_ADDR	include/plax_L3G4200D.h	4151	#define GYRO_YH_ADDR              0x2B
+GYRO_ZL_ADDR	include/plax_L3G4200D.h	4212	#define GYRO_ZL_ADDR              0x2C
+GYRO_ZH_ADDR	include/plax_L3G4200D.h	4251	#define GYRO_ZH_ADDR              0x2D
+GYRO_FIFO_ADDR	include/plax_L3G4200D.h	4309	#define GYRO_FIFO_ADDR            0x2E
+GYRO_FIFO_MODE_BYPASS	include/plax_L3G4200D.h	4349	#define GYRO_FIFO_MODE_BYPASS     0x00
+GYRO_FIFO_MODE_FIFO	include/plax_L3G4200D.h	4388	#define GYRO_FIFO_MODE_FIFO       0x20
+GYRO_FIFO_MODE_STREAM	include/plax_L3G4200D.h	4427	#define GYRO_FIFO_MODE_STREAM     0x40
+GYRO_FIFO_MODE_STF	include/plax_L3G4200D.h	4466	#define GYRO_FIFO_MODE_STF        0x60
+GYRO_FIFO_MODE_BTS	include/plax_L3G4200D.h	4505	#define GYRO_FIFO_MODE_BTS        0x80
+GYRO_FIFO_WTM_MASK	include/plax_L3G4200D.h	4544	#define GYRO_FIFO_WTM_MASK        0x1F
+GYRO_FIFO_SRC_ADDR	include/plax_L3G4200D.h	4601	#define GYRO_FIFO_SRC_ADDR        0x2F
+GYRO_FIFO_SRC_WTM	include/plax_L3G4200D.h	4641	#define GYRO_FIFO_SRC_WTM         0x80
+GYRO_FIFO_SRC_OVRN	include/plax_L3G4200D.h	4680	#define GYRO_FIFO_SRC_OVRN        0x40
+GYRO_FIFO_SRC_EMPTY	include/plax_L3G4200D.h	4719	#define GYRO_FIFO_SRC_EMPTY       0x20
+GYRO_FIFO_SRC_COUNT_MASK	include/plax_L3G4200D.h	4758	#define GYRO_FIFO_SRC_COUNT_MASK  0x1F
+GYRO_RSRC_ADDR	include/plax_L3G4200D.h	4811	#define GYRO_RSRC_ADDR            0x2F
+PHI_VERSION	include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
+LOGFILE_NAME	include/phi_defs.h	88	#define LOGFILE_NAME    "/var/log/phi.log"
+VERBOSE_LOG	include/phi_defs.h	131	#define VERBOSE_LOG     1
+INT8	include/phi_defs.h	173	#define INT8            char
+INT16	include/phi_defs.h	202	#define INT16           short
+INT32	include/phi_defs.h	232	#define INT32           long
+INT64	include/phi_defs.h	261	#define INT64           long long
+UINT	include/phi_defs.h	313	#define UINT            unsigned int
+UINT8	include/phi_defs.h	350	#define UINT8           unsigned char
+UINT16	include/phi_defs.h	388	#define UINT16          unsigned short
+UINT32	include/phi_defs.h	427	#define UINT32          unsigned long
+UINT64	include/phi_defs.h	465	#define UINT64          unsigned long long
+BYTE	include/phi_defs.h	533	#define BYTE            UINT8
+WORD	include/phi_defs.h	563	#define WORD            UINT16
+DWORD	include/phi_defs.h	594	#define DWORD           UINT32
+BOOL	include/phi_defs.h	625	#define BOOL            UINT8
+FALSE	include/phi_defs.h	656	#define FALSE           0
+TRUE	include/phi_defs.h	682	#define TRUE            1
+COUNTOF	include/phi_defs.h	724	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
+MIN	include/phi_defs.h	788	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
+MAX	include/phi_defs.h	840	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
+PHI_ALLOC	include/phi_defs.h	1003	#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
+PHI_ALLOC_N	include/phi_defs.h	1056	#define PHI_ALLOC_N(n)  allocHelper(n)
+PHI_FREE	include/phi_defs.h	1095	#define PHI_FREE(p)     {free(p); p = NULL; }
+PHI_ZERO	include/phi_defs.h	1142	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
+PHI_ZERO_P	include/phi_defs.h	1193	#define PHI_ZERO_P(p,l) memset(p, 0, l)
+BASH_BLACK	include/phi_defs.h	1251	#define BASH_BLACK      "30"
+BASH_RED	include/phi_defs.h	1280	#define BASH_RED        "31"
+BASH_GREEN	include/phi_defs.h	1309	#define BASH_GREEN      "32"
+BASH_YELLOW	include/phi_defs.h	1338	#define BASH_YELLOW     "33"
+BASH_BLUE	include/phi_defs.h	1367	#define BASH_BLUE       "34"
+BASH_MAGENTA	include/phi_defs.h	1396	#define BASH_MAGENTA    "35"
+BASH_CYAN	include/phi_defs.h	1425	#define BASH_CYAN       "36"
+BASH_WHITE	include/phi_defs.h	1454	#define BASH_WHITE      "37"
+BASH_START_COLOR	include/phi_defs.h	1484	#define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	include/phi_defs.h	1528	#define BASH_STOP_COLOR       "\e[0m"
+DO_PRAGMA	include/phi_defs.h	1567	#define DO_PRAGMA(x)    _Pragma (#x)
+INFO	include/phi_defs.h	1604	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
+TODO	include/phi_defs.h	1707	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
+WARN	include/phi_defs.h	1809	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
+HACK	include/phi_defs.h	1918	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
+U64_1E6	include/phi_defs.h	2027	#define U64_1E6         ((UINT64)1e6)
+TV_TO_USEC	include/phi_defs.h	2065	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
+LOG_INFO	include/phi_defs.h	2160	#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
+LOG_ERR	include/phi_defs.h	2208	#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
+LOG_FATAL	include/phi_defs.h	2263	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
+STR	include/phi_defs.h	2420	#define STR(s)                #s              /* convert to string */
+STR_MACRO	include/phi_defs.h	2490	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
+Q	include/phi_defs.h	2613	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
+UART_DRIVER_NAME	include/phi_defs.h	2708	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
+SPI0_DRIVER_NAME	include/phi_defs.h	2749	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
+SPI1_DRIVER_NAME	include/phi_defs.h	2792	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
+OFF	include/phi_defs.h	2862	    OFF,
+RED	include/phi_defs.h	2871	    RED,
+FLASH_RED	include/phi_defs.h	2880	    FLASH_RED,
+YELLOW	include/phi_defs.h	2895	    YELLOW,
+FLASH_YELLOW	include/phi_defs.h	2907	    FLASH_YELLOW,
+GREEN	include/phi_defs.h	2925	    GREEN,
+FLASH_GREEN	include/phi_defs.h	2936	    FLASH_GREEN
+PHI_LED_COLOR	include/phi_defs.h	2955	} PHI_LED_COLOR;
+CAM_WIDTH	include/phi_defs.h	3025	#define CAM_WIDTH               160
+CAM_HEIGHT	include/phi_defs.h	3061	#define CAM_HEIGHT              120
+CAM_NUM_BYTES	include/phi_defs.h	3097	#define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
+DEF_PHILINK_PORT	include/phi_defs.h	3166	#define DEF_PHILINK_PORT  1122
+GYRO_SPI_IDX	include/phi_defs.h	3213	#define GYRO_SPI_IDX      0         // gyro at idx 0
+ADC_SPI_IDX	include/phi_defs.h	3266	#define ADC_SPI_IDX       1         // ADCs at idx 1
+PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3337	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
+PHI_MUTEX_INITVAL	include/phi_defs.h	3389	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
+PHI_MUTEX_DECL	include/phi_defs.h	3451	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name
+PHI_MUTEX_DECL_INIT	include/phi_defs.h	3511	#define PHI_MUTEX_DECL_INIT(name)   PHI_MUTEX_DECL(name) = PHI_MUTEX_INITVAL
+PHI_MUTEX_INIT	include/phi_defs.h	3588	#define PHI_MUTEX_INIT(pMtx)        pthread_mutex_init(pMtx, NULL)
+PHI_MUTEX_GET	include/phi_defs.h	3655	#define PHI_MUTEX_GET(pMtx)         pthread_mutex_lock(pMtx)
+PHI_MUTEX_RELEASE	include/phi_defs.h	3716	#define PHI_MUTEX_RELEASE(pMtx)     pthread_mutex_unlock(pMtx)
+PHI_MUTEX_TRYGET	include/phi_defs.h	3779	#define PHI_MUTEX_TRYGET(pMtx)      pthread_mutex_trylock(pMtx)   // ret 0 if get successful, ret != if failed
+HWPUMP_LOOPS_PER_SEC	include/phi_defs.h	3916	#define HWPUMP_LOOPS_PER_SEC        100
+HW_PUMP_LOOP_PERIOD_USEC	include/phi_defs.h	3956	#define HW_PUMP_LOOP_PERIOD_USEC    ((INT32)(1e6 / HWPUMP_LOOPS_PER_SEC))
+PERFLOG_ELEM_1SEC	include/phi_defs.h	4057	#define PERFLOG_ELEM_1SEC           HWPUMP_LOOPS_PER_SEC
+PERFLOG_ELEM_5SEC	include/phi_defs.h	4114	#define PERFLOG_ELEM_5SEC           (5 * PERFLOG_ELEM_1SEC)
+PERFLOG_ELEM_15SEC	include/phi_defs.h	4174	#define PERFLOG_ELEM_15SEC          (15 * PERFLOG_ELEM_1SEC)
+PERFLOG_NUM_ELEM	include/phi_defs.h	4235	#define PERFLOG_NUM_ELEM            PERFLOG_ELEM_15SEC
 LINK_OFF	include/philink.h	43	    LINK_OFF,
 LINK_STARTED	include/philink.h	57	    LINK_STARTED,
 LINK_CONNECTING	include/philink.h	75	    LINK_CONNECTING,
@@ -212,19 +218,19 @@ sock	include/philink.h	187	  int sock;
 ipAddr	include/philink.h	205	  in_addr_t ipAddr;
 port	include/philink.h	224	  uint16_t port;
 PHILINK_ARGS	include/philink.h	233	} PHILINK_ARGS;
-NUM_SIGN_BYTES	include/philink.h	274	#define NUM_SIGN_BYTES          4
-CMDP_SIGN	include/philink.h	309	#define CMDP_SIGN               "CPV1"
-CMDP_MOTOR_ELEM	include/philink.h	348	#define CMDP_MOTOR_ELEM         NUM_MOTORS
-PHI_CMD_PACKET	include/philink.h	502	} PHI_CMD_PACKET;
-STAP_SIGN	include/philink.h	527	#define STAP_SIGN               "SPV1"
-STAP_NUM_IMAGE_BYTES	include/philink.h	566	#define STAP_NUM_IMAGE_BYTES    CAM_NUM_BYTES
-STAP_NUM_JOINT_ELEM	include/philink.h	612	#define STAP_NUM_JOINT_ELEM     NUM_MOTORS
-STAP_NUM_GYRO_ELEM	include/philink.h	655	#define STAP_NUM_GYRO_ELEM      3
-STAP_NUM_ACCEL_ELEM	include/philink.h	689	#define STAP_NUM_ACCEL_ELEM     3
-PHI_STATE_PACKET	include/philink.h	1115	} PHI_STATE_PACKET;
+NUM_SIGN_BYTES	include/philink.h	277	#define NUM_SIGN_BYTES          4
+CMDP_SIGN	include/philink.h	311	#define CMDP_SIGN               "CPV1"
+CMDP_MOTOR_ELEM	include/philink.h	351	#define CMDP_MOTOR_ELEM         NUM_MOTORS
+PHI_CMD_PACKET	include/philink.h	755	} PHI_CMD_PACKET;
+STAP_SIGN	include/philink.h	803	#define STAP_SIGN               "SPV1"
+STAP_NUM_IMAGE_BYTES	include/philink.h	842	#define STAP_NUM_IMAGE_BYTES    CAM_NUM_BYTES
+STAP_NUM_JOINT_ELEM	include/philink.h	888	#define STAP_NUM_JOINT_ELEM     NUM_MOTORS
+STAP_NUM_GYRO_ELEM	include/philink.h	931	#define STAP_NUM_GYRO_ELEM      3
+STAP_NUM_ACCEL_ELEM	include/philink.h	965	#define STAP_NUM_ACCEL_ELEM     3
+PHI_STATE_PACKET	include/philink.h	1391	} PHI_STATE_PACKET;
 _REENTRANT	include/phi.h	97	#define _REENTRANT 1
 ACCEL_I2C_CLK	include/osepp_adxl345.h	66	#define ACCEL_I2C_CLK             ( 400ul*1000ul )
-GYRO_SAFE_SPI_CLK	include/osepp_adxl345.h	140	#define GYRO_SAFE_SPI_CLK         ( 8ul*1000ul*1000ul)
+ACCEL_SAFE_I2C_CLK	include/osepp_adxl345.h	140	#define ACCEL_SAFE_I2C_CLK        ( (ACCEL_I2C_CLK * 8) / 10 )
 NUM_MOTOR_CTRL	include/motor.h	697	#define NUM_MOTOR_CTRL    6
 NUM_MOTORS	include/motor.h	725	#define NUM_MOTORS        (NUM_MOTOR_CTRL * 2)    // 12
 MOTOR_NAME_TO_CTRL_ID	include/motor.h	1711	#define MOTOR_NAME_TO_CTRL_ID(name)             ((BYTE)(name[0] - 'A'))
@@ -273,31 +279,36 @@ toksuper	include/jsmn.h	1158		int toksuper; /* superior token node, e.g parent o
 jsmn_parser	include/jsmn.h	1224	} jsmn_parser;
 halFunc_void	include/hal.h	54	typedef void   (*halFunc_void)   ();
 halFunc_int	include/hal.h	91	typedef int    (*halFunc_int)    ();
-halFunc_pChar	include/hal.h	128	typedef char*  (*halFunc_pChar)  ();
-halFunc_BOOL	include/hal.h	166	typedef BOOL   (*halFunc_BOOL)   ();
-halFunc_INT8	include/hal.h	203	typedef INT8   (*halFunc_INT8)   ();
-halFunc_UINT8	include/hal.h	240	typedef UINT8  (*halFunc_UINT8)  ();
-halFunc_UINT16	include/hal.h	277	typedef UINT16 (*halFunc_UINT16) ();
-pName	include/hal.h	340	  const char* pName;
-initPeripherals	include/hal.h	376	  halFunc_pChar   initPeripherals;
-gyroGetDeltas	include/hal.h	427	  halFunc_void    gyroGetDeltas;
-gyroGetTemp	include/hal.h	460	  halFunc_float   gyroGetTemp;
-setMotorPower	include/hal.h	515	  halFunc_void    setMotorPower;
-setControllerId	include/hal.h	548	  halFunc_void    setControllerId;
-getJointPos	include/hal.h	594	  halFunc_float   getJointPos;
-HAL_FUNCS	include/hal.h	610	} HAL_FUNCS;
-HAL_name	include/hal.h	703	#define HAL_name              (g_pHal   -> pName)
-HAL_initPeripherals	include/hal.h	753	#define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
-HAL_gyroGetDeltas	include/hal.h	815	#define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
-HAL_gyroGetTemp	include/hal.h	874	#define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
-HAL_setMotorPower	include/hal.h	932	#define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
-HAL_setControllerId	include/hal.h	991	#define HAL_setControllerId   (*(g_pHal -> setControllerId))
-HAL_getJointPos	include/hal.h	1053	#define HAL_getJointPos       (*(g_pHal -> getJointPos))
+halFunc_float	include/hal.h	128	typedef float  (*halFunc_float)  ();
+halFunc_pChar	include/hal.h	165	typedef char*  (*halFunc_pChar)  ();
+pName	include/hal.h	228	  const char* pName;
+initPeripherals	include/hal.h	264	  halFunc_pChar   initPeripherals;
+gyroGetDeltas	include/hal.h	315	  halFunc_void    gyroGetDeltas;
+gyroGetTemp	include/hal.h	348	  halFunc_float   gyroGetTemp;
+setMotorPower	include/hal.h	403	  halFunc_void    setMotorPower;
+setControllerId	include/hal.h	436	  halFunc_void    setControllerId;
+getJointPos	include/hal.h	482	  halFunc_float   getJointPos;
+HAL_FUNCS	include/hal.h	498	} HAL_FUNCS;
+HAL_name	include/hal.h	591	#define HAL_name              (g_pHal   -> pName)
+HAL_initPeripherals	include/hal.h	641	#define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
+HAL_gyroGetDeltas	include/hal.h	703	#define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
+HAL_gyroGetTemp	include/hal.h	762	#define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
+HAL_setMotorPower	include/hal.h	820	#define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
+HAL_setControllerId	include/hal.h	879	#define HAL_setControllerId   (*(g_pHal -> setControllerId))
+HAL_getJointPos	include/hal.h	941	#define HAL_getJointPos       (*(g_pHal -> getJointPos))
 INIT	include/globals.h	77	#define INIT(v)   = v
 EXT	include/globals.h	99	#define EXT       // nothing
 INIT	include/globals.h	134	#define INIT(v)   // nothing
 EXT	include/globals.h	163	#define EXT       extern
 g_uname	include/globals.h	388	EXT struct utsname g_uname;              // can't init this to zero here for some reason
+time	include/datalog.h	51	  UINT64 time;
+data	include/datalog.h	66	  double data;
+DATALOG_ELEM	include/datalog.h	75	} DATALOG_ELEM;
+sign	include/datalog.h	116	  UINT32 sign;
+currIdx	include/datalog.h	153	  int currIdx;
+numElem	include/datalog.h	168	  int numElem;
+elem	include/datalog.h	192	  DATALOG_ELEM elem[];
+DATALOG	include/datalog.h	203	} DATALOG;
 MAX_JSON_TOKENS	src/webjson.c	913	#define MAX_JSON_TOKENS       256
 PARSER_NUM_TOK	src/webjson.c	979	#define PARSER_NUM_TOK(parser)  ((parser).toknext)
 TOK_START	src/webjson.c	1031	#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
@@ -338,9 +349,9 @@ JSON_HANDLER	src/webjson.c	14267	JSON_HANDLER(setPower) {
 JSON_HANDLER	src/webjson.c	16393	JSON_HANDLER(setMCtlId) {
 JSON_HANDLER	src/webjson.c	17851	JSON_HANDLER(getGyroDeltas) {
 JSON_HANDLER	src/webjson.c	18302	JSON_HANDLER(getGyroTemp) {
-JSON_HANDLER	src/webjson.c	18655	JSON_HANDLER(getLinkStatus) {
-JSON_HANDLER	src/webjson.c	19279	JSON_HANDLER(startPhiLink) {
-JSON_HANDLER	src/webjson.c	21293	JSON_HANDLER(selfTest) {
+JSON_HANDLER	src/webjson.c	18686	JSON_HANDLER(getLinkStatus) {
+JSON_HANDLER	src/webjson.c	19310	JSON_HANDLER(startPhiLink) {
+JSON_HANDLER	src/webjson.c	21324	JSON_HANDLER(selfTest) {
 HTTP_BUFFSIZE	src/webadmin.c	1201	#define HTTP_BUFFSIZE           8096      // max size of HTTP request
 FORBIDDEN	src/webadmin.c	1271	#define FORBIDDEN               403
 NOTFOUND	src/webadmin.c	1307	#define NOTFOUND                404
@@ -400,13 +411,13 @@ JTEST_WAIT_MAX_MULT	src/selftest.c	374	#define JTEST_WAIT_MAX_MULT     25
 JTEST_JOINT_CHG_DEG	src/selftest.c	410	#define JTEST_JOINT_CHG_DEG     5
 minPowerNeeded	src/selftest.c	460	BYTE minPowerNeeded = 0;
 minWaitNeeded	src/selftest.c	486	INT32 minWaitNeeded = 0;
-selfTest	src/selftest.c	761	char* selfTest(int mode) {
-testAllJoints	src/selftest.c	925	void testAllJoints() {
-testJointMovement	src/selftest.c	2026	BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
-testJointRange	src/selftest.c	3601	BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
-moveJointToStop	src/selftest.c	4069	double moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
+selfTest	src/selftest.c	760	char* selfTest(int mode) {
+testAllJoints	src/selftest.c	924	void testAllJoints() {
+testJointMovement	src/selftest.c	2025	BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
+testJointRange	src/selftest.c	3597	BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
+moveJointToStop	src/selftest.c	4080	float moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
 allocHelper	src/phi_utils.c	52	void* allocHelper(int size) {
-PhiUpTime	src/phi_utils.c	202	UINT64 PhiUpTime() {
+phiUpTime	src/phi_utils.c	202	UINT64 phiUpTime() {
 abortProcess	src/phi_utils.c	335	void abortProcess(int rc) {
 abortWithMsg	src/phi_utils.c	457	void abortWithMsg(const char* msg) {
 __itoa	src/phi_utils.c	628	char* __itoa(int value, char* result, int base) {
@@ -417,17 +428,17 @@ logTimestamp	src/phi_utils.c	2568	void logTimestamp() {
 logMsg	src/phi_utils.c	2724	void logMsg(const char* tag, const char *fmt, ...) {
 getHostIP	src/phi_utils.c	3083	UINT32 getHostIP() {
 setLED	src/phi_utils.c	4495	void setLED(PHI_LED_COLOR color) {
-PhiRand	src/phi_utils.c	4813	double PhiRand() {
+phiRand	src/phi_utils.c	4813	double phiRand() {
 setRealtimePrio	src/phi_utils.c	4948	BOOL setRealtimePrio(pthread_t thread) {
 setNonBlocking	src/phi_utils.c	5866	int setNonBlocking(int fd)
-RX_BEGIN	src/philink.c	619	  RX_BEGIN,
-RX_RECEIVING	src/philink.c	631	  RX_RECEIVING,
-TX_BEGIN	src/philink.c	647	  TX_BEGIN,
-TX_SENDING	src/philink.c	659	  TX_SENDING,
-COMM_STATUS	src/philink.c	678	} COMM_STATUS;
-startPhiLink	src/philink.c	785	BOOL startPhiLink(char* ipAddr, int port) {
-phiLink_loop	src/philink.c	2400	void* phiLink_loop(void* arg)
-setLinkStatus	src/philink.c	4531	void setLinkStatus(PHILINK_STATUS status) {
+RX_BEGIN	src/philink.c	777	  RX_BEGIN,
+RX_RECEIVING	src/philink.c	789	  RX_RECEIVING,
+TX_BEGIN	src/philink.c	805	  TX_BEGIN,
+TX_SENDING	src/philink.c	817	  TX_SENDING,
+COMM_STATUS	src/philink.c	836	} COMM_STATUS;
+startPhiLink	src/philink.c	943	BOOL startPhiLink(char* ipAddr, int port) {
+phiLink_loop	src/philink.c	2558	void* phiLink_loop(void* arg)
+setLinkStatus	src/philink.c	4689	void setLinkStatus(PHILINK_STATUS status) {
 initMotorCtrl	src/motor.c	144	BOOL initMotorCtrl() {
 setMotorPower	src/motor.c	1965	void setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 stopMotor	src/motor.c	2536	void stopMotor(BYTE ctrlID, BYTE selIdx) {
@@ -436,7 +447,7 @@ flushMotorCmds	src/motor.c	3012	void flushMotorCmds() {
 getRawJointPos	src/motor.c	3182	UINT16 getRawJointPos(BYTE adcIdx) {
 getJointPos	src/motor.c	3858	float getJointPos(BYTE adcIdx) {
 getJointPosByMotorID	src/motor.c	3984	float getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
-setControllerId	src/motor.c	4232	void setControllerId(BYTE oldId, BYTE newId) {
+setControllerId	src/motor.c	4263	void setControllerId(BYTE oldId, BYTE newId) {
 GLOBAL_INIT	src/main.c	64	#define GLOBAL_INIT
 main	src/main.c	356	void main() {
 globalInit	src/main.c	653	void globalInit() {
@@ -446,30 +457,34 @@ jsmn_parse_primitive	src/jsmn.c	737	static jsmnerr_t jsmn_parse_primitive(jsmn_p
 jsmn_parse_string	src/jsmn.c	1819	static jsmnerr_t jsmn_parse_string(jsmn_parser *parser, const char *js,
 jsmn_parse	src/jsmn.c	2989	jsmnerr_t jsmn_parse(jsmn_parser *parser, const char *js, jsmntok_t *tokens, 
 jsmn_init	src/jsmn.c	5938	void jsmn_init(jsmn_parser *parser) {
-LOOPS_PER_SEC	src/hw_pump.c	368	#define LOOPS_PER_SEC       100
-LOOP_PERIOD_USEC	src/hw_pump.c	400	#define LOOP_PERIOD_USEC    ((INT32)(1e6 / LOOPS_PER_SEC))
-cmds	src/hw_pump.c	547	  PHI_CMD_PACKET cmds;
-state	src/hw_pump.c	572	  PHI_STATE_PACKET state;
-PHI_SNAPSHOT	src/hw_pump.c	582	} PHI_SNAPSHOT;
-phiSnapshot	src/hw_pump.c	617	static PHI_SNAPSHOT phiSnapshot;
-startHwPump	src/hw_pump.c	1448	void startHwPump() {
-hwPump_UART_thread	src/hw_pump.c	3073	void* hwPump_UART_thread(void* arg)
-hwPump_SPI_thread	src/hw_pump.c	4932	void* hwPump_SPI_thread(void* arg)
-hwPump_I2C_thread	src/hw_pump.c	6647	void* hwPump_I2C_thread(void* arg)
-initSnapshot	src/hw_pump.c	6863	void initSnapshot() {
-getStateSnapshot	src/hw_pump.c	7894	void getStateSnapshot(PHI_STATE_PACKET *p) {
-lock_snapshot	src/hw_pump.c	8235	void lock_snapshot() {
-unlock_snapshot	src/hw_pump.c	8292	void unlock_snapshot() {
+cmds	src/hw_pump.c	394	  PHI_CMD_PACKET cmds;
+state	src/hw_pump.c	419	  PHI_STATE_PACKET state;
+PHI_SNAPSHOT	src/hw_pump.c	429	} PHI_SNAPSHOT;
+phiSnapshot	src/hw_pump.c	464	static PHI_SNAPSHOT phiSnapshot;
+startHwPump	src/hw_pump.c	1300	void startHwPump() {
+hwPump_UART_thread	src/hw_pump.c	2925	void* hwPump_UART_thread(void* arg)
+hwPump_SPI_thread	src/hw_pump.c	4792	void* hwPump_SPI_thread(void* arg)
+hwPump_I2C_thread	src/hw_pump.c	6519	void* hwPump_I2C_thread(void* arg)
+initSnapshot	src/hw_pump.c	6735	void initSnapshot() {
+getStateSnapshot	src/hw_pump.c	7766	void getStateSnapshot(PHI_STATE_PACKET *p) {
+lock_snapshot	src/hw_pump.c	8107	void lock_snapshot() {
+unlock_snapshot	src/hw_pump.c	8164	void unlock_snapshot() {
 HAL_STUB_initPeripherals	src/hal_stub.c	45	char* HAL_STUB_initPeripherals() {
-GYRO_UPDATE_EVERY	src/hal_stub.c	147	#define GYRO_UPDATE_EVERY 0.01
-HAL_STUB_gyroGetDeltas	src/hal_stub.c	177	void  HAL_STUB_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-HAL_STUB_gyroGetTemp	src/hal_stub.c	682	INT8 HAL_STUB_gyroGetTemp(){
-HAL_STUB_setMotorPower	src/hal_stub.c	811	void HAL_STUB_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
-HAL_STUB_getRawJointPos	src/hal_stub.c	1036	UINT16 HAL_STUB_getRawJointPos(BYTE adcIdx) {
-HAL_STUB_setControllerId	src/hal_stub.c	1289	void HAL_STUB_setControllerId(char oldId, char newId) {
+GYRO_UPDATE_EVERY	src/hal_stub.c	147	#define GYRO_UPDATE_EVERY 0.01f
+HAL_STUB_gyroGetDeltas	src/hal_stub.c	178	void  HAL_STUB_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+HAL_STUB_gyroGetTemp	src/hal_stub.c	755	float HAL_STUB_gyroGetTemp(){
+HAL_STUB_setMotorPower	src/hal_stub.c	924	void HAL_STUB_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+HAL_STUB_getJointPos	src/hal_stub.c	1147	float HAL_STUB_getJointPos(BYTE adcIdx) {
+HAL_STUB_setControllerId	src/hal_stub.c	1475	void HAL_STUB_setControllerId(char oldId, char newId) {
 HAL_PHI_initPeripherals	src/hal_phi.c	43	char* HAL_PHI_initPeripherals() {
 HAL_PHI_gyroGetDeltas	src/hal_phi.c	998	void HAL_PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-HAL_PHI_gyroGetTemp	src/hal_phi.c	1232	float HAL_PHI_gyroGetTemp() {
+HAL_PHI_gyroGetTemp	src/hal_phi.c	1316	float HAL_PHI_gyroGetTemp() {
+HAL_PHI_setMotorPower	src/hal_phi.c	1399	void HAL_PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+HAL_PHI_setControllerId	src/hal_phi.c	1526	void HAL_PHI_setControllerId(BYTE oldId, BYTE newId) {
+HAL_PHI_getJointPos	src/hal_phi.c	1618	float HAL_PHI_getJointPos(BYTE adcIdx) {
+phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
+genericHal	src/hal.c	755	HAL_FUNCS genericHal = {
+HAL_init	src/hal.c	1207	void HAL_init() {
 bUseFifo	src/gyro.c	137	BOOL bUseFifo = TRUE;
 zeroX	src/gyro.c	188	INT16 zeroX = 0;
 zeroY	src/gyro.c	205	INT16 zeroY = 0;
@@ -480,24 +495,25 @@ threshZ	src/gyro.c	305	INT16 threshZ = 0;
 GYRO_MAX_VALUE	src/gyro.c	410	#define GYRO_MAX_VALUE          250.0f
 GYRO_MAX_VALUE_CMD	src/gyro.c	449	#define GYRO_MAX_VALUE_CMD      GYRO_CR4_FS_250DPS
 GYRO_MAX_VALUE_MULT	src/gyro.c	500	#define GYRO_MAX_VALUE_MULT     GYRO_250DPS_MULT
-GYRO_SAMPLE_RATE	src/gyro.c	550	#define GYRO_SAMPLE_RATE        100.0f
-GYRO_SAMPLE_PERIOD	src/gyro.c	589	#define GYRO_SAMPLE_PERIOD      (1.0f / GYRO_SAMPLE_RATE)
-GYRO_SAMPLE_RATE_CMD	src/gyro.c	647	#define GYRO_SAMPLE_RATE_CMD    GYRO_CR1_DR_100HZ
-gyroInit	src/gyro.c	729	BOOL gyroInit(BOOL bEnableFifo) {
-gyroReadStatus	src/gyro.c	2719	BYTE gyroReadStatus() {
-gyroReadFifoSrc	src/gyro.c	2932	BYTE gyroReadFifoSrc() {
-gyroReadRawDps	src/gyro.c	3145	INT16 gyroReadRawDps(BYTE lowRegAddr) {
-gyroReadDps	src/gyro.c	3375	float gyroReadDps(BYTE lowRegAddr) {
-gyroReadFifoSlot_raw	src/gyro.c	3671	void gyroReadFifoSlot_raw(INT16* pX_dps, INT16* pY_dps, INT16* pZ_dps) {
-gyroReadFifoSlot	src/gyro.c	4085	void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
-gyroGetDeltas_noFifo	src/gyro.c	5179	void gyroGetDeltas_noFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-gyroGetDeltas_useFifo	src/gyro.c	6201	void gyroGetDeltas_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
-gyroGetRawTemp	src/gyro.c	7200	INT8 gyroGetRawTemp() {
-gyroCalibrate	src/gyro.c	7639	void gyroCalibrate() {
+GYRO_SAMPLE_RATE	src/gyro.c	550	#define GYRO_SAMPLE_RATE        100
+GYRO_SAMPLE_PERIOD	src/gyro.c	586	#define GYRO_SAMPLE_PERIOD      (1.0f / GYRO_SAMPLE_RATE)
+GYRO_SAMPLE_RATE_CMD	src/gyro.c	644	#define GYRO_SAMPLE_RATE_CMD    GYRO_CR1_DR_100HZ
+gyroInit	src/gyro.c	726	BOOL gyroInit(BOOL bEnableFifo) {
+gyroReadStatus	src/gyro.c	2716	BYTE gyroReadStatus() {
+gyroReadFifoSrc	src/gyro.c	2929	BYTE gyroReadFifoSrc() {
+gyroReadRawDps	src/gyro.c	3142	INT16 gyroReadRawDps(BYTE lowRegAddr) {
+gyroReadDps	src/gyro.c	3372	float gyroReadDps(BYTE lowRegAddr) {
+gyroReadFifoSlot_raw	src/gyro.c	3668	void gyroReadFifoSlot_raw(INT16* pX_dps, INT16* pY_dps, INT16* pZ_dps) {
+gyroReadFifoSlot	src/gyro.c	4082	void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
+gyroGetDeltaDegrees_noFifo	src/gyro.c	5176	void gyroGetDeltaDegrees_noFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+gyroGetDeltaDegrees_useFifo	src/gyro.c	6210	void gyroGetDeltaDegrees_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+gyroGetDeltaDegrees	src/gyro.c	7215	void gyroGetDeltaDegrees(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+gyroGetRawTemp	src/gyro.c	7458	INT8 gyroGetRawTemp() {
+gyroCalibrate	src/gyro.c	7897	void gyroCalibrate() {
 UINT32	src/datalog.c	262	    #define UINT32          unsigned long
 UINT64	src/datalog.c	304	    #define UINT64          unsigned long long
 LOG_FATAL	src/datalog.c	351	    #define LOG_FATAL       printf
-PhiUpTime	src/datalog.c	386	    UINT64 PhiUpTime() {
+phiUpTime	src/datalog.c	386	    UINT64 phiUpTime() {
 BASH_BLACK	src/datalog.c	491	    #define BASH_BLACK      "30"
 BASH_RED	src/datalog.c	524	    #define BASH_RED        "31"
 BASH_GREEN	src/datalog.c	557	    #define BASH_GREEN      "32"
@@ -508,28 +524,23 @@ BASH_CYAN	src/datalog.c	689	    #define BASH_CYAN       "36"
 BASH_WHITE	src/datalog.c	722	    #define BASH_WHITE      "37"
 BASH_START_COLOR	src/datalog.c	756	    #define BASH_START_COLOR(c)   "\e[1;" c "m"
 BASH_STOP_COLOR	src/datalog.c	804	    #define BASH_STOP_COLOR       "\e[0m"
-DLOG_SIGN	src/datalog.c	851	#define DLOG_SIGN 'DLOG'
-PASS	src/datalog.c	877	#define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
-FAIL	src/datalog.c	942	#define FAIL BASH_START_COLOR(BASH_RED) "FAIL" BASH_STOP_COLOR
-WRAP	src/datalog.c	1006	#define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
-CLOSE_ENOUGH	src/datalog.c	1085	#define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
-TO_TIME64	src/datalog.c	1137	#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
-time	src/datalog.c	1209	  UINT64 time;
-data	src/datalog.c	1224	  double data;
-DATALOG_ELEM	src/datalog.c	1233	} DATALOG_ELEM;
-sign	src/datalog.c	1274	  UINT32 sign;
-currIdx	src/datalog.c	1286	  int currIdx;
-numElem	src/datalog.c	1301	  int numElem;
-elem	src/datalog.c	1325	  DATALOG_ELEM elem[];
-DATALOG	src/datalog.c	1338	} DATALOG;
-dlog_create	src/datalog.c	1358	DATALOG* dlog_create(int numElem) {
-dlog_free	src/datalog.c	1703	void dlog_free(DATALOG* pLog) {
-dlog_addElem_withTime	src/datalog.c	1855	void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
-dlog_addElem	src/datalog.c	2239	void dlog_addElem(DATALOG* pLog, double data) {
-dlog_avg	src/datalog.c	2342	double dlog_avg(DATALOG* pLog, int depth) {
-dlog_predict	src/datalog.c	2947	double dlog_predict(DATALOG* pLog, UINT64 time) {
-dlog_test	src/datalog.c	3454	void dlog_test()  {
-main	src/datalog.c	5758	int main()  {
+DLOG_SIGN	src/datalog.c	851	#define DLOG_SIGN       'DLOG'
+DLOG_SIGN_FREE	src/datalog.c	882	#define DLOG_SIGN_FREE  'DLXX'
+PASS	src/datalog.c	914	#define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
+FAIL	src/datalog.c	979	#define FAIL BASH_START_COLOR(BASH_RED) "FAIL" BASH_STOP_COLOR
+WRAP	src/datalog.c	1043	#define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
+CLOSE_ENOUGH	src/datalog.c	1122	#define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
+TO_TIME64	src/datalog.c	1174	#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
+dlog_create	src/datalog.c	1229	DATALOG* dlog_create(int numElem) {
+dlog_free	src/datalog.c	1610	void dlog_free(DATALOG* pLog) {
+lock_dlog	src/datalog.c	1815	void lock_dlog(DATALOG* pLog) {
+unlock_dlog	src/datalog.c	2000	void unlock_dlog(DATALOG* pLog) {
+dlog_addElem_withTime	src/datalog.c	2193	void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
+dlog_addElem	src/datalog.c	2648	void dlog_addElem(DATALOG* pLog, double data) {
+dlog_avg	src/datalog.c	2751	double dlog_avg(DATALOG* pLog, int depth) {
+dlog_predict	src/datalog.c	3470	double dlog_predict(DATALOG* pLog, UINT64 time) {
+dlog_test	src/datalog.c	4064	void dlog_test()  {
+main	src/datalog.c	6368	int main()  {
 UINT32	src/cubic.c	229	    #define UINT32          unsigned long
 UINT64	src/cubic.c	271	    #define UINT64          unsigned long long
 cubic	src/cubic.c	345	double cubic(

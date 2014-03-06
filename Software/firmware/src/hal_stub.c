@@ -55,13 +55,14 @@ void HAL_STUB_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 float HAL_STUB_getJointPos(BYTE adcIdx) {
   float currSecs = (phiUpTime() / 1e6);
   
-  // advance 10 deg/second (in canon [0,1])
-  float deg = currSecs * 10.0f/360.0f;
+  // advance 90 deg/second
+  float deg = currSecs * 90;
   
   // each index 20 deg ahead of prev
-  deg += adcIdx * 20.0f/360.0f;
+  deg += ((float)adcIdx) * 20;
   
-  // keep only fractional (canonical) part
+  // convert deg to canonical and keep only fractional part
+  deg /= 360;
   deg -= (int) deg;
   
   return deg;

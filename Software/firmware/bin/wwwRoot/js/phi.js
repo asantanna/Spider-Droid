@@ -38,6 +38,10 @@ function phi_setMCtlId(oldId, newId) {
   sendJsonRequest("req : [ {cmd:setMCtlId, oldId:" + oldId + ", newId:" + newId + "} ]");
 }
 
+function phi_getPumpStats() {
+  sendJsonRequest("req : [ {cmd:getPumpStats} ]");
+}
+
 //
 // Utils
 //
