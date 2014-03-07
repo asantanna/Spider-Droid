@@ -109,7 +109,7 @@ void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data);
 void dlog_addElem(DATALOG* pLog, double data);
 double dlog_avg(DATALOG* pLog, int depth);
 double dlog_predict(DATALOG* pLog, UINT64 time);
-void dlog_getStats(DATALOG* pLog, int depth, BOOL bDiff,
+void dlog_getStats(DATALOG* pLog, int depth,
    double* pMinVal, double* pMaxVal, double* pAvgVal, double* pStdVal);
 
 //

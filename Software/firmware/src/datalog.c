@@ -132,17 +132,16 @@ void dlog_addElem(DATALOG* pLog, double data) {
 
 double dlog_avg(DATALOG* pLog, int depth) {
 
+  double avg = 0;
+
   // lock
   lock_dlog(pLog);
   
   // average the last "depth" entries stored in the array
+  
   if (depth < 0 || depth > pLog -> numElem) {
-    LOG_FATAL("depth invalid");
-
-    // unlock
-    unlock_dlog(pLog);
     
-    return 1;
+    LOG_FATAL("depth invalid");
 
   } else {
     
@@ -151,21 +150,23 @@ double dlog_avg(DATALOG* pLog, int depth) {
     int _currIdx = pLog -> currIdx;
     _currIdx = WRAP(_currIdx - depth);
 
-    for (i=0 ; i<depth ; i++) {
+    for (i=0 ; i < depth ; i++) {
       sum += pLog -> elem[_currIdx].data;
       _currIdx = WRAP(_currIdx + 1);
     }
 
-    // unlock
-    unlock_dlog(pLog);
-
-    return ((double)sum) / depth;
+    avg = ((double)sum) / depth;
   }
+
+  // unlock
+  unlock_dlog(pLog);
+  
+  return avg;
 }
 
 TODO("dlog_getStats() not fully impl");
 
-void dlog_getStats(DATALOG* pLog, int depth, BOOL bDiff,
+void dlog_getStats(DATALOG* pLog, int depth,
    double* pMinVal, double* pMaxVal, double* pAvgVal, double* pStdVal) {
 
   // first get average
@@ -173,15 +174,35 @@ void dlog_getStats(DATALOG* pLog, int depth, BOOL bDiff,
 
   // compute other stats
 
-  double minVal = 0;
-  double maxVal = 0;
-  double stdVal = 0;
+  #define BIG_VAL 1e20
+  
+  double minVal =  BIG_VAL;
+  double maxVal = -BIG_VAL;
+  double sqSum = 0;
+  
+  int _currIdx = pLog -> currIdx;
+  _currIdx = WRAP(_currIdx - depth);
+
+  int i;
+  
+  for (i = 0 ; i < depth ; i++) {
+    
+    double v = pLog -> elem[_currIdx].data;
+    
+    if (v < minVal) minVal = v;
+    else if (v > maxVal) maxVal = v;
+      
+    v = v - avgVal;
+    sqSum += v * v;
+    
+    _currIdx = WRAP(_currIdx + 1);
+  }
 
   // copy back
   *pMinVal = minVal;
   *pMaxVal = maxVal;
   *pAvgVal = avgVal;
-  *pStdVal = stdVal;
+  *pStdVal = sqrt(sqSum);
 }
 
 double dlog_predict(DATALOG* pLog, UINT64 time) {

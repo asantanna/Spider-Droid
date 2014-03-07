@@ -930,27 +930,25 @@ JSON_HANDLER(getPumpStats) {
   
   for (i = 0 ; i < 1 ; i++) {
     DATALOG* pLog;
-    BOOL bDiff;
     
     switch (i) {
-      case 0: pLog = g_pDlog_hwPump_UART_wakeup;    bDiff = TRUE;   break;
-      case 1: pLog = g_pDlog_hwPump_SPI_wakeup;     bDiff = TRUE;   break;
-      case 2: pLog = g_pDlog_hwPump_I2C_wakeup;     bDiff = TRUE;   break;
-      case 3: pLog = g_pDlog_hwPump_UART_workTime;  bDiff = FALSE;  break;
-      case 4: pLog = g_pDlog_hwPump_SPI_workTime;   bDiff = FALSE;  break;
-      case 5: pLog = g_pDlog_hwPump_I2C_workTime;   bDiff = FALSE;  break;
-      default: LOG_FATAL("getPumpStats switch");
+      case 0: pLog = g_pDlog_hwPump_UART_period;    break;
+      case 1: pLog = g_pDlog_hwPump_UART_workTime;  break;
+      case 2: pLog = g_pDlog_hwPump_SPI_period;     break;
+      case 3: pLog = g_pDlog_hwPump_SPI_workTime;   break;
+      case 4: pLog = g_pDlog_hwPump_I2C_period;     break;
+      case 5: pLog = g_pDlog_hwPump_I2C_workTime;   break;
+      default: LOG_FATAL("bad val in getPumpStats switch");
     }
 
     if (i != 0) sprintf(_buff + strlen(_buff), ",\n");
     
     sprintf(_buff + strlen(_buff),
       "{\n"
-      Q(name) ":" Q(%s%s) ",\n"
+      Q(name) ":" Q(%s) ",\n"
       Q(unit) ":" Q(%s) ",\n"
       Q(epochSecs) ": %g,\n",
       pLog -> pName,
-      bDiff ? " (diff)" : "",
       pLog -> pUnit,
       pLog -> epochSecs);
 
@@ -971,7 +969,7 @@ JSON_HANDLER(getPumpStats) {
       if (j >= 10) {
         LOG_FATAL("Too many depths in getPumpStats() - sheesh");
       }
-      dlog_getStats(pLog, depths[j], bDiff, minVal+j, maxVal+j, avgVal+j, stdVal+j);
+      dlog_getStats(pLog, depths[j], minVal+j, maxVal+j, avgVal+j, stdVal+j);
     }
 
     // min

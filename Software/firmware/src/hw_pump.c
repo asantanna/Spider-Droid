@@ -140,6 +140,8 @@ void startHwPump() {
 //
 /////////////////////////////////////////////////
 
+static UINT64 UART_loopStart_save = 0;
+
 void* hwPump_UART_thread(void* arg)
 {
   LOG_INFO("hwPump_UART_thread started");
@@ -202,9 +204,18 @@ void* hwPump_UART_thread(void* arg)
     // new loop start
     usec_loopStart = phiUpTime();
 
-    // log wake up time and work time
-    dlog_addElem(g_pDlog_hwPump_UART_wakeup, usec_loopStart);
+    // log loop period
+    
+    if (UART_loopStart_save != 0) {
+      dlog_addElem(g_pDlog_hwPump_UART_period, usec_loopStart-UART_loopStart_save);
+    }
+    
+    UART_loopStart_save = usec_loopStart;
+
+    // log loop work time
     dlog_addElem(g_pDlog_hwPump_UART_workTime, usec_workTime);
+
+    
     
   } // while
   
@@ -220,6 +231,8 @@ void* hwPump_UART_thread(void* arg)
 //     ADCs (SPI index 1)
 //
 /////////////////////////////////////////////////
+
+static UINT64 SPI_loopStart_save = 0;
  
 void* hwPump_SPI_thread(void* arg)
 {
@@ -295,13 +308,32 @@ void* hwPump_SPI_thread(void* arg)
     // new loop start
     usec_loopStart = phiUpTime();
 
-    // log wake up time and work time
-    dlog_addElem(g_pDlog_hwPump_SPI_wakeup, usec_loopStart);
+    // log loop period
+
+    if (SPI_loopStart_save != 0) {
+      dlog_addElem(g_pDlog_hwPump_SPI_period, usec_loopStart-SPI_loopStart_save);
+    }
+
+    SPI_loopStart_save = usec_loopStart;
+
+    // log loop work time
     dlog_addElem(g_pDlog_hwPump_SPI_workTime, usec_workTime);
     
   } // while
   
 } // hwPump_SPI_thread
+
+/////////////////////////////////////////////////
+//
+// I2C pump thread
+//
+// Devices serviced by I2C:
+//
+//     Accel (addr ???)
+//
+/////////////////////////////////////////////////
+
+static UINT64 I2C_loopStart_save = 0;
 
 void* hwPump_I2C_thread(void* arg)
 {
@@ -342,8 +374,15 @@ void* hwPump_I2C_thread(void* arg)
     // new loop start
     usec_loopStart = phiUpTime();
 
-    // log wake up time and work time
-    dlog_addElem(g_pDlog_hwPump_I2C_wakeup, usec_loopStart);
+    // log loop period
+
+    if (I2C_loopStart_save != 0) {
+      dlog_addElem(g_pDlog_hwPump_I2C_period, usec_loopStart-I2C_loopStart_save);
+    }
+
+    I2C_loopStart_save = usec_loopStart;
+
+    // log loop work time
     dlog_addElem(g_pDlog_hwPump_I2C_workTime, usec_workTime);
 
   } // while
