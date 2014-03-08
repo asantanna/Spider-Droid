@@ -87,15 +87,18 @@ void globalInit() {
   HAL_init();
 
   //
-  // Init performance logs for hardware pumps
+  // Init performance logs
   //
 
-  // time of entry
+  // phiLink
+  g_pDlog_PhiLink_period = dlog_create("PhiLink Period", "uS", PERFLOG_PHILINK_NUM_ELEM, PERFLOG_PHILINK_EPOCH);  
+
+  // pump period
   g_pDlog_hwPump_UART_period = dlog_create("UART Period", "uS", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);  
   g_pDlog_hwPump_SPI_period  = dlog_create("SPI Period",  "uS", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);
   g_pDlog_hwPump_I2C_period  = dlog_create("I2C Period",  "uS", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);
 
-  // work duration
+  // pump work duration
   g_pDlog_hwPump_UART_workTime = dlog_create("UART Work Dur", "uS", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);
   g_pDlog_hwPump_SPI_workTime  = dlog_create("SPI Work Dur",  "uS", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);
   g_pDlog_hwPump_I2C_workTime  = dlog_create("I2C Work Dur",  "uS", PERFLOG_HWPUMP_NUM_ELEM, PERFLOG_HWPUMP_EPOCH);

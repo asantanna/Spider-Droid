@@ -1,3 +1,87 @@
+	TAGS	UNSORTED
+PHI_VERSION	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
+INT8	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	115	#define INT8            char
+INT16	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	144	#define INT16           short
+INT32	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	174	#define INT32           long
+INT64	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	203	#define INT64           long long
+UINT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	255	#define UINT            unsigned int
+UINT8	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	292	#define UINT8           unsigned char
+UINT16	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	330	#define UINT16          unsigned short
+UINT32	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	369	#define UINT32          unsigned long
+UINT64	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	407	#define UINT64          unsigned long long
+BYTE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	475	#define BYTE            UINT8
+WORD	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	505	#define WORD            UINT16
+DWORD	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	536	#define DWORD           UINT32
+BOOL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	567	#define BOOL            UINT8
+FALSE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	598	#define FALSE           0
+TRUE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	624	#define TRUE            1
+COUNTOF	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	666	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
+MIN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	730	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
+MAX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	782	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
+PHI_ALLOC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	945	#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
+PHI_ALLOC_N	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	998	#define PHI_ALLOC_N(n)  allocHelper(n)
+PHI_FREE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1037	#define PHI_FREE(p)     {free(p); p = NULL; }
+PHI_ZERO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1084	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
+PHI_ZERO_P	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1135	#define PHI_ZERO_P(p,l) memset(p, 0, l)
+BASH_BLACK	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1193	#define BASH_BLACK      "30"
+BASH_RED	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1222	#define BASH_RED        "31"
+BASH_GREEN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1251	#define BASH_GREEN      "32"
+BASH_YELLOW	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1280	#define BASH_YELLOW     "33"
+BASH_BLUE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1309	#define BASH_BLUE       "34"
+BASH_MAGENTA	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1338	#define BASH_MAGENTA    "35"
+BASH_CYAN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1367	#define BASH_CYAN       "36"
+BASH_WHITE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1396	#define BASH_WHITE      "37"
+BASH_START_COLOR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1426	#define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1470	#define BASH_STOP_COLOR       "\e[0m"
+DO_PRAGMA	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1509	#define DO_PRAGMA(x)    _Pragma (#x)
+INFO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1546	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
+TODO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1649	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
+WARN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1751	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
+HACK	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1860	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
+U64_1E6	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1969	#define U64_1E6         ((UINT64)1e6)
+TV_TO_USEC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2007	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
+LOG_INFO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2102	#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
+LOG_ERR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2150	#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
+LOG_FATAL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2205	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
+STR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2362	#define STR(s)                #s              /* convert to string */
+STR_MACRO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2432	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
+Q	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2555	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
+LOGFILE_NAME	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2672	#define LOGFILE_NAME    "/var/log/phi.log"
+VERBOSE_LOG	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2715	#define VERBOSE_LOG     1
+HTTP_BUFFSIZE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2763	#define HTTP_BUFFSIZE       (16*1024)      // max size of HTTP request/reply
+JSON_TMP_BUFFSIZE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2840	#define JSON_TMP_BUFFSIZE   (1*1024)       // max size of single JSON reply
+UART_DRIVER_NAME	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2934	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
+SPI0_DRIVER_NAME	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2975	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
+SPI1_DRIVER_NAME	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3018	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
+OFF	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3088	    OFF,
+RED	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3097	    RED,
+FLASH_RED	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3106	    FLASH_RED,
+YELLOW	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3121	    YELLOW,
+FLASH_YELLOW	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3133	    FLASH_YELLOW,
+GREEN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3151	    GREEN,
+FLASH_GREEN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3162	    FLASH_GREEN
+PHI_LED_COLOR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3181	} PHI_LED_COLOR;
+CAM_WIDTH	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3251	#define CAM_WIDTH               160
+CAM_HEIGHT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3287	#define CAM_HEIGHT              120
+CAM_NUM_BYTES	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3323	#define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
+DEF_PHILINK_PORT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3392	#define DEF_PHILINK_PORT  1122
+GYRO_SPI_IDX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3439	#define GYRO_SPI_IDX      0         // gyro at idx 0
+ADC_SPI_IDX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3492	#define ADC_SPI_IDX       1         // ADCs at idx 1
+PHI_MUTEX_VAR_TYPE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3563	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
+PHI_MUTEX_INITVAL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3615	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
+PHI_MUTEX_DECL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3677	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name
+PHI_MUTEX_DECL_INIT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3737	#define PHI_MUTEX_DECL_INIT(name)   PHI_MUTEX_DECL(name) = PHI_MUTEX_INITVAL
+PHI_MUTEX_INIT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3814	#define PHI_MUTEX_INIT(pMtx)        pthread_mutex_init(pMtx, NULL)
+PHI_MUTEX_GET	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3881	#define PHI_MUTEX_GET(pMtx)         pthread_mutex_lock(pMtx)
+PHI_MUTEX_RELEASE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3942	#define PHI_MUTEX_RELEASE(pMtx)     pthread_mutex_unlock(pMtx)
+PHI_MUTEX_TRYGET	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	4005	#define PHI_MUTEX_TRYGET(pMtx)      pthread_mutex_trylock(pMtx)   // ret 0 if get successful, ret != if failed
+HWPUMP_LOOPS_PER_SEC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	4142	#define HWPUMP_LOOPS_PER_SEC        60
+HW_PUMP_LOOP_PERIOD_USEC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	4181	#define HW_PUMP_LOOP_PERIOD_USEC    ((INT32)(1e6 / HWPUMP_LOOPS_PER_SEC))
+PERFLOG_HWPUMP_ELEM_1SEC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	4283	#define PERFLOG_HWPUMP_ELEM_1SEC      HWPUMP_LOOPS_PER_SEC
+PERFLOG_HWPUMP_ELEM_5SEC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	4342	#define PERFLOG_HWPUMP_ELEM_5SEC      (5 * PERFLOG_HWPUMP_ELEM_1SEC)
+PERFLOG_HWPUMP_ELEM_15SEC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	4411	#define PERFLOG_HWPUMP_ELEM_15SEC     (15 * PERFLOG_HWPUMP_ELEM_1SEC)
+PERFLOG_HWPUMP_NUM_ELEM	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	4481	#define PERFLOG_HWPUMP_NUM_ELEM       PERFLOG_HWPUMP_ELEM_15SEC
+PERFLOG_HWPUMP_EPOCH	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	4545	#define PERFLOG_HWPUMP_EPOCH          15
 	UNSORTED	TAGS
 MC_DEF_BAUD	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/polulu_2s9v1.h	107	#define MC_DEF_BAUD   B38400
 MC_CMD_SIGN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/polulu_2s9v1.h	513	#define MC_CMD_SIGN                 0xAA
@@ -122,99 +206,27 @@ GYRO_FIFO_SRC_OVRN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Softwar
 GYRO_FIFO_SRC_EMPTY	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/plax_L3G4200D.h	4367	#define GYRO_FIFO_SRC_EMPTY       0x20
 GYRO_FIFO_SRC_COUNT_MASK	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/plax_L3G4200D.h	4406	#define GYRO_FIFO_SRC_COUNT_MASK  0x1F
 GYRO_RSRC_ADDR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/plax_L3G4200D.h	4459	#define GYRO_RSRC_ADDR            0x2F
-PHI_VERSION	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
-LOGFILE_NAME	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	88	#define LOGFILE_NAME    "/var/log/phi.log"
-VERBOSE_LOG	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	131	#define VERBOSE_LOG     1
-INT8	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	173	#define INT8            char
-INT16	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	202	#define INT16           short
-INT32	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	232	#define INT32           long
-INT64	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	261	#define INT64           long long
-UINT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	313	#define UINT            unsigned int
-UINT8	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	350	#define UINT8           unsigned char
-UINT16	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	388	#define UINT16          unsigned short
-UINT32	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	427	#define UINT32          unsigned long
-UINT64	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	465	#define UINT64          unsigned long long
-BYTE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	533	#define BYTE            UINT8
-WORD	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	563	#define WORD            UINT16
-DWORD	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	594	#define DWORD           UINT32
-BOOL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	625	#define BOOL            UINT8
-FALSE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	656	#define FALSE           0
-TRUE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	682	#define TRUE            1
-COUNTOF	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	725	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
-MIN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	789	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
-MAX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	841	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
-PHI_ALLOC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1004	#define PHI_ALLOC(D)    ((D*)PHI_allocHelper(sizeof(D)))
-PHI_ALLOC_N	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1061	#define PHI_ALLOC_N(n)  PHI_allocHelper(n)
-PHI_FREE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1104	#define PHI_FREE(p)     {free(p); p = NULL; }
-PHI_ZERO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1151	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
-PHI_ZERO_P	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1202	#define PHI_ZERO_P(p,l) memset(p, 0, l)
-BASH_BLACK	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1260	#define BASH_BLACK      "30"
-BASH_RED	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1289	#define BASH_RED        "31"
-BASH_GREEN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1318	#define BASH_GREEN      "32"
-BASH_YELLOW	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1347	#define BASH_YELLOW     "33"
-BASH_BLUE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1376	#define BASH_BLUE       "34"
-BASH_MAGENTA	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1405	#define BASH_MAGENTA    "35"
-BASH_CYAN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1434	#define BASH_CYAN       "36"
-BASH_WHITE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1463	#define BASH_WHITE      "37"
-BASH_START_COLOR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1493	#define BASH_START_COLOR(c)   "\e[1;" c "m"
-BASH_STOP_COLOR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1537	#define BASH_STOP_COLOR       "\e[0m"
-DO_PRAGMA	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1576	#define DO_PRAGMA(x)    _Pragma (#x)
-INFO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1613	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
-TODO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1716	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
-WARN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1818	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
-HACK	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	1927	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
-U64_1E6	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2037	#define U64_1E6         ((UINT64)1e6)
-TV_TO_USEC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2075	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
-LOG_INFO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2171	#define LOG_INFO(...)   PHI_logMsg("", __VA_ARGS__)
-LOG_ERR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2223	#define LOG_ERR(...)    PHI_logMsg("ERROR: ", __VA_ARGS__)
-LOG_FATAL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2282	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); PHI_logMsg("FATAL: ", __VA_ARGS__); PHI_abortProcess(-1); }
-STR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2448	#define STR(s)                #s              /* convert to string */
-STR_MACRO	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2518	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
-Q	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2641	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
-UART_DRIVER_NAME	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2737	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
-SPI0_DRIVER_NAME	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2778	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
-SPI1_DRIVER_NAME	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2821	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
-OFF	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2891	    OFF,
-RED	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2900	    RED,
-FLASH_RED	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2909	    FLASH_RED,
-YELLOW	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2924	    YELLOW,
-FLASH_YELLOW	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2936	    FLASH_YELLOW,
-GREEN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2954	    GREEN,
-FLASH_GREEN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2965	    FLASH_GREEN
-PHI_LED_COLOR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	2984	} PHI_LED_COLOR;
-CAM_WIDTH	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3071	#define CAM_WIDTH         160
-CAM_HEIGHT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3101	#define CAM_HEIGHT        120
-CAM_NUM_BYTES	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3131	#define CAM_NUM_BYTES     (CAM_WIDTH * CAM_HEIGHT)
-DEF_PHILINK_PORT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3194	#define DEF_PHILINK_PORT  1122
-GYRO_SPI_IDX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3249	#define GYRO_SPI_IDX      0
-ADC_SPI_IDX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3300	#define ADC_SPI_IDX       1
-PHI_MUTEX_VAR_TYPE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3347	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
-PHI_MUTEX_INITVAL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3399	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
-PHI_MUTEX_DECL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3461	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name = PHI_MUTEX_INITVAL
-PHI_MUTEX_GET	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3541	#define PHI_MUTEX_GET(pSem)         pthread_mutex_lock(pSem)
-PHI_MUTEX_RELEASE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3602	#define PHI_MUTEX_RELEASE(pSem)     pthread_mutex_unlock(pSem)
-PHI_MUTEX_TEST	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi_defs.h	3665	#define PHI_MUTEX_TEST(pSem)        pthread_mutex_trylock(pSem)
 LINK_OFF	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	43	    LINK_OFF,
 LINK_STARTED	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	57	    LINK_STARTED,
 LINK_CONNECTING	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	75	    LINK_CONNECTING,
 LINK_CONNECTED	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	96	    LINK_CONNECTED,
 LINK_ERROR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	116	    LINK_ERROR,
 LINK_CLOSED	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	132	    LINK_CLOSED
-PHILINK_STATUS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	147	} PHILINK_STATUS;
-sock	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	187	  int sock;
-ipAddr	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	205	  in_addr_t ipAddr;
-port	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	224	  uint16_t port;
-PHILINK_ARGS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	233	} PHILINK_ARGS;
+PHILINK_STATUS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	147	} PHILINK_STATUS	
+sock	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	187	  int sock	
+ipAddr	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	205	  in_addr_t ipAddr	
+port	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	224	  uint16_t port	
+PHILINK_ARGS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	233	} PHILINK_ARGS	
 NUM_SIGN_BYTES	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	274	#define NUM_SIGN_BYTES          4
 CMDP_SIGN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	309	#define CMDP_SIGN               "CPV1"
 CMDP_MOTOR_ELEM	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	348	#define CMDP_MOTOR_ELEM         NUM_MOTORS
-PHI_CMD_PACKET	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	502	} PHI_CMD_PACKET;
+PHI_CMD_PACKET	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	502	} PHI_CMD_PACKET	
 STAP_SIGN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	527	#define STAP_SIGN               "SPV1"
 STAP_NUM_IMAGE_BYTES	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	566	#define STAP_NUM_IMAGE_BYTES    CAM_NUM_BYTES
 STAP_NUM_JOINT_ELEM	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	612	#define STAP_NUM_JOINT_ELEM     NUM_MOTORS
 STAP_NUM_GYRO_ELEM	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	655	#define STAP_NUM_GYRO_ELEM      3
 STAP_NUM_ACCEL_ELEM	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	689	#define STAP_NUM_ACCEL_ELEM     3
-PHI_STATE_PACKET	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	991	} PHI_STATE_PACKET;
+PHI_STATE_PACKET	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/philink.h	991	} PHI_STATE_PACKET	
 _REENTRANT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/phi.h	97	#define _REENTRANT 1
 ACCEL_I2C_CLK	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/osepp_adxl345.h	66	#define ACCEL_I2C_CLK             ( 400ul*1000ul )
 GYRO_SAFE_SPI_CLK	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/osepp_adxl345.h	140	#define GYRO_SAFE_SPI_CLK         ( 8ul*1000ul*1000ul)
@@ -247,38 +259,38 @@ JSMN_PRIMITIVE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/fi
 JSMN_OBJECT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	222		JSMN_OBJECT = 1,
 JSMN_ARRAY	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	240		JSMN_ARRAY = 2,
 JSMN_STRING	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	257		JSMN_STRING = 3
-jsmntype_t	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	275	} jsmntype_t;
+jsmntype_t	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	275	} jsmntype_t	
 JSMN_ERROR_NOMEM	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	343		JSMN_ERROR_NOMEM = -1,
 JSMN_ERROR_INVAL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	411		JSMN_ERROR_INVAL = -2,
 JSMN_ERROR_PART	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	500		JSMN_ERROR_PART = -3,
 JSMN_SUCCESS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	550		JSMN_SUCCESS = 0
-jsmnerr_t	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	569	} jsmnerr_t;
-type	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	796		jsmntype_t type;
-start	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	807		int start;
-end	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	819		int end;
-size	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	829		int size;
-parent	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	865		int parent;
-jsmntok_t	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	882	} jsmntok_t;
-pos	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	1073		unsigned int pos; /* offset in the JSON string */
-toknext	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	1115		int toknext; /* next token to allocate */
-toksuper	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	1158		int toksuper; /* superior token node, e.g parent object or array */
-jsmn_parser	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	1224	} jsmn_parser;
-halFunc_void	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	54	typedef void   (*halFunc_void)   ();
-halFunc_int	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	91	typedef int    (*halFunc_int)    ();
-halFunc_pChar	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	128	typedef char*  (*halFunc_pChar)  ();
-halFunc_BOOL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	166	typedef BOOL   (*halFunc_BOOL)   ();
-halFunc_INT8	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	203	typedef INT8   (*halFunc_INT8)   ();
-halFunc_UINT8	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	240	typedef UINT8  (*halFunc_UINT8)  ();
-halFunc_UINT16	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	277	typedef UINT16 (*halFunc_UINT16) ();
-pName	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	340	  const char* pName;
-initPeripherals	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	376	  halFunc_pChar   initPeripherals;
-gyroInit	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	427	  halFunc_BOOL    gyroInit;
-gyroGetDeltas	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	455	  halFunc_void    gyroGetDeltas;
-gyroGetTemp	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	488	  halFunc_INT8    gyroGetTemp;
-getRawJointPos	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	539	  halFunc_UINT16  getRawJointPos;
-setMotorPower	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	573	  halFunc_void    setMotorPower;
-setControllerId	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	606	  halFunc_void    setControllerId;
-HAL_FUNCS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	626	} HAL_FUNCS;
+jsmnerr_t	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	569	} jsmnerr_t	
+type	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	796		jsmntype_t type	
+start	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	807		int start	
+end	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	819		int end	
+size	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	829		int size	
+parent	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	865		int parent	
+jsmntok_t	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	882	} jsmntok_t	
+pos	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	1073		unsigned int pos	 /* offset in the JSON string */
+toknext	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	1115		int toknext	 /* next token to allocate */
+toksuper	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	1158		int toksuper	 /* superior token node, e.g parent object or array */
+jsmn_parser	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/jsmn.h	1224	} jsmn_parser	
+halFunc_void	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	54	typedef void   (*halFunc_void)   ()	
+halFunc_int	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	91	typedef int    (*halFunc_int)    ()	
+halFunc_pChar	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	128	typedef char*  (*halFunc_pChar)  ()	
+halFunc_BOOL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	166	typedef BOOL   (*halFunc_BOOL)   ()	
+halFunc_INT8	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	203	typedef INT8   (*halFunc_INT8)   ()	
+halFunc_UINT8	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	240	typedef UINT8  (*halFunc_UINT8)  ()	
+halFunc_UINT16	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	277	typedef UINT16 (*halFunc_UINT16) ()	
+pName	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	340	  const char* pName	
+initPeripherals	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	376	  halFunc_pChar   initPeripherals	
+gyroInit	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	427	  halFunc_BOOL    gyroInit	
+gyroGetDeltas	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	455	  halFunc_void    gyroGetDeltas	
+gyroGetTemp	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	488	  halFunc_INT8    gyroGetTemp	
+getRawJointPos	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	539	  halFunc_UINT16  getRawJointPos	
+setMotorPower	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	573	  halFunc_void    setMotorPower	
+setControllerId	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	606	  halFunc_void    setControllerId	
+HAL_FUNCS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	626	} HAL_FUNCS	
 HAL_name	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	719	#define HAL_name              (g_pHal   -> pName)
 HAL_initPeripherals	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	769	#define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
 HAL_gyroGetDeltas	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/hal.h	831	#define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
@@ -290,7 +302,7 @@ INIT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/inc
 EXT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/globals.h	99	#define EXT       // nothing
 INIT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/globals.h	134	#define INIT(v)   // nothing
 EXT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/globals.h	163	#define EXT       extern
-g_uname	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/globals.h	388	EXT struct utsname g_uname;              // can't init this to zero here for some reason
+g_uname	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/include/globals.h	388	EXT struct utsname g_uname	              // can't init this to zero here for some reason
 MAX_JSON_TOKENS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	913	#define MAX_JSON_TOKENS       256
 PARSER_NUM_TOK	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	979	#define PARSER_NUM_TOK(parser)  ((parser).toknext)
 TOK_START	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1031	#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
@@ -299,21 +311,21 @@ TOK_TYPE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware
 TOK_NUM_CHILD	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1193	#define TOK_NUM_CHILD(pTok)   ((pTok)->size)
 TOK_EQ	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1239	#define TOK_EQ(pTok,s) \
 _jsonCmdReply_t	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1404	typedef struct _jsonCmdReply_t {
-_jsonCmdReply_t::pReply	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1430	  char* pReply;
-_jsonCmdReply_t::pNext	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1464	  struct _jsonCmdReply_t* pNext;
-PHI_JSON_CMD_REPLY_TYPE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1474	} PHI_JSON_CMD_REPLY_TYPE;
-jsonCmdHandler	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1535	typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok, char* pJsonReq);
+_jsonCmdReply_t::pReply	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1430	  char* pReply	
+_jsonCmdReply_t::pNext	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1464	  struct _jsonCmdReply_t* pNext	
+PHI_JSON_CMD_REPLY_TYPE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1474	} PHI_JSON_CMD_REPLY_TYPE	
+jsonCmdHandler	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1535	typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok, char* pJsonReq)	
 JSON_HANDLER	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	1707	#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok, char* pJsonReq)
-pCmd	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2217	  char *pCmd;
-handler	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2240	  jsonCmdHandler handler;
-PHI_JSON_CMD_TYPE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2254	} PHI_JSON_CMD_TYPE;
+pCmd	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2217	  char *pCmd	
+handler	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2240	  jsonCmdHandler handler	
+PHI_JSON_CMD_TYPE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2254	} PHI_JSON_CMD_TYPE	
 CMD_ENTRY	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2282	#define CMD_ENTRY(c) { STR(c) , json_ ## c }
 validCmds	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2338	PHI_JSON_CMD_TYPE validCmds[] = {
-jsonReply_start	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2794	char jsonReply_start[] = "{" Q(reply) ": [\n";
-jsonReply_end	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2841	char jsonReply_end[]   = "] }";
-jsonReplyObject_start	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2941	char jsonReplyObject_start[] = "{\n" Q(cmd) ":" Q(%s) ",\n";
-jsonReplyObject_end	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	3002	char jsonReplyObject_end[]   = "}";
-jsonParseError	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	3112	char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON request.  It''s probably your fault btw.) " }\n";
+jsonReply_start	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2794	char jsonReply_start[] = "{" Q(reply) ": [\n"	
+jsonReply_end	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2841	char jsonReply_end[]   = "] }"	
+jsonReplyObject_start	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	2941	char jsonReplyObject_start[] = "{\n" Q(cmd) ":" Q(%s) ",\n"	
+jsonReplyObject_end	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	3002	char jsonReplyObject_end[]   = "}"	
+jsonParseError	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	3112	char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON request.  It''s probably your fault btw.) " }\n"	
 PHI_processJson	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	3393	char* PHI_processJson(char *pJsonReq) {
 PHI_freeJsonReply	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	8148	void PHI_freeJsonReply(char* pJsonReply) {
 getJsonHandler	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webjson.c	8228	jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
@@ -342,15 +354,15 @@ HTTP_METHOD_GET_STR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Softwa
 HTTP_METHOD_POST_STR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1417	#define HTTP_METHOD_POST_STR		"POST"
 HTTP_CONT_LEN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1454	#define HTTP_CONT_LEN						"Content-Length"
 HTTP_SERVER_NAME	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1498	#define HTTP_SERVER_NAME        "Phi Web Admin V" PHI_VERSION
-pFileExt	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1569		char *pFileExt;
-pContentType	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1586		char *pContentType;
+pFileExt	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1569		char *pFileExt	
+pContentType	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1586		char *pContentType	
 wa_extensions	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1602	} wa_extensions [] = {
-pMethod	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1974	  char* pMethod;
-pPath	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1991	  char* pPath;
-pGetParams	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2006	  char* pGetParams;
-pHdrContentLength	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2026	  char* pHdrContentLength;
-pBody	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2053	  char* pBody;
-PHI_PARSED_HTTP	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2062	} PHI_PARSED_HTTP;
+pMethod	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1974	  char* pMethod	
+pPath	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	1991	  char* pPath	
+pGetParams	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2006	  char* pGetParams	
+pHdrContentLength	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2026	  char* pHdrContentLength	
+pBody	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2053	  char* pBody	
+PHI_PARSED_HTTP	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2062	} PHI_PARSED_HTTP	
 wa_response_ok_hdr	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2085	char wa_response_ok_hdr[] =
 wa_response_json_hdr	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2282	char wa_response_json_hdr[] =
 wa_response_forbidden_hdr	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	2495	char wa_response_forbidden_hdr[] =
@@ -367,7 +379,7 @@ wa_parseHttpRequest	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Softwa
 readToken	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	13783	char readToken(char** ppData, char** ppToken) {
 readToSpace	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	15216	void readToSpace(char** ppData, char** ppToken) {
 readToEol	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/webadmin.c	15523	void readToEol(char** ppData, char** ppToken) {
-uartFile	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/uart.c	102	static int uartFile = -1;
+uartFile	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/uart.c	102	static int uartFile = -1	
 uart_init	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/uart.c	232	BOOL uart_init() {
 uart_send	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/uart.c	3946	void uart_send(BYTE* pData, int dataLen) {
 uart_receive	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/uart.c	4341	int uart_receive(void* pBuff, int buffLen) {
@@ -375,7 +387,7 @@ uart_flush	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmwa
 uart_discardInput	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/uart.c	5638	void uart_discardInput() {
 uart_discardOutput	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/uart.c	5699	void uart_discardOutput() {
 uart_discardAll	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/uart.c	5761	void uart_discardAll() {
-spiFile	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/spi.c	445	static int spiFile[2] = { -1, -1 };
+spiFile	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/spi.c	445	static int spiFile[2] = { -1, -1 }	
 spi_0_xfer	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/spi.c	530	struct spi_ioc_transfer spi_0_xfer[2] = {
 spi_1_xfer	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/spi.c	824	struct spi_ioc_transfer spi_1_xfer[2] = {
 spi_xfer	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/spi.c	1086	struct spi_ioc_transfer* spi_xfer[2] = {
@@ -391,8 +403,8 @@ JTEST_POWER_STEPS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software
 JTEST_WAIT_STEP_MS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	339	#define JTEST_WAIT_STEP_MS      10
 JTEST_WAIT_MAX_MULT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	374	#define JTEST_WAIT_MAX_MULT     25
 JTEST_JOINT_CHG_DEG	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	410	#define JTEST_JOINT_CHG_DEG     5
-minPowerNeeded	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	460	BYTE minPowerNeeded = 0;
-minWaitNeeded	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	486	INT32 minWaitNeeded = 0;
+minPowerNeeded	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	460	BYTE minPowerNeeded = 0	
+minWaitNeeded	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	486	INT32 minWaitNeeded = 0	
 selfTest	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	761	char* selfTest(int mode) {
 testAllJoints	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	925	void testAllJoints() {
 testJointMovement	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/selftest.c	2026	BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
@@ -403,7 +415,7 @@ PHI_upTime	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmwa
 PHI_abortProcess	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/phi_utils.c	344	void PHI_abortProcess(int rc) {
 PHI_abortWithMsg	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/phi_utils.c	470	void PHI_abortWithMsg(const char* msg) {
 __itoa	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/phi_utils.c	649	char* __itoa(int value, char* result, int base) {
-PHI_logfp	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/phi_utils.c	1596	FILE *PHI_logfp = NULL;
+PHI_logfp	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/phi_utils.c	1596	FILE *PHI_logfp = NULL	
 PHI_logInit	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/phi_utils.c	1619	int PHI_logInit(char *filename) {
 PHI_logClose	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/phi_utils.c	2551	void PHI_logClose(void) {
 PHI_logTimestamp	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/phi_utils.c	2657	void PHI_logTimestamp() {
@@ -417,7 +429,7 @@ RX_BEGIN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware
 RX_RECEIVING	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/philink.c	631	  RX_RECEIVING,
 TX_BEGIN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/philink.c	647	  TX_BEGIN,
 TX_SENDING	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/philink.c	659	  TX_SENDING,
-COMM_STATUS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/philink.c	678	} COMM_STATUS;
+COMM_STATUS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/philink.c	678	} COMM_STATUS	
 startPhiLink	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/philink.c	786	BOOL startPhiLink(char* ipAddr, int port) {
 PHI_link_loop	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/philink.c	2387	void* PHI_link_loop(void* arg)
 setLinkStatus	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/philink.c	4424	void setLinkStatus(PHILINK_STATUS status) {
@@ -441,10 +453,10 @@ jsmn_parse	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmwa
 jsmn_init	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/jsmn.c	5938	void jsmn_init(jsmn_parser *parser) {
 LOOPS_PER_SEC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	368	#define LOOPS_PER_SEC       100
 LOOP_PERIOD_USEC	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	400	#define LOOP_PERIOD_USEC    ((INT32)(1e6 / LOOPS_PER_SEC))
-cmds	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	547	  PHI_CMD_PACKET cmds;
-state	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	572	  PHI_STATE_PACKET state;
-PHI_SNAPSHOT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	582	} PHI_SNAPSHOT;
-phiSnapshot	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	617	static PHI_SNAPSHOT phiSnapshot;
+cmds	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	547	  PHI_CMD_PACKET cmds	
+state	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	572	  PHI_STATE_PACKET state	
+PHI_SNAPSHOT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	582	} PHI_SNAPSHOT	
+phiSnapshot	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	617	static PHI_SNAPSHOT phiSnapshot	
 startHwPump	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	1448	void startHwPump() {
 hwPump_UART_thread	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	3018	void* hwPump_UART_thread(void* arg)
 hwPump_SPI_thread	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hw_pump.c	4807	void* hwPump_SPI_thread(void* arg)
@@ -464,13 +476,13 @@ GENERIC_gyroGetTemp	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Softwa
 GENERIC_setMotorPower	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hal.c	3124	void GENERIC_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 GENERIC_getRawJointPos	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hal.c	3348	UINT16 GENERIC_getRawJointPos(BYTE adcIdx) {
 GENERIC_setControllerId	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/hal.c	3601	void GENERIC_setControllerId(char oldId, char newId) {
-bUseFifo	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	137	BOOL bUseFifo = TRUE;
-zeroX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	188	INT16 zeroX = 0;
-zeroY	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	205	INT16 zeroY = 0;
-zeroZ	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	222	INT16 zeroZ = 0;
-threshX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	267	INT16 threshX = 0;
-threshY	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	286	INT16 threshY = 0;
-threshZ	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	305	INT16 threshZ = 0;
+bUseFifo	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	137	BOOL bUseFifo = TRUE	
+zeroX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	188	INT16 zeroX = 0	
+zeroY	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	205	INT16 zeroY = 0	
+zeroZ	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	222	INT16 zeroZ = 0	
+threshX	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	267	INT16 threshX = 0	
+threshY	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	286	INT16 threshY = 0	
+threshZ	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	305	INT16 threshZ = 0	
 GYRO_MAX_VALUE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	410	#define GYRO_MAX_VALUE          250.0f
 GYRO_MAX_VALUE_CMD	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	449	#define GYRO_MAX_VALUE_CMD      GYRO_CR4_FS_250DPS
 GYRO_MAX_VALUE_MULT	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/gyro.c	500	#define GYRO_MAX_VALUE_MULT     GYRO_250DPS_MULT
@@ -501,7 +513,7 @@ BASH_BLUE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmwar
 BASH_MAGENTA	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	657	    #define BASH_MAGENTA    "35"
 BASH_CYAN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	690	    #define BASH_CYAN       "36"
 BASH_WHITE	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	723	    #define BASH_WHITE      "37"
-BASH_START_COLOR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	757	    #define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_START_COLOR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	757	    #define BASH_START_COLOR(c)   "\e[1	" c "m"
 BASH_STOP_COLOR	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	805	    #define BASH_STOP_COLOR       "\e[0m"
 DLOG_SIGN	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	852	#define DLOG_SIGN 'DLOG'
 PASS	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	878	#define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
@@ -509,14 +521,14 @@ FAIL	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src
 WRAP	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1007	#define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
 CLOSE_ENOUGH	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1086	#define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
 TO_TIME64	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1138	#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
-time	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1210	  UINT64 time;
-data	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1225	  double data;
-DATALOG_ELEM	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1234	} DATALOG_ELEM;
-sign	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1275	  UINT32 sign;
-currIdx	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1287	  int currIdx;
-numElem	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1302	  int numElem;
-elem	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1326	  DATALOG_ELEM elem[];
-DATALOG	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1339	} DATALOG;
+time	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1210	  UINT64 time	
+data	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1225	  double data	
+DATALOG_ELEM	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1234	} DATALOG_ELEM	
+sign	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1275	  UINT32 sign	
+currIdx	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1287	  int currIdx	
+numElem	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1302	  int numElem	
+elem	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1326	  DATALOG_ELEM elem[]	
+DATALOG	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1339	} DATALOG	
 dlog_create	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1359	DATALOG* dlog_create(int numElem) {
 dlog_free	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1704	void dlog_free(DATALOG* pLog) {
 dlog_addElem_withTime	scp://pi@rpi-phi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/datalog.c	1856	void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {

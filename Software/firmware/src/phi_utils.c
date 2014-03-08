@@ -227,8 +227,6 @@ UINT32 getHostIP() {
 
 void setLED(PHI_LED_COLOR color) {
   
-  TODO("Implement setLED()")
-
   switch (color) {
     case OFF:
       break;

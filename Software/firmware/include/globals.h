@@ -32,9 +32,11 @@ EXT HAL_FUNCS* g_pHal INIT(NULL);
 
 // data logs (for performance monitoring)
 
-EXT DATALOG* g_pDlog_hwPump_UART_period INIT(NULL);
-EXT DATALOG* g_pDlog_hwPump_SPI_period  INIT(NULL);
-EXT DATALOG* g_pDlog_hwPump_I2C_period  INIT(NULL);
+EXT DATALOG* g_pDlog_phiLink_period       INIT(NULL);
+
+EXT DATALOG* g_pDlog_hwPump_UART_period   INIT(NULL);
+EXT DATALOG* g_pDlog_hwPump_SPI_period    INIT(NULL);
+EXT DATALOG* g_pDlog_hwPump_I2C_period    INIT(NULL);
 
 EXT DATALOG* g_pDlog_hwPump_UART_workTime INIT(NULL);
 EXT DATALOG* g_pDlog_hwPump_SPI_workTime  INIT(NULL);

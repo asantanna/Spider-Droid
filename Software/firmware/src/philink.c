@@ -92,6 +92,13 @@ BOOL startPhiLink(char* ipAddr, int port) {
 
   // release thread attr because we don't use it
   pthread_attr_destroy(&threadAttr);
+
+  // increase priority to make philink more even
+
+  if (setRealtimePrio(thread) == FALSE) {
+      // not fatal
+    LOG_ERR("phiLink set_realtime_priority() failed!");
+  }
   
   // sleep a bit to allow thread to run (1/4 sec)
   usleep(1e6/4);
@@ -107,6 +114,8 @@ error_exit:
   goto quick_exit;
   
 }
+
+static UINT64 phiLink_loopStart_save = 0;
 
 void* phiLink_loop(void* arg)
 {
@@ -158,9 +167,6 @@ void* phiLink_loop(void* arg)
   //
   // PHILINK comm loop (loop forever)
   //
-
-  UINT64 lastLoopTime = phiUpTime();
-  UINT64 currTime;
   
   static char rxBuff[sizeof(PHI_CMD_PACKET)];
   static char txBuff[sizeof(PHI_STATE_PACKET)];
@@ -192,6 +198,9 @@ void* phiLink_loop(void* arg)
         totRead += nRec;
       }
     }
+    
+    // new loop start
+    usec_loopStart = phiUpTime();
 
     // set up state packet for sending
     getStateSnapshot((PHI_STATE_PACKET *) txBuff);
@@ -215,6 +224,14 @@ void* phiLink_loop(void* arg)
         totSent += nSnd;
       }
     }
+    
+    // log loop period
+
+    if (phiLink_loopStart_save != 0) {
+      dlog_addElem(g_pDlog_hwPump_phiLink_period, usec_loopStart-phiLink_loopStart_save);
+    }
+
+    phiLink_loopStart_save = usec_loopStart;
 
   } // while
   
