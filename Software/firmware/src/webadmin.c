@@ -40,7 +40,6 @@
 
 #include "phi.h"
 
-#define HTTP_BUFFSIZE           8096      // max size of HTTP request
 #define FORBIDDEN               403
 #define NOTFOUND                404
 

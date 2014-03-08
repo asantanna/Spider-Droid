@@ -17,7 +17,7 @@
       
       function pageLoaded()
       {
-        // nothing yet
+        phi_getPumpRates();
       }
 
       // this function parses all JSON replies
@@ -38,29 +38,16 @@
               document.getElementById("phi_firmware_version").innerHTML = reply.version;
               break;
 
-            case "getPumpStats":
-
+            case "getPumpRates":
               
-//  req:    { cmd : getPumpStats }
-//  reply:  { logs:
-//            [
-//              {
-//                  name      : string,
-//                  unit      : string,
-//                  epochSecs : double,                 (num secs of logging)
-//                  numElem   : int,
-//                  depths    : [ double, ... ],        (depths used for each of min, max, etc..)
-//                  min       : [ double, ... ],
-//                  max       : [ double, ... ],
-//                  avg       : [ double, ... ],
-//                  std       : [ double, ... ],
-//              }
-//            , ..... optional extra logs follow
-//              {
-//                  ..... optional
-//              }
-//            ]
-//          }
+              for (var idx = 0 ; idx < reply.name.length ; idx++) {
+                document.getElementById("phi_iface" + (idx+1).toString() + "_name").innerHTML = reply.name[idx];
+                document.getElementById("phi_iface" + (idx+1).toString() + "_period").innerHTML = (reply.period[idx] / 1000).toFixed(1) + " mS";
+              }
+                
+              break;
+
+            case "getPumpStats":
 
               for (var idx = 0 ; idx < reply.logs.length ; idx++) {
                 
@@ -116,6 +103,35 @@
    </h3>
 
    <table>
+      <col>
+      <col width=20>
+      <col>
+      
+      <tr>
+         <td class="phi_label" style="text-align:center;">Hardware</td>
+         <td></td>
+         <td class="phi_label" style="text-align:center;">Expected Period (mS)</td>
+      </tr>
+      <tr>
+         <td style="text-align:center;"><span id="phi_iface1_name">?</span></td>
+         <td></td>
+         <td style="text-align:center;"><span id="phi_iface1_period">?</span></td>
+      </tr>
+      <tr>
+         <td style="text-align:center;"><span id="phi_iface2_name">?</span></td>
+         <td></td>
+         <td style="text-align:center;"><span id="phi_iface2_period">?</span></td>
+      </tr>
+      <tr>
+         <td style="text-align:center;"><span id="phi_iface3_name">?</span></td>
+         <td></td>
+         <td style="text-align:center;"><span id="phi_iface3_period">?</span></td>
+      </tr>
+   </table>
+
+   <br/>
+         
+   <table>
       <col width=140>
       <col width=100>
       <col>
@@ -125,7 +141,7 @@
       
       <tr>
          <td class="phi_label" style="text-align:center;">Name</td>
-         <td class="phi_label" style="text-align:center;">Unit</td>
+         <td class="phi_label" style="text-align:center;">Native<br/>Unit</td>
          <td class="phi_label"></td>
          <td class="phi_label" style="text-align:center;"> 1 sec </td>
          <td class="phi_label" style="text-align:center;"> 5 secs </td>

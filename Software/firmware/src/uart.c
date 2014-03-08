@@ -25,10 +25,12 @@ BOOL uart_init() {
   // Note: this is done so that when the UART driver buffer fills, writes do not block
   // and instead return EAGAIN.
 
-  if (setNonBlocking(uartFile) < 0) {
-    LOG_FATAL("uart_init: can't set UART fd to non-blocking");
-    return FALSE;
-  }
+  // WARN("Non-blocking disabled because it does block ... is this the right thing?");
+  
+  // if (setNonBlocking(uartFile) < 0) {
+  // LOG_FATAL("uart_init: can't set UART fd to non-blocking");
+  // return FALSE;
+  // }
 
   //
   // configure UART 0 using termios structure (see man termios)

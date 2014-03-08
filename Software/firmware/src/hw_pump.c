@@ -117,14 +117,12 @@ void startHwPump() {
     // release thread attr because we don't use it
     pthread_attr_destroy(&threadAttr);
 
-    /*
-    // increase priority to make loop more even
+    // increase priority to make pumps more even
 
     if (setRealtimePrio(thread) == FALSE) {
       // not fatal
-      LOG_ERR("set_realtime_priority() failed!");
+      LOG_ERR("pump set_realtime_priority() failed!");
     }
-    */
     
   } // for
   
@@ -214,7 +212,6 @@ void* hwPump_UART_thread(void* arg)
 
     // log loop work time
     dlog_addElem(g_pDlog_hwPump_UART_workTime, usec_workTime);
-
     
     
   } // while

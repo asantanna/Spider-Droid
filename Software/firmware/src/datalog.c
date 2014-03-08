@@ -164,8 +164,6 @@ double dlog_avg(DATALOG* pLog, int depth) {
   return avg;
 }
 
-TODO("dlog_getStats() not fully impl");
-
 void dlog_getStats(DATALOG* pLog, int depth,
    double* pMinVal, double* pMaxVal, double* pAvgVal, double* pStdVal) {
 

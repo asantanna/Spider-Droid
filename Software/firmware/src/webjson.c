@@ -94,6 +94,7 @@ JSON_HANDLER(getLinkStatus);
 JSON_HANDLER(setMCtlId);
 JSON_HANDLER(selfTest);
 JSON_HANDLER(getPumpStats);
+JSON_HANDLER(getPumpRates);
 
 // valid command list
 
@@ -122,6 +123,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
 //  CMD_ENTRY(setBrake),
   CMD_ENTRY(selfTest),
   CMD_ENTRY(getPumpStats),
+  CMD_ENTRY(getPumpRates),
   { 0, 0}
 };
 
@@ -386,8 +388,6 @@ not_found:
 //          JSON COMMAND HANDLERS
 // ########################################
 
-#define JSON_TMP_BUFFSIZE     1024
-
 #define JSON_HANDLER_PROLOG(cmd) \
   /* allocate buffer for building reply */ \
   char _buff[JSON_TMP_BUFFSIZE]; \
@@ -401,6 +401,8 @@ not_found:
 #define JSON_HANDLER_EPILOG() \
   /* write common epilog into _buff */ \
   strcat(_buff, jsonReplyObject_end); \
+  /* check for overrun */ \
+  if (strlen(_buff) >= JSON_TMP_BUFFSIZE) LOG_FATAL("JSON reply exceeds max size!"); \
   /* create reply struct */ \
   PHI_JSON_CMD_REPLY_TYPE* _pRet = PHI_ALLOC(PHI_JSON_CMD_REPLY_TYPE); \
   _pRet -> pReply = strdup(_buff); \
@@ -900,19 +902,98 @@ error_exit:
 //                  min       : [ double, ... ],
 //                  max       : [ double, ... ],
 //                  avg       : [ double, ... ],
-//                  std       : [ double, ... ],
-//              }
-//            , ..... optional extra logs follow
+//                  std       : [ double, ... ]
+//              } , ..... optional extra logs follow
 //              {
 //                  ..... optional
 //              }
 //            ]
 //          }
 //
+//
+//  req:    { cmd : getPumpRates }
+//  reply:  {
+//            name   : [double, ...] ,
+//            period : [double, ...]      // in mSecs
+//          }
+//
+//
+//  req:    { cmd : getPhiLinkStats }
+//  reply:  { log:
+//            ... log as in getPumpStats above ...
+//          }
+//
+//
+
+void emitDatalogJson(char*pBuff, DATALOG* pLog, int depths[]) {
+
+  int j;
+  
+  sprintf(pBuff + strlen(pBuff),
+    "\n{\n"
+    Q(name) ":" Q(%s) ",\n"
+    Q(unit) ":" Q(%s) ",\n"
+    Q(epochSecs) ": %g,\n",
+    pLog -> pName,
+    pLog -> pUnit,
+    pLog -> epochSecs);
+
+  int numDepths = 0;
+
+  sprintf(pBuff + strlen(pBuff), Q(depths) ": [");
+  for (j = 0 ; depths[j] != 0 ; j++) {
+    sprintf(pBuff + strlen(pBuff), "%d, ", depths[j]);
+    numDepths++;
+  }
+  
+  sprintf(pBuff + strlen(pBuff) - 2, "],\n");
+
+  // get stats at all requested depths
+
+  double minVal[10], maxVal[10], avgVal[10], stdVal[10];
+
+  for (j = 0 ; j < numDepths ; j++) {
+    if (j >= 10) {
+      LOG_FATAL("Too many depths in getPumpStats() - sheesh");
+    }
+    dlog_getStats(pLog, depths[j], minVal+j, maxVal+j, avgVal+j, stdVal+j);
+  }
+
+  // min
+  sprintf(pBuff + strlen(pBuff), Q(min) ": [");
+  for (j = 0 ; j < numDepths ; j++) {
+    sprintf(pBuff + strlen(pBuff), "%g, ", minVal[j]);
+  }
+  sprintf(pBuff + strlen(pBuff) - 2, "],\n");
+
+  // max
+  sprintf(pBuff + strlen(pBuff), Q(max) ": [");
+  for (j = 0 ; j < numDepths ; j++) {
+    sprintf(pBuff + strlen(pBuff), "%g, ", maxVal[j]);
+  }
+  sprintf(pBuff + strlen(pBuff) - 2, "],\n");
+
+  // avg
+  sprintf(pBuff + strlen(pBuff), Q(avg) ": [");
+  for (j = 0 ; j < numDepths ; j++) {
+    sprintf(pBuff + strlen(pBuff), "%g, ", avgVal[j]);
+  }
+  sprintf(pBuff + strlen(pBuff) - 2, "],\n");
+
+  // std dev
+  sprintf(pBuff + strlen(pBuff), Q(std) ": [");
+  for (j = 0 ; j < numDepths ; j++) {
+    sprintf(pBuff + strlen(pBuff), "%g, ", stdVal[j]);
+  }
+  sprintf(pBuff + strlen(pBuff) - 2, "]\n");
+
+  sprintf(pBuff + strlen(pBuff), "}");
+}
 
 JSON_HANDLER(getPumpStats) {
   JSON_HANDLER_PROLOG(getPumpStats);
 
+  // "logs" keyword
   sprintf(_buff + strlen(_buff), Q(logs) ": [\n");
 
   // grab pump datalogs
@@ -925,10 +1006,9 @@ JSON_HANDLER(getPumpStats) {
     PERFLOG_HWPUMP_ELEM_15SEC,
     0
   };
-
-  WARN("only doing one because of buffer overflow");
   
-  for (i = 0 ; i < 1 ; i++) {
+  for (i = 0 ; i < 6 ; i++) {
+    
     DATALOG* pLog;
     
     switch (i) {
@@ -941,70 +1021,64 @@ JSON_HANDLER(getPumpStats) {
       default: LOG_FATAL("bad val in getPumpStats switch");
     }
 
-    if (i != 0) sprintf(_buff + strlen(_buff), ",\n");
-    
-    sprintf(_buff + strlen(_buff),
-      "{\n"
-      Q(name) ":" Q(%s) ",\n"
-      Q(unit) ":" Q(%s) ",\n"
-      Q(epochSecs) ": %g,\n",
-      pLog -> pName,
-      pLog -> pUnit,
-      pLog -> epochSecs);
+    if (i != 0) sprintf(_buff + strlen(_buff), ",");
 
-    int numDepths = 0;
-    
-    sprintf(_buff + strlen(_buff), Q(depths) ": [");
-    for (j = 0 ; depths[j] != 0 ; j++) {
-      sprintf(_buff + strlen(_buff), "%d, ", depths[j]);
-      numDepths++;
-    }
-    sprintf(_buff + strlen(_buff) - 2, "],\n");
-
-    // get stats at all requested depths
-    
-    double minVal[10], maxVal[10], avgVal[10], stdVal[10];
-
-    for (j = 0 ; j < numDepths ; j++) {
-      if (j >= 10) {
-        LOG_FATAL("Too many depths in getPumpStats() - sheesh");
-      }
-      dlog_getStats(pLog, depths[j], minVal+j, maxVal+j, avgVal+j, stdVal+j);
-    }
-
-    // min
-    sprintf(_buff + strlen(_buff), Q(min) ": [");
-    for (j = 0 ; j < numDepths ; j++) {
-      sprintf(_buff + strlen(_buff), "%g, ", minVal[j]);
-    }
-    sprintf(_buff + strlen(_buff) - 2, "],\n");
-
-    // max
-    sprintf(_buff + strlen(_buff), Q(max) ": [");
-    for (j = 0 ; j < numDepths ; j++) {
-      sprintf(_buff + strlen(_buff), "%g, ", maxVal[j]);
-    }
-    sprintf(_buff + strlen(_buff) - 2, "],\n");
-
-    // avg
-    sprintf(_buff + strlen(_buff), Q(avg) ": [");
-    for (j = 0 ; j < numDepths ; j++) {
-      sprintf(_buff + strlen(_buff), "%g, ", avgVal[j]);
-    }
-    sprintf(_buff + strlen(_buff) - 2, "],\n");
-
-    // std dev
-    sprintf(_buff + strlen(_buff), Q(std) ": [");
-    for (j = 0 ; j < numDepths ; j++) {
-      sprintf(_buff + strlen(_buff), "%g, ", stdVal[j]);
-    }
-    sprintf(_buff + strlen(_buff) - 2, "]\n");
-    
-    sprintf(_buff + strlen(_buff), "}\n");
+    // emit JSON for datalog
+    emitDatalogJson(_buff, pLog, depths);
     
   } // foreach DATALOG
   
-  sprintf(_buff + strlen(_buff), "]");
+  sprintf(_buff + strlen(_buff), "]\n");
+
+  JSON_HANDLER_EPILOG();
+}
+
+
+JSON_HANDLER(getPumpRates) {
+  JSON_HANDLER_PROLOG(getPumpRates);
+
+  // pump names
+
+  sprintf(_buff + strlen(_buff),
+    Q(name) ":[" Q(UART) "," Q(SPI) "," Q(I2C) "],\n");
+
+  // pump periods
+
+  sprintf(_buff + strlen(_buff), Q(period) ":[");
+
+  int i;
+  for (i = 0 ; i < 3 ; i++) {
+    // same for all right now
+    sprintf(_buff + strlen(_buff), "%d, ", HW_PUMP_LOOP_PERIOD_USEC);
+  }
+
+  // remove extra comma
+  _buff[strlen(_buff) - 2] = 0;
+
+  // array close
+  sprintf(_buff + strlen(_buff), "]\n");
+
+  JSON_HANDLER_EPILOG();
+}
+
+
+JSON_HANDLER(getPhiLinkStats) {
+  JSON_HANDLER_PROLOG(getPhiLinkStats);
+
+  // grab phiLink datalogs
+
+  int depths[] = {
+    PERFLOG_PHILINK_ELEM_1SEC,
+    PERFLOG_PHILINK_ELEM_5SEC,
+    PERFLOG_PHILINK_ELEM_15SEC,
+    0
+  };
+
+  // "log" keyword
+  sprintf(_buff + strlen(_buff), Q(log) ": \n");
+  
+  // emit JSON for datalog
+  emitDatalogJson(_buff, g_pDlog_phiLink_period, depths);
 
   JSON_HANDLER_EPILOG();
 }

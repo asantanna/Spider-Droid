@@ -5,9 +5,9 @@
 
 #define PHI_VERSION     "0.1 dev"
 
-// logging
-#define LOGFILE_NAME    "/var/log/phi.log"
-#define VERBOSE_LOG     1
+//
+// GENERIC DEFS
+//
 
 // signed ints
 #define INT8            char
@@ -85,6 +85,18 @@
 #define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
 #define Q(s)                  "\"" #s "\""    /* convert to quoted string */
 
+//
+// PHI SPECIFIC DEFS
+//
+
+// logging
+#define LOGFILE_NAME    "/var/log/phi.log"
+#define VERBOSE_LOG     1
+
+// HTTP/JSON buffers
+#define HTTP_BUFFSIZE       (16*1024)      // max size of HTTP request/reply
+#define JSON_TMP_BUFFSIZE   (4*1024)       // max size of single JSON reply
+
 // Linux drivers
 #define UART_DRIVER_NAME  "/dev/ttyAMA0"
 #define SPI0_DRIVER_NAME  "/dev/spidev0.0"
@@ -127,7 +139,7 @@ typedef enum {
 #define PHI_MUTEX_TRYGET(pMtx)      pthread_mutex_trylock(pMtx)   // ret 0 if get successful, ret != if failed
 
 // hardware pumping rate
-#define HWPUMP_LOOPS_PER_SEC        100
+#define HWPUMP_LOOPS_PER_SEC        60
 #define HW_PUMP_LOOP_PERIOD_USEC    ((INT32)(1e6 / HWPUMP_LOOPS_PER_SEC))
 
 // performance monitoring
@@ -137,4 +149,10 @@ typedef enum {
 #define PERFLOG_HWPUMP_ELEM_15SEC     (15 * PERFLOG_HWPUMP_ELEM_1SEC)
 #define PERFLOG_HWPUMP_NUM_ELEM       PERFLOG_HWPUMP_ELEM_15SEC
 #define PERFLOG_HWPUMP_EPOCH          15
+
+#define PERFLOG_PHILINK_ELEM_1SEC     50
+#define PERFLOG_PHILINK_ELEM_5SEC     (5  * PERFLOG_PHILINK_ELEM_1SEC)
+#define PERFLOG_PHILINK_ELEM_15SEC    (15 * PERFLOG_PHILINK_ELEM_1SEC)
+#define PERFLOG_PHILINK_NUM_ELEM      PERFLOG_PHILINK_ELEM_15SEC
+#define PERFLOG_PHILINK_EPOCH         15
 
