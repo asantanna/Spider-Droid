@@ -46,6 +46,10 @@ function phi_getPumpRates() {
   sendJsonRequest("req : [ {cmd:getPumpRates} ]");
 }
 
+function phi_getPhiLinkStats() {
+  sendJsonRequest("req : [ {cmd:getPhiLinkStats} ]");
+}
+
 //
 // Utils
 //

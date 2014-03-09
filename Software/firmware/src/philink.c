@@ -189,6 +189,7 @@ void* phiLink_loop(void* arg)
 
       if (nRec <= 0) {
         // error occurred
+        perror("Phi link: recv() fail: ");
         LOG_FATAL("Phi link: recv() fail, errno = %d", errno);
         break;
 
@@ -200,7 +201,7 @@ void* phiLink_loop(void* arg)
     }
     
     // new loop start
-    usec_loopStart = phiUpTime();
+    UINT64 usec_loopStart = phiUpTime();
 
     // set up state packet for sending
     getStateSnapshot((PHI_STATE_PACKET *) txBuff);
@@ -228,7 +229,7 @@ void* phiLink_loop(void* arg)
     // log loop period
 
     if (phiLink_loopStart_save != 0) {
-      dlog_addElem(g_pDlog_hwPump_phiLink_period, usec_loopStart-phiLink_loopStart_save);
+      dlog_addElem(g_pDlog_phiLink_period, usec_loopStart-phiLink_loopStart_save);
     }
 
     phiLink_loopStart_save = usec_loopStart;
