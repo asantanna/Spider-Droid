@@ -95,6 +95,7 @@ JSON_HANDLER(setMCtlId);
 JSON_HANDLER(selfTest);
 JSON_HANDLER(getPumpStats);
 JSON_HANDLER(getPumpRates);
+JSON_HANDLER(getPhiLinkStats);
 
 // valid command list
 
@@ -124,6 +125,7 @@ PHI_JSON_CMD_TYPE validCmds[] = {
   CMD_ENTRY(selfTest),
   CMD_ENTRY(getPumpStats),
   CMD_ENTRY(getPumpRates),
+  CMD_ENTRY(getPhiLinkStats),
   { 0, 0}
 };
 
