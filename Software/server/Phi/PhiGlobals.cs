@@ -15,22 +15,6 @@ namespace Phi
     // version
     internal static byte[] PHI_VERSION = StrToByteArray("0.9 (exp)");
 
-    // leg motor cmds
-    internal const int NUM_LEGS = 4;
-    internal const int MOTORS_PER_LEG = 3;
-    internal const int NUM_MOTOR_ELEM = MOTORS_PER_LEG * NUM_LEGS;
-
-    // camera sensor data
-    internal const int IMAGE_X = 160;
-    internal const int IMAGE_Y = 120;
-    internal const int NUM_IMAGE_ELEM = IMAGE_X * IMAGE_Y;
-
-    // misc sensor data
-    internal const int NUM_JOINT_POS_ELEM = NUM_LEGS * MOTORS_PER_LEG;
-    internal const int NUM_GYRO_ELEM = 3;
-    internal const int NUM_ACCEL_ELEM = 3;
-    internal const int NUM_TEMP_ELEM = 1;
-
     //
     // GLOBAL VARS
     //

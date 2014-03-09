@@ -49,10 +49,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="UI\App.xaml">
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Comms\PhiBasePacket.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="UI\PieControl.xaml.cs">
       <DependentUpon>PieControl.xaml</DependentUpon>
     </Compile>
@@ -70,15 +72,15 @@
     </Compile>
     <Compile Include="Utils\InfoT.cs" />
     <Compile Include="Utils\PDF.cs" />
-    <Page Include="MainWindow.xaml">
+    <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="UI\App.xaml.cs">
+    <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -104,10 +106,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Eve\PhiCmdPacket.cs" />
-    <Compile Include="Eve\PhiGlobals.cs" />
-    <Compile Include="Eve\PhiLink.cs" />
-    <Compile Include="Eve\PhiStatePacket.cs" />
+    <Compile Include="Comms\PhiCmdPacket.cs" />
+    <Compile Include="PhiGlobals.cs" />
+    <Compile Include="Comms\PhiLink.cs" />
+    <Compile Include="Comms\PhiStatePacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -137,7 +139,9 @@
   <ItemGroup>
     <Resource Include="UI\Letter_Phi.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Eve\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

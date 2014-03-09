@@ -33,8 +33,11 @@ namespace Phi {
     internal const double DESIRED_LOOP_FPS = 50;
     const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
 
+    // adaptive sleep
+    const double SLEEP_ERROR_ACCUM_RATE = (1.0 / 1e3);
+
     // statistics
-    const double LOOP_TIME_ACCUM_RATE = (1.0 / 100);
+    const double LOOP_STATS_ACCUM_RATE = (1.0 / 100);
 
     //
     //  VARS
@@ -58,6 +61,7 @@ namespace Phi {
     private static double secsThisLoop = 0;
     private static double accum_secsPerLoop = DESIRED_SECS_PER_LOOP;
     private static double accum_sleepTime = 0;
+    private static double sleepError = 0;
 
     private static UInt32 lastPacketID = 0;
 
@@ -74,7 +78,7 @@ namespace Phi {
     private static double yaw = 0;
     private static double roll = 0;
 
-    private static float[] joints = new float[PhiGlobals.NUM_MOTOR_ELEM];
+    private static double[] joints = new double[PhiBasePacket.NUM_MOTOR_ELEM];
 
     //
     // CODE
@@ -174,7 +178,6 @@ namespace Phi {
       // init statistics 
       double tickPeriod = 1.0 / Stopwatch.Frequency;
       Stopwatch stopWatch = Stopwatch.StartNew();
-      double sleepError = 0;
 
       // loop forever
       
@@ -224,13 +227,13 @@ namespace Phi {
         lock (dataLock) {
           // protect access
           secsThisLoop = (loopEndTicks - loopStartTicks) * tickPeriod;
-          accum_secsPerLoop = ((1-LOOP_TIME_ACCUM_RATE) * accum_secsPerLoop) + (LOOP_TIME_ACCUM_RATE * secsThisLoop);
-          accum_sleepTime =   ((1-LOOP_TIME_ACCUM_RATE) * accum_sleepTime)   + (LOOP_TIME_ACCUM_RATE * sleepTime);
+          accum_secsPerLoop = ((1-LOOP_STATS_ACCUM_RATE) * accum_secsPerLoop) + (LOOP_STATS_ACCUM_RATE * secsThisLoop);
+          accum_sleepTime =   ((1-LOOP_STATS_ACCUM_RATE) * accum_sleepTime)   + (LOOP_STATS_ACCUM_RATE * sleepTime);
         }
 
-        // compute sleep error
+        // compute sleep error and with running avg so we don't go all over the place
         // new_error = (desired_loop + curr_error) - actual_loop
-        sleepError +=  DESIRED_SECS_PER_LOOP - secsThisLoop;
+        sleepError = ((1-SLEEP_ERROR_ACCUM_RATE) * sleepError) + (SLEEP_ERROR_ACCUM_RATE*(DESIRED_SECS_PER_LOOP - secsThisLoop));
 
         // time next
         loopStartTicks = loopEndTicks;
@@ -302,32 +305,37 @@ namespace Phi {
       }
     }
 
+    internal static double getSleepError() {
+      lock (dataLock) {
+        return sleepError;
+      }
+    }
+
     internal static double getGyroAccumPitch() {
       lock (dataLock) {
-        // return accum value [-180, 180]
+        // return change [0,1]?  HACK  (how about negative .. sheesh)
         return pitch;
       }
     }
 
     internal static double getGyroAccumYaw() {
       lock (dataLock) {
-        // return accum value [-180, 180]
+        // return change [0,1]?  HACK 
         return yaw;
       }
     }
 
     internal static double getGyroAccumRoll() {
       lock (dataLock) {
-        // return accum value [-180, 180]
+        // return change [0,1]?  HACK 
         return roll;
       }
     }
 
     internal static double getJointPos(int idx) {
       lock (dataLock) {
-        // Phi returns [0, 360) with A-to-D 10 bit precision
-        // Convert to PhiCore's [0, 1.0)
-        return joints[idx] / 360.0;
+        // Phi returns canonical [0, 1.0] to represent [0, 360]
+        return joints[idx];
       }
     }
 

@@ -194,30 +194,31 @@ namespace Phi {
       AvgIdleText.Text = (PhiLink.getAvgIdle() * 100).ToString("F1") + " %";
       ctlNumLoops.Text  = PhiLink.getLoopCount().ToString();
       ctlPacketId.Text = PhiLink.getLastPacketID().ToString();
+      ctlSleepError.Text = (PhiLink.getSleepError() * 1000).ToString("F1");
 
       PieCtrl_Pitch.update(PhiLink.getGyroAccumPitch());
       PieCtrl_Yaw.update(PhiLink.getGyroAccumYaw());
       PieCtrl_Roll.update(PhiLink.getGyroAccumRoll());
 
       (LegGrid.FindName("LF_Leg") as LegBox).update(
-        -0.5, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LFH),
-         0.2, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LFT),
-         0.9, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LFK));
+        -0.5, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LFH),
+         0.2, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LFT),
+         0.9, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LFK));
 
       (LegGrid.FindName("RF_Leg") as LegBox).update(
-        -1.0, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RFH),
-        -0.9, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RFT),
-        -0.8, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RFK));
+        -1.0, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RFH),
+        -0.9, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RFT),
+        -0.8, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RFK));
 
       (LegGrid.FindName("LB_Leg") as LegBox).update(
-         1.0,  PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LBH),
-         0.66, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LBT),
-         0.33, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_LBK));
+         1.0,  PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LBH),
+         0.66, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LBT),
+         0.33, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LBK));
 
       (LegGrid.FindName("RB_Leg") as LegBox).update(
-        -1.0,  PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RBH),
-        -0.66, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RBT),
-        -0.33, PhiLink.getJointPos((int) PhiLink.MOTOR_IDX.IDX_RBK));
+        -1.0,  PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RBH),
+        -0.66, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RBT),
+        -0.33, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RBK));
 
     }
 

@@ -1,0 +1,1588 @@
+	TAGS	UNSORTED
+System	Eve\PhiGlobals.cs	6	using System;
+Generic	Eve\PhiGlobals.cs	39	using System.Collections.Generic;
+Linq	Eve\PhiGlobals.cs	61	using System.Linq;
+Text	Eve\PhiGlobals.cs	80	using System.Text;
+Tasks	Eve\PhiGlobals.cs	109	using System.Threading.Tasks;
+Phi	Eve\PhiGlobals.cs	127	namespace Phi
+Phi::PhiGlobals	Eve\PhiGlobals.cs	148	  static class PhiGlobals
+Phi::PhiGlobals::PHI_VERSION	Eve\PhiGlobals.cs	233	    internal static byte[] PHI_VERSION = StrToByteArray("0.9 (exp)");
+Phi::PhiGlobals::bInit	Eve\PhiGlobals.cs	336	    internal static bool bInit = false;
+Phi::PhiGlobals::mainWindow	Eve\PhiGlobals.cs	382	    internal static MainWindow mainWindow = null;
+Phi::PhiGlobals::encoding	Eve\PhiGlobals.cs	446	    internal static System.Text.UTF8Encoding encoding;
+Phi::PhiGlobals::phiAbort	Eve\PhiGlobals.cs	521	    internal static void phiAbort(string message)
+Phi::PhiGlobals::StrToByteArray	Eve\PhiGlobals.cs	808	    internal static byte[] StrToByteArray(string str)
+Phi::PhiGlobals::MAKE_INT16	Eve\PhiGlobals.cs	1001	    internal static Int16 MAKE_INT16(byte[] ba, int offset) {
+Phi::PhiGlobals::MAKE_UINT16	Eve\PhiGlobals.cs	1167	    internal static UInt16 MAKE_UINT16(byte[] ba, int offset) {
+Phi::PhiGlobals::MAKE_UINT32	Eve\PhiGlobals.cs	1336	    internal static UInt32 MAKE_UINT32(byte[] ba, int offset) {
+Phi::PhiGlobals::MAKE_FLOAT	Eve\PhiGlobals.cs	1504	    internal static float MAKE_FLOAT(byte[] ba, int offset) {
+Reflection	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Properties\AssemblyInfo.cs	13	using System.Reflection;
+CompilerServices	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Properties\AssemblyInfo.cs	46	using System.Runtime.CompilerServices;
+InteropServices	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Properties\AssemblyInfo.cs	85	using System.Runtime.InteropServices;
+System	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	6	using System;
+Generic	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	39	using System.Collections.Generic;
+Linq	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	61	using System.Linq;
+Text	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	80	using System.Text;
+Tasks	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	109	using System.Threading.Tasks;
+Phi	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	122	using Phi;
+Utils	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	137	using Phi.Utils;
+Test_Suite	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	155	namespace Test_Suite {
+Test_Suite::Program	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	176	  class Program {
+Test_Suite::Program::Main	d:\ALS-Projects\Spider-Droid\Software\server\Tests\Test-Suite\Program.cs	211	      public static void Main(string[] args) {
+System	Utils\PDF.cs	6	using System;
+Phi	Utils\PDF.cs	25	namespace Phi {
+Phi::PDF	Utils\PDF.cs	47	  public class PDF {
+Phi::PDF::numObjs	Utils\PDF.cs	99	    private int numObjs;
+Phi::PDF::valsPerObj	Utils\PDF.cs	124	    private int valsPerObj;
+Phi::PDF::sum	Utils\PDF.cs	152	    private int sum;
+Phi::PDF::numElem	Utils\PDF.cs	173	    private int numElem;
+Phi::PDF::dims	Utils\PDF.cs	200	    private int[] dims;
+Phi::PDF::array	Utils\PDF.cs	224	    private int[] array;
+Phi::PDF::rand	Utils\PDF.cs	257	    private static Random rand = new Random(unchecked(DateTime.Now.Ticks.GetHashCode()));
+Phi::PDF::PDF	Utils\PDF.cs	360	    public PDF(int _numObjs, int _valsPerObj) {
+Phi::PDF::getRand	Utils\PDF.cs	715	    private static int getRand() {
+Phi::PDF::getNumElem	Utils\PDF.cs	790	    public int getNumElem() {
+Phi::PDF::updatePDF	Utils\PDF.cs	850	    public void updatePDF(int[] pdfIdx)  {
+Phi::PDF::setPDF	Utils\PDF.cs	965	    public void setPDF(double[] probs)  {
+Phi::PDF::samplePDF	Utils\PDF.cs	1150	    public void samplePDF(int[] varResults)    {
+Phi::PDF::getIdxs	Utils\PDF.cs	1507	    public void getIdxs(int off, int[] pdfIdx) {
+Phi::PDF::getPDF	Utils\PDF.cs	1677	    public double getPDF(int[] pdfIdx)  {
+Phi::PDF::getProb	Utils\PDF.cs	1797	    public double getProb(int off) {
+Phi::PDF::getOff	Utils\PDF.cs	1877	    public int getOff(int[] pdfIdx) {
+Phi::PDF::test	Utils\PDF.cs	2080	    public static void test() {
+System	Utils\InfoT.cs	6	using System;
+Generic	Utils\InfoT.cs	39	using System.Collections.Generic;
+Linq	Utils\InfoT.cs	61	using System.Linq;
+Text	Utils\InfoT.cs	80	using System.Text;
+Tasks	Utils\InfoT.cs	109	using System.Threading.Tasks;
+Phi::Utils	Utils\InfoT.cs	127	namespace Phi.Utils {
+Phi::Utils::InfoT	Utils\InfoT.cs	161	  public static class InfoT {
+Phi::Utils::InfoT::entropy	Utils\InfoT.cs	195	    public static double entropy(PDF pdf) {
+Phi::Utils::InfoT::mutualInfo	Utils\InfoT.cs	447	    public static double mutualInfo(PDF pdf1, PDF pdf2, PDF pdfJoint) {
+Phi::Utils::InfoT::test	Utils\InfoT.cs	588	    public static void test() {
+System	ui\PieControl.xaml.cs	6	using System;
+Generic	ui\PieControl.xaml.cs	39	using System.Collections.Generic;
+Linq	ui\PieControl.xaml.cs	61	using System.Linq;
+Text	ui\PieControl.xaml.cs	80	using System.Text;
+Tasks	ui\PieControl.xaml.cs	109	using System.Threading.Tasks;
+Windows	ui\PieControl.xaml.cs	129	using System.Windows;
+Controls	ui\PieControl.xaml.cs	159	using System.Windows.Controls;
+Data	ui\PieControl.xaml.cs	190	using System.Windows.Data;
+Documents	ui\PieControl.xaml.cs	217	using System.Windows.Documents;
+Input	ui\PieControl.xaml.cs	249	using System.Windows.Input;
+Media	ui\PieControl.xaml.cs	277	using System.Windows.Media;
+Imaging	ui\PieControl.xaml.cs	311	using System.Windows.Media.Imaging;
+Navigation	ui\PieControl.xaml.cs	341	using System.Windows.Navigation;
+Shapes	ui\PieControl.xaml.cs	374	using System.Windows.Shapes;
+Phi	ui\PieControl.xaml.cs	393	namespace Phi {
+Phi::PieControl	ui\PieControl.xaml.cs	507	  public partial class PieControl : UserControl {
+Phi::PieControl::PieControl	ui\PieControl.xaml.cs	546	    public PieControl() {
+Phi::PieControl::update	ui\PieControl.xaml.cs	613	    public void update(double degrees) {
+System	ui\NeuronBox.xaml.cs	6	using System;
+Generic	ui\NeuronBox.xaml.cs	39	using System.Collections.Generic;
+Linq	ui\NeuronBox.xaml.cs	61	using System.Linq;
+Text	ui\NeuronBox.xaml.cs	80	using System.Text;
+Tasks	ui\NeuronBox.xaml.cs	109	using System.Threading.Tasks;
+Windows	ui\NeuronBox.xaml.cs	129	using System.Windows;
+Controls	ui\NeuronBox.xaml.cs	159	using System.Windows.Controls;
+Data	ui\NeuronBox.xaml.cs	190	using System.Windows.Data;
+Documents	ui\NeuronBox.xaml.cs	217	using System.Windows.Documents;
+Input	ui\NeuronBox.xaml.cs	249	using System.Windows.Input;
+Media	ui\NeuronBox.xaml.cs	277	using System.Windows.Media;
+Imaging	ui\NeuronBox.xaml.cs	311	using System.Windows.Media.Imaging;
+Navigation	ui\NeuronBox.xaml.cs	341	using System.Windows.Navigation;
+Shapes	ui\NeuronBox.xaml.cs	374	using System.Windows.Shapes;
+Phi	ui\NeuronBox.xaml.cs	393	namespace Phi {
+Phi::NeuronBox	ui\NeuronBox.xaml.cs	498	  public partial class NeuronBox : UserControl {
+Phi::NeuronBox::NeuronBox	ui\NeuronBox.xaml.cs	535	    public NeuronBox() {
+Phi::NeuronBox::update	ui\NeuronBox.xaml.cs	632	    public void update(double value) {
+System	ui\LegBox.xaml.cs	6	using System;
+Generic	ui\LegBox.xaml.cs	39	using System.Collections.Generic;
+Linq	ui\LegBox.xaml.cs	61	using System.Linq;
+Text	ui\LegBox.xaml.cs	80	using System.Text;
+Tasks	ui\LegBox.xaml.cs	109	using System.Threading.Tasks;
+Windows	ui\LegBox.xaml.cs	129	using System.Windows;
+Controls	ui\LegBox.xaml.cs	159	using System.Windows.Controls;
+Data	ui\LegBox.xaml.cs	190	using System.Windows.Data;
+Documents	ui\LegBox.xaml.cs	217	using System.Windows.Documents;
+Input	ui\LegBox.xaml.cs	249	using System.Windows.Input;
+Media	ui\LegBox.xaml.cs	277	using System.Windows.Media;
+Imaging	ui\LegBox.xaml.cs	311	using System.Windows.Media.Imaging;
+Navigation	ui\LegBox.xaml.cs	341	using System.Windows.Navigation;
+Shapes	ui\LegBox.xaml.cs	374	using System.Windows.Shapes;
+Phi	ui\LegBox.xaml.cs	393	namespace Phi {
+Phi::LegBox	ui\LegBox.xaml.cs	495	  public partial class LegBox : UserControl {
+Phi::LegBox::LegBox	ui\LegBox.xaml.cs	529	    public LegBox() {
+Phi::LegBox::update	ui\LegBox.xaml.cs	594	    internal void update(
+System	ui\JointBox.xaml.cs	6	using System;
+Generic	ui\JointBox.xaml.cs	39	using System.Collections.Generic;
+Linq	ui\JointBox.xaml.cs	61	using System.Linq;
+Text	ui\JointBox.xaml.cs	80	using System.Text;
+Tasks	ui\JointBox.xaml.cs	109	using System.Threading.Tasks;
+Windows	ui\JointBox.xaml.cs	129	using System.Windows;
+Controls	ui\JointBox.xaml.cs	159	using System.Windows.Controls;
+Data	ui\JointBox.xaml.cs	190	using System.Windows.Data;
+Documents	ui\JointBox.xaml.cs	217	using System.Windows.Documents;
+Input	ui\JointBox.xaml.cs	249	using System.Windows.Input;
+Media	ui\JointBox.xaml.cs	277	using System.Windows.Media;
+Imaging	ui\JointBox.xaml.cs	311	using System.Windows.Media.Imaging;
+Navigation	ui\JointBox.xaml.cs	341	using System.Windows.Navigation;
+Shapes	ui\JointBox.xaml.cs	374	using System.Windows.Shapes;
+Phi	ui\JointBox.xaml.cs	393	namespace Phi {
+Phi::JointBox	ui\JointBox.xaml.cs	497	  public partial class JointBox : UserControl {
+Phi::JointBox::JointBox	ui\JointBox.xaml.cs	533	    public JointBox() {
+Phi::JointBox::update	ui\JointBox.xaml.cs	598	    public void update(double motorVal, double jointPos) {
+System	ui\BarBox.xaml.cs	6	using System;
+Generic	ui\BarBox.xaml.cs	39	using System.Collections.Generic;
+Linq	ui\BarBox.xaml.cs	61	using System.Linq;
+Text	ui\BarBox.xaml.cs	80	using System.Text;
+Tasks	ui\BarBox.xaml.cs	109	using System.Threading.Tasks;
+Windows	ui\BarBox.xaml.cs	129	using System.Windows;
+Controls	ui\BarBox.xaml.cs	159	using System.Windows.Controls;
+Data	ui\BarBox.xaml.cs	190	using System.Windows.Data;
+Documents	ui\BarBox.xaml.cs	217	using System.Windows.Documents;
+Input	ui\BarBox.xaml.cs	249	using System.Windows.Input;
+Media	ui\BarBox.xaml.cs	277	using System.Windows.Media;
+Imaging	ui\BarBox.xaml.cs	311	using System.Windows.Media.Imaging;
+Navigation	ui\BarBox.xaml.cs	341	using System.Windows.Navigation;
+Shapes	ui\BarBox.xaml.cs	374	using System.Windows.Shapes;
+Phi	ui\BarBox.xaml.cs	393	namespace Phi {
+Phi::BarBox	ui\BarBox.xaml.cs	495	  public partial class BarBox : UserControl {
+Phi::BarBox::BarBox	ui\BarBox.xaml.cs	529	    public BarBox() {
+Phi::BarBox::update	ui\BarBox.xaml.cs	622	    public void update(double value) {
+Windows	ui\App.xaml.cs	13	using System.Windows;
+Phi	ui\App.xaml.cs	33	namespace Phi
+Phi::App	ui\App.xaml.cs	140	    public partial class App : Application
+Phi::Properties	Properties\Settings.Designer.cs	407	namespace Phi.Properties {
+Phi::Properties::Settings	Properties\Settings.Designer.cs	695	    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+Phi::Properties::Settings::defaultInstance	Properties\Settings.Designer.cs	802	        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+Phi::Properties	Properties\Resources.Designer.cs	407	namespace Phi.Properties {
+Phi::Properties::System	Properties\Resources.Designer.cs	434	    using System;
+Phi::Properties::Resources	Properties\Resources.Designer.cs	1113	    internal class Resources {
+Phi::Properties::Resources::resourceMan	Properties\Resources.Designer.cs	1198	        private static global::System.Resources.ResourceManager resourceMan;
+Phi::Properties::Resources::resourceCulture	Properties\Resources.Designer.cs	1284	        private static global::System.Globalization.CultureInfo resourceCulture;
+Phi::Properties::Resources::Resources	Properties\Resources.Designer.cs	1462	        internal Resources() {
+Reflection	Properties\AssemblyInfo.cs	13	using System.Reflection;
+Resources	Properties\AssemblyInfo.cs	38	using System.Resources;
+CompilerServices	Properties\AssemblyInfo.cs	70	using System.Runtime.CompilerServices;
+InteropServices	Properties\AssemblyInfo.cs	109	using System.Runtime.InteropServices;
+Windows	Properties\AssemblyInfo.cs	139	using System.Windows;
+None	Properties\AssemblyInfo.cs	1428	    ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
+System	obj\Debug\ui\PieControl.g.i.cs	526	using System;
+Diagnostics	obj\Debug\ui\PieControl.g.i.cs	547	using System.Diagnostics;
+Windows	obj\Debug\ui\PieControl.g.i.cs	573	using System.Windows;
+Automation	obj\Debug\ui\PieControl.g.i.cs	603	using System.Windows.Automation;
+Controls	obj\Debug\ui\PieControl.g.i.cs	636	using System.Windows.Controls;
+Primitives	obj\Debug\ui\PieControl.g.i.cs	676	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\PieControl.g.i.cs	709	using System.Windows.Data;
+Documents	obj\Debug\ui\PieControl.g.i.cs	736	using System.Windows.Documents;
+Ink	obj\Debug\ui\PieControl.g.i.cs	768	using System.Windows.Ink;
+Input	obj\Debug\ui\PieControl.g.i.cs	794	using System.Windows.Input;
+Markup	obj\Debug\ui\PieControl.g.i.cs	822	using System.Windows.Markup;
+Media	obj\Debug\ui\PieControl.g.i.cs	851	using System.Windows.Media;
+Animation	obj\Debug\ui\PieControl.g.i.cs	885	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\PieControl.g.i.cs	923	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\PieControl.g.i.cs	959	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\PieControl.g.i.cs	995	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\PieControl.g.i.cs	1031	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\PieControl.g.i.cs	1068	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\PieControl.g.i.cs	1101	using System.Windows.Shapes;
+Shell	obj\Debug\ui\PieControl.g.i.cs	1130	using System.Windows.Shell;
+Phi	obj\Debug\ui\PieControl.g.i.cs	1149	namespace Phi {
+Phi::PieControl	obj\Debug\ui\PieControl.g.i.cs	1246	    public partial class PieControl : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::PieControl::PieCtrl	obj\Debug\ui\PieControl.g.i.cs	1563	        internal Phi.PieControl PieCtrl;
+Phi::PieControl::titleName	obj\Debug\ui\PieControl.g.i.cs	1865	        internal System.Windows.Controls.TextBox titleName;
+Phi::PieControl::canvasName	obj\Debug\ui\PieControl.g.i.cs	2168	        internal System.Windows.Controls.Canvas canvasName;
+Phi::PieControl::arcName	obj\Debug\ui\PieControl.g.i.cs	2473	        internal System.Windows.Media.ArcSegment arcName;
+Phi::PieControl::valueName	obj\Debug\ui\PieControl.g.i.cs	2773	        internal System.Windows.Controls.Label valueName;
+Phi::PieControl::_contentLoaded	obj\Debug\ui\PieControl.g.i.cs	2866	        private bool _contentLoaded;
+Phi::PieControl::InitializeComponent	obj\Debug\ui\PieControl.g.i.cs	3142	        public void InitializeComponent() {
+Phi::PieControl::Connect	obj\Debug\ui\PieControl.g.i.cs	4329	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\ui\PieControl.g.cs	526	using System;
+Diagnostics	obj\Debug\ui\PieControl.g.cs	547	using System.Diagnostics;
+Windows	obj\Debug\ui\PieControl.g.cs	573	using System.Windows;
+Automation	obj\Debug\ui\PieControl.g.cs	603	using System.Windows.Automation;
+Controls	obj\Debug\ui\PieControl.g.cs	636	using System.Windows.Controls;
+Primitives	obj\Debug\ui\PieControl.g.cs	676	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\PieControl.g.cs	709	using System.Windows.Data;
+Documents	obj\Debug\ui\PieControl.g.cs	736	using System.Windows.Documents;
+Ink	obj\Debug\ui\PieControl.g.cs	768	using System.Windows.Ink;
+Input	obj\Debug\ui\PieControl.g.cs	794	using System.Windows.Input;
+Markup	obj\Debug\ui\PieControl.g.cs	822	using System.Windows.Markup;
+Media	obj\Debug\ui\PieControl.g.cs	851	using System.Windows.Media;
+Animation	obj\Debug\ui\PieControl.g.cs	885	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\PieControl.g.cs	923	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\PieControl.g.cs	959	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\PieControl.g.cs	995	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\PieControl.g.cs	1031	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\PieControl.g.cs	1068	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\PieControl.g.cs	1101	using System.Windows.Shapes;
+Shell	obj\Debug\ui\PieControl.g.cs	1130	using System.Windows.Shell;
+Phi	obj\Debug\ui\PieControl.g.cs	1149	namespace Phi {
+Phi::PieControl	obj\Debug\ui\PieControl.g.cs	1246	    public partial class PieControl : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::PieControl::PieCtrl	obj\Debug\ui\PieControl.g.cs	1563	        internal Phi.PieControl PieCtrl;
+Phi::PieControl::titleName	obj\Debug\ui\PieControl.g.cs	1865	        internal System.Windows.Controls.TextBox titleName;
+Phi::PieControl::canvasName	obj\Debug\ui\PieControl.g.cs	2168	        internal System.Windows.Controls.Canvas canvasName;
+Phi::PieControl::arcName	obj\Debug\ui\PieControl.g.cs	2473	        internal System.Windows.Media.ArcSegment arcName;
+Phi::PieControl::valueName	obj\Debug\ui\PieControl.g.cs	2773	        internal System.Windows.Controls.Label valueName;
+Phi::PieControl::_contentLoaded	obj\Debug\ui\PieControl.g.cs	2866	        private bool _contentLoaded;
+Phi::PieControl::InitializeComponent	obj\Debug\ui\PieControl.g.cs	3142	        public void InitializeComponent() {
+Phi::PieControl::Connect	obj\Debug\ui\PieControl.g.cs	4329	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\ui\NeuronBox.g.i.cs	525	using System;
+Diagnostics	obj\Debug\ui\NeuronBox.g.i.cs	546	using System.Diagnostics;
+Windows	obj\Debug\ui\NeuronBox.g.i.cs	572	using System.Windows;
+Automation	obj\Debug\ui\NeuronBox.g.i.cs	602	using System.Windows.Automation;
+Controls	obj\Debug\ui\NeuronBox.g.i.cs	635	using System.Windows.Controls;
+Primitives	obj\Debug\ui\NeuronBox.g.i.cs	675	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\NeuronBox.g.i.cs	708	using System.Windows.Data;
+Documents	obj\Debug\ui\NeuronBox.g.i.cs	735	using System.Windows.Documents;
+Ink	obj\Debug\ui\NeuronBox.g.i.cs	767	using System.Windows.Ink;
+Input	obj\Debug\ui\NeuronBox.g.i.cs	793	using System.Windows.Input;
+Markup	obj\Debug\ui\NeuronBox.g.i.cs	821	using System.Windows.Markup;
+Media	obj\Debug\ui\NeuronBox.g.i.cs	850	using System.Windows.Media;
+Animation	obj\Debug\ui\NeuronBox.g.i.cs	884	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\NeuronBox.g.i.cs	922	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\NeuronBox.g.i.cs	958	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\NeuronBox.g.i.cs	994	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\NeuronBox.g.i.cs	1030	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\NeuronBox.g.i.cs	1067	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\NeuronBox.g.i.cs	1100	using System.Windows.Shapes;
+Shell	obj\Debug\ui\NeuronBox.g.i.cs	1129	using System.Windows.Shell;
+Phi	obj\Debug\ui\NeuronBox.g.i.cs	1148	namespace Phi {
+Phi::NeuronBox	obj\Debug\ui\NeuronBox.g.i.cs	1244	    public partial class NeuronBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::NeuronBox::ctrlCanvas	obj\Debug\ui\NeuronBox.g.i.cs	1576	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi::NeuronBox::ellipse	obj\Debug\ui\NeuronBox.g.i.cs	1878	        internal System.Windows.Shapes.Ellipse ellipse;
+Phi::NeuronBox::_contentLoaded	obj\Debug\ui\NeuronBox.g.i.cs	1969	        private bool _contentLoaded;
+Phi::NeuronBox::InitializeComponent	obj\Debug\ui\NeuronBox.g.i.cs	2245	        public void InitializeComponent() {
+Phi::NeuronBox::Connect	obj\Debug\ui\NeuronBox.g.i.cs	3430	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\ui\NeuronBox.g.cs	525	using System;
+Diagnostics	obj\Debug\ui\NeuronBox.g.cs	546	using System.Diagnostics;
+Windows	obj\Debug\ui\NeuronBox.g.cs	572	using System.Windows;
+Automation	obj\Debug\ui\NeuronBox.g.cs	602	using System.Windows.Automation;
+Controls	obj\Debug\ui\NeuronBox.g.cs	635	using System.Windows.Controls;
+Primitives	obj\Debug\ui\NeuronBox.g.cs	675	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\NeuronBox.g.cs	708	using System.Windows.Data;
+Documents	obj\Debug\ui\NeuronBox.g.cs	735	using System.Windows.Documents;
+Ink	obj\Debug\ui\NeuronBox.g.cs	767	using System.Windows.Ink;
+Input	obj\Debug\ui\NeuronBox.g.cs	793	using System.Windows.Input;
+Markup	obj\Debug\ui\NeuronBox.g.cs	821	using System.Windows.Markup;
+Media	obj\Debug\ui\NeuronBox.g.cs	850	using System.Windows.Media;
+Animation	obj\Debug\ui\NeuronBox.g.cs	884	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\NeuronBox.g.cs	922	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\NeuronBox.g.cs	958	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\NeuronBox.g.cs	994	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\NeuronBox.g.cs	1030	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\NeuronBox.g.cs	1067	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\NeuronBox.g.cs	1100	using System.Windows.Shapes;
+Shell	obj\Debug\ui\NeuronBox.g.cs	1129	using System.Windows.Shell;
+Phi	obj\Debug\ui\NeuronBox.g.cs	1148	namespace Phi {
+Phi::NeuronBox	obj\Debug\ui\NeuronBox.g.cs	1244	    public partial class NeuronBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::NeuronBox::ctrlCanvas	obj\Debug\ui\NeuronBox.g.cs	1576	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi::NeuronBox::ellipse	obj\Debug\ui\NeuronBox.g.cs	1878	        internal System.Windows.Shapes.Ellipse ellipse;
+Phi::NeuronBox::_contentLoaded	obj\Debug\ui\NeuronBox.g.cs	1969	        private bool _contentLoaded;
+Phi::NeuronBox::InitializeComponent	obj\Debug\ui\NeuronBox.g.cs	2245	        public void InitializeComponent() {
+Phi::NeuronBox::Connect	obj\Debug\ui\NeuronBox.g.cs	3430	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi	obj\Debug\ui\MainWindow.g.i.cs	526	using Phi;
+System	obj\Debug\ui\MainWindow.g.i.cs	537	using System;
+Diagnostics	obj\Debug\ui\MainWindow.g.i.cs	558	using System.Diagnostics;
+Windows	obj\Debug\ui\MainWindow.g.i.cs	584	using System.Windows;
+Automation	obj\Debug\ui\MainWindow.g.i.cs	614	using System.Windows.Automation;
+Controls	obj\Debug\ui\MainWindow.g.i.cs	647	using System.Windows.Controls;
+Primitives	obj\Debug\ui\MainWindow.g.i.cs	687	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\MainWindow.g.i.cs	720	using System.Windows.Data;
+Documents	obj\Debug\ui\MainWindow.g.i.cs	747	using System.Windows.Documents;
+Ink	obj\Debug\ui\MainWindow.g.i.cs	779	using System.Windows.Ink;
+Input	obj\Debug\ui\MainWindow.g.i.cs	805	using System.Windows.Input;
+Markup	obj\Debug\ui\MainWindow.g.i.cs	833	using System.Windows.Markup;
+Media	obj\Debug\ui\MainWindow.g.i.cs	862	using System.Windows.Media;
+Animation	obj\Debug\ui\MainWindow.g.i.cs	896	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\MainWindow.g.i.cs	934	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\MainWindow.g.i.cs	970	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\MainWindow.g.i.cs	1006	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\MainWindow.g.i.cs	1042	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\MainWindow.g.i.cs	1079	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\MainWindow.g.i.cs	1112	using System.Windows.Shapes;
+Shell	obj\Debug\ui\MainWindow.g.i.cs	1141	using System.Windows.Shell;
+Phi	obj\Debug\ui\MainWindow.g.i.cs	1160	namespace Phi {
+Phi::MainWindow	obj\Debug\ui\MainWindow.g.i.cs	1257	    public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector {
+Phi::MainWindow::RootPanel	obj\Debug\ui\MainWindow.g.i.cs	1580	        internal System.Windows.Controls.DockPanel RootPanel;
+Phi::MainWindow::TitlePanel	obj\Debug\ui\MainWindow.g.i.cs	1886	        internal System.Windows.Controls.DockPanel TitlePanel;
+Phi::MainWindow::image	obj\Debug\ui\MainWindow.g.i.cs	2189	        internal System.Windows.Controls.Image image;
+Phi::MainWindow::LinkFrameRateText	obj\Debug\ui\MainWindow.g.i.cs	2489	        internal System.Windows.Controls.TextBox LinkFrameRateText;
+Phi::MainWindow::AvgIdleLabel	obj\Debug\ui\MainWindow.g.i.cs	2801	        internal System.Windows.Controls.TextBox AvgIdleLabel;
+Phi::MainWindow::AvgIdleText	obj\Debug\ui\MainWindow.g.i.cs	3108	        internal System.Windows.Controls.TextBox AvgIdleText;
+Phi::MainWindow::LinkStatusLabel_Copy	obj\Debug\ui\MainWindow.g.i.cs	3414	        internal System.Windows.Controls.TextBox LinkStatusLabel_Copy;
+Phi::MainWindow::LinkStatusLabel	obj\Debug\ui\MainWindow.g.i.cs	3729	        internal System.Windows.Controls.TextBox LinkStatusLabel;
+Phi::MainWindow::LinkStatusText	obj\Debug\ui\MainWindow.g.i.cs	4039	        internal System.Windows.Controls.TextBox LinkStatusText;
+Phi::MainWindow::ctlNumLoops	obj\Debug\ui\MainWindow.g.i.cs	4349	        internal System.Windows.Controls.TextBox ctlNumLoops;
+Phi::MainWindow::ctlPacketId	obj\Debug\ui\MainWindow.g.i.cs	4656	        internal System.Windows.Controls.TextBox ctlPacketId;
+Phi::MainWindow::Phi_Camera	obj\Debug\ui\MainWindow.g.i.cs	4962	        internal System.Windows.Controls.Canvas Phi_Camera;
+Phi::MainWindow::BtnResetGyro	obj\Debug\ui\MainWindow.g.i.cs	5267	        internal System.Windows.Controls.Button BtnResetGyro;
+Phi::MainWindow::PieCtrl_Roll	obj\Debug\ui\MainWindow.g.i.cs	5558	        internal Phi.PieControl PieCtrl_Roll;
+Phi::MainWindow::PieCtrl_Pitch	obj\Debug\ui\MainWindow.g.i.cs	5849	        internal Phi.PieControl PieCtrl_Pitch;
+Phi::MainWindow::PieCtrl_Yaw	obj\Debug\ui\MainWindow.g.i.cs	6141	        internal Phi.PieControl PieCtrl_Yaw;
+Phi::MainWindow::LegGrid	obj\Debug\ui\MainWindow.g.i.cs	6445	        internal System.Windows.Controls.Grid LegGrid;
+Phi::MainWindow::LF_Leg	obj\Debug\ui\MainWindow.g.i.cs	6727	        internal Phi.LegBox LF_Leg;
+Phi::MainWindow::RF_Leg	obj\Debug\ui\MainWindow.g.i.cs	7008	        internal Phi.LegBox RF_Leg;
+Phi::MainWindow::LB_Leg	obj\Debug\ui\MainWindow.g.i.cs	7289	        internal Phi.LegBox LB_Leg;
+Phi::MainWindow::RB_Leg	obj\Debug\ui\MainWindow.g.i.cs	7570	        internal Phi.LegBox RB_Leg;
+Phi::MainWindow::_contentLoaded	obj\Debug\ui\MainWindow.g.i.cs	7660	        private bool _contentLoaded;
+Phi::MainWindow::InitializeComponent	obj\Debug\ui\MainWindow.g.i.cs	7936	        public void InitializeComponent() {
+Phi::MainWindow::_CreateDelegate	obj\Debug\ui\MainWindow.g.i.cs	8723	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi::MainWindow::Connect	obj\Debug\ui\MainWindow.g.i.cs	9596	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi	obj\Debug\ui\LegBox.g.i.cs	522	using Phi;
+System	obj\Debug\ui\LegBox.g.i.cs	533	using System;
+Diagnostics	obj\Debug\ui\LegBox.g.i.cs	554	using System.Diagnostics;
+Windows	obj\Debug\ui\LegBox.g.i.cs	580	using System.Windows;
+Automation	obj\Debug\ui\LegBox.g.i.cs	610	using System.Windows.Automation;
+Controls	obj\Debug\ui\LegBox.g.i.cs	643	using System.Windows.Controls;
+Primitives	obj\Debug\ui\LegBox.g.i.cs	683	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\LegBox.g.i.cs	716	using System.Windows.Data;
+Documents	obj\Debug\ui\LegBox.g.i.cs	743	using System.Windows.Documents;
+Ink	obj\Debug\ui\LegBox.g.i.cs	775	using System.Windows.Ink;
+Input	obj\Debug\ui\LegBox.g.i.cs	801	using System.Windows.Input;
+Markup	obj\Debug\ui\LegBox.g.i.cs	829	using System.Windows.Markup;
+Media	obj\Debug\ui\LegBox.g.i.cs	858	using System.Windows.Media;
+Animation	obj\Debug\ui\LegBox.g.i.cs	892	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\LegBox.g.i.cs	930	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\LegBox.g.i.cs	966	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\LegBox.g.i.cs	1002	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\LegBox.g.i.cs	1038	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\LegBox.g.i.cs	1075	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\LegBox.g.i.cs	1108	using System.Windows.Shapes;
+Shell	obj\Debug\ui\LegBox.g.i.cs	1137	using System.Windows.Shell;
+Phi	obj\Debug\ui\LegBox.g.i.cs	1156	namespace Phi {
+Phi::LegBox	obj\Debug\ui\LegBox.g.i.cs	1249	    public partial class LegBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::LegBox::legLabel	obj\Debug\ui\LegBox.g.i.cs	1574	        internal System.Windows.Controls.Label legLabel;
+Phi::LegBox::hipJoint	obj\Debug\ui\LegBox.g.i.cs	1854	        internal Phi.JointBox hipJoint;
+Phi::LegBox::thighJoint	obj\Debug\ui\LegBox.g.i.cs	2134	        internal Phi.JointBox thighJoint;
+Phi::LegBox::kneeJoint	obj\Debug\ui\LegBox.g.i.cs	2416	        internal Phi.JointBox kneeJoint;
+Phi::LegBox::_contentLoaded	obj\Debug\ui\LegBox.g.i.cs	2509	        private bool _contentLoaded;
+Phi::LegBox::InitializeComponent	obj\Debug\ui\LegBox.g.i.cs	2785	        public void InitializeComponent() {
+Phi::LegBox::_CreateDelegate	obj\Debug\ui\LegBox.g.i.cs	3564	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi::LegBox::Connect	obj\Debug\ui\LegBox.g.i.cs	4437	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi	obj\Debug\ui\LegBox.g.cs	522	using Phi;
+System	obj\Debug\ui\LegBox.g.cs	533	using System;
+Diagnostics	obj\Debug\ui\LegBox.g.cs	554	using System.Diagnostics;
+Windows	obj\Debug\ui\LegBox.g.cs	580	using System.Windows;
+Automation	obj\Debug\ui\LegBox.g.cs	610	using System.Windows.Automation;
+Controls	obj\Debug\ui\LegBox.g.cs	643	using System.Windows.Controls;
+Primitives	obj\Debug\ui\LegBox.g.cs	683	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\LegBox.g.cs	716	using System.Windows.Data;
+Documents	obj\Debug\ui\LegBox.g.cs	743	using System.Windows.Documents;
+Ink	obj\Debug\ui\LegBox.g.cs	775	using System.Windows.Ink;
+Input	obj\Debug\ui\LegBox.g.cs	801	using System.Windows.Input;
+Markup	obj\Debug\ui\LegBox.g.cs	829	using System.Windows.Markup;
+Media	obj\Debug\ui\LegBox.g.cs	858	using System.Windows.Media;
+Animation	obj\Debug\ui\LegBox.g.cs	892	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\LegBox.g.cs	930	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\LegBox.g.cs	966	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\LegBox.g.cs	1002	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\LegBox.g.cs	1038	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\LegBox.g.cs	1075	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\LegBox.g.cs	1108	using System.Windows.Shapes;
+Shell	obj\Debug\ui\LegBox.g.cs	1137	using System.Windows.Shell;
+Phi	obj\Debug\ui\LegBox.g.cs	1156	namespace Phi {
+Phi::LegBox	obj\Debug\ui\LegBox.g.cs	1249	    public partial class LegBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::LegBox::legLabel	obj\Debug\ui\LegBox.g.cs	1574	        internal System.Windows.Controls.Label legLabel;
+Phi::LegBox::hipJoint	obj\Debug\ui\LegBox.g.cs	1854	        internal Phi.JointBox hipJoint;
+Phi::LegBox::thighJoint	obj\Debug\ui\LegBox.g.cs	2134	        internal Phi.JointBox thighJoint;
+Phi::LegBox::kneeJoint	obj\Debug\ui\LegBox.g.cs	2416	        internal Phi.JointBox kneeJoint;
+Phi::LegBox::_contentLoaded	obj\Debug\ui\LegBox.g.cs	2509	        private bool _contentLoaded;
+Phi::LegBox::InitializeComponent	obj\Debug\ui\LegBox.g.cs	2785	        public void InitializeComponent() {
+Phi::LegBox::_CreateDelegate	obj\Debug\ui\LegBox.g.cs	3564	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi::LegBox::Connect	obj\Debug\ui\LegBox.g.cs	4437	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi	obj\Debug\ui\JointBox.g.i.cs	524	using Phi;
+System	obj\Debug\ui\JointBox.g.i.cs	535	using System;
+Diagnostics	obj\Debug\ui\JointBox.g.i.cs	556	using System.Diagnostics;
+Windows	obj\Debug\ui\JointBox.g.i.cs	582	using System.Windows;
+Automation	obj\Debug\ui\JointBox.g.i.cs	612	using System.Windows.Automation;
+Controls	obj\Debug\ui\JointBox.g.i.cs	645	using System.Windows.Controls;
+Primitives	obj\Debug\ui\JointBox.g.i.cs	685	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\JointBox.g.i.cs	718	using System.Windows.Data;
+Documents	obj\Debug\ui\JointBox.g.i.cs	745	using System.Windows.Documents;
+Ink	obj\Debug\ui\JointBox.g.i.cs	777	using System.Windows.Ink;
+Input	obj\Debug\ui\JointBox.g.i.cs	803	using System.Windows.Input;
+Markup	obj\Debug\ui\JointBox.g.i.cs	831	using System.Windows.Markup;
+Media	obj\Debug\ui\JointBox.g.i.cs	860	using System.Windows.Media;
+Animation	obj\Debug\ui\JointBox.g.i.cs	894	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\JointBox.g.i.cs	932	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\JointBox.g.i.cs	968	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\JointBox.g.i.cs	1004	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\JointBox.g.i.cs	1040	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\JointBox.g.i.cs	1077	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\JointBox.g.i.cs	1110	using System.Windows.Shapes;
+Shell	obj\Debug\ui\JointBox.g.i.cs	1139	using System.Windows.Shell;
+Phi	obj\Debug\ui\JointBox.g.i.cs	1158	namespace Phi {
+Phi::JointBox	obj\Debug\ui\JointBox.g.i.cs	1253	    public partial class JointBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::JointBox::label	obj\Debug\ui\JointBox.g.i.cs	1582	        internal System.Windows.Controls.Label label;
+Phi::JointBox::motorBox	obj\Debug\ui\JointBox.g.i.cs	1862	        internal Phi.NeuronBox motorBox;
+Phi::JointBox::barBox	obj\Debug\ui\JointBox.g.i.cs	2142	        internal Phi.BarBox barBox;
+Phi::JointBox::_contentLoaded	obj\Debug\ui\JointBox.g.i.cs	2232	        private bool _contentLoaded;
+Phi::JointBox::InitializeComponent	obj\Debug\ui\JointBox.g.i.cs	2508	        public void InitializeComponent() {
+Phi::JointBox::_CreateDelegate	obj\Debug\ui\JointBox.g.i.cs	3291	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi::JointBox::Connect	obj\Debug\ui\JointBox.g.i.cs	4164	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi	obj\Debug\ui\JointBox.g.cs	524	using Phi;
+System	obj\Debug\ui\JointBox.g.cs	535	using System;
+Diagnostics	obj\Debug\ui\JointBox.g.cs	556	using System.Diagnostics;
+Windows	obj\Debug\ui\JointBox.g.cs	582	using System.Windows;
+Automation	obj\Debug\ui\JointBox.g.cs	612	using System.Windows.Automation;
+Controls	obj\Debug\ui\JointBox.g.cs	645	using System.Windows.Controls;
+Primitives	obj\Debug\ui\JointBox.g.cs	685	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\JointBox.g.cs	718	using System.Windows.Data;
+Documents	obj\Debug\ui\JointBox.g.cs	745	using System.Windows.Documents;
+Ink	obj\Debug\ui\JointBox.g.cs	777	using System.Windows.Ink;
+Input	obj\Debug\ui\JointBox.g.cs	803	using System.Windows.Input;
+Markup	obj\Debug\ui\JointBox.g.cs	831	using System.Windows.Markup;
+Media	obj\Debug\ui\JointBox.g.cs	860	using System.Windows.Media;
+Animation	obj\Debug\ui\JointBox.g.cs	894	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\JointBox.g.cs	932	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\JointBox.g.cs	968	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\JointBox.g.cs	1004	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\JointBox.g.cs	1040	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\JointBox.g.cs	1077	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\JointBox.g.cs	1110	using System.Windows.Shapes;
+Shell	obj\Debug\ui\JointBox.g.cs	1139	using System.Windows.Shell;
+Phi	obj\Debug\ui\JointBox.g.cs	1158	namespace Phi {
+Phi::JointBox	obj\Debug\ui\JointBox.g.cs	1253	    public partial class JointBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::JointBox::label	obj\Debug\ui\JointBox.g.cs	1582	        internal System.Windows.Controls.Label label;
+Phi::JointBox::motorBox	obj\Debug\ui\JointBox.g.cs	1862	        internal Phi.NeuronBox motorBox;
+Phi::JointBox::barBox	obj\Debug\ui\JointBox.g.cs	2142	        internal Phi.BarBox barBox;
+Phi::JointBox::_contentLoaded	obj\Debug\ui\JointBox.g.cs	2232	        private bool _contentLoaded;
+Phi::JointBox::InitializeComponent	obj\Debug\ui\JointBox.g.cs	2508	        public void InitializeComponent() {
+Phi::JointBox::_CreateDelegate	obj\Debug\ui\JointBox.g.cs	3291	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi::JointBox::Connect	obj\Debug\ui\JointBox.g.cs	4164	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\ui\BarBox.g.i.cs	522	using System;
+Diagnostics	obj\Debug\ui\BarBox.g.i.cs	543	using System.Diagnostics;
+Windows	obj\Debug\ui\BarBox.g.i.cs	569	using System.Windows;
+Automation	obj\Debug\ui\BarBox.g.i.cs	599	using System.Windows.Automation;
+Controls	obj\Debug\ui\BarBox.g.i.cs	632	using System.Windows.Controls;
+Primitives	obj\Debug\ui\BarBox.g.i.cs	672	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\BarBox.g.i.cs	705	using System.Windows.Data;
+Documents	obj\Debug\ui\BarBox.g.i.cs	732	using System.Windows.Documents;
+Ink	obj\Debug\ui\BarBox.g.i.cs	764	using System.Windows.Ink;
+Input	obj\Debug\ui\BarBox.g.i.cs	790	using System.Windows.Input;
+Markup	obj\Debug\ui\BarBox.g.i.cs	818	using System.Windows.Markup;
+Media	obj\Debug\ui\BarBox.g.i.cs	847	using System.Windows.Media;
+Animation	obj\Debug\ui\BarBox.g.i.cs	881	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\BarBox.g.i.cs	919	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\BarBox.g.i.cs	955	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\BarBox.g.i.cs	991	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\BarBox.g.i.cs	1027	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\BarBox.g.i.cs	1064	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\BarBox.g.i.cs	1097	using System.Windows.Shapes;
+Shell	obj\Debug\ui\BarBox.g.i.cs	1126	using System.Windows.Shell;
+Phi	obj\Debug\ui\BarBox.g.i.cs	1145	namespace Phi {
+Phi::BarBox	obj\Debug\ui\BarBox.g.i.cs	1238	    public partial class BarBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::BarBox::ctrlCanvas	obj\Debug\ui\BarBox.g.i.cs	1564	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi::BarBox::bar	obj\Debug\ui\BarBox.g.i.cs	1865	        internal System.Windows.Shapes.Rectangle bar;
+Phi::BarBox::_contentLoaded	obj\Debug\ui\BarBox.g.i.cs	1952	        private bool _contentLoaded;
+Phi::BarBox::InitializeComponent	obj\Debug\ui\BarBox.g.i.cs	2228	        public void InitializeComponent() {
+Phi::BarBox::Connect	obj\Debug\ui\BarBox.g.i.cs	3407	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\ui\BarBox.g.cs	522	using System;
+Diagnostics	obj\Debug\ui\BarBox.g.cs	543	using System.Diagnostics;
+Windows	obj\Debug\ui\BarBox.g.cs	569	using System.Windows;
+Automation	obj\Debug\ui\BarBox.g.cs	599	using System.Windows.Automation;
+Controls	obj\Debug\ui\BarBox.g.cs	632	using System.Windows.Controls;
+Primitives	obj\Debug\ui\BarBox.g.cs	672	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\BarBox.g.cs	705	using System.Windows.Data;
+Documents	obj\Debug\ui\BarBox.g.cs	732	using System.Windows.Documents;
+Ink	obj\Debug\ui\BarBox.g.cs	764	using System.Windows.Ink;
+Input	obj\Debug\ui\BarBox.g.cs	790	using System.Windows.Input;
+Markup	obj\Debug\ui\BarBox.g.cs	818	using System.Windows.Markup;
+Media	obj\Debug\ui\BarBox.g.cs	847	using System.Windows.Media;
+Animation	obj\Debug\ui\BarBox.g.cs	881	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\BarBox.g.cs	919	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\BarBox.g.cs	955	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\BarBox.g.cs	991	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\BarBox.g.cs	1027	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\BarBox.g.cs	1064	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\BarBox.g.cs	1097	using System.Windows.Shapes;
+Shell	obj\Debug\ui\BarBox.g.cs	1126	using System.Windows.Shell;
+Phi	obj\Debug\ui\BarBox.g.cs	1145	namespace Phi {
+Phi::BarBox	obj\Debug\ui\BarBox.g.cs	1238	    public partial class BarBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi::BarBox::ctrlCanvas	obj\Debug\ui\BarBox.g.cs	1564	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi::BarBox::bar	obj\Debug\ui\BarBox.g.cs	1865	        internal System.Windows.Shapes.Rectangle bar;
+Phi::BarBox::_contentLoaded	obj\Debug\ui\BarBox.g.cs	1952	        private bool _contentLoaded;
+Phi::BarBox::InitializeComponent	obj\Debug\ui\BarBox.g.cs	2228	        public void InitializeComponent() {
+Phi::BarBox::Connect	obj\Debug\ui\BarBox.g.cs	3407	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\ui\App.g.i.cs	519	using System;
+Diagnostics	obj\Debug\ui\App.g.i.cs	540	using System.Diagnostics;
+Windows	obj\Debug\ui\App.g.i.cs	566	using System.Windows;
+Automation	obj\Debug\ui\App.g.i.cs	596	using System.Windows.Automation;
+Controls	obj\Debug\ui\App.g.i.cs	629	using System.Windows.Controls;
+Primitives	obj\Debug\ui\App.g.i.cs	669	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\App.g.i.cs	702	using System.Windows.Data;
+Documents	obj\Debug\ui\App.g.i.cs	729	using System.Windows.Documents;
+Ink	obj\Debug\ui\App.g.i.cs	761	using System.Windows.Ink;
+Input	obj\Debug\ui\App.g.i.cs	787	using System.Windows.Input;
+Markup	obj\Debug\ui\App.g.i.cs	815	using System.Windows.Markup;
+Media	obj\Debug\ui\App.g.i.cs	844	using System.Windows.Media;
+Animation	obj\Debug\ui\App.g.i.cs	878	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\App.g.i.cs	916	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\App.g.i.cs	952	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\App.g.i.cs	988	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\App.g.i.cs	1024	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\App.g.i.cs	1061	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\App.g.i.cs	1094	using System.Windows.Shapes;
+Shell	obj\Debug\ui\App.g.i.cs	1123	using System.Windows.Shell;
+Phi	obj\Debug\ui\App.g.i.cs	1142	namespace Phi {
+Phi::App	obj\Debug\ui\App.g.i.cs	1232	    public partial class App : System.Windows.Application {
+Phi::App::InitializeComponent	obj\Debug\ui\App.g.i.cs	1527	        public void InitializeComponent() {
+Phi::App::Main	obj\Debug\ui\App.g.i.cs	2081	        public static void Main() {
+System	obj\Debug\ui\App.g.cs	519	using System;
+Diagnostics	obj\Debug\ui\App.g.cs	540	using System.Diagnostics;
+Windows	obj\Debug\ui\App.g.cs	566	using System.Windows;
+Automation	obj\Debug\ui\App.g.cs	596	using System.Windows.Automation;
+Controls	obj\Debug\ui\App.g.cs	629	using System.Windows.Controls;
+Primitives	obj\Debug\ui\App.g.cs	669	using System.Windows.Controls.Primitives;
+Data	obj\Debug\ui\App.g.cs	702	using System.Windows.Data;
+Documents	obj\Debug\ui\App.g.cs	729	using System.Windows.Documents;
+Ink	obj\Debug\ui\App.g.cs	761	using System.Windows.Ink;
+Input	obj\Debug\ui\App.g.cs	787	using System.Windows.Input;
+Markup	obj\Debug\ui\App.g.cs	815	using System.Windows.Markup;
+Media	obj\Debug\ui\App.g.cs	844	using System.Windows.Media;
+Animation	obj\Debug\ui\App.g.cs	878	using System.Windows.Media.Animation;
+Effects	obj\Debug\ui\App.g.cs	916	using System.Windows.Media.Effects;
+Imaging	obj\Debug\ui\App.g.cs	952	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\ui\App.g.cs	988	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\ui\App.g.cs	1024	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\ui\App.g.cs	1061	using System.Windows.Navigation;
+Shapes	obj\Debug\ui\App.g.cs	1094	using System.Windows.Shapes;
+Shell	obj\Debug\ui\App.g.cs	1123	using System.Windows.Shell;
+Phi	obj\Debug\ui\App.g.cs	1142	namespace Phi {
+Phi::App	obj\Debug\ui\App.g.cs	1232	    public partial class App : System.Windows.Application {
+Phi::App::InitializeComponent	obj\Debug\ui\App.g.cs	1527	        public void InitializeComponent() {
+Phi::App::Main	obj\Debug\ui\App.g.cs	2081	        public static void Main() {
+System	obj\Debug\Phi\PieControl.g.i.cs	527	using System;
+Diagnostics	obj\Debug\Phi\PieControl.g.i.cs	548	using System.Diagnostics;
+Windows	obj\Debug\Phi\PieControl.g.i.cs	574	using System.Windows;
+Automation	obj\Debug\Phi\PieControl.g.i.cs	604	using System.Windows.Automation;
+Controls	obj\Debug\Phi\PieControl.g.i.cs	637	using System.Windows.Controls;
+Primitives	obj\Debug\Phi\PieControl.g.i.cs	677	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Phi\PieControl.g.i.cs	710	using System.Windows.Data;
+Documents	obj\Debug\Phi\PieControl.g.i.cs	737	using System.Windows.Documents;
+Ink	obj\Debug\Phi\PieControl.g.i.cs	769	using System.Windows.Ink;
+Input	obj\Debug\Phi\PieControl.g.i.cs	795	using System.Windows.Input;
+Markup	obj\Debug\Phi\PieControl.g.i.cs	823	using System.Windows.Markup;
+Media	obj\Debug\Phi\PieControl.g.i.cs	852	using System.Windows.Media;
+Animation	obj\Debug\Phi\PieControl.g.i.cs	886	using System.Windows.Media.Animation;
+Effects	obj\Debug\Phi\PieControl.g.i.cs	924	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Phi\PieControl.g.i.cs	960	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Phi\PieControl.g.i.cs	996	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Phi\PieControl.g.i.cs	1032	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Phi\PieControl.g.i.cs	1069	using System.Windows.Navigation;
+Shapes	obj\Debug\Phi\PieControl.g.i.cs	1102	using System.Windows.Shapes;
+Shell	obj\Debug\Phi\PieControl.g.i.cs	1131	using System.Windows.Shell;
+Phi_Core	obj\Debug\Phi\PieControl.g.i.cs	1150	namespace Phi_Core {
+Phi_Core::PieControl	obj\Debug\Phi\PieControl.g.i.cs	1252	    public partial class PieControl : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::PieControl::PieCtrl	obj\Debug\Phi\PieControl.g.i.cs	1575	        internal Phi_Core.PieControl PieCtrl;
+Phi_Core::PieControl::titleName	obj\Debug\Phi\PieControl.g.i.cs	1878	        internal System.Windows.Controls.TextBox titleName;
+Phi_Core::PieControl::canvasName	obj\Debug\Phi\PieControl.g.i.cs	2182	        internal System.Windows.Controls.Canvas canvasName;
+Phi_Core::PieControl::arcName	obj\Debug\Phi\PieControl.g.i.cs	2488	        internal System.Windows.Media.ArcSegment arcName;
+Phi_Core::PieControl::valueName	obj\Debug\Phi\PieControl.g.i.cs	2789	        internal System.Windows.Controls.Label valueName;
+Phi_Core::PieControl::_contentLoaded	obj\Debug\Phi\PieControl.g.i.cs	2882	        private bool _contentLoaded;
+Phi_Core::PieControl::InitializeComponent	obj\Debug\Phi\PieControl.g.i.cs	3158	        public void InitializeComponent() {
+Phi_Core::PieControl::Connect	obj\Debug\Phi\PieControl.g.i.cs	4352	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\Phi\NeuronBox.g.i.cs	526	using System;
+Diagnostics	obj\Debug\Phi\NeuronBox.g.i.cs	547	using System.Diagnostics;
+Windows	obj\Debug\Phi\NeuronBox.g.i.cs	573	using System.Windows;
+Automation	obj\Debug\Phi\NeuronBox.g.i.cs	603	using System.Windows.Automation;
+Controls	obj\Debug\Phi\NeuronBox.g.i.cs	636	using System.Windows.Controls;
+Primitives	obj\Debug\Phi\NeuronBox.g.i.cs	676	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Phi\NeuronBox.g.i.cs	709	using System.Windows.Data;
+Documents	obj\Debug\Phi\NeuronBox.g.i.cs	736	using System.Windows.Documents;
+Ink	obj\Debug\Phi\NeuronBox.g.i.cs	768	using System.Windows.Ink;
+Input	obj\Debug\Phi\NeuronBox.g.i.cs	794	using System.Windows.Input;
+Markup	obj\Debug\Phi\NeuronBox.g.i.cs	822	using System.Windows.Markup;
+Media	obj\Debug\Phi\NeuronBox.g.i.cs	851	using System.Windows.Media;
+Animation	obj\Debug\Phi\NeuronBox.g.i.cs	885	using System.Windows.Media.Animation;
+Effects	obj\Debug\Phi\NeuronBox.g.i.cs	923	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Phi\NeuronBox.g.i.cs	959	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Phi\NeuronBox.g.i.cs	995	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Phi\NeuronBox.g.i.cs	1031	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Phi\NeuronBox.g.i.cs	1068	using System.Windows.Navigation;
+Shapes	obj\Debug\Phi\NeuronBox.g.i.cs	1101	using System.Windows.Shapes;
+Shell	obj\Debug\Phi\NeuronBox.g.i.cs	1130	using System.Windows.Shell;
+Phi_Core	obj\Debug\Phi\NeuronBox.g.i.cs	1149	namespace Phi_Core {
+Phi_Core::NeuronBox	obj\Debug\Phi\NeuronBox.g.i.cs	1250	    public partial class NeuronBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::NeuronBox::ctrlCanvas	obj\Debug\Phi\NeuronBox.g.i.cs	1583	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi_Core::NeuronBox::ellipse	obj\Debug\Phi\NeuronBox.g.i.cs	1886	        internal System.Windows.Shapes.Ellipse ellipse;
+Phi_Core::NeuronBox::_contentLoaded	obj\Debug\Phi\NeuronBox.g.i.cs	1977	        private bool _contentLoaded;
+Phi_Core::NeuronBox::InitializeComponent	obj\Debug\Phi\NeuronBox.g.i.cs	2253	        public void InitializeComponent() {
+Phi_Core::NeuronBox::Connect	obj\Debug\Phi\NeuronBox.g.i.cs	3445	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\Phi\MainWindow.g.i.cs	527	using Phi_Core;
+System	obj\Debug\Phi\MainWindow.g.i.cs	543	using System;
+Diagnostics	obj\Debug\Phi\MainWindow.g.i.cs	564	using System.Diagnostics;
+Windows	obj\Debug\Phi\MainWindow.g.i.cs	590	using System.Windows;
+Automation	obj\Debug\Phi\MainWindow.g.i.cs	620	using System.Windows.Automation;
+Controls	obj\Debug\Phi\MainWindow.g.i.cs	653	using System.Windows.Controls;
+Primitives	obj\Debug\Phi\MainWindow.g.i.cs	693	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Phi\MainWindow.g.i.cs	726	using System.Windows.Data;
+Documents	obj\Debug\Phi\MainWindow.g.i.cs	753	using System.Windows.Documents;
+Ink	obj\Debug\Phi\MainWindow.g.i.cs	785	using System.Windows.Ink;
+Input	obj\Debug\Phi\MainWindow.g.i.cs	811	using System.Windows.Input;
+Markup	obj\Debug\Phi\MainWindow.g.i.cs	839	using System.Windows.Markup;
+Media	obj\Debug\Phi\MainWindow.g.i.cs	868	using System.Windows.Media;
+Animation	obj\Debug\Phi\MainWindow.g.i.cs	902	using System.Windows.Media.Animation;
+Effects	obj\Debug\Phi\MainWindow.g.i.cs	940	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Phi\MainWindow.g.i.cs	976	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Phi\MainWindow.g.i.cs	1012	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Phi\MainWindow.g.i.cs	1048	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Phi\MainWindow.g.i.cs	1085	using System.Windows.Navigation;
+Shapes	obj\Debug\Phi\MainWindow.g.i.cs	1118	using System.Windows.Shapes;
+Shell	obj\Debug\Phi\MainWindow.g.i.cs	1147	using System.Windows.Shell;
+Phi_Core	obj\Debug\Phi\MainWindow.g.i.cs	1166	namespace Phi_Core {
+Phi_Core::MainWindow	obj\Debug\Phi\MainWindow.g.i.cs	1268	    public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector {
+Phi_Core::MainWindow::RootPanel	obj\Debug\Phi\MainWindow.g.i.cs	1592	        internal System.Windows.Controls.DockPanel RootPanel;
+Phi_Core::MainWindow::TitlePanel	obj\Debug\Phi\MainWindow.g.i.cs	1899	        internal System.Windows.Controls.DockPanel TitlePanel;
+Phi_Core::MainWindow::image	obj\Debug\Phi\MainWindow.g.i.cs	2203	        internal System.Windows.Controls.Image image;
+Phi_Core::MainWindow::LinkFrameRateText	obj\Debug\Phi\MainWindow.g.i.cs	2504	        internal System.Windows.Controls.TextBox LinkFrameRateText;
+Phi_Core::MainWindow::AvgIdleLabel	obj\Debug\Phi\MainWindow.g.i.cs	2817	        internal System.Windows.Controls.TextBox AvgIdleLabel;
+Phi_Core::MainWindow::AvgIdleText	obj\Debug\Phi\MainWindow.g.i.cs	3125	        internal System.Windows.Controls.TextBox AvgIdleText;
+Phi_Core::MainWindow::LinkStatusLabel_Copy	obj\Debug\Phi\MainWindow.g.i.cs	3432	        internal System.Windows.Controls.TextBox LinkStatusLabel_Copy;
+Phi_Core::MainWindow::LinkStatusLabel	obj\Debug\Phi\MainWindow.g.i.cs	3748	        internal System.Windows.Controls.TextBox LinkStatusLabel;
+Phi_Core::MainWindow::LinkStatusText	obj\Debug\Phi\MainWindow.g.i.cs	4059	        internal System.Windows.Controls.TextBox LinkStatusText;
+Phi_Core::MainWindow::ctlNumLoops	obj\Debug\Phi\MainWindow.g.i.cs	4370	        internal System.Windows.Controls.TextBox ctlNumLoops;
+Phi_Core::MainWindow::ctlPacketId	obj\Debug\Phi\MainWindow.g.i.cs	4678	        internal System.Windows.Controls.TextBox ctlPacketId;
+Phi_Core::MainWindow::Phi_Camera	obj\Debug\Phi\MainWindow.g.i.cs	4985	        internal System.Windows.Controls.Canvas Phi_Camera;
+Phi_Core::MainWindow::BtnResetGyro	obj\Debug\Phi\MainWindow.g.i.cs	5291	        internal System.Windows.Controls.Button BtnResetGyro;
+Phi_Core::MainWindow::PieCtrl_Roll	obj\Debug\Phi\MainWindow.g.i.cs	5588	        internal Phi_Core.PieControl PieCtrl_Roll;
+Phi_Core::MainWindow::PieCtrl_Pitch	obj\Debug\Phi\MainWindow.g.i.cs	5885	        internal Phi_Core.PieControl PieCtrl_Pitch;
+Phi_Core::MainWindow::PieCtrl_Yaw	obj\Debug\Phi\MainWindow.g.i.cs	6183	        internal Phi_Core.PieControl PieCtrl_Yaw;
+Phi_Core::MainWindow::LegGrid	obj\Debug\Phi\MainWindow.g.i.cs	6488	        internal System.Windows.Controls.Grid LegGrid;
+Phi_Core::MainWindow::LF_Leg	obj\Debug\Phi\MainWindow.g.i.cs	6776	        internal Phi_Core.LegBox LF_Leg;
+Phi_Core::MainWindow::RF_Leg	obj\Debug\Phi\MainWindow.g.i.cs	7063	        internal Phi_Core.LegBox RF_Leg;
+Phi_Core::MainWindow::LB_Leg	obj\Debug\Phi\MainWindow.g.i.cs	7350	        internal Phi_Core.LegBox LB_Leg;
+Phi_Core::MainWindow::RB_Leg	obj\Debug\Phi\MainWindow.g.i.cs	7637	        internal Phi_Core.LegBox RB_Leg;
+Phi_Core::MainWindow::_contentLoaded	obj\Debug\Phi\MainWindow.g.i.cs	7727	        private bool _contentLoaded;
+Phi_Core::MainWindow::InitializeComponent	obj\Debug\Phi\MainWindow.g.i.cs	8003	        public void InitializeComponent() {
+Phi_Core::MainWindow::_CreateDelegate	obj\Debug\Phi\MainWindow.g.i.cs	8797	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::MainWindow::Connect	obj\Debug\Phi\MainWindow.g.i.cs	9670	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\Phi\LegBox.g.i.cs	523	using Phi_Core;
+System	obj\Debug\Phi\LegBox.g.i.cs	539	using System;
+Diagnostics	obj\Debug\Phi\LegBox.g.i.cs	560	using System.Diagnostics;
+Windows	obj\Debug\Phi\LegBox.g.i.cs	586	using System.Windows;
+Automation	obj\Debug\Phi\LegBox.g.i.cs	616	using System.Windows.Automation;
+Controls	obj\Debug\Phi\LegBox.g.i.cs	649	using System.Windows.Controls;
+Primitives	obj\Debug\Phi\LegBox.g.i.cs	689	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Phi\LegBox.g.i.cs	722	using System.Windows.Data;
+Documents	obj\Debug\Phi\LegBox.g.i.cs	749	using System.Windows.Documents;
+Ink	obj\Debug\Phi\LegBox.g.i.cs	781	using System.Windows.Ink;
+Input	obj\Debug\Phi\LegBox.g.i.cs	807	using System.Windows.Input;
+Markup	obj\Debug\Phi\LegBox.g.i.cs	835	using System.Windows.Markup;
+Media	obj\Debug\Phi\LegBox.g.i.cs	864	using System.Windows.Media;
+Animation	obj\Debug\Phi\LegBox.g.i.cs	898	using System.Windows.Media.Animation;
+Effects	obj\Debug\Phi\LegBox.g.i.cs	936	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Phi\LegBox.g.i.cs	972	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Phi\LegBox.g.i.cs	1008	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Phi\LegBox.g.i.cs	1044	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Phi\LegBox.g.i.cs	1081	using System.Windows.Navigation;
+Shapes	obj\Debug\Phi\LegBox.g.i.cs	1114	using System.Windows.Shapes;
+Shell	obj\Debug\Phi\LegBox.g.i.cs	1143	using System.Windows.Shell;
+Phi_Core	obj\Debug\Phi\LegBox.g.i.cs	1162	namespace Phi_Core {
+Phi_Core::LegBox	obj\Debug\Phi\LegBox.g.i.cs	1260	    public partial class LegBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::LegBox::legLabel	obj\Debug\Phi\LegBox.g.i.cs	1586	        internal System.Windows.Controls.Label legLabel;
+Phi_Core::LegBox::hipJoint	obj\Debug\Phi\LegBox.g.i.cs	1872	        internal Phi_Core.JointBox hipJoint;
+Phi_Core::LegBox::thighJoint	obj\Debug\Phi\LegBox.g.i.cs	2158	        internal Phi_Core.JointBox thighJoint;
+Phi_Core::LegBox::kneeJoint	obj\Debug\Phi\LegBox.g.i.cs	2446	        internal Phi_Core.JointBox kneeJoint;
+Phi_Core::LegBox::_contentLoaded	obj\Debug\Phi\LegBox.g.i.cs	2539	        private bool _contentLoaded;
+Phi_Core::LegBox::InitializeComponent	obj\Debug\Phi\LegBox.g.i.cs	2815	        public void InitializeComponent() {
+Phi_Core::LegBox::_CreateDelegate	obj\Debug\Phi\LegBox.g.i.cs	3601	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::LegBox::Connect	obj\Debug\Phi\LegBox.g.i.cs	4474	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\Phi\JointBox.g.i.cs	525	using Phi_Core;
+System	obj\Debug\Phi\JointBox.g.i.cs	541	using System;
+Diagnostics	obj\Debug\Phi\JointBox.g.i.cs	562	using System.Diagnostics;
+Windows	obj\Debug\Phi\JointBox.g.i.cs	588	using System.Windows;
+Automation	obj\Debug\Phi\JointBox.g.i.cs	618	using System.Windows.Automation;
+Controls	obj\Debug\Phi\JointBox.g.i.cs	651	using System.Windows.Controls;
+Primitives	obj\Debug\Phi\JointBox.g.i.cs	691	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Phi\JointBox.g.i.cs	724	using System.Windows.Data;
+Documents	obj\Debug\Phi\JointBox.g.i.cs	751	using System.Windows.Documents;
+Ink	obj\Debug\Phi\JointBox.g.i.cs	783	using System.Windows.Ink;
+Input	obj\Debug\Phi\JointBox.g.i.cs	809	using System.Windows.Input;
+Markup	obj\Debug\Phi\JointBox.g.i.cs	837	using System.Windows.Markup;
+Media	obj\Debug\Phi\JointBox.g.i.cs	866	using System.Windows.Media;
+Animation	obj\Debug\Phi\JointBox.g.i.cs	900	using System.Windows.Media.Animation;
+Effects	obj\Debug\Phi\JointBox.g.i.cs	938	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Phi\JointBox.g.i.cs	974	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Phi\JointBox.g.i.cs	1010	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Phi\JointBox.g.i.cs	1046	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Phi\JointBox.g.i.cs	1083	using System.Windows.Navigation;
+Shapes	obj\Debug\Phi\JointBox.g.i.cs	1116	using System.Windows.Shapes;
+Shell	obj\Debug\Phi\JointBox.g.i.cs	1145	using System.Windows.Shell;
+Phi_Core	obj\Debug\Phi\JointBox.g.i.cs	1164	namespace Phi_Core {
+Phi_Core::JointBox	obj\Debug\Phi\JointBox.g.i.cs	1264	    public partial class JointBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::JointBox::label	obj\Debug\Phi\JointBox.g.i.cs	1594	        internal System.Windows.Controls.Label label;
+Phi_Core::JointBox::neuronBox	obj\Debug\Phi\JointBox.g.i.cs	1880	        internal Phi_Core.NeuronBox neuronBox;
+Phi_Core::JointBox::barBox	obj\Debug\Phi\JointBox.g.i.cs	2167	        internal Phi_Core.BarBox barBox;
+Phi_Core::JointBox::_contentLoaded	obj\Debug\Phi\JointBox.g.i.cs	2257	        private bool _contentLoaded;
+Phi_Core::JointBox::InitializeComponent	obj\Debug\Phi\JointBox.g.i.cs	2533	        public void InitializeComponent() {
+Phi_Core::JointBox::_CreateDelegate	obj\Debug\Phi\JointBox.g.i.cs	3323	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::JointBox::Connect	obj\Debug\Phi\JointBox.g.i.cs	4196	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\Phi\BarBox.g.i.cs	523	using System;
+Diagnostics	obj\Debug\Phi\BarBox.g.i.cs	544	using System.Diagnostics;
+Windows	obj\Debug\Phi\BarBox.g.i.cs	570	using System.Windows;
+Automation	obj\Debug\Phi\BarBox.g.i.cs	600	using System.Windows.Automation;
+Controls	obj\Debug\Phi\BarBox.g.i.cs	633	using System.Windows.Controls;
+Primitives	obj\Debug\Phi\BarBox.g.i.cs	673	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Phi\BarBox.g.i.cs	706	using System.Windows.Data;
+Documents	obj\Debug\Phi\BarBox.g.i.cs	733	using System.Windows.Documents;
+Ink	obj\Debug\Phi\BarBox.g.i.cs	765	using System.Windows.Ink;
+Input	obj\Debug\Phi\BarBox.g.i.cs	791	using System.Windows.Input;
+Markup	obj\Debug\Phi\BarBox.g.i.cs	819	using System.Windows.Markup;
+Media	obj\Debug\Phi\BarBox.g.i.cs	848	using System.Windows.Media;
+Animation	obj\Debug\Phi\BarBox.g.i.cs	882	using System.Windows.Media.Animation;
+Effects	obj\Debug\Phi\BarBox.g.i.cs	920	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Phi\BarBox.g.i.cs	956	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Phi\BarBox.g.i.cs	992	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Phi\BarBox.g.i.cs	1028	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Phi\BarBox.g.i.cs	1065	using System.Windows.Navigation;
+Shapes	obj\Debug\Phi\BarBox.g.i.cs	1098	using System.Windows.Shapes;
+Shell	obj\Debug\Phi\BarBox.g.i.cs	1127	using System.Windows.Shell;
+Phi_Core	obj\Debug\Phi\BarBox.g.i.cs	1146	namespace Phi_Core {
+Phi_Core::BarBox	obj\Debug\Phi\BarBox.g.i.cs	1244	    public partial class BarBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::BarBox::ctrlCanvas	obj\Debug\Phi\BarBox.g.i.cs	1571	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi_Core::BarBox::bar	obj\Debug\Phi\BarBox.g.i.cs	1873	        internal System.Windows.Shapes.Rectangle bar;
+Phi_Core::BarBox::_contentLoaded	obj\Debug\Phi\BarBox.g.i.cs	1960	        private bool _contentLoaded;
+Phi_Core::BarBox::InitializeComponent	obj\Debug\Phi\BarBox.g.i.cs	2236	        public void InitializeComponent() {
+Phi_Core::BarBox::Connect	obj\Debug\Phi\BarBox.g.i.cs	3422	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\Phi\App.g.i.cs	520	using System;
+Diagnostics	obj\Debug\Phi\App.g.i.cs	541	using System.Diagnostics;
+Windows	obj\Debug\Phi\App.g.i.cs	567	using System.Windows;
+Automation	obj\Debug\Phi\App.g.i.cs	597	using System.Windows.Automation;
+Controls	obj\Debug\Phi\App.g.i.cs	630	using System.Windows.Controls;
+Primitives	obj\Debug\Phi\App.g.i.cs	670	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Phi\App.g.i.cs	703	using System.Windows.Data;
+Documents	obj\Debug\Phi\App.g.i.cs	730	using System.Windows.Documents;
+Ink	obj\Debug\Phi\App.g.i.cs	762	using System.Windows.Ink;
+Input	obj\Debug\Phi\App.g.i.cs	788	using System.Windows.Input;
+Markup	obj\Debug\Phi\App.g.i.cs	816	using System.Windows.Markup;
+Media	obj\Debug\Phi\App.g.i.cs	845	using System.Windows.Media;
+Animation	obj\Debug\Phi\App.g.i.cs	879	using System.Windows.Media.Animation;
+Effects	obj\Debug\Phi\App.g.i.cs	917	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Phi\App.g.i.cs	953	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Phi\App.g.i.cs	989	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Phi\App.g.i.cs	1025	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Phi\App.g.i.cs	1062	using System.Windows.Navigation;
+Shapes	obj\Debug\Phi\App.g.i.cs	1095	using System.Windows.Shapes;
+Shell	obj\Debug\Phi\App.g.i.cs	1124	using System.Windows.Shell;
+Phi_Core	obj\Debug\Phi\App.g.i.cs	1143	namespace Phi_Core {
+Phi_Core::App	obj\Debug\Phi\App.g.i.cs	1238	    public partial class App : System.Windows.Application {
+Phi_Core::App::InitializeComponent	obj\Debug\Phi\App.g.i.cs	1533	        public void InitializeComponent() {
+Phi_Core::App::Main	obj\Debug\Phi\App.g.i.cs	2088	        public static void Main() {
+System	obj\Debug\Eve\PieControl.g.i.cs	527	using System;
+Diagnostics	obj\Debug\Eve\PieControl.g.i.cs	548	using System.Diagnostics;
+Windows	obj\Debug\Eve\PieControl.g.i.cs	574	using System.Windows;
+Automation	obj\Debug\Eve\PieControl.g.i.cs	604	using System.Windows.Automation;
+Controls	obj\Debug\Eve\PieControl.g.i.cs	637	using System.Windows.Controls;
+Primitives	obj\Debug\Eve\PieControl.g.i.cs	677	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Eve\PieControl.g.i.cs	710	using System.Windows.Data;
+Documents	obj\Debug\Eve\PieControl.g.i.cs	737	using System.Windows.Documents;
+Ink	obj\Debug\Eve\PieControl.g.i.cs	769	using System.Windows.Ink;
+Input	obj\Debug\Eve\PieControl.g.i.cs	795	using System.Windows.Input;
+Markup	obj\Debug\Eve\PieControl.g.i.cs	823	using System.Windows.Markup;
+Media	obj\Debug\Eve\PieControl.g.i.cs	852	using System.Windows.Media;
+Animation	obj\Debug\Eve\PieControl.g.i.cs	886	using System.Windows.Media.Animation;
+Effects	obj\Debug\Eve\PieControl.g.i.cs	924	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Eve\PieControl.g.i.cs	960	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Eve\PieControl.g.i.cs	996	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Eve\PieControl.g.i.cs	1032	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Eve\PieControl.g.i.cs	1069	using System.Windows.Navigation;
+Shapes	obj\Debug\Eve\PieControl.g.i.cs	1102	using System.Windows.Shapes;
+Shell	obj\Debug\Eve\PieControl.g.i.cs	1131	using System.Windows.Shell;
+Phi_Core	obj\Debug\Eve\PieControl.g.i.cs	1150	namespace Phi_Core {
+Phi_Core::PieControl	obj\Debug\Eve\PieControl.g.i.cs	1252	    public partial class PieControl : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::PieControl::PieCtrl	obj\Debug\Eve\PieControl.g.i.cs	1575	        internal Phi_Core.PieControl PieCtrl;
+Phi_Core::PieControl::titleName	obj\Debug\Eve\PieControl.g.i.cs	1878	        internal System.Windows.Controls.TextBox titleName;
+Phi_Core::PieControl::canvasName	obj\Debug\Eve\PieControl.g.i.cs	2182	        internal System.Windows.Controls.Canvas canvasName;
+Phi_Core::PieControl::arcName	obj\Debug\Eve\PieControl.g.i.cs	2488	        internal System.Windows.Media.ArcSegment arcName;
+Phi_Core::PieControl::valueName	obj\Debug\Eve\PieControl.g.i.cs	2789	        internal System.Windows.Controls.Label valueName;
+Phi_Core::PieControl::_contentLoaded	obj\Debug\Eve\PieControl.g.i.cs	2882	        private bool _contentLoaded;
+Phi_Core::PieControl::InitializeComponent	obj\Debug\Eve\PieControl.g.i.cs	3158	        public void InitializeComponent() {
+Phi_Core::PieControl::Connect	obj\Debug\Eve\PieControl.g.i.cs	4352	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\Eve\NeuronBox.g.i.cs	526	using System;
+Diagnostics	obj\Debug\Eve\NeuronBox.g.i.cs	547	using System.Diagnostics;
+Windows	obj\Debug\Eve\NeuronBox.g.i.cs	573	using System.Windows;
+Automation	obj\Debug\Eve\NeuronBox.g.i.cs	603	using System.Windows.Automation;
+Controls	obj\Debug\Eve\NeuronBox.g.i.cs	636	using System.Windows.Controls;
+Primitives	obj\Debug\Eve\NeuronBox.g.i.cs	676	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Eve\NeuronBox.g.i.cs	709	using System.Windows.Data;
+Documents	obj\Debug\Eve\NeuronBox.g.i.cs	736	using System.Windows.Documents;
+Ink	obj\Debug\Eve\NeuronBox.g.i.cs	768	using System.Windows.Ink;
+Input	obj\Debug\Eve\NeuronBox.g.i.cs	794	using System.Windows.Input;
+Markup	obj\Debug\Eve\NeuronBox.g.i.cs	822	using System.Windows.Markup;
+Media	obj\Debug\Eve\NeuronBox.g.i.cs	851	using System.Windows.Media;
+Animation	obj\Debug\Eve\NeuronBox.g.i.cs	885	using System.Windows.Media.Animation;
+Effects	obj\Debug\Eve\NeuronBox.g.i.cs	923	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Eve\NeuronBox.g.i.cs	959	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Eve\NeuronBox.g.i.cs	995	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Eve\NeuronBox.g.i.cs	1031	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Eve\NeuronBox.g.i.cs	1068	using System.Windows.Navigation;
+Shapes	obj\Debug\Eve\NeuronBox.g.i.cs	1101	using System.Windows.Shapes;
+Shell	obj\Debug\Eve\NeuronBox.g.i.cs	1130	using System.Windows.Shell;
+Phi_Core	obj\Debug\Eve\NeuronBox.g.i.cs	1149	namespace Phi_Core {
+Phi_Core::NeuronBox	obj\Debug\Eve\NeuronBox.g.i.cs	1250	    public partial class NeuronBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::NeuronBox::ctrlCanvas	obj\Debug\Eve\NeuronBox.g.i.cs	1583	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi_Core::NeuronBox::ellipse	obj\Debug\Eve\NeuronBox.g.i.cs	1886	        internal System.Windows.Shapes.Ellipse ellipse;
+Phi_Core::NeuronBox::_contentLoaded	obj\Debug\Eve\NeuronBox.g.i.cs	1977	        private bool _contentLoaded;
+Phi_Core::NeuronBox::InitializeComponent	obj\Debug\Eve\NeuronBox.g.i.cs	2253	        public void InitializeComponent() {
+Phi_Core::NeuronBox::Connect	obj\Debug\Eve\NeuronBox.g.i.cs	3445	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\Eve\MainWindow.g.i.cs	527	using Phi_Core;
+System	obj\Debug\Eve\MainWindow.g.i.cs	543	using System;
+Diagnostics	obj\Debug\Eve\MainWindow.g.i.cs	564	using System.Diagnostics;
+Windows	obj\Debug\Eve\MainWindow.g.i.cs	590	using System.Windows;
+Automation	obj\Debug\Eve\MainWindow.g.i.cs	620	using System.Windows.Automation;
+Controls	obj\Debug\Eve\MainWindow.g.i.cs	653	using System.Windows.Controls;
+Primitives	obj\Debug\Eve\MainWindow.g.i.cs	693	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Eve\MainWindow.g.i.cs	726	using System.Windows.Data;
+Documents	obj\Debug\Eve\MainWindow.g.i.cs	753	using System.Windows.Documents;
+Ink	obj\Debug\Eve\MainWindow.g.i.cs	785	using System.Windows.Ink;
+Input	obj\Debug\Eve\MainWindow.g.i.cs	811	using System.Windows.Input;
+Markup	obj\Debug\Eve\MainWindow.g.i.cs	839	using System.Windows.Markup;
+Media	obj\Debug\Eve\MainWindow.g.i.cs	868	using System.Windows.Media;
+Animation	obj\Debug\Eve\MainWindow.g.i.cs	902	using System.Windows.Media.Animation;
+Effects	obj\Debug\Eve\MainWindow.g.i.cs	940	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Eve\MainWindow.g.i.cs	976	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Eve\MainWindow.g.i.cs	1012	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Eve\MainWindow.g.i.cs	1048	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Eve\MainWindow.g.i.cs	1085	using System.Windows.Navigation;
+Shapes	obj\Debug\Eve\MainWindow.g.i.cs	1118	using System.Windows.Shapes;
+Shell	obj\Debug\Eve\MainWindow.g.i.cs	1147	using System.Windows.Shell;
+Phi_Core	obj\Debug\Eve\MainWindow.g.i.cs	1166	namespace Phi_Core {
+Phi_Core::MainWindow	obj\Debug\Eve\MainWindow.g.i.cs	1268	    public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector {
+Phi_Core::MainWindow::RootPanel	obj\Debug\Eve\MainWindow.g.i.cs	1592	        internal System.Windows.Controls.DockPanel RootPanel;
+Phi_Core::MainWindow::TitlePanel	obj\Debug\Eve\MainWindow.g.i.cs	1899	        internal System.Windows.Controls.DockPanel TitlePanel;
+Phi_Core::MainWindow::image	obj\Debug\Eve\MainWindow.g.i.cs	2203	        internal System.Windows.Controls.Image image;
+Phi_Core::MainWindow::LinkFrameRateText	obj\Debug\Eve\MainWindow.g.i.cs	2504	        internal System.Windows.Controls.TextBox LinkFrameRateText;
+Phi_Core::MainWindow::AvgIdleLabel	obj\Debug\Eve\MainWindow.g.i.cs	2817	        internal System.Windows.Controls.TextBox AvgIdleLabel;
+Phi_Core::MainWindow::AvgIdleText	obj\Debug\Eve\MainWindow.g.i.cs	3125	        internal System.Windows.Controls.TextBox AvgIdleText;
+Phi_Core::MainWindow::LinkStatusLabel_Copy	obj\Debug\Eve\MainWindow.g.i.cs	3432	        internal System.Windows.Controls.TextBox LinkStatusLabel_Copy;
+Phi_Core::MainWindow::LinkStatusLabel	obj\Debug\Eve\MainWindow.g.i.cs	3748	        internal System.Windows.Controls.TextBox LinkStatusLabel;
+Phi_Core::MainWindow::LinkStatusText	obj\Debug\Eve\MainWindow.g.i.cs	4059	        internal System.Windows.Controls.TextBox LinkStatusText;
+Phi_Core::MainWindow::ctlNumLoops	obj\Debug\Eve\MainWindow.g.i.cs	4370	        internal System.Windows.Controls.TextBox ctlNumLoops;
+Phi_Core::MainWindow::ctlPacketId	obj\Debug\Eve\MainWindow.g.i.cs	4678	        internal System.Windows.Controls.TextBox ctlPacketId;
+Phi_Core::MainWindow::Phi_Camera	obj\Debug\Eve\MainWindow.g.i.cs	4985	        internal System.Windows.Controls.Canvas Phi_Camera;
+Phi_Core::MainWindow::BtnResetGyro	obj\Debug\Eve\MainWindow.g.i.cs	5291	        internal System.Windows.Controls.Button BtnResetGyro;
+Phi_Core::MainWindow::PieCtrl_Roll	obj\Debug\Eve\MainWindow.g.i.cs	5588	        internal Phi_Core.PieControl PieCtrl_Roll;
+Phi_Core::MainWindow::PieCtrl_Pitch	obj\Debug\Eve\MainWindow.g.i.cs	5885	        internal Phi_Core.PieControl PieCtrl_Pitch;
+Phi_Core::MainWindow::PieCtrl_Yaw	obj\Debug\Eve\MainWindow.g.i.cs	6183	        internal Phi_Core.PieControl PieCtrl_Yaw;
+Phi_Core::MainWindow::LegGrid	obj\Debug\Eve\MainWindow.g.i.cs	6488	        internal System.Windows.Controls.Grid LegGrid;
+Phi_Core::MainWindow::LF_Leg	obj\Debug\Eve\MainWindow.g.i.cs	6776	        internal Phi_Core.LegBox LF_Leg;
+Phi_Core::MainWindow::RF_Leg	obj\Debug\Eve\MainWindow.g.i.cs	7063	        internal Phi_Core.LegBox RF_Leg;
+Phi_Core::MainWindow::LB_Leg	obj\Debug\Eve\MainWindow.g.i.cs	7350	        internal Phi_Core.LegBox LB_Leg;
+Phi_Core::MainWindow::RB_Leg	obj\Debug\Eve\MainWindow.g.i.cs	7637	        internal Phi_Core.LegBox RB_Leg;
+Phi_Core::MainWindow::_contentLoaded	obj\Debug\Eve\MainWindow.g.i.cs	7727	        private bool _contentLoaded;
+Phi_Core::MainWindow::InitializeComponent	obj\Debug\Eve\MainWindow.g.i.cs	8003	        public void InitializeComponent() {
+Phi_Core::MainWindow::_CreateDelegate	obj\Debug\Eve\MainWindow.g.i.cs	8797	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::MainWindow::Connect	obj\Debug\Eve\MainWindow.g.i.cs	9670	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\Eve\LegBox.g.i.cs	523	using Phi_Core;
+System	obj\Debug\Eve\LegBox.g.i.cs	539	using System;
+Diagnostics	obj\Debug\Eve\LegBox.g.i.cs	560	using System.Diagnostics;
+Windows	obj\Debug\Eve\LegBox.g.i.cs	586	using System.Windows;
+Automation	obj\Debug\Eve\LegBox.g.i.cs	616	using System.Windows.Automation;
+Controls	obj\Debug\Eve\LegBox.g.i.cs	649	using System.Windows.Controls;
+Primitives	obj\Debug\Eve\LegBox.g.i.cs	689	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Eve\LegBox.g.i.cs	722	using System.Windows.Data;
+Documents	obj\Debug\Eve\LegBox.g.i.cs	749	using System.Windows.Documents;
+Ink	obj\Debug\Eve\LegBox.g.i.cs	781	using System.Windows.Ink;
+Input	obj\Debug\Eve\LegBox.g.i.cs	807	using System.Windows.Input;
+Markup	obj\Debug\Eve\LegBox.g.i.cs	835	using System.Windows.Markup;
+Media	obj\Debug\Eve\LegBox.g.i.cs	864	using System.Windows.Media;
+Animation	obj\Debug\Eve\LegBox.g.i.cs	898	using System.Windows.Media.Animation;
+Effects	obj\Debug\Eve\LegBox.g.i.cs	936	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Eve\LegBox.g.i.cs	972	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Eve\LegBox.g.i.cs	1008	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Eve\LegBox.g.i.cs	1044	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Eve\LegBox.g.i.cs	1081	using System.Windows.Navigation;
+Shapes	obj\Debug\Eve\LegBox.g.i.cs	1114	using System.Windows.Shapes;
+Shell	obj\Debug\Eve\LegBox.g.i.cs	1143	using System.Windows.Shell;
+Phi_Core	obj\Debug\Eve\LegBox.g.i.cs	1162	namespace Phi_Core {
+Phi_Core::LegBox	obj\Debug\Eve\LegBox.g.i.cs	1260	    public partial class LegBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::LegBox::legLabel	obj\Debug\Eve\LegBox.g.i.cs	1586	        internal System.Windows.Controls.Label legLabel;
+Phi_Core::LegBox::hipJoint	obj\Debug\Eve\LegBox.g.i.cs	1872	        internal Phi_Core.JointBox hipJoint;
+Phi_Core::LegBox::thighJoint	obj\Debug\Eve\LegBox.g.i.cs	2158	        internal Phi_Core.JointBox thighJoint;
+Phi_Core::LegBox::kneeJoint	obj\Debug\Eve\LegBox.g.i.cs	2446	        internal Phi_Core.JointBox kneeJoint;
+Phi_Core::LegBox::_contentLoaded	obj\Debug\Eve\LegBox.g.i.cs	2539	        private bool _contentLoaded;
+Phi_Core::LegBox::InitializeComponent	obj\Debug\Eve\LegBox.g.i.cs	2815	        public void InitializeComponent() {
+Phi_Core::LegBox::_CreateDelegate	obj\Debug\Eve\LegBox.g.i.cs	3601	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::LegBox::Connect	obj\Debug\Eve\LegBox.g.i.cs	4474	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\Eve\JointBox.g.i.cs	525	using Phi_Core;
+System	obj\Debug\Eve\JointBox.g.i.cs	541	using System;
+Diagnostics	obj\Debug\Eve\JointBox.g.i.cs	562	using System.Diagnostics;
+Windows	obj\Debug\Eve\JointBox.g.i.cs	588	using System.Windows;
+Automation	obj\Debug\Eve\JointBox.g.i.cs	618	using System.Windows.Automation;
+Controls	obj\Debug\Eve\JointBox.g.i.cs	651	using System.Windows.Controls;
+Primitives	obj\Debug\Eve\JointBox.g.i.cs	691	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Eve\JointBox.g.i.cs	724	using System.Windows.Data;
+Documents	obj\Debug\Eve\JointBox.g.i.cs	751	using System.Windows.Documents;
+Ink	obj\Debug\Eve\JointBox.g.i.cs	783	using System.Windows.Ink;
+Input	obj\Debug\Eve\JointBox.g.i.cs	809	using System.Windows.Input;
+Markup	obj\Debug\Eve\JointBox.g.i.cs	837	using System.Windows.Markup;
+Media	obj\Debug\Eve\JointBox.g.i.cs	866	using System.Windows.Media;
+Animation	obj\Debug\Eve\JointBox.g.i.cs	900	using System.Windows.Media.Animation;
+Effects	obj\Debug\Eve\JointBox.g.i.cs	938	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Eve\JointBox.g.i.cs	974	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Eve\JointBox.g.i.cs	1010	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Eve\JointBox.g.i.cs	1046	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Eve\JointBox.g.i.cs	1083	using System.Windows.Navigation;
+Shapes	obj\Debug\Eve\JointBox.g.i.cs	1116	using System.Windows.Shapes;
+Shell	obj\Debug\Eve\JointBox.g.i.cs	1145	using System.Windows.Shell;
+Phi_Core	obj\Debug\Eve\JointBox.g.i.cs	1164	namespace Phi_Core {
+Phi_Core::JointBox	obj\Debug\Eve\JointBox.g.i.cs	1264	    public partial class JointBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::JointBox::label	obj\Debug\Eve\JointBox.g.i.cs	1594	        internal System.Windows.Controls.Label label;
+Phi_Core::JointBox::neuronBox	obj\Debug\Eve\JointBox.g.i.cs	1880	        internal Phi_Core.NeuronBox neuronBox;
+Phi_Core::JointBox::barBox	obj\Debug\Eve\JointBox.g.i.cs	2167	        internal Phi_Core.BarBox barBox;
+Phi_Core::JointBox::_contentLoaded	obj\Debug\Eve\JointBox.g.i.cs	2257	        private bool _contentLoaded;
+Phi_Core::JointBox::InitializeComponent	obj\Debug\Eve\JointBox.g.i.cs	2533	        public void InitializeComponent() {
+Phi_Core::JointBox::_CreateDelegate	obj\Debug\Eve\JointBox.g.i.cs	3323	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::JointBox::Connect	obj\Debug\Eve\JointBox.g.i.cs	4196	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\Eve\BarBox.g.i.cs	523	using System;
+Diagnostics	obj\Debug\Eve\BarBox.g.i.cs	544	using System.Diagnostics;
+Windows	obj\Debug\Eve\BarBox.g.i.cs	570	using System.Windows;
+Automation	obj\Debug\Eve\BarBox.g.i.cs	600	using System.Windows.Automation;
+Controls	obj\Debug\Eve\BarBox.g.i.cs	633	using System.Windows.Controls;
+Primitives	obj\Debug\Eve\BarBox.g.i.cs	673	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Eve\BarBox.g.i.cs	706	using System.Windows.Data;
+Documents	obj\Debug\Eve\BarBox.g.i.cs	733	using System.Windows.Documents;
+Ink	obj\Debug\Eve\BarBox.g.i.cs	765	using System.Windows.Ink;
+Input	obj\Debug\Eve\BarBox.g.i.cs	791	using System.Windows.Input;
+Markup	obj\Debug\Eve\BarBox.g.i.cs	819	using System.Windows.Markup;
+Media	obj\Debug\Eve\BarBox.g.i.cs	848	using System.Windows.Media;
+Animation	obj\Debug\Eve\BarBox.g.i.cs	882	using System.Windows.Media.Animation;
+Effects	obj\Debug\Eve\BarBox.g.i.cs	920	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Eve\BarBox.g.i.cs	956	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Eve\BarBox.g.i.cs	992	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Eve\BarBox.g.i.cs	1028	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Eve\BarBox.g.i.cs	1065	using System.Windows.Navigation;
+Shapes	obj\Debug\Eve\BarBox.g.i.cs	1098	using System.Windows.Shapes;
+Shell	obj\Debug\Eve\BarBox.g.i.cs	1127	using System.Windows.Shell;
+Phi_Core	obj\Debug\Eve\BarBox.g.i.cs	1146	namespace Phi_Core {
+Phi_Core::BarBox	obj\Debug\Eve\BarBox.g.i.cs	1244	    public partial class BarBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::BarBox::ctrlCanvas	obj\Debug\Eve\BarBox.g.i.cs	1571	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi_Core::BarBox::bar	obj\Debug\Eve\BarBox.g.i.cs	1873	        internal System.Windows.Shapes.Rectangle bar;
+Phi_Core::BarBox::_contentLoaded	obj\Debug\Eve\BarBox.g.i.cs	1960	        private bool _contentLoaded;
+Phi_Core::BarBox::InitializeComponent	obj\Debug\Eve\BarBox.g.i.cs	2236	        public void InitializeComponent() {
+Phi_Core::BarBox::Connect	obj\Debug\Eve\BarBox.g.i.cs	3422	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\Eve\App.g.i.cs	520	using System;
+Diagnostics	obj\Debug\Eve\App.g.i.cs	541	using System.Diagnostics;
+Windows	obj\Debug\Eve\App.g.i.cs	567	using System.Windows;
+Automation	obj\Debug\Eve\App.g.i.cs	597	using System.Windows.Automation;
+Controls	obj\Debug\Eve\App.g.i.cs	630	using System.Windows.Controls;
+Primitives	obj\Debug\Eve\App.g.i.cs	670	using System.Windows.Controls.Primitives;
+Data	obj\Debug\Eve\App.g.i.cs	703	using System.Windows.Data;
+Documents	obj\Debug\Eve\App.g.i.cs	730	using System.Windows.Documents;
+Ink	obj\Debug\Eve\App.g.i.cs	762	using System.Windows.Ink;
+Input	obj\Debug\Eve\App.g.i.cs	788	using System.Windows.Input;
+Markup	obj\Debug\Eve\App.g.i.cs	816	using System.Windows.Markup;
+Media	obj\Debug\Eve\App.g.i.cs	845	using System.Windows.Media;
+Animation	obj\Debug\Eve\App.g.i.cs	879	using System.Windows.Media.Animation;
+Effects	obj\Debug\Eve\App.g.i.cs	917	using System.Windows.Media.Effects;
+Imaging	obj\Debug\Eve\App.g.i.cs	953	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\Eve\App.g.i.cs	989	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\Eve\App.g.i.cs	1025	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\Eve\App.g.i.cs	1062	using System.Windows.Navigation;
+Shapes	obj\Debug\Eve\App.g.i.cs	1095	using System.Windows.Shapes;
+Shell	obj\Debug\Eve\App.g.i.cs	1124	using System.Windows.Shell;
+Phi_Core	obj\Debug\Eve\App.g.i.cs	1143	namespace Phi_Core {
+Phi_Core::App	obj\Debug\Eve\App.g.i.cs	1238	    public partial class App : System.Windows.Application {
+Phi_Core::App::InitializeComponent	obj\Debug\Eve\App.g.i.cs	1533	        public void InitializeComponent() {
+Phi_Core::App::Main	obj\Debug\Eve\App.g.i.cs	2088	        public static void Main() {
+Phi_Core	obj\Debug\UserControl1.g.i.cs	522	using Phi_Core;
+System	obj\Debug\UserControl1.g.i.cs	538	using System;
+Diagnostics	obj\Debug\UserControl1.g.i.cs	559	using System.Diagnostics;
+Windows	obj\Debug\UserControl1.g.i.cs	585	using System.Windows;
+Automation	obj\Debug\UserControl1.g.i.cs	615	using System.Windows.Automation;
+Controls	obj\Debug\UserControl1.g.i.cs	648	using System.Windows.Controls;
+Primitives	obj\Debug\UserControl1.g.i.cs	688	using System.Windows.Controls.Primitives;
+Data	obj\Debug\UserControl1.g.i.cs	721	using System.Windows.Data;
+Documents	obj\Debug\UserControl1.g.i.cs	748	using System.Windows.Documents;
+Ink	obj\Debug\UserControl1.g.i.cs	780	using System.Windows.Ink;
+Input	obj\Debug\UserControl1.g.i.cs	806	using System.Windows.Input;
+Markup	obj\Debug\UserControl1.g.i.cs	834	using System.Windows.Markup;
+Media	obj\Debug\UserControl1.g.i.cs	863	using System.Windows.Media;
+Animation	obj\Debug\UserControl1.g.i.cs	897	using System.Windows.Media.Animation;
+Effects	obj\Debug\UserControl1.g.i.cs	935	using System.Windows.Media.Effects;
+Imaging	obj\Debug\UserControl1.g.i.cs	971	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\UserControl1.g.i.cs	1007	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\UserControl1.g.i.cs	1043	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\UserControl1.g.i.cs	1080	using System.Windows.Navigation;
+Shapes	obj\Debug\UserControl1.g.i.cs	1113	using System.Windows.Shapes;
+Shell	obj\Debug\UserControl1.g.i.cs	1142	using System.Windows.Shell;
+Phi_Core	obj\Debug\UserControl1.g.i.cs	1161	namespace Phi_Core {
+Phi_Core::UserControl1	obj\Debug\UserControl1.g.i.cs	1265	    public partial class UserControl1 : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::UserControl1::legLabel	obj\Debug\UserControl1.g.i.cs	1596	        internal System.Windows.Controls.Label legLabel;
+Phi_Core::UserControl1::_contentLoaded	obj\Debug\UserControl1.g.i.cs	1688	        private bool _contentLoaded;
+Phi_Core::UserControl1::InitializeComponent	obj\Debug\UserControl1.g.i.cs	1964	        public void InitializeComponent() {
+Phi_Core::UserControl1::_CreateDelegate	obj\Debug\UserControl1.g.i.cs	2751	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::UserControl1::Connect	obj\Debug\UserControl1.g.i.cs	3624	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\PieControl.g.i.cs	520	using System;
+Diagnostics	obj\Debug\PieControl.g.i.cs	541	using System.Diagnostics;
+Windows	obj\Debug\PieControl.g.i.cs	567	using System.Windows;
+Automation	obj\Debug\PieControl.g.i.cs	597	using System.Windows.Automation;
+Controls	obj\Debug\PieControl.g.i.cs	630	using System.Windows.Controls;
+Primitives	obj\Debug\PieControl.g.i.cs	670	using System.Windows.Controls.Primitives;
+Data	obj\Debug\PieControl.g.i.cs	703	using System.Windows.Data;
+Documents	obj\Debug\PieControl.g.i.cs	730	using System.Windows.Documents;
+Ink	obj\Debug\PieControl.g.i.cs	762	using System.Windows.Ink;
+Input	obj\Debug\PieControl.g.i.cs	788	using System.Windows.Input;
+Markup	obj\Debug\PieControl.g.i.cs	816	using System.Windows.Markup;
+Media	obj\Debug\PieControl.g.i.cs	845	using System.Windows.Media;
+Animation	obj\Debug\PieControl.g.i.cs	879	using System.Windows.Media.Animation;
+Effects	obj\Debug\PieControl.g.i.cs	917	using System.Windows.Media.Effects;
+Imaging	obj\Debug\PieControl.g.i.cs	953	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\PieControl.g.i.cs	989	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\PieControl.g.i.cs	1025	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\PieControl.g.i.cs	1062	using System.Windows.Navigation;
+Shapes	obj\Debug\PieControl.g.i.cs	1095	using System.Windows.Shapes;
+Shell	obj\Debug\PieControl.g.i.cs	1124	using System.Windows.Shell;
+Phi_Core	obj\Debug\PieControl.g.i.cs	1143	namespace Phi_Core {
+Phi_Core::PieControl	obj\Debug\PieControl.g.i.cs	1245	    public partial class PieControl : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::PieControl::PieCtrl	obj\Debug\PieControl.g.i.cs	1561	        internal Phi_Core.PieControl PieCtrl;
+Phi_Core::PieControl::titleName	obj\Debug\PieControl.g.i.cs	1857	        internal System.Windows.Controls.TextBox titleName;
+Phi_Core::PieControl::canvasName	obj\Debug\PieControl.g.i.cs	2154	        internal System.Windows.Controls.Canvas canvasName;
+Phi_Core::PieControl::arcName	obj\Debug\PieControl.g.i.cs	2453	        internal System.Windows.Media.ArcSegment arcName;
+Phi_Core::PieControl::valueName	obj\Debug\PieControl.g.i.cs	2747	        internal System.Windows.Controls.Label valueName;
+Phi_Core::PieControl::_contentLoaded	obj\Debug\PieControl.g.i.cs	2840	        private bool _contentLoaded;
+Phi_Core::PieControl::InitializeComponent	obj\Debug\PieControl.g.i.cs	3116	        public void InitializeComponent() {
+Phi_Core::PieControl::Connect	obj\Debug\PieControl.g.i.cs	4299	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\PieControl.g.cs	520	using System;
+Diagnostics	obj\Debug\PieControl.g.cs	541	using System.Diagnostics;
+Windows	obj\Debug\PieControl.g.cs	567	using System.Windows;
+Automation	obj\Debug\PieControl.g.cs	597	using System.Windows.Automation;
+Controls	obj\Debug\PieControl.g.cs	630	using System.Windows.Controls;
+Primitives	obj\Debug\PieControl.g.cs	670	using System.Windows.Controls.Primitives;
+Data	obj\Debug\PieControl.g.cs	703	using System.Windows.Data;
+Documents	obj\Debug\PieControl.g.cs	730	using System.Windows.Documents;
+Ink	obj\Debug\PieControl.g.cs	762	using System.Windows.Ink;
+Input	obj\Debug\PieControl.g.cs	788	using System.Windows.Input;
+Markup	obj\Debug\PieControl.g.cs	816	using System.Windows.Markup;
+Media	obj\Debug\PieControl.g.cs	845	using System.Windows.Media;
+Animation	obj\Debug\PieControl.g.cs	879	using System.Windows.Media.Animation;
+Effects	obj\Debug\PieControl.g.cs	917	using System.Windows.Media.Effects;
+Imaging	obj\Debug\PieControl.g.cs	953	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\PieControl.g.cs	989	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\PieControl.g.cs	1025	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\PieControl.g.cs	1062	using System.Windows.Navigation;
+Shapes	obj\Debug\PieControl.g.cs	1095	using System.Windows.Shapes;
+Shell	obj\Debug\PieControl.g.cs	1124	using System.Windows.Shell;
+Phi_Core	obj\Debug\PieControl.g.cs	1143	namespace Phi_Core {
+Phi_Core::PieControl	obj\Debug\PieControl.g.cs	1245	    public partial class PieControl : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::PieControl::PieCtrl	obj\Debug\PieControl.g.cs	1561	        internal Phi_Core.PieControl PieCtrl;
+Phi_Core::PieControl::titleName	obj\Debug\PieControl.g.cs	1857	        internal System.Windows.Controls.TextBox titleName;
+Phi_Core::PieControl::canvasName	obj\Debug\PieControl.g.cs	2154	        internal System.Windows.Controls.Canvas canvasName;
+Phi_Core::PieControl::arcName	obj\Debug\PieControl.g.cs	2453	        internal System.Windows.Media.ArcSegment arcName;
+Phi_Core::PieControl::valueName	obj\Debug\PieControl.g.cs	2747	        internal System.Windows.Controls.Label valueName;
+Phi_Core::PieControl::_contentLoaded	obj\Debug\PieControl.g.cs	2840	        private bool _contentLoaded;
+Phi_Core::PieControl::InitializeComponent	obj\Debug\PieControl.g.cs	3116	        public void InitializeComponent() {
+Phi_Core::PieControl::Connect	obj\Debug\PieControl.g.cs	4299	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\NeuronBox.g.i.cs	519	using System;
+Diagnostics	obj\Debug\NeuronBox.g.i.cs	540	using System.Diagnostics;
+Windows	obj\Debug\NeuronBox.g.i.cs	566	using System.Windows;
+Automation	obj\Debug\NeuronBox.g.i.cs	596	using System.Windows.Automation;
+Controls	obj\Debug\NeuronBox.g.i.cs	629	using System.Windows.Controls;
+Primitives	obj\Debug\NeuronBox.g.i.cs	669	using System.Windows.Controls.Primitives;
+Data	obj\Debug\NeuronBox.g.i.cs	702	using System.Windows.Data;
+Documents	obj\Debug\NeuronBox.g.i.cs	729	using System.Windows.Documents;
+Ink	obj\Debug\NeuronBox.g.i.cs	761	using System.Windows.Ink;
+Input	obj\Debug\NeuronBox.g.i.cs	787	using System.Windows.Input;
+Markup	obj\Debug\NeuronBox.g.i.cs	815	using System.Windows.Markup;
+Media	obj\Debug\NeuronBox.g.i.cs	844	using System.Windows.Media;
+Animation	obj\Debug\NeuronBox.g.i.cs	878	using System.Windows.Media.Animation;
+Effects	obj\Debug\NeuronBox.g.i.cs	916	using System.Windows.Media.Effects;
+Imaging	obj\Debug\NeuronBox.g.i.cs	952	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\NeuronBox.g.i.cs	988	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\NeuronBox.g.i.cs	1024	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\NeuronBox.g.i.cs	1061	using System.Windows.Navigation;
+Shapes	obj\Debug\NeuronBox.g.i.cs	1094	using System.Windows.Shapes;
+Shell	obj\Debug\NeuronBox.g.i.cs	1123	using System.Windows.Shell;
+Phi_Core	obj\Debug\NeuronBox.g.i.cs	1142	namespace Phi_Core {
+Phi_Core::NeuronBox	obj\Debug\NeuronBox.g.i.cs	1243	    public partial class NeuronBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::NeuronBox::ctrlCanvas	obj\Debug\NeuronBox.g.i.cs	1569	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi_Core::NeuronBox::ellipse	obj\Debug\NeuronBox.g.i.cs	1865	        internal System.Windows.Shapes.Ellipse ellipse;
+Phi_Core::NeuronBox::_contentLoaded	obj\Debug\NeuronBox.g.i.cs	1956	        private bool _contentLoaded;
+Phi_Core::NeuronBox::InitializeComponent	obj\Debug\NeuronBox.g.i.cs	2232	        public void InitializeComponent() {
+Phi_Core::NeuronBox::Connect	obj\Debug\NeuronBox.g.i.cs	3413	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\NeuronBox.g.cs	519	using System;
+Diagnostics	obj\Debug\NeuronBox.g.cs	540	using System.Diagnostics;
+Windows	obj\Debug\NeuronBox.g.cs	566	using System.Windows;
+Automation	obj\Debug\NeuronBox.g.cs	596	using System.Windows.Automation;
+Controls	obj\Debug\NeuronBox.g.cs	629	using System.Windows.Controls;
+Primitives	obj\Debug\NeuronBox.g.cs	669	using System.Windows.Controls.Primitives;
+Data	obj\Debug\NeuronBox.g.cs	702	using System.Windows.Data;
+Documents	obj\Debug\NeuronBox.g.cs	729	using System.Windows.Documents;
+Ink	obj\Debug\NeuronBox.g.cs	761	using System.Windows.Ink;
+Input	obj\Debug\NeuronBox.g.cs	787	using System.Windows.Input;
+Markup	obj\Debug\NeuronBox.g.cs	815	using System.Windows.Markup;
+Media	obj\Debug\NeuronBox.g.cs	844	using System.Windows.Media;
+Animation	obj\Debug\NeuronBox.g.cs	878	using System.Windows.Media.Animation;
+Effects	obj\Debug\NeuronBox.g.cs	916	using System.Windows.Media.Effects;
+Imaging	obj\Debug\NeuronBox.g.cs	952	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\NeuronBox.g.cs	988	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\NeuronBox.g.cs	1024	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\NeuronBox.g.cs	1061	using System.Windows.Navigation;
+Shapes	obj\Debug\NeuronBox.g.cs	1094	using System.Windows.Shapes;
+Shell	obj\Debug\NeuronBox.g.cs	1123	using System.Windows.Shell;
+Phi_Core	obj\Debug\NeuronBox.g.cs	1142	namespace Phi_Core {
+Phi_Core::NeuronBox	obj\Debug\NeuronBox.g.cs	1243	    public partial class NeuronBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::NeuronBox::ctrlCanvas	obj\Debug\NeuronBox.g.cs	1569	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi_Core::NeuronBox::ellipse	obj\Debug\NeuronBox.g.cs	1865	        internal System.Windows.Shapes.Ellipse ellipse;
+Phi_Core::NeuronBox::_contentLoaded	obj\Debug\NeuronBox.g.cs	1956	        private bool _contentLoaded;
+Phi_Core::NeuronBox::InitializeComponent	obj\Debug\NeuronBox.g.cs	2232	        public void InitializeComponent() {
+Phi_Core::NeuronBox::Connect	obj\Debug\NeuronBox.g.cs	3413	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi	obj\Debug\MainWindow.g.i.cs	520	using Phi;
+System	obj\Debug\MainWindow.g.i.cs	531	using System;
+Diagnostics	obj\Debug\MainWindow.g.i.cs	552	using System.Diagnostics;
+Windows	obj\Debug\MainWindow.g.i.cs	578	using System.Windows;
+Automation	obj\Debug\MainWindow.g.i.cs	608	using System.Windows.Automation;
+Controls	obj\Debug\MainWindow.g.i.cs	641	using System.Windows.Controls;
+Primitives	obj\Debug\MainWindow.g.i.cs	681	using System.Windows.Controls.Primitives;
+Data	obj\Debug\MainWindow.g.i.cs	714	using System.Windows.Data;
+Documents	obj\Debug\MainWindow.g.i.cs	741	using System.Windows.Documents;
+Ink	obj\Debug\MainWindow.g.i.cs	773	using System.Windows.Ink;
+Input	obj\Debug\MainWindow.g.i.cs	799	using System.Windows.Input;
+Markup	obj\Debug\MainWindow.g.i.cs	827	using System.Windows.Markup;
+Media	obj\Debug\MainWindow.g.i.cs	856	using System.Windows.Media;
+Animation	obj\Debug\MainWindow.g.i.cs	890	using System.Windows.Media.Animation;
+Effects	obj\Debug\MainWindow.g.i.cs	928	using System.Windows.Media.Effects;
+Imaging	obj\Debug\MainWindow.g.i.cs	964	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\MainWindow.g.i.cs	1000	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\MainWindow.g.i.cs	1036	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\MainWindow.g.i.cs	1073	using System.Windows.Navigation;
+Shapes	obj\Debug\MainWindow.g.i.cs	1106	using System.Windows.Shapes;
+Shell	obj\Debug\MainWindow.g.i.cs	1135	using System.Windows.Shell;
+Phi	obj\Debug\MainWindow.g.i.cs	1154	namespace Phi {
+Phi::MainWindow	obj\Debug\MainWindow.g.i.cs	1251	    public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector {
+Phi::MainWindow::RootPanel	obj\Debug\MainWindow.g.i.cs	1568	        internal System.Windows.Controls.DockPanel RootPanel;
+Phi::MainWindow::TitlePanel	obj\Debug\MainWindow.g.i.cs	1868	        internal System.Windows.Controls.DockPanel TitlePanel;
+Phi::MainWindow::image	obj\Debug\MainWindow.g.i.cs	2165	        internal System.Windows.Controls.Image image;
+Phi::MainWindow::LinkFrameRateText	obj\Debug\MainWindow.g.i.cs	2459	        internal System.Windows.Controls.TextBox LinkFrameRateText;
+Phi::MainWindow::AvgIdleLabel	obj\Debug\MainWindow.g.i.cs	2765	        internal System.Windows.Controls.TextBox AvgIdleLabel;
+Phi::MainWindow::AvgIdleText	obj\Debug\MainWindow.g.i.cs	3066	        internal System.Windows.Controls.TextBox AvgIdleText;
+Phi::MainWindow::LinkStatusLabel_Copy	obj\Debug\MainWindow.g.i.cs	3366	        internal System.Windows.Controls.TextBox LinkStatusLabel_Copy;
+Phi::MainWindow::LinkStatusLabel	obj\Debug\MainWindow.g.i.cs	3675	        internal System.Windows.Controls.TextBox LinkStatusLabel;
+Phi::MainWindow::LinkStatusText	obj\Debug\MainWindow.g.i.cs	3979	        internal System.Windows.Controls.TextBox LinkStatusText;
+Phi::MainWindow::ctlNumLoops	obj\Debug\MainWindow.g.i.cs	4283	        internal System.Windows.Controls.TextBox ctlNumLoops;
+Phi::MainWindow::ctlPacketId	obj\Debug\MainWindow.g.i.cs	4584	        internal System.Windows.Controls.TextBox ctlPacketId;
+Phi::MainWindow::Phi_Camera	obj\Debug\MainWindow.g.i.cs	4884	        internal System.Windows.Controls.Canvas Phi_Camera;
+Phi::MainWindow::BtnResetGyro	obj\Debug\MainWindow.g.i.cs	5183	        internal System.Windows.Controls.Button BtnResetGyro;
+Phi::MainWindow::PieCtrl_Roll	obj\Debug\MainWindow.g.i.cs	5468	        internal Phi.PieControl PieCtrl_Roll;
+Phi::MainWindow::PieCtrl_Pitch	obj\Debug\MainWindow.g.i.cs	5753	        internal Phi.PieControl PieCtrl_Pitch;
+Phi::MainWindow::PieCtrl_Yaw	obj\Debug\MainWindow.g.i.cs	6039	        internal Phi.PieControl PieCtrl_Yaw;
+Phi::MainWindow::LegGrid	obj\Debug\MainWindow.g.i.cs	6337	        internal System.Windows.Controls.Grid LegGrid;
+Phi::MainWindow::LF_Leg	obj\Debug\MainWindow.g.i.cs	6613	        internal Phi.LegBox LF_Leg;
+Phi::MainWindow::RF_Leg	obj\Debug\MainWindow.g.i.cs	6888	        internal Phi.LegBox RF_Leg;
+Phi::MainWindow::LB_Leg	obj\Debug\MainWindow.g.i.cs	7163	        internal Phi.LegBox LB_Leg;
+Phi::MainWindow::RB_Leg	obj\Debug\MainWindow.g.i.cs	7438	        internal Phi.LegBox RB_Leg;
+Phi::MainWindow::_contentLoaded	obj\Debug\MainWindow.g.i.cs	7528	        private bool _contentLoaded;
+Phi::MainWindow::InitializeComponent	obj\Debug\MainWindow.g.i.cs	7804	        public void InitializeComponent() {
+Phi::MainWindow::_CreateDelegate	obj\Debug\MainWindow.g.i.cs	8582	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi::MainWindow::Connect	obj\Debug\MainWindow.g.i.cs	9455	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi	obj\Debug\MainWindow.g.cs	520	using Phi;
+System	obj\Debug\MainWindow.g.cs	531	using System;
+Diagnostics	obj\Debug\MainWindow.g.cs	552	using System.Diagnostics;
+Windows	obj\Debug\MainWindow.g.cs	578	using System.Windows;
+Automation	obj\Debug\MainWindow.g.cs	608	using System.Windows.Automation;
+Controls	obj\Debug\MainWindow.g.cs	641	using System.Windows.Controls;
+Primitives	obj\Debug\MainWindow.g.cs	681	using System.Windows.Controls.Primitives;
+Data	obj\Debug\MainWindow.g.cs	714	using System.Windows.Data;
+Documents	obj\Debug\MainWindow.g.cs	741	using System.Windows.Documents;
+Ink	obj\Debug\MainWindow.g.cs	773	using System.Windows.Ink;
+Input	obj\Debug\MainWindow.g.cs	799	using System.Windows.Input;
+Markup	obj\Debug\MainWindow.g.cs	827	using System.Windows.Markup;
+Media	obj\Debug\MainWindow.g.cs	856	using System.Windows.Media;
+Animation	obj\Debug\MainWindow.g.cs	890	using System.Windows.Media.Animation;
+Effects	obj\Debug\MainWindow.g.cs	928	using System.Windows.Media.Effects;
+Imaging	obj\Debug\MainWindow.g.cs	964	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\MainWindow.g.cs	1000	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\MainWindow.g.cs	1036	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\MainWindow.g.cs	1073	using System.Windows.Navigation;
+Shapes	obj\Debug\MainWindow.g.cs	1106	using System.Windows.Shapes;
+Shell	obj\Debug\MainWindow.g.cs	1135	using System.Windows.Shell;
+Phi	obj\Debug\MainWindow.g.cs	1154	namespace Phi {
+Phi::MainWindow	obj\Debug\MainWindow.g.cs	1251	    public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector {
+Phi::MainWindow::RootPanel	obj\Debug\MainWindow.g.cs	1568	        internal System.Windows.Controls.DockPanel RootPanel;
+Phi::MainWindow::TitlePanel	obj\Debug\MainWindow.g.cs	1868	        internal System.Windows.Controls.DockPanel TitlePanel;
+Phi::MainWindow::image	obj\Debug\MainWindow.g.cs	2165	        internal System.Windows.Controls.Image image;
+Phi::MainWindow::LinkFrameRateText	obj\Debug\MainWindow.g.cs	2459	        internal System.Windows.Controls.TextBox LinkFrameRateText;
+Phi::MainWindow::AvgIdleLabel	obj\Debug\MainWindow.g.cs	2765	        internal System.Windows.Controls.TextBox AvgIdleLabel;
+Phi::MainWindow::AvgIdleText	obj\Debug\MainWindow.g.cs	3066	        internal System.Windows.Controls.TextBox AvgIdleText;
+Phi::MainWindow::LinkStatusLabel_Copy	obj\Debug\MainWindow.g.cs	3366	        internal System.Windows.Controls.TextBox LinkStatusLabel_Copy;
+Phi::MainWindow::LinkStatusLabel	obj\Debug\MainWindow.g.cs	3675	        internal System.Windows.Controls.TextBox LinkStatusLabel;
+Phi::MainWindow::LinkStatusText	obj\Debug\MainWindow.g.cs	3979	        internal System.Windows.Controls.TextBox LinkStatusText;
+Phi::MainWindow::ctlNumLoops	obj\Debug\MainWindow.g.cs	4283	        internal System.Windows.Controls.TextBox ctlNumLoops;
+Phi::MainWindow::ctlPacketId	obj\Debug\MainWindow.g.cs	4584	        internal System.Windows.Controls.TextBox ctlPacketId;
+Phi::MainWindow::Phi_Camera	obj\Debug\MainWindow.g.cs	4884	        internal System.Windows.Controls.Canvas Phi_Camera;
+Phi::MainWindow::BtnResetGyro	obj\Debug\MainWindow.g.cs	5183	        internal System.Windows.Controls.Button BtnResetGyro;
+Phi::MainWindow::PieCtrl_Roll	obj\Debug\MainWindow.g.cs	5468	        internal Phi.PieControl PieCtrl_Roll;
+Phi::MainWindow::PieCtrl_Pitch	obj\Debug\MainWindow.g.cs	5753	        internal Phi.PieControl PieCtrl_Pitch;
+Phi::MainWindow::PieCtrl_Yaw	obj\Debug\MainWindow.g.cs	6039	        internal Phi.PieControl PieCtrl_Yaw;
+Phi::MainWindow::LegGrid	obj\Debug\MainWindow.g.cs	6337	        internal System.Windows.Controls.Grid LegGrid;
+Phi::MainWindow::LF_Leg	obj\Debug\MainWindow.g.cs	6613	        internal Phi.LegBox LF_Leg;
+Phi::MainWindow::RF_Leg	obj\Debug\MainWindow.g.cs	6888	        internal Phi.LegBox RF_Leg;
+Phi::MainWindow::LB_Leg	obj\Debug\MainWindow.g.cs	7163	        internal Phi.LegBox LB_Leg;
+Phi::MainWindow::RB_Leg	obj\Debug\MainWindow.g.cs	7438	        internal Phi.LegBox RB_Leg;
+Phi::MainWindow::_contentLoaded	obj\Debug\MainWindow.g.cs	7528	        private bool _contentLoaded;
+Phi::MainWindow::InitializeComponent	obj\Debug\MainWindow.g.cs	7804	        public void InitializeComponent() {
+Phi::MainWindow::_CreateDelegate	obj\Debug\MainWindow.g.cs	8582	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi::MainWindow::Connect	obj\Debug\MainWindow.g.cs	9455	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\LegBox.g.i.cs	516	using Phi_Core;
+System	obj\Debug\LegBox.g.i.cs	532	using System;
+Diagnostics	obj\Debug\LegBox.g.i.cs	553	using System.Diagnostics;
+Windows	obj\Debug\LegBox.g.i.cs	579	using System.Windows;
+Automation	obj\Debug\LegBox.g.i.cs	609	using System.Windows.Automation;
+Controls	obj\Debug\LegBox.g.i.cs	642	using System.Windows.Controls;
+Primitives	obj\Debug\LegBox.g.i.cs	682	using System.Windows.Controls.Primitives;
+Data	obj\Debug\LegBox.g.i.cs	715	using System.Windows.Data;
+Documents	obj\Debug\LegBox.g.i.cs	742	using System.Windows.Documents;
+Ink	obj\Debug\LegBox.g.i.cs	774	using System.Windows.Ink;
+Input	obj\Debug\LegBox.g.i.cs	800	using System.Windows.Input;
+Markup	obj\Debug\LegBox.g.i.cs	828	using System.Windows.Markup;
+Media	obj\Debug\LegBox.g.i.cs	857	using System.Windows.Media;
+Animation	obj\Debug\LegBox.g.i.cs	891	using System.Windows.Media.Animation;
+Effects	obj\Debug\LegBox.g.i.cs	929	using System.Windows.Media.Effects;
+Imaging	obj\Debug\LegBox.g.i.cs	965	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\LegBox.g.i.cs	1001	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\LegBox.g.i.cs	1037	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\LegBox.g.i.cs	1074	using System.Windows.Navigation;
+Shapes	obj\Debug\LegBox.g.i.cs	1107	using System.Windows.Shapes;
+Shell	obj\Debug\LegBox.g.i.cs	1136	using System.Windows.Shell;
+Phi_Core	obj\Debug\LegBox.g.i.cs	1155	namespace Phi_Core {
+Phi_Core::LegBox	obj\Debug\LegBox.g.i.cs	1253	    public partial class LegBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::LegBox::legLabel	obj\Debug\LegBox.g.i.cs	1572	        internal System.Windows.Controls.Label legLabel;
+Phi_Core::LegBox::hipJoint	obj\Debug\LegBox.g.i.cs	1851	        internal Phi_Core.JointBox hipJoint;
+Phi_Core::LegBox::thighJoint	obj\Debug\LegBox.g.i.cs	2130	        internal Phi_Core.JointBox thighJoint;
+Phi_Core::LegBox::kneeJoint	obj\Debug\LegBox.g.i.cs	2411	        internal Phi_Core.JointBox kneeJoint;
+Phi_Core::LegBox::_contentLoaded	obj\Debug\LegBox.g.i.cs	2504	        private bool _contentLoaded;
+Phi_Core::LegBox::InitializeComponent	obj\Debug\LegBox.g.i.cs	2780	        public void InitializeComponent() {
+Phi_Core::LegBox::_CreateDelegate	obj\Debug\LegBox.g.i.cs	3555	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::LegBox::Connect	obj\Debug\LegBox.g.i.cs	4428	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\LegBox.g.cs	516	using Phi_Core;
+System	obj\Debug\LegBox.g.cs	532	using System;
+Diagnostics	obj\Debug\LegBox.g.cs	553	using System.Diagnostics;
+Windows	obj\Debug\LegBox.g.cs	579	using System.Windows;
+Automation	obj\Debug\LegBox.g.cs	609	using System.Windows.Automation;
+Controls	obj\Debug\LegBox.g.cs	642	using System.Windows.Controls;
+Primitives	obj\Debug\LegBox.g.cs	682	using System.Windows.Controls.Primitives;
+Data	obj\Debug\LegBox.g.cs	715	using System.Windows.Data;
+Documents	obj\Debug\LegBox.g.cs	742	using System.Windows.Documents;
+Ink	obj\Debug\LegBox.g.cs	774	using System.Windows.Ink;
+Input	obj\Debug\LegBox.g.cs	800	using System.Windows.Input;
+Markup	obj\Debug\LegBox.g.cs	828	using System.Windows.Markup;
+Media	obj\Debug\LegBox.g.cs	857	using System.Windows.Media;
+Animation	obj\Debug\LegBox.g.cs	891	using System.Windows.Media.Animation;
+Effects	obj\Debug\LegBox.g.cs	929	using System.Windows.Media.Effects;
+Imaging	obj\Debug\LegBox.g.cs	965	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\LegBox.g.cs	1001	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\LegBox.g.cs	1037	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\LegBox.g.cs	1074	using System.Windows.Navigation;
+Shapes	obj\Debug\LegBox.g.cs	1107	using System.Windows.Shapes;
+Shell	obj\Debug\LegBox.g.cs	1136	using System.Windows.Shell;
+Phi_Core	obj\Debug\LegBox.g.cs	1155	namespace Phi_Core {
+Phi_Core::LegBox	obj\Debug\LegBox.g.cs	1253	    public partial class LegBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::LegBox::legLabel	obj\Debug\LegBox.g.cs	1572	        internal System.Windows.Controls.Label legLabel;
+Phi_Core::LegBox::hipJoint	obj\Debug\LegBox.g.cs	1851	        internal Phi_Core.JointBox hipJoint;
+Phi_Core::LegBox::thighJoint	obj\Debug\LegBox.g.cs	2130	        internal Phi_Core.JointBox thighJoint;
+Phi_Core::LegBox::kneeJoint	obj\Debug\LegBox.g.cs	2411	        internal Phi_Core.JointBox kneeJoint;
+Phi_Core::LegBox::_contentLoaded	obj\Debug\LegBox.g.cs	2504	        private bool _contentLoaded;
+Phi_Core::LegBox::InitializeComponent	obj\Debug\LegBox.g.cs	2780	        public void InitializeComponent() {
+Phi_Core::LegBox::_CreateDelegate	obj\Debug\LegBox.g.cs	3555	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::LegBox::Connect	obj\Debug\LegBox.g.cs	4428	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\JointBox.g.i.cs	518	using Phi_Core;
+System	obj\Debug\JointBox.g.i.cs	534	using System;
+Diagnostics	obj\Debug\JointBox.g.i.cs	555	using System.Diagnostics;
+Windows	obj\Debug\JointBox.g.i.cs	581	using System.Windows;
+Automation	obj\Debug\JointBox.g.i.cs	611	using System.Windows.Automation;
+Controls	obj\Debug\JointBox.g.i.cs	644	using System.Windows.Controls;
+Primitives	obj\Debug\JointBox.g.i.cs	684	using System.Windows.Controls.Primitives;
+Data	obj\Debug\JointBox.g.i.cs	717	using System.Windows.Data;
+Documents	obj\Debug\JointBox.g.i.cs	744	using System.Windows.Documents;
+Ink	obj\Debug\JointBox.g.i.cs	776	using System.Windows.Ink;
+Input	obj\Debug\JointBox.g.i.cs	802	using System.Windows.Input;
+Markup	obj\Debug\JointBox.g.i.cs	830	using System.Windows.Markup;
+Media	obj\Debug\JointBox.g.i.cs	859	using System.Windows.Media;
+Animation	obj\Debug\JointBox.g.i.cs	893	using System.Windows.Media.Animation;
+Effects	obj\Debug\JointBox.g.i.cs	931	using System.Windows.Media.Effects;
+Imaging	obj\Debug\JointBox.g.i.cs	967	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\JointBox.g.i.cs	1003	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\JointBox.g.i.cs	1039	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\JointBox.g.i.cs	1076	using System.Windows.Navigation;
+Shapes	obj\Debug\JointBox.g.i.cs	1109	using System.Windows.Shapes;
+Shell	obj\Debug\JointBox.g.i.cs	1138	using System.Windows.Shell;
+Phi_Core	obj\Debug\JointBox.g.i.cs	1157	namespace Phi_Core {
+Phi_Core::JointBox	obj\Debug\JointBox.g.i.cs	1257	    public partial class JointBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::JointBox::label	obj\Debug\JointBox.g.i.cs	1580	        internal System.Windows.Controls.Label label;
+Phi_Core::JointBox::neuronBox	obj\Debug\JointBox.g.i.cs	1859	        internal Phi_Core.NeuronBox neuronBox;
+Phi_Core::JointBox::barBox	obj\Debug\JointBox.g.i.cs	2139	        internal Phi_Core.BarBox barBox;
+Phi_Core::JointBox::_contentLoaded	obj\Debug\JointBox.g.i.cs	2229	        private bool _contentLoaded;
+Phi_Core::JointBox::InitializeComponent	obj\Debug\JointBox.g.i.cs	2505	        public void InitializeComponent() {
+Phi_Core::JointBox::_CreateDelegate	obj\Debug\JointBox.g.i.cs	3284	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::JointBox::Connect	obj\Debug\JointBox.g.i.cs	4157	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+Phi_Core	obj\Debug\JointBox.g.cs	518	using Phi_Core;
+System	obj\Debug\JointBox.g.cs	534	using System;
+Diagnostics	obj\Debug\JointBox.g.cs	555	using System.Diagnostics;
+Windows	obj\Debug\JointBox.g.cs	581	using System.Windows;
+Automation	obj\Debug\JointBox.g.cs	611	using System.Windows.Automation;
+Controls	obj\Debug\JointBox.g.cs	644	using System.Windows.Controls;
+Primitives	obj\Debug\JointBox.g.cs	684	using System.Windows.Controls.Primitives;
+Data	obj\Debug\JointBox.g.cs	717	using System.Windows.Data;
+Documents	obj\Debug\JointBox.g.cs	744	using System.Windows.Documents;
+Ink	obj\Debug\JointBox.g.cs	776	using System.Windows.Ink;
+Input	obj\Debug\JointBox.g.cs	802	using System.Windows.Input;
+Markup	obj\Debug\JointBox.g.cs	830	using System.Windows.Markup;
+Media	obj\Debug\JointBox.g.cs	859	using System.Windows.Media;
+Animation	obj\Debug\JointBox.g.cs	893	using System.Windows.Media.Animation;
+Effects	obj\Debug\JointBox.g.cs	931	using System.Windows.Media.Effects;
+Imaging	obj\Debug\JointBox.g.cs	967	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\JointBox.g.cs	1003	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\JointBox.g.cs	1039	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\JointBox.g.cs	1076	using System.Windows.Navigation;
+Shapes	obj\Debug\JointBox.g.cs	1109	using System.Windows.Shapes;
+Shell	obj\Debug\JointBox.g.cs	1138	using System.Windows.Shell;
+Phi_Core	obj\Debug\JointBox.g.cs	1157	namespace Phi_Core {
+Phi_Core::JointBox	obj\Debug\JointBox.g.cs	1257	    public partial class JointBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::JointBox::label	obj\Debug\JointBox.g.cs	1580	        internal System.Windows.Controls.Label label;
+Phi_Core::JointBox::neuronBox	obj\Debug\JointBox.g.cs	1859	        internal Phi_Core.NeuronBox neuronBox;
+Phi_Core::JointBox::barBox	obj\Debug\JointBox.g.cs	2139	        internal Phi_Core.BarBox barBox;
+Phi_Core::JointBox::_contentLoaded	obj\Debug\JointBox.g.cs	2229	        private bool _contentLoaded;
+Phi_Core::JointBox::InitializeComponent	obj\Debug\JointBox.g.cs	2505	        public void InitializeComponent() {
+Phi_Core::JointBox::_CreateDelegate	obj\Debug\JointBox.g.cs	3284	        internal System.Delegate _CreateDelegate(System.Type delegateType, string handler) {
+Phi_Core::JointBox::Connect	obj\Debug\JointBox.g.cs	4157	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+XamlGeneratedNamespace	obj\Debug\GeneratedInternalTypeHelper.g.i.cs	407	namespace XamlGeneratedNamespace {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper	obj\Debug\GeneratedInternalTypeHelper.g.i.cs	788	    public sealed class GeneratedInternalTypeHelper : System.Windows.Markup.InternalTypeHelper {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::CreateInstance	obj\Debug\GeneratedInternalTypeHelper.g.i.cs	976	        protected override object CreateInstance(System.Type type, System.Globalization.CultureInfo culture) {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::GetPropertyValue	obj\Debug\GeneratedInternalTypeHelper.g.i.cs	1466	        protected override object GetPropertyValue(System.Reflection.PropertyInfo propertyInfo, object target, System.Globalization.CultureInfo culture) {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::SetPropertyValue	obj\Debug\GeneratedInternalTypeHelper.g.i.cs	1823	        protected override void SetPropertyValue(System.Reflection.PropertyInfo propertyInfo, object target, object value, System.Globalization.CultureInfo culture) {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::CreateDelegate	obj\Debug\GeneratedInternalTypeHelper.g.i.cs	2203	        protected override System.Delegate CreateDelegate(System.Type delegateType, object target, string handler) {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::AddEventHandler	obj\Debug\GeneratedInternalTypeHelper.g.i.cs	2761	        protected override void AddEventHandler(System.Reflection.EventInfo eventInfo, object target, System.Delegate handler) {
+XamlGeneratedNamespace	obj\Debug\GeneratedInternalTypeHelper.g.cs	407	namespace XamlGeneratedNamespace {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper	obj\Debug\GeneratedInternalTypeHelper.g.cs	788	    public sealed class GeneratedInternalTypeHelper : System.Windows.Markup.InternalTypeHelper {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::CreateInstance	obj\Debug\GeneratedInternalTypeHelper.g.cs	976	        protected override object CreateInstance(System.Type type, System.Globalization.CultureInfo culture) {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::GetPropertyValue	obj\Debug\GeneratedInternalTypeHelper.g.cs	1466	        protected override object GetPropertyValue(System.Reflection.PropertyInfo propertyInfo, object target, System.Globalization.CultureInfo culture) {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::SetPropertyValue	obj\Debug\GeneratedInternalTypeHelper.g.cs	1823	        protected override void SetPropertyValue(System.Reflection.PropertyInfo propertyInfo, object target, object value, System.Globalization.CultureInfo culture) {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::CreateDelegate	obj\Debug\GeneratedInternalTypeHelper.g.cs	2203	        protected override System.Delegate CreateDelegate(System.Type delegateType, object target, string handler) {
+XamlGeneratedNamespace::GeneratedInternalTypeHelper::AddEventHandler	obj\Debug\GeneratedInternalTypeHelper.g.cs	2761	        protected override void AddEventHandler(System.Reflection.EventInfo eventInfo, object target, System.Delegate handler) {
+System	obj\Debug\BarBox.g.i.cs	516	using System;
+Diagnostics	obj\Debug\BarBox.g.i.cs	537	using System.Diagnostics;
+Windows	obj\Debug\BarBox.g.i.cs	563	using System.Windows;
+Automation	obj\Debug\BarBox.g.i.cs	593	using System.Windows.Automation;
+Controls	obj\Debug\BarBox.g.i.cs	626	using System.Windows.Controls;
+Primitives	obj\Debug\BarBox.g.i.cs	666	using System.Windows.Controls.Primitives;
+Data	obj\Debug\BarBox.g.i.cs	699	using System.Windows.Data;
+Documents	obj\Debug\BarBox.g.i.cs	726	using System.Windows.Documents;
+Ink	obj\Debug\BarBox.g.i.cs	758	using System.Windows.Ink;
+Input	obj\Debug\BarBox.g.i.cs	784	using System.Windows.Input;
+Markup	obj\Debug\BarBox.g.i.cs	812	using System.Windows.Markup;
+Media	obj\Debug\BarBox.g.i.cs	841	using System.Windows.Media;
+Animation	obj\Debug\BarBox.g.i.cs	875	using System.Windows.Media.Animation;
+Effects	obj\Debug\BarBox.g.i.cs	913	using System.Windows.Media.Effects;
+Imaging	obj\Debug\BarBox.g.i.cs	949	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\BarBox.g.i.cs	985	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\BarBox.g.i.cs	1021	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\BarBox.g.i.cs	1058	using System.Windows.Navigation;
+Shapes	obj\Debug\BarBox.g.i.cs	1091	using System.Windows.Shapes;
+Shell	obj\Debug\BarBox.g.i.cs	1120	using System.Windows.Shell;
+Phi_Core	obj\Debug\BarBox.g.i.cs	1139	namespace Phi_Core {
+Phi_Core::BarBox	obj\Debug\BarBox.g.i.cs	1237	    public partial class BarBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::BarBox::ctrlCanvas	obj\Debug\BarBox.g.i.cs	1557	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi_Core::BarBox::bar	obj\Debug\BarBox.g.i.cs	1852	        internal System.Windows.Shapes.Rectangle bar;
+Phi_Core::BarBox::_contentLoaded	obj\Debug\BarBox.g.i.cs	1939	        private bool _contentLoaded;
+Phi_Core::BarBox::InitializeComponent	obj\Debug\BarBox.g.i.cs	2215	        public void InitializeComponent() {
+Phi_Core::BarBox::Connect	obj\Debug\BarBox.g.i.cs	3390	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\BarBox.g.cs	516	using System;
+Diagnostics	obj\Debug\BarBox.g.cs	537	using System.Diagnostics;
+Windows	obj\Debug\BarBox.g.cs	563	using System.Windows;
+Automation	obj\Debug\BarBox.g.cs	593	using System.Windows.Automation;
+Controls	obj\Debug\BarBox.g.cs	626	using System.Windows.Controls;
+Primitives	obj\Debug\BarBox.g.cs	666	using System.Windows.Controls.Primitives;
+Data	obj\Debug\BarBox.g.cs	699	using System.Windows.Data;
+Documents	obj\Debug\BarBox.g.cs	726	using System.Windows.Documents;
+Ink	obj\Debug\BarBox.g.cs	758	using System.Windows.Ink;
+Input	obj\Debug\BarBox.g.cs	784	using System.Windows.Input;
+Markup	obj\Debug\BarBox.g.cs	812	using System.Windows.Markup;
+Media	obj\Debug\BarBox.g.cs	841	using System.Windows.Media;
+Animation	obj\Debug\BarBox.g.cs	875	using System.Windows.Media.Animation;
+Effects	obj\Debug\BarBox.g.cs	913	using System.Windows.Media.Effects;
+Imaging	obj\Debug\BarBox.g.cs	949	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\BarBox.g.cs	985	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\BarBox.g.cs	1021	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\BarBox.g.cs	1058	using System.Windows.Navigation;
+Shapes	obj\Debug\BarBox.g.cs	1091	using System.Windows.Shapes;
+Shell	obj\Debug\BarBox.g.cs	1120	using System.Windows.Shell;
+Phi_Core	obj\Debug\BarBox.g.cs	1139	namespace Phi_Core {
+Phi_Core::BarBox	obj\Debug\BarBox.g.cs	1237	    public partial class BarBox : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+Phi_Core::BarBox::ctrlCanvas	obj\Debug\BarBox.g.cs	1557	        internal System.Windows.Controls.Canvas ctrlCanvas;
+Phi_Core::BarBox::bar	obj\Debug\BarBox.g.cs	1852	        internal System.Windows.Shapes.Rectangle bar;
+Phi_Core::BarBox::_contentLoaded	obj\Debug\BarBox.g.cs	1939	        private bool _contentLoaded;
+Phi_Core::BarBox::InitializeComponent	obj\Debug\BarBox.g.cs	2215	        public void InitializeComponent() {
+Phi_Core::BarBox::Connect	obj\Debug\BarBox.g.cs	3390	        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+System	obj\Debug\App.g.i.cs	513	using System;
+Diagnostics	obj\Debug\App.g.i.cs	534	using System.Diagnostics;
+Windows	obj\Debug\App.g.i.cs	560	using System.Windows;
+Automation	obj\Debug\App.g.i.cs	590	using System.Windows.Automation;
+Controls	obj\Debug\App.g.i.cs	623	using System.Windows.Controls;
+Primitives	obj\Debug\App.g.i.cs	663	using System.Windows.Controls.Primitives;
+Data	obj\Debug\App.g.i.cs	696	using System.Windows.Data;
+Documents	obj\Debug\App.g.i.cs	723	using System.Windows.Documents;
+Ink	obj\Debug\App.g.i.cs	755	using System.Windows.Ink;
+Input	obj\Debug\App.g.i.cs	781	using System.Windows.Input;
+Markup	obj\Debug\App.g.i.cs	809	using System.Windows.Markup;
+Media	obj\Debug\App.g.i.cs	838	using System.Windows.Media;
+Animation	obj\Debug\App.g.i.cs	872	using System.Windows.Media.Animation;
+Effects	obj\Debug\App.g.i.cs	910	using System.Windows.Media.Effects;
+Imaging	obj\Debug\App.g.i.cs	946	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\App.g.i.cs	982	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\App.g.i.cs	1018	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\App.g.i.cs	1055	using System.Windows.Navigation;
+Shapes	obj\Debug\App.g.i.cs	1088	using System.Windows.Shapes;
+Shell	obj\Debug\App.g.i.cs	1117	using System.Windows.Shell;
+Phi_Core	obj\Debug\App.g.i.cs	1136	namespace Phi_Core {
+Phi_Core::App	obj\Debug\App.g.i.cs	1231	    public partial class App : System.Windows.Application {
+Phi_Core::App::InitializeComponent	obj\Debug\App.g.i.cs	1526	        public void InitializeComponent() {
+Phi_Core::App::Main	obj\Debug\App.g.i.cs	2074	        public static void Main() {
+System	obj\Debug\App.g.cs	513	using System;
+Diagnostics	obj\Debug\App.g.cs	534	using System.Diagnostics;
+Windows	obj\Debug\App.g.cs	560	using System.Windows;
+Automation	obj\Debug\App.g.cs	590	using System.Windows.Automation;
+Controls	obj\Debug\App.g.cs	623	using System.Windows.Controls;
+Primitives	obj\Debug\App.g.cs	663	using System.Windows.Controls.Primitives;
+Data	obj\Debug\App.g.cs	696	using System.Windows.Data;
+Documents	obj\Debug\App.g.cs	723	using System.Windows.Documents;
+Ink	obj\Debug\App.g.cs	755	using System.Windows.Ink;
+Input	obj\Debug\App.g.cs	781	using System.Windows.Input;
+Markup	obj\Debug\App.g.cs	809	using System.Windows.Markup;
+Media	obj\Debug\App.g.cs	838	using System.Windows.Media;
+Animation	obj\Debug\App.g.cs	872	using System.Windows.Media.Animation;
+Effects	obj\Debug\App.g.cs	910	using System.Windows.Media.Effects;
+Imaging	obj\Debug\App.g.cs	946	using System.Windows.Media.Imaging;
+Media3D	obj\Debug\App.g.cs	982	using System.Windows.Media.Media3D;
+TextFormatting	obj\Debug\App.g.cs	1018	using System.Windows.Media.TextFormatting;
+Navigation	obj\Debug\App.g.cs	1055	using System.Windows.Navigation;
+Shapes	obj\Debug\App.g.cs	1088	using System.Windows.Shapes;
+Shell	obj\Debug\App.g.cs	1117	using System.Windows.Shell;
+Phi_Core	obj\Debug\App.g.cs	1136	namespace Phi_Core {
+Phi_Core::App	obj\Debug\App.g.cs	1231	    public partial class App : System.Windows.Application {
+Phi_Core::App::InitializeComponent	obj\Debug\App.g.cs	1526	        public void InitializeComponent() {
+Phi_Core::App::Main	obj\Debug\App.g.cs	2074	        public static void Main() {
+System	Eve\PhiStatePacket.cs	6	using System;
+Generic	Eve\PhiStatePacket.cs	39	using System.Collections.Generic;
+Linq	Eve\PhiStatePacket.cs	61	using System.Linq;
+Text	Eve\PhiStatePacket.cs	80	using System.Text;
+Tasks	Eve\PhiStatePacket.cs	109	using System.Threading.Tasks;
+Phi	Eve\PhiStatePacket.cs	127	namespace Phi
+Phi::PhiStatePacket	Eve\PhiStatePacket.cs	141	  class PhiStatePacket {
+Phi::PhiStatePacket::PACKET_SIGN_LEN	Eve\PhiStatePacket.cs	209	    private const int PACKET_SIGN_LEN = 4;
+Phi::PhiStatePacket::STATE_PACKET_SIGN	Eve\PhiStatePacket.cs	256	    private static byte[] STATE_PACKET_SIGN = PhiGlobals.StrToByteArray("SPV1");
+Phi::PhiStatePacket::PACKET_ID_LEN	Eve\PhiStatePacket.cs	333	    private const int PACKET_ID_LEN = 4;
+Phi::PhiStatePacket::OFF_SIGN	Eve\PhiStatePacket.cs	404	    private const int OFF_SIGN = 0;
+Phi::PhiStatePacket::OFF_PACKET_ID	Eve\PhiStatePacket.cs	440	    private const int OFF_PACKET_ID = OFF_SIGN + PACKET_SIGN_LEN;
+Phi::PhiStatePacket::OFF_IMAGE_DATA	Eve\PhiStatePacket.cs	506	    private const int OFF_IMAGE_DATA = OFF_PACKET_ID + PACKET_ID_LEN;
+Phi::PhiStatePacket::OFF_JOINT_POS_DATA	Eve\PhiStatePacket.cs	576	    private const int OFF_JOINT_POS_DATA = OFF_IMAGE_DATA + PhiGlobals.NUM_IMAGE_ELEM;
+Phi::PhiStatePacket::OFF_GYRO_DATA	Eve\PhiStatePacket.cs	663	    private const int OFF_GYRO_DATA = OFF_JOINT_POS_DATA + (PhiGlobals.NUM_JOINT_POS_ELEM * sizeof(float));
+Phi::PhiStatePacket::OFF_ACCEL_DATA	Eve\PhiStatePacket.cs	771	    private const int OFF_ACCEL_DATA = OFF_GYRO_DATA + (PhiGlobals.NUM_GYRO_ELEM * sizeof(float));
+Phi::PhiStatePacket::OFF_TEMP_DATA	Eve\PhiStatePacket.cs	870	    private const int OFF_TEMP_DATA = OFF_ACCEL_DATA + (PhiGlobals.NUM_ACCEL_ELEM * sizeof(float));
+Phi::PhiStatePacket::OFF_PACKET_END	Eve\PhiStatePacket.cs	970	    private const int OFF_PACKET_END = OFF_TEMP_DATA + PhiGlobals.NUM_TEMP_ELEM;
+Phi::PhiStatePacket::packetData	Eve\PhiStatePacket.cs	1077	    internal byte[] packetData = new byte[OFF_PACKET_END];
+Phi::PhiStatePacket::PhiStatePacket	Eve\PhiStatePacket.cs	1214	    internal PhiStatePacket() {
+Phi::PhiStatePacket::getPitch	Eve\PhiStatePacket.cs	1283	    internal double getPitch() {
+Phi::PhiStatePacket::getYaw	Eve\PhiStatePacket.cs	1419	    internal double getYaw() {
+Phi::PhiStatePacket::getRoll	Eve\PhiStatePacket.cs	1556	    internal double getRoll() {
+Phi::PhiStatePacket::getJointData	Eve\PhiStatePacket.cs	1692	    internal void getJointData(float[] joints) {
+Phi::PhiStatePacket::getPacketID	Eve\PhiStatePacket.cs	1917	    internal UInt32 getPacketID() {
+System	Eve\PhiLink.cs	6	using System;
+ComponentModel	Eve\PhiLink.cs	27	using System.ComponentModel;
+Diagnostics	Eve\PhiLink.cs	56	using System.Diagnostics;
+IO	Eve\PhiLink.cs	82	using System.IO;
+Net	Eve\PhiLink.cs	99	using System.Net;
+Sockets	Eve\PhiLink.cs	121	using System.Net.Sockets;
+Text	Eve\PhiLink.cs	143	using System.Text;
+Threading	Eve\PhiLink.cs	162	using System.Threading;
+Tasks	Eve\PhiLink.cs	196	using System.Threading.Tasks;
+Windows	Eve\PhiLink.cs	216	using System.Windows;
+Phi	Eve\PhiLink.cs	236	namespace Phi {
+Phi::PhiLink	Eve\PhiLink.cs	667	  static class PhiLink {
+Phi::PhiLink::PHI_LINK_PORT	Eve\PhiLink.cs	777	    const Int32 PHI_LINK_PORT = 1122;
+Phi::PhiLink::DESIRED_LOOP_FPS	Eve\PhiLink.cs	860	    internal const double DESIRED_LOOP_FPS = 50;
+Phi::PhiLink::DESIRED_SECS_PER_LOOP	Eve\PhiLink.cs	900	    const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
+Phi::PhiLink::LOOP_TIME_ACCUM_RATE	Eve\PhiLink.cs	984	    const double LOOP_TIME_ACCUM_RATE = (1.0 / 100);
+LINK_OFF	Eve\PhiLink.cs	1116	      LINK_OFF,
+LINK_STARTED	Eve\PhiLink.cs	1132	      LINK_STARTED,
+LINK_CONNECTING	Eve\PhiLink.cs	1152	      LINK_CONNECTING,
+LINK_CONNECTED	Eve\PhiLink.cs	1175	      LINK_CONNECTED,
+LINK_ERROR	Eve\PhiLink.cs	1197	      LINK_ERROR,
+LINK_CLOSED	Eve\PhiLink.cs	1215	      LINK_CLOSED
+Phi::PhiLink::PhiLinkStatus	Eve\PhiLink.cs	1094	    internal enum PhiLinkStatus {
+Phi::PhiLink::linkStatus	Eve\PhiLink.cs	1268	    internal static PhiLinkStatus linkStatus = PhiLinkStatus.LINK_OFF;
+Phi::PhiLink::commLoopTask	Eve\PhiLink.cs	1330	    private static Task commLoopTask = null;
+Phi::PhiLink::loopCount	Eve\PhiLink.cs	1377	    private static UInt32 loopCount = 0;
+Phi::PhiLink::secsThisLoop	Eve\PhiLink.cs	1418	    private static double secsThisLoop = 0;
+Phi::PhiLink::accum_secsPerLoop	Eve\PhiLink.cs	1462	    private static double accum_secsPerLoop = DESIRED_SECS_PER_LOOP;
+Phi::PhiLink::accum_sleepTime	Eve\PhiLink.cs	1531	    private static double accum_sleepTime = 0;
+Phi::PhiLink::lastPacketID	Eve\PhiLink.cs	1579	    private static UInt32 lastPacketID = 0;
+Phi::PhiLink::dataLock	Eve\PhiLink.cs	1870	    internal static object dataLock = new object();
+Phi::PhiLink::pitch	Eve\PhiLink.cs	1943	    private static double pitch = 0;
+Phi::PhiLink::yaw	Eve\PhiLink.cs	1980	    private static double yaw = 0;
+Phi::PhiLink::roll	Eve\PhiLink.cs	2015	    private static double roll = 0;
+Phi::PhiLink::joints	Eve\PhiLink.cs	2053	    private static float[] joints = new float[PhiGlobals.NUM_MOTOR_ELEM];
+Phi::PhiLink::startListenerAsync	Eve\PhiLink.cs	2174	    async static internal Task<NetworkStream> startListenerAsync() {
+Phi::PhiLink::startCommLoop	Eve\PhiLink.cs	4349	    internal static void startCommLoop(NetworkStream phiStream) {
+Phi::PhiLink::stopCommLoop	Eve\PhiLink.cs	4620	    internal static void stopCommLoop() {
+Phi::PhiLink::commLoop	Eve\PhiLink.cs	4844	    static void commLoop(NetworkStream phiStream) {
+Phi::PhiLink::clampRange	Eve\PhiLink.cs	7128	    private static double clampRange(double deg, double absMax) {
+Phi::PhiLink::parseState	Eve\PhiLink.cs	7341	    private static void parseState(PhiStatePacket statePacket) {
+Phi::PhiLink::resetGyroAccum	Eve\PhiLink.cs	7652	    internal static void resetGyroAccum() {
+Phi::PhiLink::setLinkStatus	Eve\PhiLink.cs	7819	    internal static void setLinkStatus(PhiLinkStatus status) {
+Phi::PhiLink::getAvgIdle	Eve\PhiLink.cs	7972	    internal static double getAvgIdle() {
+Phi::PhiLink::getAvgFrameRate	Eve\PhiLink.cs	8109	    internal static double getAvgFrameRate() {
+Phi::PhiLink::getLoopCount	Eve\PhiLink.cs	8235	    internal static double getLoopCount() {
+Phi::PhiLink::getLastPacketID	Eve\PhiLink.cs	8344	    internal static UInt32 getLastPacketID() {
+Phi::PhiLink::getGyroAccumPitch	Eve\PhiLink.cs	8459	    internal static double getGyroAccumPitch() {
+Phi::PhiLink::getGyroAccumYaw	Eve\PhiLink.cs	8611	    internal static double getGyroAccumYaw() {
+Phi::PhiLink::getGyroAccumRoll	Eve\PhiLink.cs	8759	    internal static double getGyroAccumRoll() {
+Phi::PhiLink::getJointPos	Eve\PhiLink.cs	8909	    internal static double getJointPos(int idx) {
+System	Eve\PhiCmdPacket.cs	6	using System;
+Generic	Eve\PhiCmdPacket.cs	39	using System.Collections.Generic;
+Linq	Eve\PhiCmdPacket.cs	61	using System.Linq;
+Text	Eve\PhiCmdPacket.cs	80	using System.Text;
+Tasks	Eve\PhiCmdPacket.cs	109	using System.Threading.Tasks;
+Phi	Eve\PhiCmdPacket.cs	127	namespace Phi {
+Phi::PhiCmdPacket	Eve\PhiCmdPacket.cs	142	  class PhiCmdPacket {
+Phi::PhiCmdPacket::PACKET_SIGN_LEN	Eve\PhiCmdPacket.cs	208	    private const int PACKET_SIGN_LEN = 4;
+Phi::PhiCmdPacket::CMD_PACKET_SIGN	Eve\PhiCmdPacket.cs	255	    private static byte[] CMD_PACKET_SIGN = PhiGlobals.StrToByteArray("CPV1");
+Phi::PhiCmdPacket::OFF_SIGN	Eve\PhiCmdPacket.cs	360	    private const int OFF_SIGN = 0;
+Phi::PhiCmdPacket::OFF_MOTOR_POWER	Eve\PhiCmdPacket.cs	396	    private const int OFF_MOTOR_POWER = OFF_SIGN + PACKET_SIGN_LEN;
+Phi::PhiCmdPacket::OFF_PACKET_END	Eve\PhiCmdPacket.cs	464	    private const int OFF_PACKET_END = OFF_MOTOR_POWER + PhiGlobals.NUM_MOTOR_ELEM;
+Phi::PhiCmdPacket::packetData	Eve\PhiCmdPacket.cs	574	    internal byte[] packetData = new byte[OFF_PACKET_END];
+Phi::PhiCmdPacket::PhiCmdPacket	Eve\PhiCmdPacket.cs	711	    internal PhiCmdPacket() {
+System	MainWindow.xaml.cs	6	using System;
+Generic	MainWindow.xaml.cs	39	using System.Collections.Generic;
+Linq	MainWindow.xaml.cs	61	using System.Linq;
+Sockets	MainWindow.xaml.cs	84	using System.Net.Sockets;
+Text	MainWindow.xaml.cs	106	using System.Text;
+Tasks	MainWindow.xaml.cs	135	using System.Threading.Tasks;
+Timers	MainWindow.xaml.cs	155	using System.Timers;
+Windows	MainWindow.xaml.cs	176	using System.Windows;
+Controls	MainWindow.xaml.cs	206	using System.Windows.Controls;
+Data	MainWindow.xaml.cs	237	using System.Windows.Data;
+Documents	MainWindow.xaml.cs	264	using System.Windows.Documents;
+Input	MainWindow.xaml.cs	296	using System.Windows.Input;
+Media	MainWindow.xaml.cs	324	using System.Windows.Media;
+Imaging	MainWindow.xaml.cs	358	using System.Windows.Media.Imaging;
+Navigation	MainWindow.xaml.cs	388	using System.Windows.Navigation;
+Shapes	MainWindow.xaml.cs	421	using System.Windows.Shapes;
+Threading	MainWindow.xaml.cs	450	using System.Windows.Threading;
+Phi	MainWindow.xaml.cs	472	namespace Phi {
+Phi::MainWindow	MainWindow.xaml.cs	578	  public partial class MainWindow : Window {
+Phi::MainWindow::blinkyTimer	MainWindow.xaml.cs	663	    private static DispatcherTimer blinkyTimer;
+Phi::MainWindow::blinkState	MainWindow.xaml.cs	693	    private bool blinkState = false;
+Phi::MainWindow::updateTimer	MainWindow.xaml.cs	748	    private static DispatcherTimer updateTimer;
+Phi::MainWindow::MainWindow	MainWindow.xaml.cs	800	    public MainWindow() {
+Phi::MainWindow::startPhiLink	MainWindow.xaml.cs	930	    async private void startPhiLink() {
+Phi::MainWindow::enableBlinkyTimer	MainWindow.xaml.cs	1403	    private void enableBlinkyTimer(bool bEnable) {
+Phi::MainWindow::blinkNowEvent	MainWindow.xaml.cs	1923	    private void blinkNowEvent(object source, EventArgs e) {
+Phi::MainWindow::updateLinkStatus	MainWindow.xaml.cs	2341	    internal void updateLinkStatus(PhiLink.PhiLinkStatus status) {
+Phi::MainWindow::Window_Loaded	MainWindow.xaml.cs	3405	    private void Window_Loaded(object sender, RoutedEventArgs e) {
+Phi::MainWindow::enableUpdateTimer	MainWindow.xaml.cs	4770	    private void enableUpdateTimer(bool bEnable) {
+Phi::MainWindow::updateNowEvent	MainWindow.xaml.cs	5290	    private void updateNowEvent(object source, EventArgs e) {
+Phi::MainWindow::drawGyroIndicator	MainWindow.xaml.cs	6906	    private void drawGyroIndicator(string prefix, double degrees) {
+Phi::MainWindow::BtnResetGyro_Click	MainWindow.xaml.cs	7667	    private void BtnResetGyro_Click(object sender, RoutedEventArgs e) {
