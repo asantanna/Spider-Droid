@@ -13,8 +13,9 @@ namespace Phi
     //
 
     // camera sensor data
-    internal const int IMAGE_X = 160;
-    internal const int IMAGE_Y = 120;
+    // HACK: size reduced for now because of network latency
+    internal const int IMAGE_X = 8; // 160;
+    internal const int IMAGE_Y = 8; // 120;
     internal const int NUM_IMAGE_ELEM = IMAGE_X * IMAGE_Y;
 
     // leg motor cmds
