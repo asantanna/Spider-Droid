@@ -1,0 +1,19 @@
+#! /bin/bash
+
+cd ..
+
+PWR=70
+
+./go \
+-set-motor-power D0 -$PWR \
+-sleep 1 \
+-set-motor-power D1 -$PWR \
+-sleep 1 \
+-set-motor-power D0 $PWR \
+-sleep 1 \
+-set-motor-power D1 $PWR \
+-sleep 1 \
+-goto 1
+
+
+
