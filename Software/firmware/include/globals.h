@@ -42,4 +42,6 @@ EXT DATALOG* g_pDlog_hwPump_UART_workTime INIT(NULL);
 EXT DATALOG* g_pDlog_hwPump_SPI_workTime  INIT(NULL);
 EXT DATALOG* g_pDlog_hwPump_I2C_workTime  INIT(NULL);
 
+// GPIO
+EXT volatile DWORD *g_pGpio INIT(NULL);
 

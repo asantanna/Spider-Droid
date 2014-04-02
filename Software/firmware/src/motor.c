@@ -147,19 +147,22 @@ void flushMotorCmds() {
 //
 // Get joint position by sending a command to the appropriate ADC through SPI 1
 //
-// Note; raw ADC value is [0,1023]
+// Note: raw ADC value is [0,1023]
 //
 
-UINT16 getRawJointPos(BYTE adcIdx) {
+UINT16 getRawJointPos(BYTE jointIdx) {
+
+  BYTE adcIdx = JOINT_IDX_TO_ADC_IDX(jointIdx);
+  BYTE adcChan = JOINT_IDX_TO_ADC_CHAN(jointIdx);
   
   BYTE txBuff[3];
   BYTE rxBuff[3] = {0};
 
   txBuff[0] = ADC_CMD1_START;
-  txBuff[1] = ADC_CMD2_SINGLE | ( ((adcIdx) << 4) & ADC_CMD2_ADDR_MASK) ;
+  txBuff[1] = ADC_CMD2_SINGLE | ( ((adcChan) << 4) & ADC_CMD2_ADDR_MASK) ;
   txBuff[2] = 0;
   
-  spi_exchange(ADC_SPI_IDX, txBuff, rxBuff, COUNTOF(txBuff));
+  spi_exchange_ADC(adcIdx, txBuff, rxBuff, COUNTOF(txBuff));
 
   // extract raw value [0, 1023]
   UINT16 adcValue = (UINT16) (rxBuff[1] & ADC_DATA2_MASK);
@@ -167,23 +170,22 @@ UINT16 getRawJointPos(BYTE adcIdx) {
   adcValue |= (UINT16) rxBuff[2];
 
   // DEBUG
-  // LOG_INFO("getRawJointPos(%d) = %02Xh", adcIdx, adcValue);
+  // LOG_INFO("getRawJointPos(%d) = %02Xh", jointIdx, adcValue);
   // LOG_INFO("  outgoing:  %02Xh %02Xh %02Xh", txBuff[0], txBuff[1], txBuff[2]); 
   // LOG_INFO("  incoming:  %02Xh %02Xh %02Xh", rxBuff[0], rxBuff[1], rxBuff[2]);
 
   return adcValue;
 }
 
-float getJointPos(BYTE adcIdx) {
+float getJointPos(BYTE jointIdx) {
   // convert raw ADC val to canonical
-  return ADC_RAW_TO_CANON(getRawJointPos(adcIdx) );
+  return ADC_RAW_TO_CANON(getRawJointPos(jointIdx) );
 }
 
 float getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
   // convert motor ID to matching ADC index and grab canon ADC value
-  return getJointPos(MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx));
+  return getJointPos(MOTOR_ID_TO_JOINT_IDX(ctrlID, selIdx));
 }
-
 
 // Controllers come from factory with ID=9, we have to set each one
 // to a different value

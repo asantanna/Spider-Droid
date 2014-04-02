@@ -75,6 +75,7 @@ void spi_send(int spiIdx, BYTE* pTx, int txLen);
 void spi_receive(int spiIdx, BYTE* pRx, int rxLen);
 void spi_sendreceive(int spiIdx, BYTE* pTx, int txLen, BYTE* pRx, int rxLen);
 void spi_exchange(int spiIdx, BYTE* pTx, BYTE* pRx, int dataLen);
+void spi_exchange_ADC(int adcIdx, BYTE* pTx, BYTE* pRx, int dataLen);
 
 //
 // I2C
@@ -116,6 +117,9 @@ void dlog_getStats(DATALOG* pLog, int depth,
 // Peripherals
 //
 
+void globalInit();
+void globalShutdown();
+
 char* initPeripherals();
 
 BOOL initMotorCtrl();
@@ -123,11 +127,13 @@ void stopMotor(BYTE ctrlID, BYTE selIdx);
 void stopAllMotors();
 void flushMotorCmds();
 
-float getJointPos(BYTE adcIdx);
+float getJointPos(BYTE jointIdx);
 
 //
 // Misc
 //
+
+void cmdline(int argc, char** argv);
 
 void abortProcess(int rc);
 void abortWithMsg(const char* msg);

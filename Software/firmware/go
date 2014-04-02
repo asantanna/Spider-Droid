@@ -12,6 +12,6 @@ HOST_NAME=`uname -n`
 
 cd bin
 
-sudo ./phi-$HOST_NAME
+sudo ./phi-$HOST_NAME $*
 
 

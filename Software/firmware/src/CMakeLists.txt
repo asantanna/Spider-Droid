@@ -36,6 +36,8 @@ add_executable ( phi
   selftest.c
   hal_stub.c
   hal_phi.c
+  cmdline.c
+  gpio.c
 )
 
 # link the math library

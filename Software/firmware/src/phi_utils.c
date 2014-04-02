@@ -23,9 +23,20 @@ UINT64 phiUpTime() {
 }
 
 void abortProcess(int rc) {
-  printf("***\n");
-  printf("*** Aborting PHI process!\n");
-  printf("***\n");
+  
+  // shutdown hardware
+  globalShutdown();
+
+  // exit
+  
+  if (rc != 0) {
+    printf("***\n");
+    printf("*** Aborting PHI process with rc=%d\n", rc);
+    printf("***\n");
+  } else {
+    printf("*** PHI exiting normally. ***\n");
+  }
+  
   exit(rc);
 }
 

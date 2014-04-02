@@ -18,13 +18,13 @@
 // #include <mcheck.h>
 // #define PHI_DEBUG_MALLOC    1
 
-// internal
-void globalInit();
-
-void main() {
+void main(int argc, char** argv) {
 
   // initialize
   globalInit();
+
+  // process command line switches
+  cmdline(argc, argv);
 
   //
   // Start web admin server
@@ -115,3 +115,17 @@ void globalInit() {
     LOG_INFO("Peripherals initialized");
   }
 }
+
+//
+// Shutdown
+//
+
+void globalShutdown() {
+
+  TODO("globalShutdown() not fully implemented.");
+  LOG_INFO("*** Shutting down hardware ***");
+
+  // stop motors
+  stopAllMotors();
+}
+

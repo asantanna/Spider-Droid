@@ -116,8 +116,8 @@ typedef enum {
 } PHI_LED_COLOR;
 
 // cam info (move to cam file when it exists)
-#define CAM_WIDTH               160
-#define CAM_HEIGHT              120
+#define CAM_WIDTH               8 //160
+#define CAM_HEIGHT              8 // 120
 #define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
 
 // PhiLink
@@ -155,4 +155,40 @@ typedef enum {
 #define PERFLOG_PHILINK_ELEM_15SEC    (15 * PERFLOG_PHILINK_ELEM_1SEC)
 #define PERFLOG_PHILINK_NUM_ELEM      PERFLOG_PHILINK_ELEM_15SEC
 #define PERFLOG_PHILINK_EPOCH         15
+
+//
+// GPIO setup macros.
+//
+// NOTE: ALWAYS use SET_GPIO_TO_INPUT(g) before using SET_GPIO_TO_OUTPUT(g) or SET_GPIO_ALT(g,a)
+//       (see gpio.c for examples of how to use)
+//
+
+// BCM2835 pins available through the REV1 Raspberry Pi header
+#define REV1_PINS {0, 1, 4, 7, 8, 9, 10, 11, 14, 15, 17, 18, 21, 22, 23, 24, 25}
+
+// BCM2835 pins available through the REV2 Raspberry Pi header
+#define REV2_PINS {2, 3, 4, 7, 8, 9, 10, 11, 14, 15, 17, 18, 22, 23, 24, 25, 27}
+
+// GPIO pins used by PHI
+#define PHI_GPIO_SPI1_SEL        4
+#define PHI_GPIO_ADC0_SEL       17
+#define PHI_GPIO_ADC1_SEL       22
+#define PHI_GPIO_ADC2_SEL       27
+
+// pin mode control
+#define SET_GPIO_TO_INPUT(g)    *(g_pGpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+#define SET_GPIO_TO_OUTPUT(g)   *(g_pGpio+((g)/10)) |=  (1<<(((g)%10)*3))
+#define SET_GPIO_ALT(g,a)       *(g_pGpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+
+// bit read
+#define GPIO_READ_ALL       *(g_pGpio+(GPLEV0_OFFSET/4))                              // reads all bits
+#define GPIO_ISHIGH(pin)    ((((GPIO_READ_ALL) & (1 << (pin))) != 0) ? TRUE : FALSE)  // TRUE if bit is HIGH
+#define GPIO_ISLOW(pin)     (!(GPIO_ISHIGH(pin)))                                     // TRUE if bit is LOW
+
+// bit write
+#define GPIO_SET_ALL(v)     {*(g_pGpio+(GPSET0_OFFSET/4)) = (v);}   // SETS bits which are 1 ignores bits which are 0
+#define GPIO_CLEAR_ALL(v)   {*(g_pGpio+(GPCLR0_OFFSET/4)) = (v);}   // CLEARS bits which are 1 ignores bits which are 0
+#define GPIO_SET(pin)       GPIO_SET_ALL(1<<(pin))
+#define GPIO_CLEAR(pin)     GPIO_CLEAR_ALL(1<<(pin))
+
 

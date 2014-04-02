@@ -52,6 +52,13 @@ struct spi_ioc_transfer* spi_xfer[2] = {
   spi_1_xfer,
 };
 
+// ADCs use SPI 1 and GPIO pins for chip select
+
+static int spi_adcIdxToGpio[] = {
+  PHI_GPIO_ADC0_SEL,
+  PHI_GPIO_ADC1_SEL,
+  PHI_GPIO_ADC2_SEL
+};
 
 // internal
 int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw);
@@ -77,6 +84,25 @@ BOOL spi_init() {
     LOG_ERR("spi_init: can't init device driver '%s'", SPI1_DRIVER_NAME);
     goto error_exit;
   }
+
+  // set GPIO pins used for extra SPI CS lines as output pins and deassert
+  // Note: whenever setting to output, must set to input first
+
+  SET_GPIO_TO_INPUT(PHI_GPIO_SPI1_SEL);
+  SET_GPIO_TO_OUTPUT(PHI_GPIO_SPI1_SEL);
+  GPIO_SET(PHI_GPIO_SPI1_SEL);
+  
+  SET_GPIO_TO_INPUT(PHI_GPIO_ADC0_SEL);
+  SET_GPIO_TO_OUTPUT(PHI_GPIO_ADC0_SEL);
+  GPIO_SET(PHI_GPIO_ADC0_SEL);
+
+  SET_GPIO_TO_INPUT(PHI_GPIO_ADC1_SEL);
+  SET_GPIO_TO_OUTPUT(PHI_GPIO_ADC1_SEL);
+  GPIO_SET(PHI_GPIO_ADC1_SEL);
+
+  SET_GPIO_TO_INPUT(PHI_GPIO_ADC2_SEL);
+  SET_GPIO_TO_OUTPUT(PHI_GPIO_ADC2_SEL);
+  GPIO_SET(PHI_GPIO_ADC2_SEL);
 
 quick_exit:
 
@@ -159,6 +185,21 @@ void spi_exchange(int spiIdx, BYTE* pTx, BYTE* pRx, int dataLen) {
   if (ioctl(spiFile[spiIdx], SPI_IOC_MESSAGE(1), spi_xfer[spiIdx]) < 0) {
     LOG_ERR("spi_sendreceive: ioctl() failed");
   }
+}
+
+void spi_exchange_ADC(int adcIdx, BYTE* pTx, BYTE* pRx, int dataLen) {
+
+  // assert ADC chip select
+  // note: we don't wait after assert
+  int gpioPin = spi_adcIdxToGpio[adcIdx];
+  GPIO_CLEAR(gpioPin);
+
+  // do exchange
+  spi_exchange(ADC_SPI_IDX, pTx, pRx, dataLen);
+
+  // deassert CS
+  // Note: no wait for SPI to finish because driver prob not async
+  GPIO_SET(gpioPin);
 }
 
 // internal

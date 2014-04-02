@@ -12,9 +12,15 @@ char* HAL_PHI_initPeripherals() {
 
   g_initPeriph = FALSE;
 
+  // init GPIO memory map (do this first)
+  if (!gpio_init()) {
+    rc = "HAL_PHI_InitPeripherals: GPIO init failed";
+    goto quick_exit;
+  }
+
   // set up UART for communication with motor controllers
   if (!uart_init()) {
-    rc = "HAL_PHI_InitPeripherals: UART init failed. Are you running on PHI?";
+    rc = "HAL_PHI_InitPeripherals: UART init failed";
     goto quick_exit;
   }
 
@@ -73,7 +79,7 @@ void HAL_PHI_setControllerId(BYTE oldId, BYTE newId) {
   setControllerId(oldId, newId);
 }
 
-float HAL_PHI_getJointPos(BYTE adcIdx) {
+float HAL_PHI_getJointPos(BYTE jointIdx) {
   // convert raw ADC val to canonical
-  return ADC_RAW_TO_CANON(getRawJointPos(adcIdx) );
+  return ADC_RAW_TO_CANON(getRawJointPos(jointIdx) );
 }

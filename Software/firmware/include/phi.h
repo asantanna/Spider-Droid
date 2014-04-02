@@ -27,6 +27,9 @@
 #include <sys/sysinfo.h>    // for sysinfo()
 #include <netinet/tcp.h>    // for TCP_NODELAY
 
+// BCM2835 GPIO
+#include "bcm2835_gpio.h"
+
 // useful types
 #include "phi_defs.h"
 

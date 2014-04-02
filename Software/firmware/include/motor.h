@@ -58,13 +58,16 @@
 #define MOTOR_NAME_TO_CTRL_ID(name)             ((BYTE)(name[0] - 'A'))
 #define MOTOR_NAME_TO_SEL_IDX(name)             ((BYTE)(name[1] - '0'))
 
+// joints
+#define MOTOR_ID_TO_JOINT_IDX(ctrlID, selIdx)   ( ((ctrlID) * 2) + (selIdx))
+#define JOINT_IDX_TO_ADC_IDX(jIdx)              ( (jIdx) / 8)
+#define JOINT_IDX_TO_ADC_CHAN(jIdx)             ( (jIdx) % 8)
+
 //
 // ADC
 //
 // Note: ADC functions use and return values in the canonical range [0,1]
 //
-
-#define MOTOR_ID_TO_ADC_IDX(ctrlID, selIdx)     ( ((ctrlID) * 2) + (selIdx))
 
 #define ADC_MIN_RAW                             ((UINT16) 0)
 #define ADC_MAX_RAW                             ((UINT16) 1023)
