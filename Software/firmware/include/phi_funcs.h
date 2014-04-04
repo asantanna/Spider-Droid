@@ -140,3 +140,8 @@ void abortWithMsg(const char* msg);
 
 UINT64 phiUpTime();
 double phiRand();
+
+void addToTimespec(struct timespec* pT1, time_t numSecs, DWORD numNano);
+void addTimespecs(struct timespec* pT1, struct timespec* pT2);
+void offsetTimespecMs(struct timespec* pT1, DWORD mS);
+

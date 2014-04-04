@@ -15,13 +15,6 @@ void* allocHelper(int size) {
   return p;
 }
 
-UINT64 phiUpTime() {
-  // up time in uSecs
-  struct timeval tv;
-  gettimeofday(&tv, NULL);
-  return TV_TO_USEC(tv) - g_startupTime;
-}
-
 void abortProcess(int rc) {
   
   // shutdown hardware
@@ -279,9 +272,7 @@ BOOL setRealtimePrio(pthread_t thread) {
 }
 
 //
-// I/O control helpers
-//
-
+// Blocking
 //
 // Setting a file descriptor to non-blocking causes write and read calls
 // to return an error if the call would have blocked.  Typically a block
@@ -318,4 +309,36 @@ int setNonBlocking(int fd)
   return ioctl(fd, FIOBIO, &flags);
   
 #endif
-}   
+}
+
+//
+// Time utilities
+//
+
+UINT64 phiUpTime() {
+  // up time in uSecs
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return TV_TO_USEC(tv) - g_startupTime;
+}
+
+#define BILLION   ((long) 1e9)
+
+void addToTimespec(struct timespec* pT1, time_t numSecs, DWORD numNano) {
+  pT1 -> tv_sec += numSecs;
+  pT1 -> tv_nsec += numNano;
+  if (pT1 -> tv_nsec >= BILLION) {
+    // carry
+    (pT1 ->  tv_sec) ++;
+    (pT1 -> tv_nsec) -= BILLION;
+  }
+}
+
+void addTimespecs(struct timespec* pT1, struct timespec* pT2) {
+  addToTimespec(pT1, pT2 -> tv_sec, pT2 -> tv_nsec);
+}
+
+void offsetTimespecMs(struct timespec* pT1, DWORD mS) {
+  addToTimespec(pT1, mS / BILLION, mS % BILLION);
+}
+

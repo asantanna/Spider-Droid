@@ -56,6 +56,9 @@
 // datalog types
 #include "datalog.h"
 
+// event gates
+#include "event_gate.h"
+
 // misc func decls
 #include "phi_funcs.h"
 

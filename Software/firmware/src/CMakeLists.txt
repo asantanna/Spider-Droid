@@ -38,7 +38,8 @@ add_executable ( phi
   hal_phi.c
   cmdline.c
   gpio.c
+  event_gate.c
 )
 
 # link the math library
-target_link_libraries(phi m)
+target_link_libraries(phi m rt)
