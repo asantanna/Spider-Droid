@@ -203,7 +203,12 @@ void* phiLink_loop(void* arg)
     // new loop start
     UINT64 usec_loopStart = phiUpTime();
 
-    // set up state packet for sending
+    // write commands to snapshot
+    // note: this will trigger the event gate for update
+    
+    writeToCmdSnapshot((PHI_CMD_PACKET *) rxBuff);
+
+    // get state snapshot to create reply
     getStateSnapshot((PHI_STATE_PACKET *) txBuff);
 
     // send state (blocking)

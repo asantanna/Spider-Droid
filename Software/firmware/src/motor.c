@@ -14,7 +14,7 @@
 BOOL initMotorCtrl() {
 
   // WARN("initMotorCtrl() disabled!");
-  // return;
+  // return TRUE;
 
   // configure all motor controllers
 
@@ -41,6 +41,9 @@ BOOL initMotorCtrl() {
 
     uart_send(motorCmd, sizeof(motorCmd));
 
+    // must wait (as per docs) because MC_CMD_SET_CONF takes 4mS to execute
+    usleep(4000);
+
     // disable motor shutdown on error
     //
     // Note: we do this because errors might occur here and there and we do not
@@ -60,6 +63,9 @@ BOOL initMotorCtrl() {
     
     uart_send(motorCmd2, sizeof(motorCmd2));
 
+    // must wait (as per docs) because MC_CMD_SET_CONF takes 4mS to execute
+    usleep(4000);
+
     // disable serial timeouts
     //
     // Note: done for same reason as above.
@@ -75,8 +81,14 @@ BOOL initMotorCtrl() {
     };
 
     uart_send(motorCmd3, sizeof(motorCmd3));
-    
+
+    // must wait (as per docs) because MC_CMD_SET_CONF takes 4mS to execute
+    usleep(4000);
   }
+
+  // since there is no way to tell if this succeeded,
+  // we always return success
+  return TRUE;
 }
 
 //

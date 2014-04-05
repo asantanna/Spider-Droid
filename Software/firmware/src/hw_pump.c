@@ -33,10 +33,17 @@ static PHI_SNAPSHOT phiSnapshot;
 // mutex to sync access to phiSnapshot
 static PHI_MUTEX_DECL_INIT(mtxSnapshot);
 
-// internal
+// event gates
+static PHI_EVENT_GATE egMotorWrite;;
+
+// debug count of egMotorWrite timeouts
+static DWORD numMotorTimeouts = 0;
+
+//
+// PROTOS
+//
 
 void initSnapshot();
-void updateState();
 
 void* hwPump_UART_thread(void* arg);
 void* hwPump_SPI_thread(void* arg);
@@ -71,6 +78,9 @@ void startHwPump() {
   // init phi snapshot
   initSnapshot();
 
+  // init the event gate that synchronizes writing out to the motors (init to CLOSED)
+  eventGate_init(&egMotorWrite, FALSE);
+  
   // spawn threads to pump each interface
   //
   // Note: threads are started detached and we don't keep track
@@ -91,13 +101,10 @@ void startHwPump() {
     pthread_attr_setdetachstate(&threadAttr, PTHREAD_CREATE_DETACHED);
 
     /* NO ARGUMENTS 
-
     // alloc args
-
     PHILINK_ARGS* pArgs = PHI_ALLOC(....);
     pArgs -> a = a;
     pArgs -> b = b;
-
     */
 
     // create interface thread
@@ -118,11 +125,12 @@ void startHwPump() {
     pthread_attr_destroy(&threadAttr);
 
     // increase priority to make pumps more even
-
-    if (setRealtimePrio(thread) == FALSE) {
-      // not fatal
-      LOG_ERR("pump set_realtime_priority() failed!");
-    }
+// Note: not sure if this is a good idea
+//
+//    if (setRealtimePrio(thread) == FALSE) {
+//      // not fatal
+//      LOG_ERR("pump set_realtime_priority() failed!");
+//    }
     
   } // for
   
@@ -145,10 +153,12 @@ void* hwPump_UART_thread(void* arg)
   LOG_INFO("hwPump_UART_thread started");
   printf("UART pump thread started\n");
 
-  // continually update motor controllers from snapshot
-  // note: we always update even if it hasn't changed because
-  //       it is simpler and more robust in case of a dropped
-  //       or corrupted command.
+  // update motor controllers from snapshot whenever we
+  // are told to do it by egMotorWrite being pulsed.
+  //
+  // note: if the event gate times out, the motors are set to coast
+  //       to prevent damage.
+  //
 
   // time at start of loop
   UINT64 usec_loopStart = phiUpTime();
@@ -180,25 +190,51 @@ void* hwPump_UART_thread(void* arg)
     }
 
     //
-    // Sleep enough to update at desired speed
+    // Wait on event gate to be told data has been updated
     //
 
     // time at end of work
     UINT64 usec_workEnd = phiUpTime();
 
-    // sleep any leftover time
+    // calc time we would have to sleep until the next update
 
     INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
     INT32 usec_sleepTime = (INT32) (HW_PUMP_LOOP_PERIOD_USEC - usec_workTime);
 
-    if (usec_sleepTime < 0) {
-      // no time left over
-      usec_sleepTime = 0;
+    if (usec_sleepTime <= 0) {
+      
+      // NO time left - ALWAYS at least give up time slice
+      usleep(0);
+      
+    } else if (g_phiLinkStatus != LINK_CONNECTED) {
+
+      // PhiLink not connected - just sleep
+      usleep(usec_sleepTime);
+
+    } else {
+      
+      // There is time left *and* PhiLink is running
+      //
+      // wait on the gate but timeout if it takes too long
+      // note: give it a full extra slice of slop and round up to mS
+      
+      DWORD msTimeout = (usec_sleepTime + HW_PUMP_LOOP_PERIOD_USEC + 999ul) / 1000ul;
+      
+      int waitRc = eventGate_wait(&egMotorWrite, msTimeout);
+
+      if (waitRc == ETIMEDOUT) {
+        
+        // timed out - stop all motors
+        stopAllMotors();
+        
+        // count it
+        numMotorTimeouts ++;
+
+        // DEBUG
+        LOG_INFO("eventGate timeout in UART pump - count=%lu", numMotorTimeouts);
+      }
     }
-
-    // always sleep (even if zero) so we at least give up our time slice
-    usleep(usec_sleepTime);
-
+        
     // new loop start
     usec_loopStart = phiUpTime();
 
@@ -249,12 +285,12 @@ void* hwPump_SPI_thread(void* arg)
     // Read joint positions from ADCs
     //
 
-    int adcIdx;
+    int jointIdx;
 
-    for (adcIdx = 0 ; adcIdx < COUNTOF(phiSnapshot.state.joints) ; adcIdx++) {
-      float pos = HAL_getJointPos(adcIdx);
+    for (jointIdx = 0 ; jointIdx < COUNTOF(phiSnapshot.state.joints) ; jointIdx++) {
+      float pos = HAL_getJointPos(jointIdx);
       lock_snapshot();
-      phiSnapshot.state.joints[adcIdx] = pos;
+      phiSnapshot.state.joints[jointIdx] = pos;
       unlock_snapshot();
     }
 
@@ -390,6 +426,14 @@ void* hwPump_I2C_thread(void* arg)
 // PHI snapshot functions
 //
 
+void lock_snapshot() {
+  PHI_MUTEX_GET(&mtxSnapshot);
+}
+
+void unlock_snapshot() {
+  PHI_MUTEX_RELEASE(&mtxSnapshot);
+}
+
 // set the snapshot to its initial state
 
 void initSnapshot() {
@@ -448,12 +492,7 @@ void initSnapshot() {
 
 // get state portion of PHI snapshot
 
-void getStateSnapshot(PHI_STATE_PACKET *p) {
-
-  //
-  // DEBUG - update every request
-  // updateState();
-  //
+void getStateSnapshot(PHI_STATE_PACKET* p) {
 
   // lock state updates
   lock_snapshot();
@@ -468,13 +507,23 @@ void getStateSnapshot(PHI_STATE_PACKET *p) {
   unlock_snapshot();
 }
 
-void lock_snapshot() {
-  PHI_MUTEX_GET(&mtxSnapshot);
+// write to cmd portion of the PHI snapshot
+
+void writeToCmdSnapshot(PHI_CMD_PACKET* p) {
+
+  // lock snapshot updates
+  lock_snapshot();
+
+  // write to cmd snapshot
+  memcpy(&phiSnapshot.cmds, p, sizeof(*p));
+
+  // unlock state updates
+  unlock_snapshot();
+
+  // pulse the event gate to signal new data
+  eventGate_pulse(&egMotorWrite);
 }
 
-void unlock_snapshot() {
-  PHI_MUTEX_RELEASE(&mtxSnapshot);
-}
 
 
 /*
@@ -509,7 +558,7 @@ void updateState() {
 
   char ctrlID;
   char selIdx;
-  int adcIdx = 0;
+  int jointIdx = 0;
 
   // go through each controller
   for (ctrlID = 'A' ; ctrlID <= 'F' ; ctrlID ++) {
@@ -518,7 +567,7 @@ void updateState() {
       // read and save joing position
       double pos = getJointPos(ctrlID, selIdx);
       lock_snapshot();
-      phiSnapshot.state.joint[adcIdx++] = 0;
+      phiSnapshot.state.joint[jointIdx++] = 0;
       unlock_snapshot();
     }
   }
