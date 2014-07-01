@@ -22,6 +22,12 @@
       var bPhiInit = false;
       var bSetPowerOK = true;
 
+      // catch annoying silent JavaScript errors
+      window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+        alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
+          + ' Column: ' + column + ' StackTrace: ' +  errorObj);
+      }      
+
       function initSlider() {
         
         slider = new Slider(
