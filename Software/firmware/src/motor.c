@@ -204,7 +204,7 @@ float getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
 
 void setControllerId(BYTE oldId, BYTE newId) {
 
-    char motorCmd[] = {
+  char motorCmd[] = {
     MC_CMD_SIGN,
     (char) oldId,
     MC_CMD_SET_CONF,

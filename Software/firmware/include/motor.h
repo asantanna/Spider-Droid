@@ -57,9 +57,10 @@
 
 #define MOTOR_NAME_TO_CTRL_ID(name)             ((BYTE)(name[0] - 'A'))
 #define MOTOR_NAME_TO_SEL_IDX(name)             ((BYTE)(name[1] - '0'))
+#define MOTOR_ID_TO_ARRAY_IDX(ctrlID, selIdx)   ( ((ctrlID) * 2) + (selIdx))
 
 // joints
-#define MOTOR_ID_TO_JOINT_IDX(ctrlID, selIdx)   ( ((ctrlID) * 2) + (selIdx))
+#define MOTOR_ID_TO_JOINT_IDX(ctrlID, selIdx)   MOTOR_ID_TO_ARRAY_IDX(ctrlID, selIdx)
 #define JOINT_IDX_TO_ADC_IDX(jIdx)              ( (jIdx) / 8)
 #define JOINT_IDX_TO_ADC_CHAN(jIdx)             ( (jIdx) % 8)
 

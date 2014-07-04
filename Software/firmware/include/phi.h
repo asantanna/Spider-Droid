@@ -6,6 +6,8 @@
 // make sure we get thread-safe functions from libc
 #define _REENTRANT 1
 
+#define _GNU_SOURCE         // for strcasestr()
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -26,6 +28,7 @@
 #include <sys/utsname.h>    // for uname()
 #include <sys/sysinfo.h>    // for sysinfo()
 #include <netinet/tcp.h>    // for TCP_NODELAY
+#include <arpa/inet.h>      // for inet_addr
 
 // BCM2835 GPIO
 #include "bcm2835_gpio.h"

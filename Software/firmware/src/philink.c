@@ -18,17 +18,6 @@ TODO("think about GYRO AND ACCEL ELEM");
 // - should return change
 // - is gyro returning change? if so, change name
 
-
-// loop status
-
-typedef enum {
-  RX_BEGIN,
-  RX_RECEIVING,
-  TX_BEGIN,
-  TX_SENDING,
-    
-} COMM_STATUS;
-
 // internal
 
 void setLinkStatus(PHILINK_STATUS status);
@@ -250,6 +239,7 @@ void setLinkStatus(PHILINK_STATUS status) {
   g_phiLinkStatus = status;
 
   // change LED
+  // TODO
   
   switch (status) {
     case LINK_OFF:

@@ -1,4 +1,53 @@
 	TAGS	UNSORTED
+phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
+genericHal	src/hal.c	755	HAL_FUNCS genericHal = {
+HAL_init	src/hal.c	1207	void HAL_init() {
+MAX_JSON_TOKENS	src/webjson.c	913	#define MAX_JSON_TOKENS       256
+PARSER_NUM_TOK	src/webjson.c	979	#define PARSER_NUM_TOK(parser)  ((parser).toknext)
+TOK_START	src/webjson.c	1031	#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
+TOK_LEN	src/webjson.c	1088	#define TOK_LEN(pTok)         ((pTok)->end - (pTok)->start)
+TOK_TYPE	src/webjson.c	1148	#define TOK_TYPE(pTok)        ((pTok)->type)
+TOK_NUM_CHILD	src/webjson.c	1193	#define TOK_NUM_CHILD(pTok)   ((pTok)->size)
+TOK_EQ	src/webjson.c	1239	#define TOK_EQ(pTok,s) \
+_jsonCmdReply_t	src/webjson.c	1404	typedef struct _jsonCmdReply_t {
+_jsonCmdReply_t::pReply	src/webjson.c	1430	  char* pReply;
+_jsonCmdReply_t::pNext	src/webjson.c	1464	  struct _jsonCmdReply_t* pNext;
+PHI_JSON_CMD_REPLY_TYPE	src/webjson.c	1474	} PHI_JSON_CMD_REPLY_TYPE;
+jsonCmdHandler	src/webjson.c	1535	typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok, char* pJsonReq);
+JSON_HANDLER	src/webjson.c	1707	#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok, char* pJsonReq)
+pCmd	src/webjson.c	2304	  char *pCmd;
+handler	src/webjson.c	2327	  jsonCmdHandler handler;
+PHI_JSON_CMD_TYPE	src/webjson.c	2341	} PHI_JSON_CMD_TYPE;
+CMD_ENTRY	src/webjson.c	2369	#define CMD_ENTRY(c) { STR(c) , json_ ## c }
+validCmds	src/webjson.c	2425	PHI_JSON_CMD_TYPE validCmds[] = {
+jsonReply_start	src/webjson.c	2965	char jsonReply_start[] = "{" Q(reply) ": [\n";
+jsonReply_end	src/webjson.c	3012	char jsonReply_end[]   = "] }";
+jsonReplyObject_start	src/webjson.c	3112	char jsonReplyObject_start[] = "{\n" Q(cmd) ":" Q(%s) ",\n";
+jsonReplyObject_end	src/webjson.c	3173	char jsonReplyObject_end[]   = "}";
+jsonParseError	src/webjson.c	3283	char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON request.  It''s probably your fault btw.) " }\n";
+processJson	src/webjson.c	3564	char* processJson(char *pJsonReq) {
+freeJsonReply	src/webjson.c	8307	void freeJsonReply(char* pJsonReply) {
+getJsonHandler	src/webjson.c	8383	jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
+JSON_HANDLER_PROLOG	src/webjson.c	9296	#define JSON_HANDLER_PROLOG(cmd) \
+JSON_HANDLER_EPILOG	src/webjson.c	9689	#define JSON_HANDLER_EPILOG() \
+JSON_HANDLER	src/webjson.c	10764	JSON_HANDLER(getInitState) {
+JSON_HANDLER	src/webjson.c	10964	JSON_HANDLER(initPeripherals) {
+JSON_HANDLER	src/webjson.c	11196	JSON_HANDLER(getVersion) {
+JSON_HANDLER	src/webjson.c	11360	JSON_HANDLER(getIpAddr) {
+JSON_HANDLER	src/webjson.c	11620	JSON_HANDLER(getUname) {
+JSON_HANDLER	src/webjson.c	12112	JSON_HANDLER(getSysInfo) {
+JSON_HANDLER	src/webjson.c	13403	JSON_HANDLER(getPhiUptime) {
+JSON_HANDLER	src/webjson.c	14517	JSON_HANDLER(setPower) {
+JSON_HANDLER	src/webjson.c	16764	JSON_HANDLER(setMCtlId) {
+JSON_HANDLER	src/webjson.c	18222	JSON_HANDLER(getGyroDeltas) {
+JSON_HANDLER	src/webjson.c	18673	JSON_HANDLER(getGyroTemp) {
+JSON_HANDLER	src/webjson.c	19057	JSON_HANDLER(getLinkStatus) {
+JSON_HANDLER	src/webjson.c	19681	JSON_HANDLER(startPhiLink) {
+JSON_HANDLER	src/webjson.c	21695	JSON_HANDLER(selfTest) {
+emitDatalogJson	src/webjson.c	23913	void emitDatalogJson(char*pBuff, DATALOG* pLog, int depths[]) {
+JSON_HANDLER	src/webjson.c	25569	JSON_HANDLER(getPumpStats) {
+JSON_HANDLER	src/webjson.c	26596	JSON_HANDLER(getPumpRates) {
+JSON_HANDLER	src/webjson.c	27129	JSON_HANDLER(getPhiLinkStats) {
 MC_DEF_BAUD	include/polulu_2s9v1.h	107	#define MC_DEF_BAUD   B38400
 MC_CMD_SIGN	include/polulu_2s9v1.h	513	#define MC_CMD_SIGN                 0xAA
 MC_DEFAULT_DEVICE_NUM	include/polulu_2s9v1.h	554	#define MC_DEFAULT_DEVICE_NUM       9
@@ -458,52 +507,6 @@ BSC_TXW	include/bcm2835_gpio.h	13396	#define BSC_TXW             0x004       /**
 BSC_DONE	include/bcm2835_gpio.h	13479	#define BSC_DONE            0x002       /**< BSC Status: Transfer Done */
 BSC_TA	include/bcm2835_gpio.h	13553	#define BSC_TA              0x001       /**< BSC Status: Transfer Active */
 BSC_FIFO_SIZE	include/bcm2835_gpio.h	13630	#define BSC_FIFO_SIZE       16          /**< BSC FIFO Size */
-MAX_JSON_TOKENS	src/webjson.c	913	#define MAX_JSON_TOKENS       256
-PARSER_NUM_TOK	src/webjson.c	979	#define PARSER_NUM_TOK(parser)  ((parser).toknext)
-TOK_START	src/webjson.c	1031	#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
-TOK_LEN	src/webjson.c	1088	#define TOK_LEN(pTok)         ((pTok)->end - (pTok)->start)
-TOK_TYPE	src/webjson.c	1148	#define TOK_TYPE(pTok)        ((pTok)->type)
-TOK_NUM_CHILD	src/webjson.c	1193	#define TOK_NUM_CHILD(pTok)   ((pTok)->size)
-TOK_EQ	src/webjson.c	1239	#define TOK_EQ(pTok,s) \
-_jsonCmdReply_t	src/webjson.c	1404	typedef struct _jsonCmdReply_t {
-_jsonCmdReply_t::pReply	src/webjson.c	1430	  char* pReply;
-_jsonCmdReply_t::pNext	src/webjson.c	1464	  struct _jsonCmdReply_t* pNext;
-PHI_JSON_CMD_REPLY_TYPE	src/webjson.c	1474	} PHI_JSON_CMD_REPLY_TYPE;
-jsonCmdHandler	src/webjson.c	1535	typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok, char* pJsonReq);
-JSON_HANDLER	src/webjson.c	1707	#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok, char* pJsonReq)
-pCmd	src/webjson.c	2304	  char *pCmd;
-handler	src/webjson.c	2327	  jsonCmdHandler handler;
-PHI_JSON_CMD_TYPE	src/webjson.c	2341	} PHI_JSON_CMD_TYPE;
-CMD_ENTRY	src/webjson.c	2369	#define CMD_ENTRY(c) { STR(c) , json_ ## c }
-validCmds	src/webjson.c	2425	PHI_JSON_CMD_TYPE validCmds[] = {
-jsonReply_start	src/webjson.c	2965	char jsonReply_start[] = "{" Q(reply) ": [\n";
-jsonReply_end	src/webjson.c	3012	char jsonReply_end[]   = "] }";
-jsonReplyObject_start	src/webjson.c	3112	char jsonReplyObject_start[] = "{\n" Q(cmd) ":" Q(%s) ",\n";
-jsonReplyObject_end	src/webjson.c	3173	char jsonReplyObject_end[]   = "}";
-jsonParseError	src/webjson.c	3283	char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON request.  It''s probably your fault btw.) " }\n";
-processJson	src/webjson.c	3564	char* processJson(char *pJsonReq) {
-freeJsonReply	src/webjson.c	8307	void freeJsonReply(char* pJsonReply) {
-getJsonHandler	src/webjson.c	8383	jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
-JSON_HANDLER_PROLOG	src/webjson.c	9296	#define JSON_HANDLER_PROLOG(cmd) \
-JSON_HANDLER_EPILOG	src/webjson.c	9689	#define JSON_HANDLER_EPILOG() \
-JSON_HANDLER	src/webjson.c	10764	JSON_HANDLER(getInitState) {
-JSON_HANDLER	src/webjson.c	10964	JSON_HANDLER(initPeripherals) {
-JSON_HANDLER	src/webjson.c	11196	JSON_HANDLER(getVersion) {
-JSON_HANDLER	src/webjson.c	11360	JSON_HANDLER(getIpAddr) {
-JSON_HANDLER	src/webjson.c	11620	JSON_HANDLER(getUname) {
-JSON_HANDLER	src/webjson.c	12112	JSON_HANDLER(getSysInfo) {
-JSON_HANDLER	src/webjson.c	13403	JSON_HANDLER(getPhiUptime) {
-JSON_HANDLER	src/webjson.c	14517	JSON_HANDLER(setPower) {
-JSON_HANDLER	src/webjson.c	16643	JSON_HANDLER(setMCtlId) {
-JSON_HANDLER	src/webjson.c	18101	JSON_HANDLER(getGyroDeltas) {
-JSON_HANDLER	src/webjson.c	18552	JSON_HANDLER(getGyroTemp) {
-JSON_HANDLER	src/webjson.c	18936	JSON_HANDLER(getLinkStatus) {
-JSON_HANDLER	src/webjson.c	19560	JSON_HANDLER(startPhiLink) {
-JSON_HANDLER	src/webjson.c	21574	JSON_HANDLER(selfTest) {
-emitDatalogJson	src/webjson.c	23792	void emitDatalogJson(char*pBuff, DATALOG* pLog, int depths[]) {
-JSON_HANDLER	src/webjson.c	25448	JSON_HANDLER(getPumpStats) {
-JSON_HANDLER	src/webjson.c	26475	JSON_HANDLER(getPumpRates) {
-JSON_HANDLER	src/webjson.c	27008	JSON_HANDLER(getPhiLinkStats) {
 FORBIDDEN	src/webadmin.c	1201	#define FORBIDDEN               403
 NOTFOUND	src/webadmin.c	1237	#define NOTFOUND                404
 HTTP_METHOD_HEAD_STR	src/webadmin.c	1274	#define HTTP_METHOD_HEAD_STR		"HEAD"
@@ -647,9 +650,6 @@ HAL_PHI_gyroGetTemp	src/hal_phi.c	1435	float HAL_PHI_gyroGetTemp() {
 HAL_PHI_setMotorPower	src/hal_phi.c	1518	void HAL_PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 HAL_PHI_setControllerId	src/hal_phi.c	1645	void HAL_PHI_setControllerId(BYTE oldId, BYTE newId) {
 HAL_PHI_getJointPos	src/hal_phi.c	1737	float HAL_PHI_getJointPos(BYTE jointIdx) {
-phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
-genericHal	src/hal.c	755	HAL_FUNCS genericHal = {
-HAL_init	src/hal.c	1207	void HAL_init() {
 bUseFifo	src/gyro.c	137	BOOL bUseFifo = TRUE;
 zeroX	src/gyro.c	188	INT16 zeroX = 0;
 zeroY	src/gyro.c	205	INT16 zeroY = 0;

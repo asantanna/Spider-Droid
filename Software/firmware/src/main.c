@@ -31,7 +31,6 @@ void main(int argc, char** argv) {
   // on errors and when being used to create a test suite script.
   startHwPump();
 
-
   //
   // Start web admin server
   //
@@ -51,10 +50,10 @@ void main(int argc, char** argv) {
 //
 
 void globalInit() {
-
-#ifdef PHI_DEBUG_MALLOC
-  mtrace();
-#endif
+  
+  #ifdef PHI_DEBUG_MALLOC
+    mtrace();
+  #endif
 
   // remember start-up time
   struct timeval tv;

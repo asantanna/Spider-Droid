@@ -513,7 +513,22 @@ void writeToCmdSnapshot(PHI_CMD_PACKET* p) {
   eventGate_pulse(&egMotorWrite);
 }
 
+void setSnapshotMotorVal(char* motorName, INT8 powerVal) {
+  
+  // lock snapshot updates
+  lock_snapshot();
+  
+  phiSnapshot.cmds.motors[
+    MOTOR_ID_TO_ARRAY_IDX(
+      MOTOR_NAME_TO_CTRL_ID(motorName),
+      MOTOR_NAME_TO_SEL_IDX(motorName))] = powerVal;
 
+  // unlock state updates
+  unlock_snapshot();
+
+  // pulse the event gate to signal new data
+  eventGate_pulse(&egMotorWrite);
+}
 
 /*
  * TMP JUNK SAVE
