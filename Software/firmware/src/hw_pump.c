@@ -165,8 +165,8 @@ void* hwPump_UART_thread(void* arg)
 
   while (TRUE) {
 
-    char ctrlID;
-    char selIdx;
+    int ctrlID;
+    int selIdx;
     int motorIdx = 0;
 
     //
@@ -174,17 +174,17 @@ void* hwPump_UART_thread(void* arg)
     //
 
     // go through each controller
-    for (ctrlID = 'A' ; ctrlID <= 'F' ; ctrlID ++) {
+    for (ctrlID = 0 ; ctrlID <= 5 ; ctrlID ++) {
       // go through each motor of this controller
-      for (selIdx = '0' ; selIdx <= '1' ; selIdx ++) {
+      for (selIdx = 0 ; selIdx <= 1 ; selIdx ++) {
         // send out motor power command for this motor
 
         lock_snapshot();
-        int power = phiSnapshot.cmds.motors[motorIdx++];
+        INT8 power = phiSnapshot.cmds.motors[motorIdx++];
         unlock_snapshot();
         
         BYTE absPower = abs(power);
-        BOOL bFwd = (power >= 0) ? TRUE : FALSE;
+        BOOL bFwd = ( power >= ((INT8)0) ) ? TRUE : FALSE;
         HAL_setMotorPower(ctrlID, selIdx, absPower, bFwd);
       }
     }

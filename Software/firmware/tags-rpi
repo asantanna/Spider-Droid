@@ -1,53 +1,4 @@
 	TAGS	UNSORTED
-phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
-genericHal	src/hal.c	755	HAL_FUNCS genericHal = {
-HAL_init	src/hal.c	1207	void HAL_init() {
-MAX_JSON_TOKENS	src/webjson.c	913	#define MAX_JSON_TOKENS       256
-PARSER_NUM_TOK	src/webjson.c	979	#define PARSER_NUM_TOK(parser)  ((parser).toknext)
-TOK_START	src/webjson.c	1031	#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
-TOK_LEN	src/webjson.c	1088	#define TOK_LEN(pTok)         ((pTok)->end - (pTok)->start)
-TOK_TYPE	src/webjson.c	1148	#define TOK_TYPE(pTok)        ((pTok)->type)
-TOK_NUM_CHILD	src/webjson.c	1193	#define TOK_NUM_CHILD(pTok)   ((pTok)->size)
-TOK_EQ	src/webjson.c	1239	#define TOK_EQ(pTok,s) \
-_jsonCmdReply_t	src/webjson.c	1404	typedef struct _jsonCmdReply_t {
-_jsonCmdReply_t::pReply	src/webjson.c	1430	  char* pReply;
-_jsonCmdReply_t::pNext	src/webjson.c	1464	  struct _jsonCmdReply_t* pNext;
-PHI_JSON_CMD_REPLY_TYPE	src/webjson.c	1474	} PHI_JSON_CMD_REPLY_TYPE;
-jsonCmdHandler	src/webjson.c	1535	typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok, char* pJsonReq);
-JSON_HANDLER	src/webjson.c	1707	#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok, char* pJsonReq)
-pCmd	src/webjson.c	2304	  char *pCmd;
-handler	src/webjson.c	2327	  jsonCmdHandler handler;
-PHI_JSON_CMD_TYPE	src/webjson.c	2341	} PHI_JSON_CMD_TYPE;
-CMD_ENTRY	src/webjson.c	2369	#define CMD_ENTRY(c) { STR(c) , json_ ## c }
-validCmds	src/webjson.c	2425	PHI_JSON_CMD_TYPE validCmds[] = {
-jsonReply_start	src/webjson.c	2965	char jsonReply_start[] = "{" Q(reply) ": [\n";
-jsonReply_end	src/webjson.c	3012	char jsonReply_end[]   = "] }";
-jsonReplyObject_start	src/webjson.c	3112	char jsonReplyObject_start[] = "{\n" Q(cmd) ":" Q(%s) ",\n";
-jsonReplyObject_end	src/webjson.c	3173	char jsonReplyObject_end[]   = "}";
-jsonParseError	src/webjson.c	3283	char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON request.  It''s probably your fault btw.) " }\n";
-processJson	src/webjson.c	3564	char* processJson(char *pJsonReq) {
-freeJsonReply	src/webjson.c	8307	void freeJsonReply(char* pJsonReply) {
-getJsonHandler	src/webjson.c	8383	jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
-JSON_HANDLER_PROLOG	src/webjson.c	9296	#define JSON_HANDLER_PROLOG(cmd) \
-JSON_HANDLER_EPILOG	src/webjson.c	9689	#define JSON_HANDLER_EPILOG() \
-JSON_HANDLER	src/webjson.c	10764	JSON_HANDLER(getInitState) {
-JSON_HANDLER	src/webjson.c	10964	JSON_HANDLER(initPeripherals) {
-JSON_HANDLER	src/webjson.c	11196	JSON_HANDLER(getVersion) {
-JSON_HANDLER	src/webjson.c	11360	JSON_HANDLER(getIpAddr) {
-JSON_HANDLER	src/webjson.c	11620	JSON_HANDLER(getUname) {
-JSON_HANDLER	src/webjson.c	12112	JSON_HANDLER(getSysInfo) {
-JSON_HANDLER	src/webjson.c	13403	JSON_HANDLER(getPhiUptime) {
-JSON_HANDLER	src/webjson.c	14517	JSON_HANDLER(setPower) {
-JSON_HANDLER	src/webjson.c	16764	JSON_HANDLER(setMCtlId) {
-JSON_HANDLER	src/webjson.c	18222	JSON_HANDLER(getGyroDeltas) {
-JSON_HANDLER	src/webjson.c	18673	JSON_HANDLER(getGyroTemp) {
-JSON_HANDLER	src/webjson.c	19057	JSON_HANDLER(getLinkStatus) {
-JSON_HANDLER	src/webjson.c	19681	JSON_HANDLER(startPhiLink) {
-JSON_HANDLER	src/webjson.c	21695	JSON_HANDLER(selfTest) {
-emitDatalogJson	src/webjson.c	23913	void emitDatalogJson(char*pBuff, DATALOG* pLog, int depths[]) {
-JSON_HANDLER	src/webjson.c	25569	JSON_HANDLER(getPumpStats) {
-JSON_HANDLER	src/webjson.c	26596	JSON_HANDLER(getPumpRates) {
-JSON_HANDLER	src/webjson.c	27129	JSON_HANDLER(getPhiLinkStats) {
 MC_DEF_BAUD	include/polulu_2s9v1.h	107	#define MC_DEF_BAUD   B38400
 MC_CMD_SIGN	include/polulu_2s9v1.h	513	#define MC_CMD_SIGN                 0xAA
 MC_DEFAULT_DEVICE_NUM	include/polulu_2s9v1.h	554	#define MC_DEFAULT_DEVICE_NUM       9
@@ -302,21 +253,23 @@ GPIO_CLEAR_ALL	include/phi_defs.h	6253	#define GPIO_CLEAR_ALL(v)   {*(g_pGpio+(G
 GPIO_SET	include/phi_defs.h	6373	#define GPIO_SET(pin)       GPIO_SET_ALL(1<<(pin))
 GPIO_CLEAR	include/phi_defs.h	6424	#define GPIO_CLEAR(pin)     GPIO_CLEAR_ALL(1<<(pin))
 _REENTRANT	include/phi.h	97	#define _REENTRANT 1
+_GNU_SOURCE	include/phi.h	119	#define _GNU_SOURCE         // for strcasestr()
 ACCEL_I2C_CLK	include/osepp_adxl345.h	66	#define ACCEL_I2C_CLK             ( 400ul*1000ul )
 ACCEL_SAFE_I2C_CLK	include/osepp_adxl345.h	140	#define ACCEL_SAFE_I2C_CLK        ( (ACCEL_I2C_CLK * 8) / 10 )
 NUM_MOTOR_CTRL	include/motor.h	697	#define NUM_MOTOR_CTRL    6
 NUM_MOTORS	include/motor.h	725	#define NUM_MOTORS        (NUM_MOTOR_CTRL * 2)    // 12
 MOTOR_NAME_TO_CTRL_ID	include/motor.h	1711	#define MOTOR_NAME_TO_CTRL_ID(name)             ((BYTE)(name[0] - 'A'))
 MOTOR_NAME_TO_SEL_IDX	include/motor.h	1783	#define MOTOR_NAME_TO_SEL_IDX(name)             ((BYTE)(name[1] - '0'))
-MOTOR_ID_TO_JOINT_IDX	include/motor.h	1866	#define MOTOR_ID_TO_JOINT_IDX(ctrlID, selIdx)   ( ((ctrlID) * 2) + (selIdx))
-JOINT_IDX_TO_ADC_IDX	include/motor.h	1943	#define JOINT_IDX_TO_ADC_IDX(jIdx)              ( (jIdx) / 8)
-JOINT_IDX_TO_ADC_CHAN	include/motor.h	2005	#define JOINT_IDX_TO_ADC_CHAN(jIdx)             ( (jIdx) % 8)
-ADC_MIN_RAW	include/motor.h	2159	#define ADC_MIN_RAW                             ((UINT16) 0)
-ADC_MAX_RAW	include/motor.h	2220	#define ADC_MAX_RAW                             ((UINT16) 1023)
-ADC_RAW_RANGE	include/motor.h	2284	#define ADC_RAW_RANGE                           (ADC_MAX_RAW - ADC_MIN_RAW + 1)
-ADC_RAW_TO_CANON	include/motor.h	2365	#define ADC_RAW_TO_CANON(rawVal)                ( ((rawVal) % ADC_RAW_RANGE) / ((double)ADC_RAW_RANGE) )
-ADC_CANON_TO_RAW	include/motor.h	2470	#define ADC_CANON_TO_RAW(canonVal)              ( (UINT16) ((canonVal) * ((double)ADC_RAW_RANGE)) )
-ADC_ABS_RAW_DIFF	include/motor.h	2571	#define ADC_ABS_RAW_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_RAW_RANGE )
+MOTOR_ID_TO_ARRAY_IDX	include/motor.h	1855	#define MOTOR_ID_TO_ARRAY_IDX(ctrlID, selIdx)   ( ((ctrlID) * 2) + (selIdx))
+MOTOR_ID_TO_JOINT_IDX	include/motor.h	1943	#define MOTOR_ID_TO_JOINT_IDX(ctrlID, selIdx)   MOTOR_ID_TO_ARRAY_IDX(ctrlID, selIdx)
+JOINT_IDX_TO_ADC_IDX	include/motor.h	2029	#define JOINT_IDX_TO_ADC_IDX(jIdx)              ( (jIdx) / 8)
+JOINT_IDX_TO_ADC_CHAN	include/motor.h	2091	#define JOINT_IDX_TO_ADC_CHAN(jIdx)             ( (jIdx) % 8)
+ADC_MIN_RAW	include/motor.h	2245	#define ADC_MIN_RAW                             ((UINT16) 0)
+ADC_MAX_RAW	include/motor.h	2306	#define ADC_MAX_RAW                             ((UINT16) 1023)
+ADC_RAW_RANGE	include/motor.h	2370	#define ADC_RAW_RANGE                           (ADC_MAX_RAW - ADC_MIN_RAW + 1)
+ADC_RAW_TO_CANON	include/motor.h	2451	#define ADC_RAW_TO_CANON(rawVal)                ( ((rawVal) % ADC_RAW_RANGE) / ((double)ADC_RAW_RANGE) )
+ADC_CANON_TO_RAW	include/motor.h	2556	#define ADC_CANON_TO_RAW(canonVal)              ( (UINT16) ((canonVal) * ((double)ADC_RAW_RANGE)) )
+ADC_ABS_RAW_DIFF	include/motor.h	2657	#define ADC_ABS_RAW_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_RAW_RANGE )
 ADC_MIN_SPI_CLK	include/mcp3008.h	364	#define ADC_MIN_SPI_CLK         (10ul   * 1000ul)
 ADC_MAX_SPI_CLK	include/mcp3008.h	414	#define ADC_MAX_SPI_CLK         (1350ul * 1000ul)
 ADC_SAFE_SPI_CLK	include/mcp3008.h	465	#define ADC_SAFE_SPI_CLK        (1000ul * 1000ul)
@@ -507,6 +460,52 @@ BSC_TXW	include/bcm2835_gpio.h	13396	#define BSC_TXW             0x004       /**
 BSC_DONE	include/bcm2835_gpio.h	13479	#define BSC_DONE            0x002       /**< BSC Status: Transfer Done */
 BSC_TA	include/bcm2835_gpio.h	13553	#define BSC_TA              0x001       /**< BSC Status: Transfer Active */
 BSC_FIFO_SIZE	include/bcm2835_gpio.h	13630	#define BSC_FIFO_SIZE       16          /**< BSC FIFO Size */
+MAX_JSON_TOKENS	src/webjson.c	913	#define MAX_JSON_TOKENS       256
+PARSER_NUM_TOK	src/webjson.c	979	#define PARSER_NUM_TOK(parser)  ((parser).toknext)
+TOK_START	src/webjson.c	1031	#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
+TOK_LEN	src/webjson.c	1088	#define TOK_LEN(pTok)         ((pTok)->end - (pTok)->start)
+TOK_TYPE	src/webjson.c	1148	#define TOK_TYPE(pTok)        ((pTok)->type)
+TOK_NUM_CHILD	src/webjson.c	1193	#define TOK_NUM_CHILD(pTok)   ((pTok)->size)
+TOK_EQ	src/webjson.c	1239	#define TOK_EQ(pTok,s) \
+_jsonCmdReply_t	src/webjson.c	1404	typedef struct _jsonCmdReply_t {
+_jsonCmdReply_t::pReply	src/webjson.c	1430	  char* pReply;
+_jsonCmdReply_t::pNext	src/webjson.c	1464	  struct _jsonCmdReply_t* pNext;
+PHI_JSON_CMD_REPLY_TYPE	src/webjson.c	1474	} PHI_JSON_CMD_REPLY_TYPE;
+jsonCmdHandler	src/webjson.c	1535	typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok, char* pJsonReq);
+JSON_HANDLER	src/webjson.c	1707	#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok, char* pJsonReq)
+pCmd	src/webjson.c	2304	  char *pCmd;
+handler	src/webjson.c	2327	  jsonCmdHandler handler;
+PHI_JSON_CMD_TYPE	src/webjson.c	2341	} PHI_JSON_CMD_TYPE;
+CMD_ENTRY	src/webjson.c	2369	#define CMD_ENTRY(c) { STR(c) , json_ ## c }
+validCmds	src/webjson.c	2425	PHI_JSON_CMD_TYPE validCmds[] = {
+jsonReply_start	src/webjson.c	2965	char jsonReply_start[] = "{" Q(reply) ": [\n";
+jsonReply_end	src/webjson.c	3012	char jsonReply_end[]   = "] }";
+jsonReplyObject_start	src/webjson.c	3112	char jsonReplyObject_start[] = "{\n" Q(cmd) ":" Q(%s) ",\n";
+jsonReplyObject_end	src/webjson.c	3173	char jsonReplyObject_end[]   = "}";
+jsonParseError	src/webjson.c	3283	char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON request.  It''s probably your fault btw.) " }\n";
+processJson	src/webjson.c	3564	char* processJson(char *pJsonReq) {
+freeJsonReply	src/webjson.c	8307	void freeJsonReply(char* pJsonReply) {
+getJsonHandler	src/webjson.c	8383	jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
+JSON_HANDLER_PROLOG	src/webjson.c	9296	#define JSON_HANDLER_PROLOG(cmd) \
+JSON_HANDLER_EPILOG	src/webjson.c	9689	#define JSON_HANDLER_EPILOG() \
+JSON_HANDLER	src/webjson.c	10764	JSON_HANDLER(getInitState) {
+JSON_HANDLER	src/webjson.c	10964	JSON_HANDLER(initPeripherals) {
+JSON_HANDLER	src/webjson.c	11196	JSON_HANDLER(getVersion) {
+JSON_HANDLER	src/webjson.c	11360	JSON_HANDLER(getIpAddr) {
+JSON_HANDLER	src/webjson.c	11620	JSON_HANDLER(getUname) {
+JSON_HANDLER	src/webjson.c	12112	JSON_HANDLER(getSysInfo) {
+JSON_HANDLER	src/webjson.c	13403	JSON_HANDLER(getPhiUptime) {
+JSON_HANDLER	src/webjson.c	14517	JSON_HANDLER(setPower) {
+JSON_HANDLER	src/webjson.c	16742	JSON_HANDLER(setMCtlId) {
+JSON_HANDLER	src/webjson.c	18200	JSON_HANDLER(getGyroDeltas) {
+JSON_HANDLER	src/webjson.c	18651	JSON_HANDLER(getGyroTemp) {
+JSON_HANDLER	src/webjson.c	19035	JSON_HANDLER(getLinkStatus) {
+JSON_HANDLER	src/webjson.c	19659	JSON_HANDLER(startPhiLink) {
+JSON_HANDLER	src/webjson.c	21673	JSON_HANDLER(selfTest) {
+emitDatalogJson	src/webjson.c	23891	void emitDatalogJson(char*pBuff, DATALOG* pLog, int depths[]) {
+JSON_HANDLER	src/webjson.c	25547	JSON_HANDLER(getPumpStats) {
+JSON_HANDLER	src/webjson.c	26574	JSON_HANDLER(getPumpRates) {
+JSON_HANDLER	src/webjson.c	27107	JSON_HANDLER(getPhiLinkStats) {
 FORBIDDEN	src/webadmin.c	1201	#define FORBIDDEN               403
 NOTFOUND	src/webadmin.c	1237	#define NOTFOUND                404
 HTTP_METHOD_HEAD_STR	src/webadmin.c	1274	#define HTTP_METHOD_HEAD_STR		"HEAD"
@@ -572,15 +571,10 @@ testAllJoints	src/selftest.c	924	void testAllJoints() {
 testJointMovement	src/selftest.c	2025	BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
 testJointRange	src/selftest.c	3597	BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
 moveJointToStop	src/selftest.c	4080	float moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
-RX_BEGIN	src/philink.c	777	  RX_BEGIN,
-RX_RECEIVING	src/philink.c	789	  RX_RECEIVING,
-TX_BEGIN	src/philink.c	805	  TX_BEGIN,
-TX_SENDING	src/philink.c	817	  TX_SENDING,
-COMM_STATUS	src/philink.c	836	} COMM_STATUS;
-startPhiLink	src/philink.c	943	BOOL startPhiLink(char* ipAddr, int port) {
-phiLink_loopStart_save	src/philink.c	2738	static UINT64 phiLink_loopStart_save = 0;
-phiLink_loop	src/philink.c	2773	void* phiLink_loop(void* arg)
-setLinkStatus	src/philink.c	5425	void setLinkStatus(PHILINK_STATUS status) {
+startPhiLink	src/philink.c	836	BOOL startPhiLink(char* ipAddr, int port) {
+phiLink_loopStart_save	src/philink.c	2631	static UINT64 phiLink_loopStart_save = 0;
+phiLink_loop	src/philink.c	2666	void* phiLink_loop(void* arg)
+setLinkStatus	src/philink.c	5222	void setLinkStatus(PHILINK_STATUS status) {
 allocHelper	src/phi_utils.c	52	void* allocHelper(int size) {
 abortProcess	src/phi_utils.c	200	void abortProcess(int rc) {
 abortWithMsg	src/phi_utils.c	484	void abortWithMsg(const char* msg) {
@@ -589,17 +583,19 @@ logfp	src/phi_utils.c	1602	FILE *logfp = NULL;
 logInit	src/phi_utils.c	1621	int logInit(char *filename) {
 logClose	src/phi_utils.c	2505	void logClose(void) {
 logTimestamp	src/phi_utils.c	2595	void logTimestamp() {
-logMsg	src/phi_utils.c	2751	void logMsg(const char* tag, const char *fmt, ...) {
-getHostIP	src/phi_utils.c	3110	UINT32 getHostIP() {
-setLED	src/phi_utils.c	4522	void setLED(PHI_LED_COLOR color) {
-phiRand	src/phi_utils.c	4810	double phiRand() {
-setRealtimePrio	src/phi_utils.c	4945	BOOL setRealtimePrio(pthread_t thread) {
-setNonBlocking	src/phi_utils.c	5848	int setNonBlocking(int fd)
-phiUpTime	src/phi_utils.c	6389	UINT64 phiUpTime() {
-BILLION	src/phi_utils.c	6525	#define BILLION   ((long) 1e9)
-addToTimespec	src/phi_utils.c	6554	void addToTimespec(struct timespec* pT1, time_t numSecs, DWORD numNano) {
-addTimespecs	src/phi_utils.c	6798	void addTimespecs(struct timespec* pT1, struct timespec* pT2) {
-offsetTimespecMs	src/phi_utils.c	6918	void offsetTimespecMs(struct timespec* pT1, DWORD mS) {
+logMsg	src/phi_utils.c	2756	void logMsg(const char* tag, const char *fmt, ...) {
+getHostIP	src/phi_utils.c	3115	UINT32 getHostIP() {
+setLED	src/phi_utils.c	4527	void setLED(PHI_LED_COLOR color) {
+phiRand	src/phi_utils.c	4815	double phiRand() {
+setRealtimePrio	src/phi_utils.c	4950	BOOL setRealtimePrio(pthread_t thread) {
+setNonBlocking	src/phi_utils.c	5853	int setNonBlocking(int fd)
+phiUpTime	src/phi_utils.c	6394	UINT64 phiUpTime() {
+THOUSAND	src/phi_utils.c	6530	#define THOUSAND  1000L
+MILLION	src/phi_utils.c	6554	#define MILLION   (THOUSAND * THOUSAND)
+BILLION	src/phi_utils.c	6594	#define BILLION   (MILLION  * THOUSAND)
+addToTimespec	src/phi_utils.c	6632	void addToTimespec(struct timespec* pT1, time_t numSecs, DWORD numNano) {
+addTimespecs	src/phi_utils.c	6876	void addTimespecs(struct timespec* pT1, struct timespec* pT2) {
+offsetTimespecMs	src/phi_utils.c	6996	void offsetTimespecMs(struct timespec* pT1, DWORD mS) {
 initMotorCtrl	src/motor.c	144	BOOL initMotorCtrl() {
 setMotorPower	src/motor.c	2350	void setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 stopMotor	src/motor.c	2921	void stopMotor(BYTE ctrlID, BYTE selIdx) {
@@ -611,8 +607,8 @@ getJointPosByMotorID	src/motor.c	4476	float getJointPosByMotorID(BYTE ctrlID, BY
 setControllerId	src/motor.c	4756	void setControllerId(BYTE oldId, BYTE newId) {
 GLOBAL_INIT	src/main.c	64	#define GLOBAL_INIT
 main	src/main.c	324	void main(int argc, char** argv) {
-globalInit	src/main.c	701	void globalInit() {
-globalShutdown	src/main.c	2774	void globalShutdown() {
+globalInit	src/main.c	905	void globalInit() {
+globalShutdown	src/main.c	2986	void globalShutdown() {
 jsmn_alloc_token	src/jsmn.c	121	static jsmntok_t *jsmn_alloc_token(jsmn_parser *parser, 
 jsmn_fill_token	src/jsmn.c	475	static void jsmn_fill_token(jsmntok_t *token, jsmntype_t type, 
 jsmn_parse_primitive	src/jsmn.c	737	static jsmnerr_t jsmn_parse_primitive(jsmn_parser *parser, const char *js,
@@ -628,15 +624,16 @@ numMotorTimeouts	src/hw_pump.c	665	static DWORD numMotorTimeouts = 0;
 startHwPump	src/hw_pump.c	1413	void startHwPump() {
 UART_loopStart_save	src/hw_pump.c	3215	static UINT64 UART_loopStart_save = 0;
 hwPump_UART_thread	src/hw_pump.c	3247	void* hwPump_UART_thread(void* arg)
-SPI_loopStart_save	src/hw_pump.c	6284	static UINT64 SPI_loopStart_save = 0;
-hwPump_SPI_thread	src/hw_pump.c	6316	void* hwPump_SPI_thread(void* arg)
-I2C_loopStart_save	src/hw_pump.c	8550	static UINT64 I2C_loopStart_save = 0;
-hwPump_I2C_thread	src/hw_pump.c	8581	void* hwPump_I2C_thread(void* arg)
-lock_snapshot	src/hw_pump.c	9783	void lock_snapshot() {
-unlock_snapshot	src/hw_pump.c	9840	void unlock_snapshot() {
-initSnapshot	src/hw_pump.c	9945	void initSnapshot() {
-getStateSnapshot	src/hw_pump.c	10976	void getStateSnapshot(PHI_STATE_PACKET* p) {
-writeToCmdSnapshot	src/hw_pump.c	11297	void writeToCmdSnapshot(PHI_CMD_PACKET* p) {
+SPI_loopStart_save	src/hw_pump.c	6081	static UINT64 SPI_loopStart_save = 0;
+hwPump_SPI_thread	src/hw_pump.c	6113	void* hwPump_SPI_thread(void* arg)
+I2C_loopStart_save	src/hw_pump.c	8347	static UINT64 I2C_loopStart_save = 0;
+hwPump_I2C_thread	src/hw_pump.c	8378	void* hwPump_I2C_thread(void* arg)
+lock_snapshot	src/hw_pump.c	9580	void lock_snapshot() {
+unlock_snapshot	src/hw_pump.c	9637	void unlock_snapshot() {
+initSnapshot	src/hw_pump.c	9742	void initSnapshot() {
+getStateSnapshot	src/hw_pump.c	10773	void getStateSnapshot(PHI_STATE_PACKET* p) {
+writeToCmdSnapshot	src/hw_pump.c	11094	void writeToCmdSnapshot(PHI_CMD_PACKET* p) {
+setSnapshotMotorVal	src/hw_pump.c	11389	void setSnapshotMotorVal(char* motorName, INT8 powerVal) {
 HAL_STUB_initPeripherals	src/hal_stub.c	45	char* HAL_STUB_initPeripherals() {
 GYRO_UPDATE_EVERY	src/hal_stub.c	147	#define GYRO_UPDATE_EVERY 0.01f
 HAL_STUB_gyroGetDeltas	src/hal_stub.c	178	void  HAL_STUB_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
@@ -650,6 +647,9 @@ HAL_PHI_gyroGetTemp	src/hal_phi.c	1435	float HAL_PHI_gyroGetTemp() {
 HAL_PHI_setMotorPower	src/hal_phi.c	1518	void HAL_PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 HAL_PHI_setControllerId	src/hal_phi.c	1645	void HAL_PHI_setControllerId(BYTE oldId, BYTE newId) {
 HAL_PHI_getJointPos	src/hal_phi.c	1737	float HAL_PHI_getJointPos(BYTE jointIdx) {
+phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
+genericHal	src/hal.c	755	HAL_FUNCS genericHal = {
+HAL_init	src/hal.c	1207	void HAL_init() {
 bUseFifo	src/gyro.c	137	BOOL bUseFifo = TRUE;
 zeroX	src/gyro.c	188	INT16 zeroX = 0;
 zeroY	src/gyro.c	205	INT16 zeroY = 0;
@@ -679,12 +679,12 @@ GPIO_BASE	src/gpio.c	446	#define GPIO_BASE             GPFSEL0
 PAGE_SIZE	src/gpio.c	484	#define PAGE_SIZE             (4*1024)
 BLOCK_SIZE	src/gpio.c	523	#define BLOCK_SIZE            (4*1024)
 gpio_init	src/gpio.c	560	BOOL gpio_init()
-eventGate_init	src/event_gate.c	386	void eventGate_init(PHI_EVENT_GATE* pGate, BOOL bOpen) {
-eventGate_openHelper	src/event_gate.c	741	static void eventGate_openHelper(PHI_EVENT_GATE* pGate, PHI_GATE_STATE endupState) {
-eventGate_open	src/event_gate.c	1089	void eventGate_open(PHI_EVENT_GATE* pGate) {
-eventGate_pulse	src/event_gate.c	1304	void eventGate_pulse(PHI_EVENT_GATE* pGate) {
-eventGate_close	src/event_gate.c	1489	void eventGate_close(PHI_EVENT_GATE* pGate) {
-eventGate_wait	src/event_gate.c	2030	int eventGate_wait(PHI_EVENT_GATE* pGate, DWORD msTimeout) {
+eventGate_init	src/event_gate.c	414	void eventGate_init(PHI_EVENT_GATE* pGate, BOOL bOpen) {
+eventGate_openHelper	src/event_gate.c	769	static void eventGate_openHelper(PHI_EVENT_GATE* pGate, PHI_GATE_STATE newState) {
+eventGate_open	src/event_gate.c	1213	void eventGate_open(PHI_EVENT_GATE* pGate) {
+eventGate_pulse	src/event_gate.c	1450	void eventGate_pulse(PHI_EVENT_GATE* pGate) {
+eventGate_close	src/event_gate.c	1631	void eventGate_close(PHI_EVENT_GATE* pGate) {
+eventGate_wait	src/event_gate.c	2172	int eventGate_wait(PHI_EVENT_GATE* pGate, DWORD msTimeout) {
 UINT32	src/datalog.c	262	    #define UINT32          unsigned long
 UINT64	src/datalog.c	304	    #define UINT64          unsigned long long
 LOG_FATAL	src/datalog.c	351	    #define LOG_FATAL       printf

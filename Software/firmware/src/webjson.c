@@ -538,7 +538,6 @@ JSON_HANDLER(setPower) {
   jsmntok_t* pTok = *ppTok;
   char motorName[3] = {0, 0, 0};
   int powerVal = -1;
-  // BOOL bFwd = TRUE;
   int toksRead = 2;
 
   while (toksRead < _numChild) {
@@ -578,11 +577,6 @@ JSON_HANDLER(setPower) {
 
       int percent = atoi(TOK_START(pTok));
 
-      //if (percent < 0) {
-      //  bFwd = FALSE;
-      //  percent = -percent;
-      // }
-
       // [-127,127]
       powerVal = (percent * 127) / 100;
 
@@ -609,9 +603,9 @@ JSON_HANDLER(setPower) {
 
   TODO("DELETE THIS CODE");
   // HAL_setMotorPower(
-  // MOTOR_NAME_TO_CTRL_ID(motorName),
-  // MOTOR_NAME_TO_SEL_IDX(motorName),
-  // (BYTE) powerVal, bFwd);
+  //  MOTOR_NAME_TO_CTRL_ID(motorName),
+  //  MOTOR_NAME_TO_SEL_IDX(motorName),
+  //  (BYTE) powerVal, bFwd);
 
 quick_exit:
 

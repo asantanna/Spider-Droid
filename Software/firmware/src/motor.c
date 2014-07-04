@@ -99,8 +99,6 @@ BOOL initMotorCtrl() {
 
 void setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
 
-  // WARN("ctrlID hack enabled!");
-  // ctrlID = 9;
 
   BYTE cmd = 
     bFwd ? (selIdx == 0 ? MC_CMD_FWD_M0 : MC_CMD_FWD_M1)
@@ -114,6 +112,9 @@ void setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
   };
   
   uart_send(motorCmd, sizeof(motorCmd));
+
+  // DEBUG
+  // printf("setMotorPower: id=%d, power=%d, bFwd=%d\n", (int) ctrlID, (int) power, (int) bFwd);
 
   // DEBUG
   // int i;
