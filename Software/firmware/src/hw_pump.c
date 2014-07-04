@@ -178,7 +178,7 @@ void* hwPump_UART_thread(void* arg)
       // go through each motor of this controller
       for (selIdx = '0' ; selIdx <= '1' ; selIdx ++) {
         // send out motor power command for this motor
-        
+
         lock_snapshot();
         int power = phiSnapshot.cmds.motors[motorIdx++];
         unlock_snapshot();
@@ -189,44 +189,33 @@ void* hwPump_UART_thread(void* arg)
       }
     }
 
+    // time at end of work
+    UINT64 usec_workEnd = phiUpTime();
+    INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
+
     //
     // Wait on event gate to be told data has been updated
     //
+    // The purpose of the event gate is to allow commands to be written to the
+    // UARTs as quickly as possible after they are received.  It is basically an
+    // interruptible sleep. We wait on the gate but timeout if it takes too long.
+    // When a timeout occurs, it means we have not received commands from the
+    // server for a while and something is seriously wrong.  In this case, we
+    // stop all motors for safety.
 
-    // time at end of work
-    UINT64 usec_workEnd = phiUpTime();
+    #define MOTOR_TIMEOUT_MS   500      // 1/2 second
 
-    // calc time we would have to sleep until the next update
+    int waitRc = eventGate_wait(&egMotorWrite, MOTOR_TIMEOUT_MS);
 
-    INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
-    INT32 usec_sleepTime = (INT32) (HW_PUMP_LOOP_PERIOD_USEC - usec_workTime);
+    if (waitRc == ETIMEDOUT) {
 
-    if (usec_sleepTime <= 0) {
-      
-      // NO time left - ALWAYS at least give up time slice
-      usleep(0);
-      
-    } else if (g_phiLinkStatus != LINK_CONNECTED) {
+      // gate timed out - only bad if link connected
 
-      // PhiLink not connected - just sleep
-      usleep(usec_sleepTime);
+      if (g_phiLinkStatus == LINK_CONNECTED) {
 
-    } else {
-      
-      // There is time left *and* PhiLink is running
-      //
-      // wait on the gate but timeout if it takes too long
-      // note: give it a full extra slice of slop and round up to mS
-      
-      DWORD msTimeout = (usec_sleepTime + HW_PUMP_LOOP_PERIOD_USEC + 999ul) / 1000ul;
-      
-      int waitRc = eventGate_wait(&egMotorWrite, msTimeout);
-
-      if (waitRc == ETIMEDOUT) {
-        
-        // timed out - stop all motors
+        // link is connected - stop all motors
         stopAllMotors();
-        
+
         // count it
         numMotorTimeouts ++;
 

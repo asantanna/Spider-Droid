@@ -159,12 +159,6 @@ void* phiLink_loop(void* arg)
   LOG_INFO("** Phi Link connected");
 
   //
-  // Start the hardware pump threads
-  //
-
-  startHwPump();
-
-  //
   // PHILINK comm loop (loop forever)
   //
   
@@ -201,11 +195,11 @@ void* phiLink_loop(void* arg)
     }
     
     // new loop start
+    // Note: loop is considered to start once a cmd packet is received
     UINT64 usec_loopStart = phiUpTime();
 
-    // write commands to snapshot
+    // write received commands to command snapshot
     // note: this will trigger the event gate for update
-    
     writeToCmdSnapshot((PHI_CMD_PACKET *) rxBuff);
 
     // get state snapshot to create reply

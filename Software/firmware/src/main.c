@@ -26,6 +26,12 @@ void main(int argc, char** argv) {
   // process command line switches
   cmdline(argc, argv);
 
+  // start the hardware pump threads now that we survived
+  // the cmdline processing.  The cmdline processing can exit
+  // on errors and when being used to create a test suite script.
+  startHwPump();
+
+
   //
   // Start web admin server
   //

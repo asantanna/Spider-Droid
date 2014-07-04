@@ -3,8 +3,8 @@
 // An eventGate is an object similar to an Event in Win32.
 // It is a simple mechanism like a gate.  When the gate is closed,
 // all threads stop and wait at it.  When we open the gate, *all* threads
-// go.  We can additionally "pulse" the gate so that all threads go but
-// then the gate is immediately closed behind them.
+// are released.  We can additionally "pulse" the gate which behaves like open
+// but the gate closes again before any threads get any execution time. 
 //
 
 #include "phi.h"
@@ -29,17 +29,23 @@ void eventGate_init(PHI_EVENT_GATE* pGate, BOOL bOpen) {
 // Helper function for _open and _pulse.
 //
 
-static void eventGate_openHelper(PHI_EVENT_GATE* pGate, PHI_GATE_STATE endupState) {
+static void eventGate_openHelper(PHI_EVENT_GATE* pGate, PHI_GATE_STATE newState) {
+  
+  // must lock mutex before touching state
   pthread_mutex_lock(&(pGate->mutex));
+  
   // set state to req state
-  pGate -> state = endupState;
+  pGate -> state = newState;
+
+  // done with state - release mutex
+  pthread_mutex_unlock(&(pGate->mutex));
+  
   // release all waiters
   pthread_cond_broadcast(&(pGate->condVar));
-  pthread_mutex_unlock(&(pGate->mutex));
 }
 
 //
-// "Open" the eventGate ... waiters will NOT block
+// "Open" the eventGate ... waiters will NOT block when open
 //
 
 void eventGate_open(PHI_EVENT_GATE* pGate) {
@@ -48,12 +54,12 @@ void eventGate_open(PHI_EVENT_GATE* pGate) {
 }
 
 //
-// "Pulse" the event gate, it will be CLOSED again before
+// "Pulse" the event gate, all waiters released but will be CLOSED again before
 //  any waiters get to run.
 //
 
 void eventGate_pulse(PHI_EVENT_GATE* pGate) {
-  // release waiters and but stay CLOSED
+  // release waiters but stay CLOSED
   eventGate_openHelper(pGate, CLOSED);
 }
 
@@ -81,6 +87,8 @@ int eventGate_wait(PHI_EVENT_GATE* pGate, DWORD msTimeout) {
 
   int rc = 0;
 
+  // must always lock mutex before checking/changing state or
+  // calling any of the wait functions
   pthread_mutex_lock(&(pGate->mutex));
 
   if (pGate -> state == CLOSED) {
@@ -95,6 +103,8 @@ int eventGate_wait(PHI_EVENT_GATE* pGate, DWORD msTimeout) {
 
       rc = pthread_cond_wait(&(pGate -> condVar), &(pGate -> mutex));
 
+      // we have the mutex again here
+
     } else {
 
       // timeout specified - convert to abs time
@@ -102,15 +112,18 @@ int eventGate_wait(PHI_EVENT_GATE* pGate, DWORD msTimeout) {
       struct timespec wakeupTime;
       clock_gettime(CLOCK_REALTIME, &wakeupTime);
       offsetTimespecMs(&wakeupTime, msTimeout);
-
+      
       // wait with timeout
       // note: call will ALWAYS atomically block AND release the mutex.
       // note 2: after waking, we own the mutex again.
 
       rc = pthread_cond_timedwait(&(pGate -> condVar), &(pGate -> mutex), &wakeupTime);
+      
+      // we have the mutex again here
     }
   }
 
+  // we always have the mutex here
   pthread_mutex_unlock(&(pGate->mutex));
   
   return rc;

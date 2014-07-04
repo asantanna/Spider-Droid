@@ -154,7 +154,7 @@ void logClose(void) {
 void logTimestamp() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  fprintf(logfp, "T=%.2f mS : ", ((double)phiUpTime()) / 1000);
+  fprintf(logfp, "T=%.6f secs : ", ((double)phiUpTime()) / 1000000);
   // no flush here
 }
 
@@ -322,7 +322,9 @@ UINT64 phiUpTime() {
   return TV_TO_USEC(tv) - g_startupTime;
 }
 
-#define BILLION   ((long) 1e9)
+#define THOUSAND  1000L
+#define MILLION   (THOUSAND * THOUSAND)
+#define BILLION   (MILLION  * THOUSAND)
 
 void addToTimespec(struct timespec* pT1, time_t numSecs, DWORD numNano) {
   pT1 -> tv_sec += numSecs;
@@ -339,6 +341,8 @@ void addTimespecs(struct timespec* pT1, struct timespec* pT2) {
 }
 
 void offsetTimespecMs(struct timespec* pT1, DWORD mS) {
-  addToTimespec(pT1, mS / BILLION, mS % BILLION);
+  time_t secs = mS / THOUSAND;
+  DWORD nanos = (mS % THOUSAND) * MILLION;
+  addToTimespec(pT1, secs, nanos);
 }
 
