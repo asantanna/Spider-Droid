@@ -139,7 +139,7 @@ typedef enum {
 #define PHI_MUTEX_TRYGET(pMtx)      pthread_mutex_trylock(pMtx)   // ret 0 if get successful, ret != if failed
 
 // hardware pumping rate
-#define HWPUMP_LOOPS_PER_SEC        60
+#define HWPUMP_LOOPS_PER_SEC        30
 #define HW_PUMP_LOOP_PERIOD_USEC    ((INT32)(1e6 / HWPUMP_LOOPS_PER_SEC))
 
 // performance monitoring

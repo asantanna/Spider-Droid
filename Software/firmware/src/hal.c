@@ -39,8 +39,8 @@ HAL_FUNCS genericHal = {
 
 void HAL_init() {
 
-  BOOL isPhi = strcasestr(g_uname.nodename, "phi");
-  BOOL isUbuntu = strcasestr(g_uname.nodename, "ubuntu");
+  BOOL isPhi = (strcasestr(g_uname.nodename, "phi") != NULL);
+  BOOL isUbuntu = (strcasestr(g_uname.nodename, "ubuntu") != NULL);
   
   // determine what host we are running on and set HAL pointer
   // to correct function table

@@ -538,7 +538,7 @@ JSON_HANDLER(setPower) {
   jsmntok_t* pTok = *ppTok;
   char motorName[3] = {0, 0, 0};
   int powerVal = -1;
-  BOOL bFwd = TRUE;
+  // BOOL bFwd = TRUE;
   int toksRead = 2;
 
   while (toksRead < _numChild) {
@@ -578,11 +578,12 @@ JSON_HANDLER(setPower) {
 
       int percent = atoi(TOK_START(pTok));
 
-      if (percent < 0) {
-        bFwd = FALSE;
-        percent = -percent;
-      }
+      //if (percent < 0) {
+      //  bFwd = FALSE;
+      //  percent = -percent;
+      // }
 
+      // [-127,127]
       powerVal = (percent * 127) / 100;
 
     } else {
@@ -601,12 +602,16 @@ JSON_HANDLER(setPower) {
     goto error_exit;
   }
 
-  LOG_INFO("JSON.setPower: setting motor %c%c to power=%u, dir=%s", motorName[0], motorName[1], (BYTE) powerVal, bFwd ? "FWD" : "BACK");
+  LOG_INFO("JSON.setPower: setting motor %c%c to power=%d", motorName[0], motorName[1], powerVal);
 
-  HAL_setMotorPower(
-    MOTOR_NAME_TO_CTRL_ID(motorName),
-    MOTOR_NAME_TO_SEL_IDX(motorName),
-    (BYTE) powerVal, bFwd);
+  // copy to cmd snapshot
+  setSnapshotMotorVal(motorName, powerVal);
+
+  TODO("DELETE THIS CODE");
+  // HAL_setMotorPower(
+  // MOTOR_NAME_TO_CTRL_ID(motorName),
+  // MOTOR_NAME_TO_SEL_IDX(motorName),
+  // (BYTE) powerVal, bFwd);
 
 quick_exit:
 

@@ -9,9 +9,6 @@
 // clears mem, debug
 void* allocHelper(int size);
 
-// hardware pump thread
-void startHwPumpThread();
-
 // set thread priority
 BOOL setRealtimePrio(pthread_t thread);
 
@@ -41,8 +38,12 @@ void logClose(void);
 // Phi Link
 //
 
+void startHwPump();
+
 BOOL startPhiLink(char* ipAddr, int port);
 void getStateSnapshot(PHI_STATE_PACKET *p);
+void writeToCmdSnapshot(PHI_CMD_PACKET* p);
+void setSnapshotMotorVal(char* motorName, INT8 powerVal);
 
 //
 // I/O Helpers
@@ -98,6 +99,7 @@ char* selfTest(int mode);
 // Gyro
 //
 
+BOOL gyroInit(BOOL bEnableFifo);
 void gyroGetDeltaDegrees(float* pPitchDelta, float* pYawDelta, float* pRollDelta);
 INT8 gyroGetRawTemp();
 
@@ -122,12 +124,18 @@ void globalShutdown();
 
 char* initPeripherals();
 
+void setControllerId(BYTE oldId, BYTE newId);
 BOOL initMotorCtrl();
+void setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd);
 void stopMotor(BYTE ctrlID, BYTE selIdx);
 void stopAllMotors();
 void flushMotorCmds();
 
 float getJointPos(BYTE jointIdx);
+UINT16 getRawJointPos(BYTE jointIdx);
+float getJointPosByMotorID(BYTE ctrlID, BYTE selIdx);
+
+BOOL gpio_init();
 
 //
 // Misc
@@ -144,4 +152,7 @@ double phiRand();
 void addToTimespec(struct timespec* pT1, time_t numSecs, DWORD numNano);
 void addTimespecs(struct timespec* pT1, struct timespec* pT2);
 void offsetTimespecMs(struct timespec* pT1, DWORD mS);
+
+UINT32 getHostIP();
+
 

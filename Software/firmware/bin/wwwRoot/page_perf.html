@@ -14,6 +14,12 @@
    <link rel="stylesheet" type="text/css" href="css/phi.css">
 
    <script>
+
+      // catch annoying silent JavaScript errors
+      window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+        alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
+          + ' Column: ' + column + ' StackTrace: ' +  errorObj);
+      }      
       
       function pageLoaded()
       {
@@ -56,7 +62,7 @@
                 document.getElementById("phi_pump_unit_" + suffix).innerHTML = reply.logs[idx].unit;
                 
                 for (var epoch = 0 ; epoch < reply.logs[idx].depths.length ; epoch ++) {
-                  
+
                   var content =
                     (reply.logs[idx].min[epoch] / 1000).toFixed(1) + " mS<br\>" +
                     (reply.logs[idx].max[epoch] / 1000).toFixed(1) + " mS<br\>" +
@@ -76,6 +82,8 @@
               document.getElementById("philink_unit").innerHTML = reply.log.unit;
 
               for (var epoch = 0 ; epoch < reply.log.depths.length ; epoch ++) {
+
+                // alert(reply.log.min[epoch]);
 
                 var content =
                   (reply.log.min[epoch] / 1000).toFixed(1) + " mS<br\>" +

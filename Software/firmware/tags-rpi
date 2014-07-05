@@ -1,4 +1,728 @@
 	TAGS	UNSORTED
+phiHal	src/hal.c	270	HAL_FUNCS phiHal = {
+genericHal	src/hal.c	755	HAL_FUNCS genericHal = {
+HAL_init	src/hal.c	1207	void HAL_init() {
+MAX_JSON_TOKENS	src/webjson.c	913	#define MAX_JSON_TOKENS       256
+PARSER_NUM_TOK	src/webjson.c	979	#define PARSER_NUM_TOK(parser)  ((parser).toknext)
+TOK_START	src/webjson.c	1031	#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
+TOK_LEN	src/webjson.c	1088	#define TOK_LEN(pTok)         ((pTok)->end - (pTok)->start)
+TOK_TYPE	src/webjson.c	1148	#define TOK_TYPE(pTok)        ((pTok)->type)
+TOK_NUM_CHILD	src/webjson.c	1193	#define TOK_NUM_CHILD(pTok)   ((pTok)->size)
+TOK_EQ	src/webjson.c	1239	#define TOK_EQ(pTok,s) \
+_jsonCmdReply_t	src/webjson.c	1404	typedef struct _jsonCmdReply_t {
+_jsonCmdReply_t::pReply	src/webjson.c	1430	  char* pReply;
+_jsonCmdReply_t::pNext	src/webjson.c	1464	  struct _jsonCmdReply_t* pNext;
+PHI_JSON_CMD_REPLY_TYPE	src/webjson.c	1474	} PHI_JSON_CMD_REPLY_TYPE;
+jsonCmdHandler	src/webjson.c	1535	typedef PHI_JSON_CMD_REPLY_TYPE* (*jsonCmdHandler)(jsmntok_t** ppTok, char* pJsonReq);
+JSON_HANDLER	src/webjson.c	1707	#define JSON_HANDLER(h) PHI_JSON_CMD_REPLY_TYPE* json_##h (jsmntok_t** ppTok, char* pJsonReq)
+pCmd	src/webjson.c	2304	  char *pCmd;
+handler	src/webjson.c	2327	  jsonCmdHandler handler;
+PHI_JSON_CMD_TYPE	src/webjson.c	2341	} PHI_JSON_CMD_TYPE;
+CMD_ENTRY	src/webjson.c	2369	#define CMD_ENTRY(c) { STR(c) , json_ ## c }
+validCmds	src/webjson.c	2425	PHI_JSON_CMD_TYPE validCmds[] = {
+jsonReply_start	src/webjson.c	2965	char jsonReply_start[] = "{" Q(reply) ": [\n";
+jsonReply_end	src/webjson.c	3012	char jsonReply_end[]   = "] }";
+jsonReplyObject_start	src/webjson.c	3112	char jsonReplyObject_start[] = "{\n" Q(cmd) ":" Q(%s) ",\n";
+jsonReplyObject_end	src/webjson.c	3173	char jsonReplyObject_end[]   = "}";
+jsonParseError	src/webjson.c	3283	char jsonParseError[] = "{ " Q(error) ":" Q(PHI could not process your JSON request.  It''s probably your fault btw.) " }\n";
+processJson	src/webjson.c	3564	char* processJson(char *pJsonReq) {
+freeJsonReply	src/webjson.c	8307	void freeJsonReply(char* pJsonReply) {
+getJsonHandler	src/webjson.c	8383	jsonCmdHandler getJsonHandler(jsmntok_t** ppTok, char* pJsonReq) {
+JSON_HANDLER_PROLOG	src/webjson.c	9296	#define JSON_HANDLER_PROLOG(cmd) \
+JSON_HANDLER_EPILOG	src/webjson.c	9689	#define JSON_HANDLER_EPILOG() \
+JSON_HANDLER	src/webjson.c	10764	JSON_HANDLER(getInitState) {
+JSON_HANDLER	src/webjson.c	10964	JSON_HANDLER(initPeripherals) {
+JSON_HANDLER	src/webjson.c	11196	JSON_HANDLER(getVersion) {
+JSON_HANDLER	src/webjson.c	11360	JSON_HANDLER(getIpAddr) {
+JSON_HANDLER	src/webjson.c	11620	JSON_HANDLER(getUname) {
+JSON_HANDLER	src/webjson.c	12112	JSON_HANDLER(getSysInfo) {
+JSON_HANDLER	src/webjson.c	13403	JSON_HANDLER(getPhiUptime) {
+JSON_HANDLER	src/webjson.c	14517	JSON_HANDLER(setPower) {
+JSON_HANDLER	src/webjson.c	16764	JSON_HANDLER(setMCtlId) {
+JSON_HANDLER	src/webjson.c	18222	JSON_HANDLER(getGyroDeltas) {
+JSON_HANDLER	src/webjson.c	18673	JSON_HANDLER(getGyroTemp) {
+JSON_HANDLER	src/webjson.c	19057	JSON_HANDLER(getLinkStatus) {
+JSON_HANDLER	src/webjson.c	19681	JSON_HANDLER(startPhiLink) {
+JSON_HANDLER	src/webjson.c	21695	JSON_HANDLER(selfTest) {
+emitDatalogJson	src/webjson.c	23913	void emitDatalogJson(char*pBuff, DATALOG* pLog, int depths[]) {
+JSON_HANDLER	src/webjson.c	25569	JSON_HANDLER(getPumpStats) {
+JSON_HANDLER	src/webjson.c	26596	JSON_HANDLER(getPumpRates) {
+JSON_HANDLER	src/webjson.c	27129	JSON_HANDLER(getPhiLinkStats) {
+MC_DEF_BAUD	include/polulu_2s9v1.h	107	#define MC_DEF_BAUD   B38400
+MC_CMD_SIGN	include/polulu_2s9v1.h	513	#define MC_CMD_SIGN                 0xAA
+MC_DEFAULT_DEVICE_NUM	include/polulu_2s9v1.h	554	#define MC_DEFAULT_DEVICE_NUM       9
+MC_CMD_GET_VERSION	include/polulu_2s9v1.h	593	#define MC_CMD_GET_VERSION          1         // not used
+MC_CMD_GET_ERR_BYTE	include/polulu_2s9v1.h	651	#define MC_CMD_GET_ERR_BYTE         2         // not used
+MC_CMD_GET_CONF	include/polulu_2s9v1.h	709	#define MC_CMD_GET_CONF             3         // not used
+MC_CMD_SET_CONF	include/polulu_2s9v1.h	767	#define MC_CMD_SET_CONF             4         // configure
+MC_CMD_UNKNOWN	include/polulu_2s9v1.h	826	#define MC_CMD_UNKNOWN              5         // not doc
+MC_CMD_COAST_M0	include/polulu_2s9v1.h	883	#define MC_CMD_COAST_M0             6         // no resist motor 0
+MC_CMD_COAST_M1	include/polulu_2s9v1.h	950	#define MC_CMD_COAST_M1             7         // no resist motor 1
+MC_CMD_FWD_M0	include/polulu_2s9v1.h	1018	#define MC_CMD_FWD_M0               8         // set M0 speed (forward)
+MC_CMD_FWD_8BIT_M0	include/polulu_2s9v1.h	1090	#define MC_CMD_FWD_8BIT_M0          9         // set M0 8-bit speed+128 (forward)
+MC_CMD_BCK_M0	include/polulu_2s9v1.h	1172	#define MC_CMD_BCK_M0             0xA         // set M0 speed (backward)
+MC_CMD_BCK_8BIT_M0	include/polulu_2s9v1.h	1245	#define MC_CMD_BCK_8BIT_M0        0xB         // set M0 8-bit speed+128 (backward)
+MC_CMD_FWD_M1	include/polulu_2s9v1.h	1329	#define MC_CMD_FWD_M1             0xC         // set M1 speed (forward)
+MC_CMD_FWD_8BIT_M1	include/polulu_2s9v1.h	1401	#define MC_CMD_FWD_8BIT_M1        0xD         // set M1 8-bit speed+128 (forward)
+MC_CMD_BCK_M1	include/polulu_2s9v1.h	1483	#define MC_CMD_BCK_M1             0xE         // set M1 speed (backward)
+MC_CMD_BCK_8BIT_M1	include/polulu_2s9v1.h	1556	#define MC_CMD_BCK_8BIT_M1        0xF         // set M1 8-bit speed+128 (backward)
+MC_SCONF_WAIT_MS	include/polulu_2s9v1.h	2613	#define MC_SCONF_WAIT_MS            4         // command takes 4 mS to complete - must wait
+MC_SCONF_END_VAL_0	include/polulu_2s9v1.h	2706	#define MC_SCONF_END_VAL_0          0x55      // end value 0
+MC_SCONF_END_VAL_1	include/polulu_2s9v1.h	2767	#define MC_SCONF_END_VAL_1          0x2A      // end value 1
+MC_SCONF_PARAM_DEVICE_ID	include/polulu_2s9v1.h	2829	#define MC_SCONF_PARAM_DEVICE_ID    0         // set motor speed
+MC_SCONF_PARAM_PWM_MODE	include/polulu_2s9v1.h	2894	#define MC_SCONF_PARAM_PWM_MODE     1         // set PWM mode
+MC_SCONF_PARAM_ERR_MODE	include/polulu_2s9v1.h	2956	#define MC_SCONF_PARAM_ERR_MODE     2         // set error mode
+MC_SCONF_PARAM_TIMEOUT	include/polulu_2s9v1.h	3020	#define MC_SCONF_PARAM_TIMEOUT      3         // set serial timeout
+MC_SCONF_SPD_7BIT	include/polulu_2s9v1.h	3107	#define MC_SCONF_SPD_7BIT           0         // use 7 bit motor speed - max is 0x7f
+MC_SCONF_SPD_8BIT	include/polulu_2s9v1.h	3192	#define MC_SCONF_SPD_8BIT           1         // use 8 bit motor speed - max is 0xff
+MC_SCONF_HIGH_FREQ	include/polulu_2s9v1.h	3277	#define MC_SCONF_HIGH_FREQ          0         // higher pitched noise - more power consumption
+MC_SCONF_LOW_FREQ	include/polulu_2s9v1.h	3372	#define MC_SCONF_LOW_FREQ           2         // lower/louder pitched noise - less power consumption
+MC_SCONF_IGNORE_ERR	include/polulu_2s9v1.h	3492	#define MC_SCONF_IGNORE_ERR         0         // ignore errors - keep running
+MC_SCONF_STOP_ON_ERR	include/polulu_2s9v1.h	3570	#define MC_SCONF_STOP_ON_ERR        1         // stop motors if error or timeout
+MC_SCONF_TIMEOUT_DISABLE	include/polulu_2s9v1.h	3669	#define MC_SCONF_TIMEOUT_DISABLE    0         // disable error on timeout
+MC_SCONF_TO_MULT_MASK	include/polulu_2s9v1.h	3743	#define MC_SCONF_TO_MULT_MASK       0x0F      // low 4 bits are "multiplier"
+MC_SCONF_TO_SHIFT_MASK	include/polulu_2s9v1.h	3820	#define MC_SCONF_TO_SHIFT_MASK      0x70      // next 3 bits are "shift"
+GYRO_MAX_SPI_CLK	include/plax_L3G4200D.h	76	#define GYRO_MAX_SPI_CLK          (10ul*1000ul*1000ul)
+GYRO_SAFE_SPI_CLK	include/plax_L3G4200D.h	154	#define GYRO_SAFE_SPI_CLK         ( 8ul*1000ul*1000ul)
+GYRO_SPI_MODE	include/plax_L3G4200D.h	571	#define GYRO_SPI_MODE             (SPI_CPHA | SPI_CPOL)
+GYRO_SPI_BPW	include/plax_L3G4200D.h	647	#define GYRO_SPI_BPW              8
+GYRO_250DPS_MULT	include/plax_L3G4200D.h	718	#define GYRO_250DPS_MULT          0.00875f
+GYRO_500DPS_MULT	include/plax_L3G4200D.h	761	#define GYRO_500DPS_MULT          0.0175f
+GYRO_2000DPS_MULT	include/plax_L3G4200D.h	803	#define GYRO_2000DPS_MULT         0.07f
+GYRO_ADDR_READ	include/plax_L3G4200D.h	886	#define GYRO_ADDR_READ            0x80
+GYRO_ADDR_WRITE	include/plax_L3G4200D.h	925	#define GYRO_ADDR_WRITE           0
+GYRO_ADDR_AUTO_INC	include/plax_L3G4200D.h	962	#define GYRO_ADDR_AUTO_INC        0x40
+GYRO_ADDR_NO_INC	include/plax_L3G4200D.h	1001	#define GYRO_ADDR_NO_INC          0
+GYRO_ADDR_MASK	include/plax_L3G4200D.h	1038	#define GYRO_ADDR_MASK            0x3F
+GYRO_WHOAMI_ADDR	include/plax_L3G4200D.h	1119	#define GYRO_WHOAMI_ADDR          0x0F
+GYRO_WHOAMI_REPLY	include/plax_L3G4200D.h	1158	#define GYRO_WHOAMI_REPLY         0xD3
+GYRO_CR1_ADDR	include/plax_L3G4200D.h	1212	#define GYRO_CR1_ADDR             0x20
+GYRO_CR1_DR_MASK	include/plax_L3G4200D.h	1252	#define GYRO_CR1_DR_MASK          0xC0
+GYRO_CR1_DR_100HZ	include/plax_L3G4200D.h	1292	#define GYRO_CR1_DR_100HZ         0x00  /* output data rate */
+GYRO_CR1_DR_200HZ	include/plax_L3G4200D.h	1355	#define GYRO_CR1_DR_200HZ         0x40
+GYRO_CR1_DR_400HZ	include/plax_L3G4200D.h	1394	#define GYRO_CR1_DR_400HZ         0x80
+GYRO_CR1_DR_800HZ	include/plax_L3G4200D.h	1433	#define GYRO_CR1_DR_800HZ         0xC0
+GYRO_CR1_BW_MASK	include/plax_L3G4200D.h	1473	#define GYRO_CR1_BW_MASK          0x30  /* cutoff freqs - see datasheet */
+GYRO_CR1_BW_CO_1	include/plax_L3G4200D.h	1548	#define GYRO_CR1_BW_CO_1          0x00
+GYRO_CR1_BW_CO_2	include/plax_L3G4200D.h	1587	#define GYRO_CR1_BW_CO_2          0x10
+GYRO_CR1_BW_CO_3	include/plax_L3G4200D.h	1626	#define GYRO_CR1_BW_CO_3          0x20
+GYRO_CR1_BW_CO_4	include/plax_L3G4200D.h	1665	#define GYRO_CR1_BW_CO_4          0x30
+GYRO_CR1_MODE_PWRDOWN	include/plax_L3G4200D.h	1705	#define GYRO_CR1_MODE_PWRDOWN     0
+GYRO_CR1_MODE_NORMAL	include/plax_L3G4200D.h	1741	#define GYRO_CR1_MODE_NORMAL      0x08
+GYRO_CR1_Z_EN	include/plax_L3G4200D.h	1780	#define GYRO_CR1_Z_EN             0x04
+GYRO_CR1_Y_EN	include/plax_L3G4200D.h	1819	#define GYRO_CR1_Y_EN             0x02
+GYRO_CR1_X_EN	include/plax_L3G4200D.h	1858	#define GYRO_CR1_X_EN             0x01
+GYRO_CR2_ADDR	include/plax_L3G4200D.h	1912	#define GYRO_CR2_ADDR             0x21
+GYRO_CR2_RSVD_MASK	include/plax_L3G4200D.h	1952	#define GYRO_CR2_RSVD_MASK        0xC0  /* these bits must not be changed */
+GYRO_CR2_HPM_MASK	include/plax_L3G4200D.h	2029	#define GYRO_CR2_HPM_MASK         0x30  /* see datasheet */
+GYRO_CR2_HPCF_MASK	include/plax_L3G4200D.h	2089	#define GYRO_CR2_HPCF_MASK        0x0F
+GYRO_CR3_ADDR	include/plax_L3G4200D.h	2143	#define GYRO_CR3_ADDR             0x22
+GYRO_CR3_INT1_EN	include/plax_L3G4200D.h	2183	#define GYRO_CR3_INT1_EN          0x80
+GYRO_CR3_INT1_BOOT_EN	include/plax_L3G4200D.h	2222	#define GYRO_CR3_INT1_BOOT_EN     0x40
+GYRO_CR3_INT1_LOW	include/plax_L3G4200D.h	2261	#define GYRO_CR3_INT1_LOW         0x20
+GYRO_CR3_OPEN_DRAIN	include/plax_L3G4200D.h	2300	#define GYRO_CR3_OPEN_DRAIN       0x10
+GYRO_CR3_INT2_DRDY_EN	include/plax_L3G4200D.h	2339	#define GYRO_CR3_INT2_DRDY_EN     0x08
+GYRO_CR3_INT2_FWI_EN	include/plax_L3G4200D.h	2378	#define GYRO_CR3_INT2_FWI_EN      0x04
+GYRO_CR3_INT2_OI_EN	include/plax_L3G4200D.h	2417	#define GYRO_CR3_INT2_OI_EN       0x02
+GYRO_CR3_INT2_FEMPTY_EN	include/plax_L3G4200D.h	2456	#define GYRO_CR3_INT2_FEMPTY_EN   0x01
+GYRO_CR4_ADDR	include/plax_L3G4200D.h	2511	#define GYRO_CR4_ADDR             0x23
+GYRO_CR4_BDU_EN	include/plax_L3G4200D.h	2551	#define GYRO_CR4_BDU_EN           0x80
+GYRO_CR4_BIG_ENDIAN	include/plax_L3G4200D.h	2590	#define GYRO_CR4_BIG_ENDIAN       0x40
+GYRO_CR4_LITTLE_ENDIAN	include/plax_L3G4200D.h	2629	#define GYRO_CR4_LITTLE_ENDIAN    0
+GYRO_CR4_FS_MASK	include/plax_L3G4200D.h	2666	#define GYRO_CR4_FS_MASK          0x30
+GYRO_CR4_FS_250DPS	include/plax_L3G4200D.h	2705	#define GYRO_CR4_FS_250DPS        0x00
+GYRO_CR4_FS_500DPS	include/plax_L3G4200D.h	2744	#define GYRO_CR4_FS_500DPS        0x10
+GYRO_CR4_FS_2000DPS	include/plax_L3G4200D.h	2783	#define GYRO_CR4_FS_2000DPS       0x20
+GYRO_CR4_STEST_MASK	include/plax_L3G4200D.h	2823	#define GYRO_CR4_STEST_MASK       0x06
+GYRO_CR4_SPI_3WIRE	include/plax_L3G4200D.h	2862	#define GYRO_CR4_SPI_3WIRE        0x01
+GYRO_CR5_ADDR	include/plax_L3G4200D.h	2916	#define GYRO_CR5_ADDR             0x24
+GYRO_CR5_REBOOT	include/plax_L3G4200D.h	2956	#define GYRO_CR5_REBOOT           0x80
+GYRO_CR5_FIFO_EN	include/plax_L3G4200D.h	2995	#define GYRO_CR5_FIFO_EN          0x40
+GYRO_CR5_HP_EN	include/plax_L3G4200D.h	3034	#define GYRO_CR5_HP_EN            0x10
+GYRO_CR5_INT1_SEL_MASK	include/plax_L3G4200D.h	3073	#define GYRO_CR5_INT1_SEL_MASK    0x0C
+GYRO_CR5_OUT_SEL_MASK	include/plax_L3G4200D.h	3112	#define GYRO_CR5_OUT_SEL_MASK     0x03
+GYRO_REF_ADDR	include/plax_L3G4200D.h	3178	#define GYRO_REF_ADDR             0x25
+GYRO_TEMP_ADDR	include/plax_L3G4200D.h	3231	#define GYRO_TEMP_ADDR            0x26
+GYRO_TEMP_MIN	include/plax_L3G4200D.h	3271	#define GYRO_TEMP_MIN             (-40)
+GYRO_TEMP_MAX	include/plax_L3G4200D.h	3311	#define GYRO_TEMP_MAX             85
+GYRO_TEMP_RANGE	include/plax_L3G4200D.h	3348	#define GYRO_TEMP_RANGE           (GYRO_TEMP_MAX - GYRO_TEMP_MIN + 1)
+GYRO_TEMP_RAW_TO_CANON	include/plax_L3G4200D.h	3419	#define GYRO_TEMP_RAW_TO_CANON(raw) \
+GYRO_TEMP_CANON_TO_RAW	include/plax_L3G4200D.h	3520	#define GYRO_TEMP_CANON_TO_RAW(canon) \
+GYRO_STATUS_ADDR	include/plax_L3G4200D.h	3638	#define GYRO_STATUS_ADDR          0x27
+GYRO_STATUS_OVER	include/plax_L3G4200D.h	3678	#define GYRO_STATUS_OVER          0x80
+GYRO_STATUS_Z_OVER	include/plax_L3G4200D.h	3717	#define GYRO_STATUS_Z_OVER        0x40
+GYRO_STATUS_Y_OVER	include/plax_L3G4200D.h	3756	#define GYRO_STATUS_Y_OVER        0x20
+GYRO_STATUS_X_OVER	include/plax_L3G4200D.h	3795	#define GYRO_STATUS_X_OVER        0x10
+GYRO_STATUS_AVAIL	include/plax_L3G4200D.h	3834	#define GYRO_STATUS_AVAIL         0x08
+GYRO_STATUS_Z_AVAIL	include/plax_L3G4200D.h	3873	#define GYRO_STATUS_Z_AVAIL       0x04
+GYRO_STATUS_Y_AVAIL	include/plax_L3G4200D.h	3912	#define GYRO_STATUS_Y_AVAIL       0x02
+GYRO_STATUS_X_AVAIL	include/plax_L3G4200D.h	3951	#define GYRO_STATUS_X_AVAIL       0x01
+GYRO_XL_ADDR	include/plax_L3G4200D.h	4012	#define GYRO_XL_ADDR              0x28
+GYRO_XH_ADDR	include/plax_L3G4200D.h	4051	#define GYRO_XH_ADDR              0x29
+GYRO_YL_ADDR	include/plax_L3G4200D.h	4112	#define GYRO_YL_ADDR              0x2A
+GYRO_YH_ADDR	include/plax_L3G4200D.h	4151	#define GYRO_YH_ADDR              0x2B
+GYRO_ZL_ADDR	include/plax_L3G4200D.h	4212	#define GYRO_ZL_ADDR              0x2C
+GYRO_ZH_ADDR	include/plax_L3G4200D.h	4251	#define GYRO_ZH_ADDR              0x2D
+GYRO_FIFO_ADDR	include/plax_L3G4200D.h	4309	#define GYRO_FIFO_ADDR            0x2E
+GYRO_FIFO_MODE_BYPASS	include/plax_L3G4200D.h	4349	#define GYRO_FIFO_MODE_BYPASS     0x00
+GYRO_FIFO_MODE_FIFO	include/plax_L3G4200D.h	4388	#define GYRO_FIFO_MODE_FIFO       0x20
+GYRO_FIFO_MODE_STREAM	include/plax_L3G4200D.h	4427	#define GYRO_FIFO_MODE_STREAM     0x40
+GYRO_FIFO_MODE_STF	include/plax_L3G4200D.h	4466	#define GYRO_FIFO_MODE_STF        0x60
+GYRO_FIFO_MODE_BTS	include/plax_L3G4200D.h	4505	#define GYRO_FIFO_MODE_BTS        0x80
+GYRO_FIFO_WTM_MASK	include/plax_L3G4200D.h	4544	#define GYRO_FIFO_WTM_MASK        0x1F
+GYRO_FIFO_SRC_ADDR	include/plax_L3G4200D.h	4601	#define GYRO_FIFO_SRC_ADDR        0x2F
+GYRO_FIFO_SRC_WTM	include/plax_L3G4200D.h	4641	#define GYRO_FIFO_SRC_WTM         0x80
+GYRO_FIFO_SRC_OVRN	include/plax_L3G4200D.h	4680	#define GYRO_FIFO_SRC_OVRN        0x40
+GYRO_FIFO_SRC_EMPTY	include/plax_L3G4200D.h	4719	#define GYRO_FIFO_SRC_EMPTY       0x20
+GYRO_FIFO_SRC_COUNT_MASK	include/plax_L3G4200D.h	4758	#define GYRO_FIFO_SRC_COUNT_MASK  0x1F
+GYRO_RSRC_ADDR	include/plax_L3G4200D.h	4811	#define GYRO_RSRC_ADDR            0x2F
+LINK_OFF	include/philink.h	43	    LINK_OFF,
+LINK_STARTED	include/philink.h	57	    LINK_STARTED,
+LINK_CONNECTING	include/philink.h	75	    LINK_CONNECTING,
+LINK_CONNECTED	include/philink.h	96	    LINK_CONNECTED,
+LINK_ERROR	include/philink.h	116	    LINK_ERROR,
+LINK_CLOSED	include/philink.h	132	    LINK_CLOSED
+PHILINK_STATUS	include/philink.h	147	} PHILINK_STATUS;
+sock	include/philink.h	187	  int sock;
+ipAddr	include/philink.h	205	  in_addr_t ipAddr;
+port	include/philink.h	224	  uint16_t port;
+PHILINK_ARGS	include/philink.h	233	} PHILINK_ARGS;
+NUM_SIGN_BYTES	include/philink.h	277	#define NUM_SIGN_BYTES          4
+CMDP_SIGN	include/philink.h	311	#define CMDP_SIGN               "CPV1"
+CMDP_MOTOR_ELEM	include/philink.h	351	#define CMDP_MOTOR_ELEM         NUM_MOTORS
+PHI_CMD_PACKET	include/philink.h	755	} PHI_CMD_PACKET;
+STAP_SIGN	include/philink.h	803	#define STAP_SIGN               "SPV1"
+STAP_NUM_IMAGE_BYTES	include/philink.h	842	#define STAP_NUM_IMAGE_BYTES    CAM_NUM_BYTES
+STAP_NUM_JOINT_ELEM	include/philink.h	888	#define STAP_NUM_JOINT_ELEM     NUM_MOTORS
+STAP_NUM_GYRO_ELEM	include/philink.h	931	#define STAP_NUM_GYRO_ELEM      3
+STAP_NUM_ACCEL_ELEM	include/philink.h	965	#define STAP_NUM_ACCEL_ELEM     3
+PHI_STATE_PACKET	include/philink.h	1391	} PHI_STATE_PACKET;
+PHI_VERSION	include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
+INT8	include/phi_defs.h	115	#define INT8            char
+INT16	include/phi_defs.h	144	#define INT16           short
+INT32	include/phi_defs.h	174	#define INT32           long
+INT64	include/phi_defs.h	203	#define INT64           long long
+UINT	include/phi_defs.h	255	#define UINT            unsigned int
+UINT8	include/phi_defs.h	292	#define UINT8           unsigned char
+UINT16	include/phi_defs.h	330	#define UINT16          unsigned short
+UINT32	include/phi_defs.h	369	#define UINT32          unsigned long
+UINT64	include/phi_defs.h	407	#define UINT64          unsigned long long
+BYTE	include/phi_defs.h	475	#define BYTE            UINT8
+WORD	include/phi_defs.h	505	#define WORD            UINT16
+DWORD	include/phi_defs.h	536	#define DWORD           UINT32
+BOOL	include/phi_defs.h	567	#define BOOL            UINT8
+FALSE	include/phi_defs.h	598	#define FALSE           0
+TRUE	include/phi_defs.h	624	#define TRUE            1
+COUNTOF	include/phi_defs.h	666	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
+MIN	include/phi_defs.h	730	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
+MAX	include/phi_defs.h	782	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
+PHI_ALLOC	include/phi_defs.h	945	#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
+PHI_ALLOC_N	include/phi_defs.h	998	#define PHI_ALLOC_N(n)  allocHelper(n)
+PHI_FREE	include/phi_defs.h	1037	#define PHI_FREE(p)     {free(p); p = NULL; }
+PHI_ZERO	include/phi_defs.h	1084	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
+PHI_ZERO_P	include/phi_defs.h	1135	#define PHI_ZERO_P(p,l) memset(p, 0, l)
+BASH_BLACK	include/phi_defs.h	1193	#define BASH_BLACK      "30"
+BASH_RED	include/phi_defs.h	1222	#define BASH_RED        "31"
+BASH_GREEN	include/phi_defs.h	1251	#define BASH_GREEN      "32"
+BASH_YELLOW	include/phi_defs.h	1280	#define BASH_YELLOW     "33"
+BASH_BLUE	include/phi_defs.h	1309	#define BASH_BLUE       "34"
+BASH_MAGENTA	include/phi_defs.h	1338	#define BASH_MAGENTA    "35"
+BASH_CYAN	include/phi_defs.h	1367	#define BASH_CYAN       "36"
+BASH_WHITE	include/phi_defs.h	1396	#define BASH_WHITE      "37"
+BASH_START_COLOR	include/phi_defs.h	1426	#define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	include/phi_defs.h	1470	#define BASH_STOP_COLOR       "\e[0m"
+DO_PRAGMA	include/phi_defs.h	1509	#define DO_PRAGMA(x)    _Pragma (#x)
+INFO	include/phi_defs.h	1546	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
+TODO	include/phi_defs.h	1649	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
+WARN	include/phi_defs.h	1751	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
+HACK	include/phi_defs.h	1860	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
+U64_1E6	include/phi_defs.h	1969	#define U64_1E6         ((UINT64)1e6)
+TV_TO_USEC	include/phi_defs.h	2007	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
+LOG_INFO	include/phi_defs.h	2102	#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
+LOG_ERR	include/phi_defs.h	2150	#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
+LOG_FATAL	include/phi_defs.h	2205	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
+STR	include/phi_defs.h	2362	#define STR(s)                #s              /* convert to string */
+STR_MACRO	include/phi_defs.h	2432	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
+Q	include/phi_defs.h	2555	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
+LOGFILE_NAME	include/phi_defs.h	2672	#define LOGFILE_NAME    "/var/log/phi.log"
+VERBOSE_LOG	include/phi_defs.h	2715	#define VERBOSE_LOG     1
+HTTP_BUFFSIZE	include/phi_defs.h	2763	#define HTTP_BUFFSIZE       (16*1024)      // max size of HTTP request/reply
+JSON_TMP_BUFFSIZE	include/phi_defs.h	2840	#define JSON_TMP_BUFFSIZE   (4*1024)       // max size of single JSON reply
+UART_DRIVER_NAME	include/phi_defs.h	2934	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
+SPI0_DRIVER_NAME	include/phi_defs.h	2975	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
+SPI1_DRIVER_NAME	include/phi_defs.h	3018	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
+OFF	include/phi_defs.h	3088	    OFF,
+RED	include/phi_defs.h	3097	    RED,
+FLASH_RED	include/phi_defs.h	3106	    FLASH_RED,
+YELLOW	include/phi_defs.h	3121	    YELLOW,
+FLASH_YELLOW	include/phi_defs.h	3133	    FLASH_YELLOW,
+GREEN	include/phi_defs.h	3151	    GREEN,
+FLASH_GREEN	include/phi_defs.h	3162	    FLASH_GREEN
+PHI_LED_COLOR	include/phi_defs.h	3181	} PHI_LED_COLOR;
+CAM_WIDTH	include/phi_defs.h	3251	#define CAM_WIDTH               8 //160
+CAM_HEIGHT	include/phi_defs.h	3291	#define CAM_HEIGHT              8 // 120
+CAM_NUM_BYTES	include/phi_defs.h	3332	#define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
+DEF_PHILINK_PORT	include/phi_defs.h	3401	#define DEF_PHILINK_PORT  1122
+GYRO_SPI_IDX	include/phi_defs.h	3448	#define GYRO_SPI_IDX      0         // gyro at idx 0
+ADC_SPI_IDX	include/phi_defs.h	3501	#define ADC_SPI_IDX       1         // ADCs at idx 1
+PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3572	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
+PHI_MUTEX_INITVAL	include/phi_defs.h	3624	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
+PHI_MUTEX_DECL	include/phi_defs.h	3686	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name
+PHI_MUTEX_DECL_INIT	include/phi_defs.h	3746	#define PHI_MUTEX_DECL_INIT(name)   PHI_MUTEX_DECL(name) = PHI_MUTEX_INITVAL
+PHI_MUTEX_INIT	include/phi_defs.h	3823	#define PHI_MUTEX_INIT(pMtx)        pthread_mutex_init(pMtx, NULL)
+PHI_MUTEX_GET	include/phi_defs.h	3890	#define PHI_MUTEX_GET(pMtx)         pthread_mutex_lock(pMtx)
+PHI_MUTEX_RELEASE	include/phi_defs.h	3951	#define PHI_MUTEX_RELEASE(pMtx)     pthread_mutex_unlock(pMtx)
+PHI_MUTEX_TRYGET	include/phi_defs.h	4014	#define PHI_MUTEX_TRYGET(pMtx)      pthread_mutex_trylock(pMtx)   // ret 0 if get successful, ret != if failed
+HWPUMP_LOOPS_PER_SEC	include/phi_defs.h	4151	#define HWPUMP_LOOPS_PER_SEC        30
+HW_PUMP_LOOP_PERIOD_USEC	include/phi_defs.h	4190	#define HW_PUMP_LOOP_PERIOD_USEC    ((INT32)(1e6 / HWPUMP_LOOPS_PER_SEC))
+PERFLOG_HWPUMP_ELEM_1SEC	include/phi_defs.h	4292	#define PERFLOG_HWPUMP_ELEM_1SEC      HWPUMP_LOOPS_PER_SEC
+PERFLOG_HWPUMP_ELEM_5SEC	include/phi_defs.h	4351	#define PERFLOG_HWPUMP_ELEM_5SEC      (5 * PERFLOG_HWPUMP_ELEM_1SEC)
+PERFLOG_HWPUMP_ELEM_15SEC	include/phi_defs.h	4420	#define PERFLOG_HWPUMP_ELEM_15SEC     (15 * PERFLOG_HWPUMP_ELEM_1SEC)
+PERFLOG_HWPUMP_NUM_ELEM	include/phi_defs.h	4490	#define PERFLOG_HWPUMP_NUM_ELEM       PERFLOG_HWPUMP_ELEM_15SEC
+PERFLOG_HWPUMP_EPOCH	include/phi_defs.h	4554	#define PERFLOG_HWPUMP_EPOCH          15
+PERFLOG_PHILINK_ELEM_1SEC	include/phi_defs.h	4596	#define PERFLOG_PHILINK_ELEM_1SEC     50
+PERFLOG_PHILINK_ELEM_5SEC	include/phi_defs.h	4637	#define PERFLOG_PHILINK_ELEM_5SEC     (5  * PERFLOG_PHILINK_ELEM_1SEC)
+PERFLOG_PHILINK_ELEM_15SEC	include/phi_defs.h	4708	#define PERFLOG_PHILINK_ELEM_15SEC    (15 * PERFLOG_PHILINK_ELEM_1SEC)
+PERFLOG_PHILINK_NUM_ELEM	include/phi_defs.h	4779	#define PERFLOG_PHILINK_NUM_ELEM      PERFLOG_PHILINK_ELEM_15SEC
+PERFLOG_PHILINK_EPOCH	include/phi_defs.h	4844	#define PERFLOG_PHILINK_EPOCH         15
+REV1_PINS	include/phi_defs.h	5127	#define REV1_PINS {0, 1, 4, 7, 8, 9, 10, 11, 14, 15, 17, 18, 21, 22, 23, 24, 25}
+REV2_PINS	include/phi_defs.h	5272	#define REV2_PINS {2, 3, 4, 7, 8, 9, 10, 11, 14, 15, 17, 18, 22, 23, 24, 25, 27}
+PHI_GPIO_SPI1_SEL	include/phi_defs.h	5379	#define PHI_GPIO_SPI1_SEL        4
+PHI_GPIO_ADC0_SEL	include/phi_defs.h	5414	#define PHI_GPIO_ADC0_SEL       17
+PHI_GPIO_ADC1_SEL	include/phi_defs.h	5449	#define PHI_GPIO_ADC1_SEL       22
+PHI_GPIO_ADC2_SEL	include/phi_defs.h	5484	#define PHI_GPIO_ADC2_SEL       27
+SET_GPIO_TO_INPUT	include/phi_defs.h	5540	#define SET_GPIO_TO_INPUT(g)    *(g_pGpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+SET_GPIO_TO_OUTPUT	include/phi_defs.h	5614	#define SET_GPIO_TO_OUTPUT(g)   *(g_pGpio+((g)/10)) |=  (1<<(((g)%10)*3))
+SET_GPIO_ALT	include/phi_defs.h	5688	#define SET_GPIO_ALT(g,a)       *(g_pGpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+GPIO_READ_ALL	include/phi_defs.h	5800	#define GPIO_READ_ALL       *(g_pGpio+(GPLEV0_OFFSET/4))                              // reads all bits
+GPIO_ISHIGH	include/phi_defs.h	5904	#define GPIO_ISHIGH(pin)    ((((GPIO_READ_ALL) & (1 << (pin))) != 0) ? TRUE : FALSE)  // TRUE if bit is HIGH
+GPIO_ISLOW	include/phi_defs.h	6013	#define GPIO_ISLOW(pin)     (!(GPIO_ISHIGH(pin)))                                     // TRUE if bit is LOW
+GPIO_SET_ALL	include/phi_defs.h	6135	#define GPIO_SET_ALL(v)     {*(g_pGpio+(GPSET0_OFFSET/4)) = (v);}   // SETS bits which are 1 ignores bits which are 0
+GPIO_CLEAR_ALL	include/phi_defs.h	6253	#define GPIO_CLEAR_ALL(v)   {*(g_pGpio+(GPCLR0_OFFSET/4)) = (v);}   // CLEARS bits which are 1 ignores bits which are 0
+GPIO_SET	include/phi_defs.h	6373	#define GPIO_SET(pin)       GPIO_SET_ALL(1<<(pin))
+GPIO_CLEAR	include/phi_defs.h	6424	#define GPIO_CLEAR(pin)     GPIO_CLEAR_ALL(1<<(pin))
+_REENTRANT	include/phi.h	97	#define _REENTRANT 1
+ACCEL_I2C_CLK	include/osepp_adxl345.h	66	#define ACCEL_I2C_CLK             ( 400ul*1000ul )
+ACCEL_SAFE_I2C_CLK	include/osepp_adxl345.h	140	#define ACCEL_SAFE_I2C_CLK        ( (ACCEL_I2C_CLK * 8) / 10 )
+NUM_MOTOR_CTRL	include/motor.h	697	#define NUM_MOTOR_CTRL    6
+NUM_MOTORS	include/motor.h	725	#define NUM_MOTORS        (NUM_MOTOR_CTRL * 2)    // 12
+MOTOR_NAME_TO_CTRL_ID	include/motor.h	1711	#define MOTOR_NAME_TO_CTRL_ID(name)             ((BYTE)(name[0] - 'A'))
+MOTOR_NAME_TO_SEL_IDX	include/motor.h	1783	#define MOTOR_NAME_TO_SEL_IDX(name)             ((BYTE)(name[1] - '0'))
+MOTOR_ID_TO_JOINT_IDX	include/motor.h	1866	#define MOTOR_ID_TO_JOINT_IDX(ctrlID, selIdx)   ( ((ctrlID) * 2) + (selIdx))
+JOINT_IDX_TO_ADC_IDX	include/motor.h	1943	#define JOINT_IDX_TO_ADC_IDX(jIdx)              ( (jIdx) / 8)
+JOINT_IDX_TO_ADC_CHAN	include/motor.h	2005	#define JOINT_IDX_TO_ADC_CHAN(jIdx)             ( (jIdx) % 8)
+ADC_MIN_RAW	include/motor.h	2159	#define ADC_MIN_RAW                             ((UINT16) 0)
+ADC_MAX_RAW	include/motor.h	2220	#define ADC_MAX_RAW                             ((UINT16) 1023)
+ADC_RAW_RANGE	include/motor.h	2284	#define ADC_RAW_RANGE                           (ADC_MAX_RAW - ADC_MIN_RAW + 1)
+ADC_RAW_TO_CANON	include/motor.h	2365	#define ADC_RAW_TO_CANON(rawVal)                ( ((rawVal) % ADC_RAW_RANGE) / ((double)ADC_RAW_RANGE) )
+ADC_CANON_TO_RAW	include/motor.h	2470	#define ADC_CANON_TO_RAW(canonVal)              ( (UINT16) ((canonVal) * ((double)ADC_RAW_RANGE)) )
+ADC_ABS_RAW_DIFF	include/motor.h	2571	#define ADC_ABS_RAW_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_RAW_RANGE )
+ADC_MIN_SPI_CLK	include/mcp3008.h	364	#define ADC_MIN_SPI_CLK         (10ul   * 1000ul)
+ADC_MAX_SPI_CLK	include/mcp3008.h	414	#define ADC_MAX_SPI_CLK         (1350ul * 1000ul)
+ADC_SAFE_SPI_CLK	include/mcp3008.h	465	#define ADC_SAFE_SPI_CLK        (1000ul * 1000ul)
+ADC_SPI_MODE	include/mcp3008.h	929	#define ADC_SPI_MODE            (SPI_CPHA | SPI_CPOL)
+ADC_SPI_BPW	include/mcp3008.h	1003	#define ADC_SPI_BPW             8
+ADC_RAW_TO_VOLTS	include/mcp3008.h	1078	#define ADC_RAW_TO_VOLTS(val, v_ref)      ( ((float)(val)) * ((float)(v_ref)) / 1024.0f )
+ADC_CMD1_START	include/mcp3008.h	1400	#define ADC_CMD1_START          0x01      // this is the "start bit"
+ADC_CMD2_SINGLE	include/mcp3008.h	1513	#define ADC_CMD2_SINGLE         0x80      // use single ended inputs (8x)
+ADC_CMD2_DIFF	include/mcp3008.h	1587	#define ADC_CMD2_DIFF           0x00      // use differential inputs (4x)
+ADC_CMD2_ADDR_MASK	include/mcp3008.h	1661	#define ADC_CMD2_ADDR_MASK      0x70      // address mask (bits = [0,7])
+ADC_DATA2_NOT_USED_MASK	include/mcp3008.h	1735	#define ADC_DATA2_NOT_USED_MASK 0x08      // this bit is not used
+ADC_DATA2_NULL_MASK	include/mcp3008.h	1801	#define ADC_DATA2_NULL_MASK     0x04      // this bit will be zero
+ADC_DATA2_MASK	include/mcp3008.h	1868	#define ADC_DATA2_MASK          0x03      // these bits are the result's high bits
+ADC_DATA3_MASK	include/mcp3008.h	1974	#define ADC_DATA3_MASK          0xFF      // these bits are the result's low bits
+__JSMN_H_	include/jsmn.h	26	#define __JSMN_H_
+JSMN_PRIMITIVE	include/jsmn.h	201		JSMN_PRIMITIVE = 0,
+JSMN_OBJECT	include/jsmn.h	222		JSMN_OBJECT = 1,
+JSMN_ARRAY	include/jsmn.h	240		JSMN_ARRAY = 2,
+JSMN_STRING	include/jsmn.h	257		JSMN_STRING = 3
+jsmntype_t	include/jsmn.h	275	} jsmntype_t;
+JSMN_ERROR_NOMEM	include/jsmn.h	343		JSMN_ERROR_NOMEM = -1,
+JSMN_ERROR_INVAL	include/jsmn.h	411		JSMN_ERROR_INVAL = -2,
+JSMN_ERROR_PART	include/jsmn.h	500		JSMN_ERROR_PART = -3,
+JSMN_SUCCESS	include/jsmn.h	550		JSMN_SUCCESS = 0
+jsmnerr_t	include/jsmn.h	569	} jsmnerr_t;
+type	include/jsmn.h	796		jsmntype_t type;
+start	include/jsmn.h	807		int start;
+end	include/jsmn.h	819		int end;
+size	include/jsmn.h	829		int size;
+parent	include/jsmn.h	865		int parent;
+jsmntok_t	include/jsmn.h	882	} jsmntok_t;
+pos	include/jsmn.h	1073		unsigned int pos; /* offset in the JSON string */
+toknext	include/jsmn.h	1115		int toknext; /* next token to allocate */
+toksuper	include/jsmn.h	1158		int toksuper; /* superior token node, e.g parent object or array */
+jsmn_parser	include/jsmn.h	1224	} jsmn_parser;
+halFunc_void	include/hal.h	54	typedef void   (*halFunc_void)   ();
+halFunc_int	include/hal.h	91	typedef int    (*halFunc_int)    ();
+halFunc_float	include/hal.h	128	typedef float  (*halFunc_float)  ();
+halFunc_pChar	include/hal.h	165	typedef char*  (*halFunc_pChar)  ();
+pName	include/hal.h	228	  const char* pName;
+initPeripherals	include/hal.h	264	  halFunc_pChar   initPeripherals;
+gyroGetDeltas	include/hal.h	315	  halFunc_void    gyroGetDeltas;
+gyroGetTemp	include/hal.h	348	  halFunc_float   gyroGetTemp;
+setMotorPower	include/hal.h	403	  halFunc_void    setMotorPower;
+setControllerId	include/hal.h	436	  halFunc_void    setControllerId;
+getJointPos	include/hal.h	482	  halFunc_float   getJointPos;
+HAL_FUNCS	include/hal.h	498	} HAL_FUNCS;
+HAL_name	include/hal.h	591	#define HAL_name              (g_pHal   -> pName)
+HAL_initPeripherals	include/hal.h	641	#define HAL_initPeripherals   (*(g_pHal -> initPeripherals))
+HAL_gyroGetDeltas	include/hal.h	703	#define HAL_gyroGetDeltas     (*(g_pHal -> gyroGetDeltas))
+HAL_gyroGetTemp	include/hal.h	762	#define HAL_gyroGetTemp       (*(g_pHal -> gyroGetTemp))
+HAL_setMotorPower	include/hal.h	820	#define HAL_setMotorPower     (*(g_pHal -> setMotorPower))
+HAL_setControllerId	include/hal.h	879	#define HAL_setControllerId   (*(g_pHal -> setControllerId))
+HAL_getJointPos	include/hal.h	941	#define HAL_getJointPos       (*(g_pHal -> getJointPos))
+INIT	include/globals.h	77	#define INIT(v)   = v
+EXT	include/globals.h	99	#define EXT       // nothing
+INIT	include/globals.h	134	#define INIT(v)   // nothing
+EXT	include/globals.h	163	#define EXT       extern
+g_uname	include/globals.h	388	EXT struct utsname g_uname;              // can't init this to zero here for some reason
+OPEN	include/event_gate.h	133	typedef enum {OPEN, CLOSED} PHI_GATE_STATE;
+CLOSED	include/event_gate.h	139	typedef enum {OPEN, CLOSED} PHI_GATE_STATE;
+PHI_GATE_STATE	include/event_gate.h	147	typedef enum {OPEN, CLOSED} PHI_GATE_STATE;
+mutex	include/event_gate.h	199	  pthread_mutex_t mutex;
+condVar	include/event_gate.h	223	  pthread_cond_t condVar;
+state	include/event_gate.h	249	  PHI_GATE_STATE state;
+PHI_EVENT_GATE	include/event_gate.h	259	} PHI_EVENT_GATE;
+time	include/datalog.h	51	  UINT64 time;
+data	include/datalog.h	66	  double data;
+DATALOG_ELEM	include/datalog.h	75	} DATALOG_ELEM;
+sign	include/datalog.h	119	  UINT32 sign;
+pName	include/datalog.h	161	  char* pName;
+pUnit	include/datalog.h	176	  char* pUnit;
+epochSecs	include/datalog.h	192	  double epochSecs;
+numElem	include/datalog.h	209	  int numElem;
+currIdx	include/datalog.h	227	  int currIdx;
+elem	include/datalog.h	251	  DATALOG_ELEM elem[];
+DATALOG	include/datalog.h	262	} DATALOG;
+_BCM_2835_	include/bcm2835_gpio.h	1605	#define _BCM_2835_
+GPFSEL0	include/bcm2835_gpio.h	1868	#define GPFSEL0                 0x20200000  /**<GPIO Function Select 0 Register Address */
+GPFSEL1	include/bcm2835_gpio.h	1959	#define GPFSEL1                 0x20200004  /**<GPIO Function Select 1 Register Address */
+GPFSEL2	include/bcm2835_gpio.h	2050	#define GPFSEL2                 0x20200008  /**<GPIO Function Select 2 Register Address */
+GPFSEL3	include/bcm2835_gpio.h	2141	#define GPFSEL3                 0x2020000C  /**<GPIO Function Select 3 Register Address */
+GPFSEL4	include/bcm2835_gpio.h	2232	#define GPFSEL4                 0x20200010  /**<GPIO Function Select 4 Register Address */
+GPFSEL5	include/bcm2835_gpio.h	2323	#define GPFSEL5                 0x20200014  /**<GPIO Function Select 5 Register Address */
+GPSET0	include/bcm2835_gpio.h	2415	#define GPSET0                  0x2020001C  /**<GPIO Pin Output Set 0 Register Address */
+GPSET1	include/bcm2835_gpio.h	2505	#define GPSET1                  0x20200020  /**<GPIO Pin Output Set 1 Register Address */
+GPCLR0	include/bcm2835_gpio.h	2596	#define GPCLR0                  0x20200028  /**<GPIO Pin Output Clear 0 Register Address */
+GPCLR1	include/bcm2835_gpio.h	2688	#define GPCLR1                  0x2020002C  /**<GPIO Pin Output Clear 1 Register Address */
+GPLEV0	include/bcm2835_gpio.h	2781	#define GPLEV0                  0x20200034  /**<GPIO Pin Level 0 Register Address */
+GPLEV1	include/bcm2835_gpio.h	2866	#define GPLEV1                  0x20200038  /**<GPIO Pin Level 1 Register Address */
+GPEDS0	include/bcm2835_gpio.h	2952	#define GPEDS0                  0x20200040  /**<GPIO Pin Event Detect Status 0 Register Address */
+GPEDS1	include/bcm2835_gpio.h	3051	#define GPEDS1                  0x20200044  /**<GPIO Pin Event Detect Status 1 Register Address */
+GPREN0	include/bcm2835_gpio.h	3151	#define GPREN0                  0x2020004C  /**<GPIO Pin Rising Edge Detect Enable 0 Register Address */
+GPREN1	include/bcm2835_gpio.h	3256	#define GPREN1                  0x20200050  /**<GPIO Pin Rising Edge Detect Enable 1 Register Address */
+GPHEN0	include/bcm2835_gpio.h	3362	#define GPHEN0                  0x20200064  /**<GPIO Pin High Detect Enable 0 Register Address */
+GPHEN1	include/bcm2835_gpio.h	3460	#define GPHEN1                  0x20200068  /**<GPIO Pin High Detect Enable 1 Register Address */
+GPAREN0	include/bcm2835_gpio.h	3559	#define GPAREN0                 0x2020007C  /**<GPIO Pin Async. Rising Edge Detect 0 Register Address */
+GPAREN1	include/bcm2835_gpio.h	3664	#define GPAREN1                 0x20200080  /**<GPIO Pin Async. Rising Edge Detect 1 Register Address */
+GPAFEN0	include/bcm2835_gpio.h	3770	#define GPAFEN0                 0x20200088  /**<GPIO Pin Async. Falling Edge Detect 0 Register Address */
+GPAFEN1	include/bcm2835_gpio.h	3876	#define GPAFEN1                 0x2020008C  /**<GPIO Pin Async. Falling Edge Detect 1 Register Address */
+GPPUD	include/bcm2835_gpio.h	3983	#define GPPUD                   0x20200094  /**<GPIO Pin Pull-up/down Enable Register Address */
+GPPUDCLK0	include/bcm2835_gpio.h	4081	#define GPPUDCLK0               0x20200098  /**<GPIO Pin Pull-up/down Enable Clock 0 Register Address */
+GPPUDCLK1	include/bcm2835_gpio.h	4186	#define GPPUDCLK1               0x2020009C  /**<GPIO Pin Pull-up/down Enable Clock 1 Register Address */
+GPIO_BASE	include/bcm2835_gpio.h	4548	#define GPIO_BASE               GPFSEL0   /**< First GPIO address of interest. */
+GPFSEL0_OFFSET	include/bcm2835_gpio.h	4631	#define GPFSEL0_OFFSET          0x000000  /**< GPIO Function Select 0 Offset from GPIO_BASE */
+GPFSEL1_OFFSET	include/bcm2835_gpio.h	4726	#define GPFSEL1_OFFSET          0x000004  /**< GPIO Function Select 1 Offset from GPIO_BASE */
+GPFSEL2_OFFSET	include/bcm2835_gpio.h	4821	#define GPFSEL2_OFFSET          0x000008  /**< GPIO Function Select 2 Offset from GPIO_BASE */
+GPFSEL3_OFFSET	include/bcm2835_gpio.h	4916	#define GPFSEL3_OFFSET          0x00000C  /**< GPIO Function Select 3 Offset from GPIO_BASE */
+GPFSEL4_OFFSET	include/bcm2835_gpio.h	5011	#define GPFSEL4_OFFSET          0x000010  /**< GPIO Function Select 4 Offset from GPIO_BASE */
+GPFSEL5_OFFSET	include/bcm2835_gpio.h	5106	#define GPFSEL5_OFFSET          0x000014  /**< GPIO Function Select 5 Offset from GPIO_BASE */
+GPSET0_OFFSET	include/bcm2835_gpio.h	5202	#define GPSET0_OFFSET           0x00001C  /**< GPIO Pin Output Set 0 Offset from GPIO_BASE */
+GPSET1_OFFSET	include/bcm2835_gpio.h	5296	#define GPSET1_OFFSET           0x000020  /**< GPIO Pin Output Set 1 Offset from GPIO_BASE */
+GPCLR0_OFFSET	include/bcm2835_gpio.h	5391	#define GPCLR0_OFFSET           0x000028  /**< GPIO Pin Output Clear 0 Offset from GPIO_BASE */
+GPCLR1_OFFSET	include/bcm2835_gpio.h	5487	#define GPCLR1_OFFSET           0x00002C  /**< GPIO Pin Output Clear 1 Offset from GPIO_BASE */
+GPLEV0_OFFSET	include/bcm2835_gpio.h	5584	#define GPLEV0_OFFSET           0x000034  /**< GPIO Pin Level 0 Offset from GPIO_BASE */
+GPLEV1_OFFSET	include/bcm2835_gpio.h	5673	#define GPLEV1_OFFSET           0x000038  /**< GPIO Pin Level 1 Offset from GPIO_BASE */
+GPEDS0_OFFSET	include/bcm2835_gpio.h	5763	#define GPEDS0_OFFSET           0x000040  /**< GPIO Pin Event Detect Status 0 Offset from GPIO_BASE */
+GPEDS1_OFFSET	include/bcm2835_gpio.h	5866	#define GPEDS1_OFFSET           0x000044  /**< GPIO Pin Event Detect Status 1 Offset from GPIO_BASE */
+GPREN0_OFFSET	include/bcm2835_gpio.h	5970	#define GPREN0_OFFSET           0x00004C  /**< GPIO Pin Rising Edge Detect Enable 0 Offset from GPIO_BASE */
+GPREN1_OFFSET	include/bcm2835_gpio.h	6079	#define GPREN1_OFFSET           0x000050  /**< GPIO Pin Rising Edge Detect Enable 1 Offset from GPIO_BASE */
+GPHEN0_OFFSET	include/bcm2835_gpio.h	6189	#define GPHEN0_OFFSET           0x000064  /**< GPIO Pin High Detect Enable 0 Offset from GPIO_BASE */
+GPHEN1_OFFSET	include/bcm2835_gpio.h	6291	#define GPHEN1_OFFSET           0x000068  /**< GPIO Pin High Detect Enable 1 Offset from GPIO_BASE */
+GPAREN0_OFFSET	include/bcm2835_gpio.h	6394	#define GPAREN0_OFFSET          0x00007C  /**< GPIO Pin Async. Rising Edge Detect 0 Offset from GPIO_BASE */
+GPAREN1_OFFSET	include/bcm2835_gpio.h	6503	#define GPAREN1_OFFSET          0x000080  /**< GPIO Pin Async. Rising Edge Detect 1 Offset from GPIO_BASE */
+GPAFEN0_OFFSET	include/bcm2835_gpio.h	6613	#define GPAFEN0_OFFSET          0x000088  /**< GPIO Pin Async. Falling Edge Detect 0 Offset from GPIO_BASE */
+GPAFEN1_OFFSET	include/bcm2835_gpio.h	6723	#define GPAFEN1_OFFSET          0x00008C  /**< GPIO Pin Async. Falling Edge Detect 1 Offset from GPIO_BASE */
+GPPUD_OFFSET	include/bcm2835_gpio.h	6834	#define GPPUD_OFFSET            0x000094  /**< GPIO Pin Pull-up/down Enable Offset from GPIO_BASE */
+GPPUDCLK0_OFFSET	include/bcm2835_gpio.h	6936	#define GPPUDCLK0_OFFSET        0x000098  /**< GPIO Pin Pull-up/down Enable Clock 0 Offset from GPIO_BASE */
+GPPUDCLK1_OFFSET	include/bcm2835_gpio.h	7045	#define GPPUDCLK1_OFFSET        0x00009C  /**< GPIO Pin Pull-up/down Enable Clock 1 Offset from GPIO_BASE */
+GPFSEL_INPUT	include/bcm2835_gpio.h	7434	#define GPFSEL_INPUT            0x0 /**< Sets a pin to input mode */
+GPFSEL_OUTPUT	include/bcm2835_gpio.h	7503	#define GPFSEL_OUTPUT           0x1 /**< Sets a pin to output mode */
+GPFSEL_ALT0	include/bcm2835_gpio.h	7573	#define GPFSEL_ALT0             0x4 /**< Sets a pin to alternative function 0 */
+GPFSEL_ALT1	include/bcm2835_gpio.h	7654	#define GPFSEL_ALT1             0x5 /**< Sets a pin to alternative function 1 */
+GPFSEL_ALT2	include/bcm2835_gpio.h	7735	#define GPFSEL_ALT2             0x6 /**< Sets a pin to alternative function 2 */
+GPFSEL_ALT3	include/bcm2835_gpio.h	7816	#define GPFSEL_ALT3             0x7 /**< Sets a pin to alternative function 3 */
+GPFSEL_ALT4	include/bcm2835_gpio.h	7897	#define GPFSEL_ALT4             0x3 /**< Sets a pin to alternative function 4 */
+GPFSEL_ALT5	include/bcm2835_gpio.h	7978	#define GPFSEL_ALT5             0x2 /**< Sets a pin to alternative function 5 */
+GPFSEL_BITS	include/bcm2835_gpio.h	8059	#define GPFSEL_BITS             0x7 /**< Three bits per GPIO in the GPFSEL register */
+GPPUD_DISABLE	include/bcm2835_gpio.h	8224	#define GPPUD_DISABLE           0x0 /**< Disables the resistor */
+GPPUD_PULLDOWN	include/bcm2835_gpio.h	8290	#define GPPUD_PULLDOWN          0x1 /**< Enables a pulldown resistor */
+GPPUD_PULLUP	include/bcm2835_gpio.h	8362	#define GPPUD_PULLUP            0x2 /**< Enables a pullup resistor */
+BSC0_C	include/bcm2835_gpio.h	8677	#define BSC0_C                  0x20205000 /**< BSC0 Control Register Address */
+BSC0_S	include/bcm2835_gpio.h	8758	#define BSC0_S                  0x20205004 /**< BSC0 Status Register Address */
+BSC0_DLEN	include/bcm2835_gpio.h	8838	#define BSC0_DLEN               0x20205008 /**< BSC0 Data Length Register Address */
+BSC0_A	include/bcm2835_gpio.h	8923	#define BSC0_A                  0x2020500C /**< BSC0 Slave Address Register Address */
+BSC0_FIFO	include/bcm2835_gpio.h	9010	#define BSC0_FIFO               0x20205010 /**< BSC0 Data FIFO Register Address */
+BSC0_DIV	include/bcm2835_gpio.h	9093	#define BSC0_DIV                0x20205014 /**< BSC0 Clock Divider Register Address */
+BSC0_DEL	include/bcm2835_gpio.h	9180	#define BSC0_DEL                0x20205018 /**< BSC0 Data Delay Register Address */
+BSC1_C	include/bcm2835_gpio.h	9265	#define BSC1_C                  0x20804000 /**< BSC1 Control Register Address */
+BSC1_S	include/bcm2835_gpio.h	9346	#define BSC1_S                  0x20804004 /**< BSC1 Status Register Address */
+BSC1_DLEN	include/bcm2835_gpio.h	9426	#define BSC1_DLEN               0x20804008 /**< BSC1 Data Length Register Address */
+BSC1_A	include/bcm2835_gpio.h	9511	#define BSC1_A                  0x2080400C /**< BSC1 Slave Address Register Address */
+BSC1_FIFO	include/bcm2835_gpio.h	9598	#define BSC1_FIFO               0x20804010 /**< BSC1 Data FIFO Register Address */
+BSC1_DIV	include/bcm2835_gpio.h	9681	#define BSC1_DIV                0x20804014 /**< BSC1 Clock Divider Register Address */
+BSC1_DEL	include/bcm2835_gpio.h	9768	#define BSC1_DEL                0x20804018 /**< BSC1 Data Delay Register Address */
+BSC2_C	include/bcm2835_gpio.h	9853	#define BSC2_C                  0x20805000 /**< BSC2 Control Register Address */
+BSC2_S	include/bcm2835_gpio.h	9934	#define BSC2_S                  0x20805004 /**< BSC2 Status Register Address */
+BSC2_DLEN	include/bcm2835_gpio.h	10014	#define BSC2_DLEN               0x20805008 /**< BSC2 Data Length Register Address */
+BSC2_A	include/bcm2835_gpio.h	10099	#define BSC2_A                  0x2080500C /**< BSC2 Slave Address Register Address */
+BSC2_FIFO	include/bcm2835_gpio.h	10186	#define BSC2_FIFO               0x20805010 /**< BSC2 Data FIFO Register Address */
+BSC2_DIV	include/bcm2835_gpio.h	10269	#define BSC2_DIV                0x20805014 /**< BSC2 Clock Divider Register Address */
+BSC2_DEL	include/bcm2835_gpio.h	10356	#define BSC2_DEL                0x20805018 /**< BSC2 Data Delay Register Address */
+BSC0_BASE	include/bcm2835_gpio.h	10696	#define BSC0_BASE           BSC0_C      /**< BSC0 Base Address */
+BSC1_BASE	include/bcm2835_gpio.h	10762	#define BSC1_BASE           BSC1_C      /**< BSC1 Base Address */
+BSC2_BASE	include/bcm2835_gpio.h	10828	#define BSC2_BASE           BSC2_C      /**< BSC2 Base Address */
+BSC_C_OFFSET	include/bcm2835_gpio.h	11170	#define BSC_C_OFFSET        0x00000000  /**< BSC Control offset from BSCx_BASE */
+BSC_S_OFFSET	include/bcm2835_gpio.h	11252	#define BSC_S_OFFSET        0x00000004  /**< BSC Status offset from BSCx_BASE */
+BSC_DLEN_OFFSET	include/bcm2835_gpio.h	11333	#define BSC_DLEN_OFFSET     0x00000008  /**< BSC Data Length offset from BSCx_BASE */
+BSC_A_OFFSET	include/bcm2835_gpio.h	11419	#define BSC_A_OFFSET        0x0000000C  /**< BSC Slave Address offset from BSCx_BASE */
+BSC_FIFO_OFFSET	include/bcm2835_gpio.h	11507	#define BSC_FIFO_OFFSET     0x00000010  /**< BSC Data FIFO offset from BSCx_BASE */
+BSC_DIV_OFFSET	include/bcm2835_gpio.h	11591	#define BSC_DIV_OFFSET      0x00000014  /**< BSC Clock Divider offset from BSCx_BASE */
+BSC_DEL_OFFSET	include/bcm2835_gpio.h	11679	#define BSC_DEL_OFFSET      0x00000018  /**< BSC Data Delay offset from BSCx_BASE */
+BSC_I2CEN	include/bcm2835_gpio.h	12021	#define BSC_I2CEN           0x8000      /**< BSC Control: I2C Enable Bit */
+BSC_INTR	include/bcm2835_gpio.h	12097	#define BSC_INTR            0x0400      /**< BSC Control: Interrupt on RX bit */
+BSC_INTT	include/bcm2835_gpio.h	12178	#define BSC_INTT            0x0200      /**< BSC Control: Interrupt on TX bit */
+BSC_INTD	include/bcm2835_gpio.h	12259	#define BSC_INTD            0x0100      /**< BSC Control: Interrupt on DONE bit */
+BSC_ST	include/bcm2835_gpio.h	12342	#define BSC_ST              0x0080      /**< BSC Control: Start transfer bit */
+BSC_CLEAR	include/bcm2835_gpio.h	12422	#define BSC_CLEAR           0x0010      /**< BSC Control: Clear FIFO bit */
+BSC_READ	include/bcm2835_gpio.h	12498	#define BSC_READ            0x0001      /**< BSC Control: Read Packet Transfer bit */
+BSC_CLKT	include/bcm2835_gpio.h	12840	#define BSC_CLKT            0x200       /**< BSC Status: Clock Stretch Timeout bit */
+BSC_ERR	include/bcm2835_gpio.h	12926	#define BSC_ERR             0x100       /**< BSC Status: Ack Error bit */
+BSC_RXF	include/bcm2835_gpio.h	13000	#define BSC_RXF             0x080       /**< BSC Status: FIFO Full bit */
+BSC_TXE	include/bcm2835_gpio.h	13074	#define BSC_TXE             0x040       /**< BSC Status: FIFO Empty bit */
+BSC_RXD	include/bcm2835_gpio.h	13149	#define BSC_RXD             0x020       /**< BSC Status: FIFO Contains Data */
+BSC_TXD	include/bcm2835_gpio.h	13228	#define BSC_TXD             0x010       /**< BSC Status: FIFO Can Accept Data bit */
+BSC_RXR	include/bcm2835_gpio.h	13313	#define BSC_RXR             0x008       /**< BSC Status: FIFO Needs Reading bit */
+BSC_TXW	include/bcm2835_gpio.h	13396	#define BSC_TXW             0x004       /**< BSC Status: FIFO Needs Writing bit */
+BSC_DONE	include/bcm2835_gpio.h	13479	#define BSC_DONE            0x002       /**< BSC Status: Transfer Done */
+BSC_TA	include/bcm2835_gpio.h	13553	#define BSC_TA              0x001       /**< BSC Status: Transfer Active */
+BSC_FIFO_SIZE	include/bcm2835_gpio.h	13630	#define BSC_FIFO_SIZE       16          /**< BSC FIFO Size */
+FORBIDDEN	src/webadmin.c	1201	#define FORBIDDEN               403
+NOTFOUND	src/webadmin.c	1237	#define NOTFOUND                404
+HTTP_METHOD_HEAD_STR	src/webadmin.c	1274	#define HTTP_METHOD_HEAD_STR		"HEAD"
+HTTP_METHOD_GET_STR	src/webadmin.c	1311	#define HTTP_METHOD_GET_STR			"GET"
+HTTP_METHOD_POST_STR	src/webadmin.c	1347	#define HTTP_METHOD_POST_STR		"POST"
+HTTP_CONT_LEN	src/webadmin.c	1384	#define HTTP_CONT_LEN						"Content-Length"
+HTTP_SERVER_NAME	src/webadmin.c	1428	#define HTTP_SERVER_NAME        "Phi Web Admin V" PHI_VERSION
+pFileExt	src/webadmin.c	1499		char *pFileExt;
+pContentType	src/webadmin.c	1516		char *pContentType;
+wa_extensions	src/webadmin.c	1532	} wa_extensions [] = {
+pMethod	src/webadmin.c	1904	  char* pMethod;
+pPath	src/webadmin.c	1921	  char* pPath;
+pGetParams	src/webadmin.c	1936	  char* pGetParams;
+pHdrContentLength	src/webadmin.c	1956	  char* pHdrContentLength;
+pBody	src/webadmin.c	1983	  char* pBody;
+PHI_PARSED_HTTP	src/webadmin.c	1992	} PHI_PARSED_HTTP;
+wa_response_ok_hdr	src/webadmin.c	2015	char wa_response_ok_hdr[] =
+wa_response_json_hdr	src/webadmin.c	2212	char wa_response_json_hdr[] =
+wa_response_forbidden_hdr	src/webadmin.c	2425	char wa_response_forbidden_hdr[] =
+wa_response_forbidden_body	src/webadmin.c	2613	char wa_response_forbidden_body[] =
+wa_response_notfound_hdr	src/webadmin.c	2863	char wa_response_notfound_hdr[] =
+wa_response_notfound_body	src/webadmin.c	3050	char wa_response_notfound_body[] =
+wa_response_servererror_hdr	src/webadmin.c	3282	char wa_response_servererror_hdr[] =
+wa_response_servererror_body	src/webadmin.c	3478	char wa_response_servererror_body[] =
+SEND_ERROR_REPLY	src/webadmin.c	3995	#define SEND_ERROR_REPLY(replyType) \
+SEND_JSON_REPLY	src/webadmin.c	4290	#define SEND_JSON_REPLY(pJson) \
+webAdmin	src/webadmin.c	4825	void webAdmin(int port, const char* wwwRoot)
+wa_process_web_request	src/webadmin.c	7138	void* wa_process_web_request(void* arg)
+wa_parseHttpRequest	src/webadmin.c	11575	int wa_parseHttpRequest(char* pReq, PHI_PARSED_HTTP* pParsed) {
+readToken	src/webadmin.c	13701	char readToken(char** ppData, char** ppToken) {
+readToSpace	src/webadmin.c	15134	void readToSpace(char** ppData, char** ppToken) {
+readToEol	src/webadmin.c	15441	void readToEol(char** ppData, char** ppToken) {
+uartFile	src/uart.c	102	static int uartFile = -1;
+uart_init	src/uart.c	232	BOOL uart_init() {
+uart_send	src/uart.c	4040	void uart_send(BYTE* pData, int dataLen) {
+uart_receive	src/uart.c	4432	int uart_receive(void* pBuff, int buffLen) {
+uart_flush	src/uart.c	5123	void uart_flush() {
+uart_discardInput	src/uart.c	5730	void uart_discardInput() {
+uart_discardOutput	src/uart.c	5791	void uart_discardOutput() {
+uart_discardAll	src/uart.c	5853	void uart_discardAll() {
+spiFile	src/spi.c	445	static int spiFile[2] = { -1, -1 };
+spi_0_xfer	src/spi.c	530	struct spi_ioc_transfer spi_0_xfer[2] = {
+spi_1_xfer	src/spi.c	824	struct spi_ioc_transfer spi_1_xfer[2] = {
+spi_xfer	src/spi.c	1086	struct spi_ioc_transfer* spi_xfer[2] = {
+spi_adcIdxToGpio	src/spi.c	1194	static int spi_adcIdxToGpio[] = {
+spi_init	src/spi.c	1374	BOOL spi_init() {
+spi_send	src/spi.c	3445	void spi_send(int spiIdx, BYTE* pTx, int txLen) {
+spi_receive	src/spi.c	3742	void spi_receive(int spiIdx, BYTE* pRx, int rxLen) {
+spi_sendreceive	src/spi.c	4045	void spi_sendreceive(int spiIdx, BYTE* pTx, int txLen, BYTE* pRx, int rxLen) {
+spi_exchange	src/spi.c	4506	void spi_exchange(int spiIdx, BYTE* pTx, BYTE* pRx, int dataLen) {
+spi_exchange_ADC	src/spi.c	4842	void spi_exchange_ADC(int adcIdx, BYTE* pTx, BYTE* pRx, int dataLen) {
+initSpiDriver	src/spi.c	5232	int initSpiDriver(char* pDriverName, UINT32 speed, BYTE mode, BYTE bpw) {
+JTEST_MIN_POWER	src/selftest.c	233	#define JTEST_MIN_POWER         10
+JTEST_MAX_POWER	src/selftest.c	268	#define JTEST_MAX_POWER         60
+JTEST_POWER_STEPS	src/selftest.c	303	#define JTEST_POWER_STEPS       10
+JTEST_WAIT_STEP_MS	src/selftest.c	339	#define JTEST_WAIT_STEP_MS      10
+JTEST_WAIT_MAX_MULT	src/selftest.c	374	#define JTEST_WAIT_MAX_MULT     25
+JTEST_JOINT_CHG_DEG	src/selftest.c	410	#define JTEST_JOINT_CHG_DEG     5
+minPowerNeeded	src/selftest.c	460	BYTE minPowerNeeded = 0;
+minWaitNeeded	src/selftest.c	486	INT32 minWaitNeeded = 0;
+selfTest	src/selftest.c	760	char* selfTest(int mode) {
+testAllJoints	src/selftest.c	924	void testAllJoints() {
+testJointMovement	src/selftest.c	2025	BOOL testJointMovement(BYTE ctrlID, BYTE selIdx) {
+testJointRange	src/selftest.c	3597	BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
+moveJointToStop	src/selftest.c	4080	float moveJointToStop(BYTE ctrlID, BYTE selIdx, BOOL bFwd) {
+RX_BEGIN	src/philink.c	777	  RX_BEGIN,
+RX_RECEIVING	src/philink.c	789	  RX_RECEIVING,
+TX_BEGIN	src/philink.c	805	  TX_BEGIN,
+TX_SENDING	src/philink.c	817	  TX_SENDING,
+COMM_STATUS	src/philink.c	836	} COMM_STATUS;
+startPhiLink	src/philink.c	943	BOOL startPhiLink(char* ipAddr, int port) {
+phiLink_loopStart_save	src/philink.c	2738	static UINT64 phiLink_loopStart_save = 0;
+phiLink_loop	src/philink.c	2773	void* phiLink_loop(void* arg)
+setLinkStatus	src/philink.c	5425	void setLinkStatus(PHILINK_STATUS status) {
+allocHelper	src/phi_utils.c	52	void* allocHelper(int size) {
+abortProcess	src/phi_utils.c	200	void abortProcess(int rc) {
+abortWithMsg	src/phi_utils.c	484	void abortWithMsg(const char* msg) {
+__itoa	src/phi_utils.c	655	char* __itoa(int value, char* result, int base) {
+logfp	src/phi_utils.c	1602	FILE *logfp = NULL;
+logInit	src/phi_utils.c	1621	int logInit(char *filename) {
+logClose	src/phi_utils.c	2505	void logClose(void) {
+logTimestamp	src/phi_utils.c	2595	void logTimestamp() {
+logMsg	src/phi_utils.c	2751	void logMsg(const char* tag, const char *fmt, ...) {
+getHostIP	src/phi_utils.c	3110	UINT32 getHostIP() {
+setLED	src/phi_utils.c	4522	void setLED(PHI_LED_COLOR color) {
+phiRand	src/phi_utils.c	4810	double phiRand() {
+setRealtimePrio	src/phi_utils.c	4945	BOOL setRealtimePrio(pthread_t thread) {
+setNonBlocking	src/phi_utils.c	5848	int setNonBlocking(int fd)
+phiUpTime	src/phi_utils.c	6389	UINT64 phiUpTime() {
+BILLION	src/phi_utils.c	6525	#define BILLION   ((long) 1e9)
+addToTimespec	src/phi_utils.c	6554	void addToTimespec(struct timespec* pT1, time_t numSecs, DWORD numNano) {
+addTimespecs	src/phi_utils.c	6798	void addTimespecs(struct timespec* pT1, struct timespec* pT2) {
+offsetTimespecMs	src/phi_utils.c	6918	void offsetTimespecMs(struct timespec* pT1, DWORD mS) {
+initMotorCtrl	src/motor.c	144	BOOL initMotorCtrl() {
+setMotorPower	src/motor.c	2350	void setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+stopMotor	src/motor.c	2921	void stopMotor(BYTE ctrlID, BYTE selIdx) {
+stopAllMotors	src/motor.c	3009	void stopAllMotors() {
+flushMotorCmds	src/motor.c	3397	void flushMotorCmds() {
+getRawJointPos	src/motor.c	3567	UINT16 getRawJointPos(BYTE jointIdx) {
+getJointPos	src/motor.c	4346	float getJointPos(BYTE jointIdx) {
+getJointPosByMotorID	src/motor.c	4476	float getJointPosByMotorID(BYTE ctrlID, BYTE selIdx) {
+setControllerId	src/motor.c	4756	void setControllerId(BYTE oldId, BYTE newId) {
+GLOBAL_INIT	src/main.c	64	#define GLOBAL_INIT
+main	src/main.c	324	void main(int argc, char** argv) {
+globalInit	src/main.c	701	void globalInit() {
+globalShutdown	src/main.c	2774	void globalShutdown() {
+jsmn_alloc_token	src/jsmn.c	121	static jsmntok_t *jsmn_alloc_token(jsmn_parser *parser, 
+jsmn_fill_token	src/jsmn.c	475	static void jsmn_fill_token(jsmntok_t *token, jsmntype_t type, 
+jsmn_parse_primitive	src/jsmn.c	737	static jsmnerr_t jsmn_parse_primitive(jsmn_parser *parser, const char *js,
+jsmn_parse_string	src/jsmn.c	1819	static jsmnerr_t jsmn_parse_string(jsmn_parser *parser, const char *js,
+jsmn_parse	src/jsmn.c	2989	jsmnerr_t jsmn_parse(jsmn_parser *parser, const char *js, jsmntok_t *tokens, 
+jsmn_init	src/jsmn.c	5938	void jsmn_init(jsmn_parser *parser) {
+cmds	src/hw_pump.c	394	  PHI_CMD_PACKET cmds;
+state	src/hw_pump.c	419	  PHI_STATE_PACKET state;
+PHI_SNAPSHOT	src/hw_pump.c	429	} PHI_SNAPSHOT;
+phiSnapshot	src/hw_pump.c	464	static PHI_SNAPSHOT phiSnapshot;
+egMotorWrite	src/hw_pump.c	596	static PHI_EVENT_GATE egMotorWrite;;
+numMotorTimeouts	src/hw_pump.c	665	static DWORD numMotorTimeouts = 0;
+startHwPump	src/hw_pump.c	1413	void startHwPump() {
+UART_loopStart_save	src/hw_pump.c	3215	static UINT64 UART_loopStart_save = 0;
+hwPump_UART_thread	src/hw_pump.c	3247	void* hwPump_UART_thread(void* arg)
+SPI_loopStart_save	src/hw_pump.c	6284	static UINT64 SPI_loopStart_save = 0;
+hwPump_SPI_thread	src/hw_pump.c	6316	void* hwPump_SPI_thread(void* arg)
+I2C_loopStart_save	src/hw_pump.c	8550	static UINT64 I2C_loopStart_save = 0;
+hwPump_I2C_thread	src/hw_pump.c	8581	void* hwPump_I2C_thread(void* arg)
+lock_snapshot	src/hw_pump.c	9783	void lock_snapshot() {
+unlock_snapshot	src/hw_pump.c	9840	void unlock_snapshot() {
+initSnapshot	src/hw_pump.c	9945	void initSnapshot() {
+getStateSnapshot	src/hw_pump.c	10976	void getStateSnapshot(PHI_STATE_PACKET* p) {
+writeToCmdSnapshot	src/hw_pump.c	11297	void writeToCmdSnapshot(PHI_CMD_PACKET* p) {
+HAL_STUB_initPeripherals	src/hal_stub.c	45	char* HAL_STUB_initPeripherals() {
+GYRO_UPDATE_EVERY	src/hal_stub.c	147	#define GYRO_UPDATE_EVERY 0.01f
+HAL_STUB_gyroGetDeltas	src/hal_stub.c	178	void  HAL_STUB_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+HAL_STUB_gyroGetTemp	src/hal_stub.c	755	float HAL_STUB_gyroGetTemp(){
+HAL_STUB_setMotorPower	src/hal_stub.c	924	void HAL_STUB_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+HAL_STUB_getJointPos	src/hal_stub.c	1147	float HAL_STUB_getJointPos(BYTE adcIdx) {
+HAL_STUB_setControllerId	src/hal_stub.c	1475	void HAL_STUB_setControllerId(char oldId, char newId) {
+HAL_PHI_initPeripherals	src/hal_phi.c	43	char* HAL_PHI_initPeripherals() {
+HAL_PHI_gyroGetDeltas	src/hal_phi.c	1117	void HAL_PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+HAL_PHI_gyroGetTemp	src/hal_phi.c	1435	float HAL_PHI_gyroGetTemp() {
+HAL_PHI_setMotorPower	src/hal_phi.c	1518	void HAL_PHI_setMotorPower(BYTE ctrlID, BYTE selIdx, BYTE power, BOOL bFwd) {
+HAL_PHI_setControllerId	src/hal_phi.c	1645	void HAL_PHI_setControllerId(BYTE oldId, BYTE newId) {
+HAL_PHI_getJointPos	src/hal_phi.c	1737	float HAL_PHI_getJointPos(BYTE jointIdx) {
+bUseFifo	src/gyro.c	137	BOOL bUseFifo = TRUE;
+zeroX	src/gyro.c	188	INT16 zeroX = 0;
+zeroY	src/gyro.c	205	INT16 zeroY = 0;
+zeroZ	src/gyro.c	222	INT16 zeroZ = 0;
+threshX	src/gyro.c	267	INT16 threshX = 0;
+threshY	src/gyro.c	286	INT16 threshY = 0;
+threshZ	src/gyro.c	305	INT16 threshZ = 0;
+GYRO_MAX_VALUE	src/gyro.c	410	#define GYRO_MAX_VALUE          250.0f
+GYRO_MAX_VALUE_CMD	src/gyro.c	449	#define GYRO_MAX_VALUE_CMD      GYRO_CR4_FS_250DPS
+GYRO_MAX_VALUE_MULT	src/gyro.c	500	#define GYRO_MAX_VALUE_MULT     GYRO_250DPS_MULT
+GYRO_SAMPLE_RATE	src/gyro.c	550	#define GYRO_SAMPLE_RATE        100
+GYRO_SAMPLE_PERIOD	src/gyro.c	586	#define GYRO_SAMPLE_PERIOD      (1.0f / GYRO_SAMPLE_RATE)
+GYRO_SAMPLE_RATE_CMD	src/gyro.c	644	#define GYRO_SAMPLE_RATE_CMD    GYRO_CR1_DR_100HZ
+gyroInit	src/gyro.c	726	BOOL gyroInit(BOOL bEnableFifo) {
+gyroReadStatus	src/gyro.c	2716	BYTE gyroReadStatus() {
+gyroReadFifoSrc	src/gyro.c	2929	BYTE gyroReadFifoSrc() {
+gyroReadRawDps	src/gyro.c	3142	INT16 gyroReadRawDps(BYTE lowRegAddr) {
+gyroReadDps	src/gyro.c	3372	float gyroReadDps(BYTE lowRegAddr) {
+gyroReadFifoSlot_raw	src/gyro.c	3668	void gyroReadFifoSlot_raw(INT16* pX_dps, INT16* pY_dps, INT16* pZ_dps) {
+gyroReadFifoSlot	src/gyro.c	4082	void gyroReadFifoSlot(float* pPitchDps, float* pYawDps, float* pRollDps) {
+gyroGetDeltaDegrees_noFifo	src/gyro.c	5176	void gyroGetDeltaDegrees_noFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+gyroGetDeltaDegrees_useFifo	src/gyro.c	6210	void gyroGetDeltaDegrees_useFifo(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+gyroGetDeltaDegrees	src/gyro.c	7215	void gyroGetDeltaDegrees(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
+gyroGetRawTemp	src/gyro.c	7458	INT8 gyroGetRawTemp() {
+gyroCalibrate	src/gyro.c	7897	void gyroCalibrate() {
+GPIO_BASE	src/gpio.c	446	#define GPIO_BASE             GPFSEL0
+PAGE_SIZE	src/gpio.c	484	#define PAGE_SIZE             (4*1024)
+BLOCK_SIZE	src/gpio.c	523	#define BLOCK_SIZE            (4*1024)
+gpio_init	src/gpio.c	560	BOOL gpio_init()
+eventGate_init	src/event_gate.c	386	void eventGate_init(PHI_EVENT_GATE* pGate, BOOL bOpen) {
+eventGate_openHelper	src/event_gate.c	741	static void eventGate_openHelper(PHI_EVENT_GATE* pGate, PHI_GATE_STATE endupState) {
+eventGate_open	src/event_gate.c	1089	void eventGate_open(PHI_EVENT_GATE* pGate) {
+eventGate_pulse	src/event_gate.c	1304	void eventGate_pulse(PHI_EVENT_GATE* pGate) {
+eventGate_close	src/event_gate.c	1489	void eventGate_close(PHI_EVENT_GATE* pGate) {
+eventGate_wait	src/event_gate.c	2030	int eventGate_wait(PHI_EVENT_GATE* pGate, DWORD msTimeout) {
+UINT32	src/datalog.c	262	    #define UINT32          unsigned long
+UINT64	src/datalog.c	304	    #define UINT64          unsigned long long
+LOG_FATAL	src/datalog.c	351	    #define LOG_FATAL       printf
+phiUpTime	src/datalog.c	386	    UINT64 phiUpTime() {
+BASH_BLACK	src/datalog.c	491	    #define BASH_BLACK      "30"
+BASH_RED	src/datalog.c	524	    #define BASH_RED        "31"
+BASH_GREEN	src/datalog.c	557	    #define BASH_GREEN      "32"
+BASH_YELLOW	src/datalog.c	590	    #define BASH_YELLOW     "33"
+BASH_BLUE	src/datalog.c	623	    #define BASH_BLUE       "34"
+BASH_MAGENTA	src/datalog.c	656	    #define BASH_MAGENTA    "35"
+BASH_CYAN	src/datalog.c	689	    #define BASH_CYAN       "36"
+BASH_WHITE	src/datalog.c	722	    #define BASH_WHITE      "37"
+BASH_START_COLOR	src/datalog.c	756	    #define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	src/datalog.c	804	    #define BASH_STOP_COLOR       "\e[0m"
+DLOG_SIGN	src/datalog.c	851	#define DLOG_SIGN       'DLOG'
+DLOG_SIGN_FREE	src/datalog.c	882	#define DLOG_SIGN_FREE  'DLXX'
+PASS	src/datalog.c	914	#define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
+FAIL	src/datalog.c	979	#define FAIL BASH_START_COLOR(BASH_RED) "FAIL" BASH_STOP_COLOR
+WRAP	src/datalog.c	1043	#define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
+CLOSE_ENOUGH	src/datalog.c	1122	#define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
+TO_TIME64	src/datalog.c	1174	#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
+dlog_create	src/datalog.c	1364	DATALOG* dlog_create(char* pName, char* pUnit, int numElem, double epochSecs) {
+dlog_free	src/datalog.c	1875	void dlog_free(DATALOG* pLog) {
+lock_dlog	src/datalog.c	2080	void lock_dlog(DATALOG* pLog) {
+unlock_dlog	src/datalog.c	2265	void unlock_dlog(DATALOG* pLog) {
+dlog_addElem_withTime	src/datalog.c	2458	void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
+dlog_addElem	src/datalog.c	2913	void dlog_addElem(DATALOG* pLog, double data) {
+dlog_avg	src/datalog.c	3016	double dlog_avg(DATALOG* pLog, int depth) {
+dlog_getStats	src/datalog.c	3589	void dlog_getStats(DATALOG* pLog, int depth,
+dlog_predict	src/datalog.c	4346	double dlog_predict(DATALOG* pLog, UINT64 time) {
+dlog_test	src/datalog.c	4940	void dlog_test()  {
+main	src/datalog.c	7289	int main()  {
+UINT32	src/cubic.c	229	    #define UINT32          unsigned long
+UINT64	src/cubic.c	271	    #define UINT64          unsigned long long
+cubic	src/cubic.c	345	double cubic(
+NEED_ARGS	src/cmdline.c	27	#define NEED_ARGS(n) if (i+(n) >= argc) { printf("not enough args for '%s'\n", p); goto quick_exit;}
+cmdline	src/cmdline.c	141	void cmdline(int argc, char** argv) {
+usage	src/cmdline.c	2528	void usage() {
 spiFile	scp://pi@rpi-phi//home/pi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/spi.c	445	static int spiFile[2] = { -1, -1 };
 spi_0_xfer	scp://pi@rpi-phi//home/pi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/spi.c	530	struct spi_ioc_transfer spi_0_xfer[2] = {
 spi_1_xfer	scp://pi@rpi-phi//home/pi/Andre-Docs/ALS-Projects/Spider-Droid/Software/firmware/src/spi.c	824	struct spi_ioc_transfer spi_1_xfer[2] = {
