@@ -12,41 +12,25 @@
    <script src="js/phi.js"></script>
    <link rel="stylesheet" type="text/css" href="css/phi.css">
 
-   <!-- add this if you want super simple slider controls -->
-   <link rel="stylesheet" type="text/css" href="css/slider.css" />
-   <script type="text/javascript" src="js/slider.js"></script>
-
    <script>
 
-      var slider;
       var bPhiInit = false;
       var bSetPowerOK = true;
+      var maxMotorPower = 30.0;
 
-      function initSlider() {
-        
-        slider = new Slider(
-          "slider", "horizontal",
-          201,      // length (width for horizontal)
-          201);     // range [0, 200]
-        
-        slider.onChange = sliderChanged;
-        slider.setStart(100);               // must call after setting .onChange
-        slider.show();
-      }
+      function sliderChanged(percent) {
 
-      function sliderChanged(value) {
-        var percent = value - 100;
-        var maxVal = document.getElementById("max_power").value;
-        
-        if (percent > maxVal) {
-          percent = maxVal;
-        } else if (-percent > maxVal) {
-          percent = -maxVal;
+        if (percent > maxMotorPower) {
+          percent = maxMotorPower;
+        } else if (percent < -maxMotorPower) {
+          percent = -maxMotorPower;
         }
         
         document.getElementById("slider_val").innerHTML = percent + "%";
+        
         // set motor speed
         motorName = document.getElementById("phi_motor").value;
+        
         if (bPhiInit && bSetPowerOK) {
           // disable setPower until we get reply so we don't swamp PHI
           bSetPowerOK = false;
@@ -56,10 +40,22 @@
         }
       }
 
+      function maxPowerChanged(newValue) {
+        var slider = document.getElementById('slider');
+        maxMotorPower = newValue;
+        slider.min = -maxMotorPower;
+        slider.max = maxMotorPower;
+        slider.value = 0;
+        slider.step = 2.5;
+        // redraw slider
+        sliderChanged(0);
+      }
+
       function pageLoaded()
       {
-        // init motor control slider
-        initSlider();
+        // set max power
+        document.getElementById("max_power").value = maxMotorPower;        
+        maxPowerChanged(maxMotorPower);
         
         // request init state
         phi_getInitState();
@@ -258,6 +254,7 @@
    <table class="phi_indent_1" border="0" cellpadding="5">
       <col>
       <col width=250>
+      <col width=80>
       
       <tr> 
          <td class="phi_label">Select Motor:</td>
@@ -282,15 +279,15 @@
       <tr> 
          <td class="phi_label">Speed:</td>
          <td style="padding-left:30px;">
-               <span id="slider"></span>
+            <input type="range" id="slider" value="0" min="-10"
+               max="10" step="1"
+               oninput="sliderChanged(this.value)">
          </td>
+         <td id="slider_val">0%</td>
          <td>
-            <span id="slider_val"></span>
-         </td>
-         <td> &nbsp; &nbsp; &nbsp; &nbsp;
             <strong> Max: </strong> &nbsp; &nbsp;
             <input type="text" id="max_power" size="1" align="right"
-                   value="30">
+                   onchange="maxPowerChanged(this.value)">
          </td>
       </tr>
 
