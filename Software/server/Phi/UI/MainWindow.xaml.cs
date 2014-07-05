@@ -26,9 +26,13 @@ namespace Phi {
     // VARS
     //
 
-    private static DispatcherTimer blinkyTimer;
+    private DispatcherTimer updateTimer;
+    private DispatcherTimer blinkyTimer;
+
     private bool blinkState = false;
-    private static DispatcherTimer updateTimer;
+    private Task phiLinkTask;
+
+    private bool bPhiLinkChanged = false;
 
     //
     // CODE
@@ -42,21 +46,55 @@ namespace Phi {
       PhiGlobals.mainWindow = this;
     }
 
-    async private void startPhiLink() {
+    private void Window_Loaded(object sender, RoutedEventArgs e) {
 
-      // start listener (ASYNC)
-      Task<NetworkStream> listenTask =  PhiLink.startListenerAsync();
+      if (PhiGlobals.bInit == false) {
+        // don't do again
+        PhiGlobals.bInit = true;
 
-      // wait for connection (await causes immediate suspend)
-      NetworkStream phiStream = await listenTask;
+        //
+        // One time initializations
+        //
 
-      // CONNECTED - start comm loop
-      if (phiStream != null) {
-        PhiLink.startCommLoop(phiStream);
-      } else {
-        // no stream?
-        updateLinkStatus(PhiLink.PhiLinkStatus.LINK_ERROR);
+        // start Phi Link listener
+        startPhiLink();
+
+        // init gyro controls
+        PieCtrl_Pitch.titleName.Text = "Pitch";
+        PieCtrl_Yaw.titleName.Text = "Yaw";
+        PieCtrl_Roll.titleName.Text = "Roll";
+
+        // init leg controls
+
+        LF_Leg.legLabel.Content = "Left Front";
+        LF_Leg.hipJoint.label.Content = "H";
+        LF_Leg.thighJoint.label.Content = "T";
+        LF_Leg.kneeJoint.label.Content = "K";
+
+        RF_Leg.legLabel.Content = "Right Front";
+        RF_Leg.hipJoint.label.Content = "H";
+        RF_Leg.thighJoint.label.Content = "T";
+        RF_Leg.kneeJoint.label.Content = "K";
+
+        LB_Leg.legLabel.Content = "Left Back";
+        LB_Leg.hipJoint.label.Content = "H";
+        LB_Leg.thighJoint.label.Content = "T";
+        LB_Leg.kneeJoint.label.Content = "K";
+
+        RB_Leg.legLabel.Content = "Right Back";
+        RB_Leg.hipJoint.label.Content = "H";
+        RB_Leg.thighJoint.label.Content = "T";
+        RB_Leg.kneeJoint.label.Content = "K";
+
+        // enable timer that refreses UI
+        enableUpdateTimer(true);
       }
+    }
+
+    private void startPhiLink() {
+      // start listener task
+      phiLinkTask = new Task(PhiLink.phiLinkTask);
+      phiLinkTask.Start();
     }
 
     private void enableBlinkyTimer(bool bEnable) {
@@ -88,11 +126,16 @@ namespace Phi {
       }
     }
 
-    internal void updateLinkStatus(PhiLink.PhiLinkStatus status) {
+    internal void notifyPhiLinkChanged() {
+      // called by other threads to tell the UI thread that the phiLink status has changed
+      bPhiLinkChanged = true;
+    }
+
+    private void updateLinkStatus() {
 
       bool newBlinky = false;
 
-      switch (status) {
+      switch (PhiLink.linkStatus) {
         case PhiLink.PhiLinkStatus.LINK_OFF:
           LinkStatusText.Text = " OFF ";
           break;
@@ -106,74 +149,25 @@ namespace Phi {
           break;
         case PhiLink.PhiLinkStatus.LINK_CONNECTED:
           LinkStatusText.Text = " CONNECTED ";
-          enableUpdateTimer(true);
           break;
         case PhiLink.PhiLinkStatus.LINK_ERROR:
           LinkStatusText.Text = " ERROR ";
           newBlinky = true;
-          enableUpdateTimer(false);
           break;
         case PhiLink.PhiLinkStatus.LINK_CLOSED:
-          LinkStatusText.Text = " CANCELLED ";
+          LinkStatusText.Text = " CLOSED ";
           newBlinky = true;
-          enableUpdateTimer(false);
           break;
       }
 
       enableBlinkyTimer(newBlinky);
     }
 
-    private void Window_Loaded(object sender, RoutedEventArgs e) {
-      if (PhiGlobals.bInit == false) {
-        // don't do again
-        PhiGlobals.bInit = true;
-
-        //
-        // One time initializations
-        //
-
-        updateLinkStatus(PhiLink.PhiLinkStatus.LINK_OFF);
-
-        // start Phi Link listener
-        startPhiLink();
-
-        // init gyro controls
-        PieCtrl_Pitch.titleName.Text = "Pitch";
-        PieCtrl_Yaw.titleName.Text = "Yaw";
-        PieCtrl_Roll.titleName.Text = "Roll"; 
-
-        // init leg controls
-
-        LF_Leg.legLabel.Content = "Left Front";
-        LF_Leg.hipJoint.label.Content = "H";
-        LF_Leg.thighJoint.label.Content = "T";
-        LF_Leg.kneeJoint.label.Content = "K";
-
-        RF_Leg.legLabel.Content = "Right Front";
-        RF_Leg.hipJoint.label.Content = "H";
-        RF_Leg.thighJoint.label.Content = "T";
-        RF_Leg.kneeJoint.label.Content = "K";
-
-        LB_Leg.legLabel.Content = "Left Back";
-        LB_Leg.hipJoint.label.Content = "H";
-        LB_Leg.thighJoint.label.Content = "T";
-        LB_Leg.kneeJoint.label.Content = "K";
-
-        RB_Leg.legLabel.Content = "Right Back";
-        RB_Leg.hipJoint.label.Content = "H";
-        RB_Leg.thighJoint.label.Content = "T";
-        RB_Leg.kneeJoint.label.Content = "K";
-
-        // refresh UI
-        updateNowEvent(null, null);
-      }
-    }
-
     private void enableUpdateTimer(bool bEnable) {
 
       if (updateTimer == null) {
         updateTimer = new DispatcherTimer(DispatcherPriority.SystemIdle);
-        updateTimer.Tick += new EventHandler(updateNowEvent);
+        updateTimer.Tick += new EventHandler(updateUI_timerEvent);
         updateTimer.Interval = TimeSpan.FromMilliseconds(100);
         updateTimer.Start();
       }
@@ -186,9 +180,16 @@ namespace Phi {
       }
     }
 
-    private void updateNowEvent(object source, EventArgs e) {
+    private void updateUI_timerEvent(object source, EventArgs e) {
 
-      // update UI
+      // update link status if it has changed
+      if (bPhiLinkChanged == true) {
+        // changed
+        bPhiLinkChanged = false;
+        updateLinkStatus();
+      }
+
+      // update PHI state UI
 
       LinkFrameRateText.Text = PhiLink.getAvgFrameRate().ToString("F1") + " / " + PhiLink.DESIRED_LOOP_FPS + " Hz";
       AvgIdleText.Text = (PhiLink.getAvgIdle() * 100).ToString("F1") + " %";
