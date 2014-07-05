@@ -30,7 +30,7 @@ namespace Phi {
     const Int32 PHI_LINK_PORT = 1122;
 
     // PhiLink communication rate
-    internal const double DESIRED_LOOP_FPS = 50;
+    internal const double DESIRED_LOOP_FPS = 20;
     const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
 
     // adaptive sleep
@@ -84,7 +84,7 @@ namespace Phi {
     // CODE
     //
 
-    async static internal Task<NetworkStream> startListenerAsync() {
+    static internal void phiLinkTask() {
 
       // reset some vars
       pitch = 0;
@@ -93,10 +93,13 @@ namespace Phi {
 
       // create listener (accept connections from any address)
       TcpListener phiLinkListener = new TcpListener(IPAddress.Any, PHI_LINK_PORT);
-      Task<TcpClient> clientTask = null;
 
       // change status to initializing
       setLinkStatus(PhiLinkStatus.LINK_STARTED);
+
+      // connect
+
+      TcpClient client = null;
 
       try {
         // enable listener
@@ -105,27 +108,15 @@ namespace Phi {
         // change status to waiting
         setLinkStatus(PhiLinkStatus.LINK_CONNECTING);
 
-        // wait async for a phi to connect
-        clientTask = phiLinkListener.AcceptTcpClientAsync();
+        // wait for a phi to connect
+        client = phiLinkListener.AcceptTcpClient();
 
       } catch (SocketException e) {
         // something went wrong
         setLinkStatus(PhiLinkStatus.LINK_ERROR);
         Console.WriteLine("PhiLink.startListener: got exception when starting listener: SocketException: {0}", e);
-        return null;
+        return;
       }
-
-      // wait async for connection
-      //
-      // The await keyword causes an immediate return to the caller with a "pending" Task<TcpClient>
-      // The caller must do an await (or Task. to get the client member.  At which point it could:
-      //   1) block if it is not async itself
-      //   2) return to *its* parent, if our caller is also async
-
-      TcpClient client =  await clientTask;
-
-      // We get here asynchronously when AcceptTcpClientAsync()
-      // completes (when a connection occurs);
 
       // change status to connected
       setLinkStatus(PhiLinkStatus.LINK_CONNECTED);
@@ -137,29 +128,17 @@ namespace Phi {
       // Get a stream object for reading/writing
       NetworkStream stream = client.GetStream();
 
-      // Note: this return statement is not *actually* a conventional
-      // "return" statement because this is an async function (note that
-      // the type is different than declared).  Instead, what "return" 
-      // does here is to fill in the NetworkStream part of Task<NetworkStream>
-      // and wake up any "awaiters" on it.
+      // start comm loop  - only returns on error
 
-      return stream;
-    }
-
-    internal static void startCommLoop(NetworkStream phiStream) {
-      if (commLoopTask == null) {
-        // start comm loop
-        commLoopTask = Task.Run(() => commLoop(phiStream));
+      if (stream != null) {
+        commLoop(stream);
       } else {
-        // already started - TODO - do something here
+        // no stream? say error
+        setLinkStatus(PhiLink.PhiLinkStatus.LINK_ERROR);
       }
-    }
 
-    internal static void stopCommLoop() {
-      if (commLoopTask != null) {
-        // HACK - do something here - don't know how to stop a Task
-        // maybe that cancel token thing?
-      }
+      // comm loop returned
+      return;
     }
 
     //
@@ -278,7 +257,8 @@ namespace Phi {
 
     internal static void setLinkStatus(PhiLinkStatus status) {
       linkStatus = status;
-      PhiGlobals.mainWindow.updateLinkStatus(status);
+      // notify change for UI
+      PhiGlobals.mainWindow.notifyPhiLinkChanged();
     }
 
     internal static double getAvgIdle() {
