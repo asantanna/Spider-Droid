@@ -61,7 +61,7 @@ void HAL_PHI_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDel
   // call func that returns in degrees
   gyroGetDeltaDegrees(pPitchDelta, pYawDelta, pRollDelta);
   
-  // convert from degrees to canonical [0,1]
+  // convert [-360,360] degrees to [-1,1]
   *pPitchDelta /=  360.0f;
   *pYawDelta   /=  360.0f;
   *pRollDelta  /=  360.0f;

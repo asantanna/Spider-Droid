@@ -13,11 +13,6 @@
 
 #include "phi.h"
 
-TODO("think about GYRO AND ACCEL ELEM");
-// - should be split into pos and neg?
-// - should return change
-// - is gyro returning change? if so, change name
-
 // internal
 
 void setLinkStatus(PHILINK_STATUS status);

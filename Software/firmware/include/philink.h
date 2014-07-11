@@ -56,12 +56,16 @@ typedef struct __attribute__ ((__packed__)) {
   UINT32    packetID;
   BYTE      image  [STAP_NUM_IMAGE_BYTES];
 
-  // everything below here is stored as a float
-  // and encoded into the canonical range [0,1]
-  
+  // position: range [0,1]
   float     joints [STAP_NUM_JOINT_ELEM];
+  
+  // change angle: range [-1, 1] means [-360, 360]
   float     gyro   [STAP_NUM_GYRO_ELEM];
+  
+  // accel: TBD
   float     accel  [STAP_NUM_ACCEL_ELEM];
+  
+  // temperature: [0,1] means [-40, 85] C
   float     temp;
   
 } PHI_STATE_PACKET;
