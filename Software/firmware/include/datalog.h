@@ -5,7 +5,7 @@
 
 typedef struct {
   UINT64 time;
-  double data;
+  float data;
 
 } DATALOG_ELEM;
 
@@ -16,7 +16,7 @@ typedef struct {
   
   char* pName;
   char* pUnit;
-  double epochSecs;
+  float epochSecs;
   int numElem;
   
   int currIdx;

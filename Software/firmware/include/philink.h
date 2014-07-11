@@ -34,14 +34,9 @@ typedef struct  __attribute__ ((__packed__)) {
   char      sign     [NUM_SIGN_BYTES];
   UINT32    packetID;
 
-  // values = [-127, 127] - couldn't decide if should make canonical [0,1]
-  // prob should be canon but with separate fwd and back so:
-  //    0,0 = coast
-  //    x,x = brake
-  //    x,y = power at x-y
-  //
-  
-  INT8      motors   [CMDP_MOTOR_ELEM];
+  // values = [-1, 1]
+  // Note: can't distinguish coast and brake in this scheme
+  float     motors   [CMDP_MOTOR_ELEM];
   
 } PHI_CMD_PACKET;
 

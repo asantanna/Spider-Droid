@@ -180,11 +180,13 @@ void* hwPump_UART_thread(void* arg)
         // send out motor power command for this motor
 
         lock_snapshot();
-        INT8 power = phiSnapshot.cmds.motors[motorIdx++];
+        float power = phiSnapshot.cmds.motors[motorIdx++];
         unlock_snapshot();
+
+        // snapshot power is [-1, 1], convert to [0, 127], bFwd
+        BYTE absPower = (BYTE) (fabs(power) * 127);
+        BOOL bFwd = (power >= 0) ? TRUE : FALSE;
         
-        BYTE absPower = abs(power);
-        BOOL bFwd = ( power >= ((INT8)0) ) ? TRUE : FALSE;
         HAL_setMotorPower(ctrlID, selIdx, absPower, bFwd);
       }
     }
@@ -530,130 +532,3 @@ void setSnapshotMotorVal(char* motorName, INT8 powerVal) {
   eventGate_pulse(&egMotorWrite);
 }
 
-/*
- * TMP JUNK SAVE
- *
-
------
-
-// read hardware and update the state structure
-//
-// note: we lock the state structure in a fine grained
-// fashion so that PHI can reply quickly to state requests
-// without being blocked here
-//
-
-void updateState() {
-
-  int i;
-
-  // sign not set here because it is not necessary and serves as a sentinel
-  // to detect a bug that might over-write it
-
-  // packet ID is not incremented here because this routine runs
-  // at a higher rate than packets are sent
-
-  // image (not implemented)
-  TODO("image sensor not implemented");
-
-  //
-  // Get joint positions
-  //
-
-  char ctrlID;
-  char selIdx;
-  int jointIdx = 0;
-
-  // go through each controller
-  for (ctrlID = 'A' ; ctrlID <= 'F' ; ctrlID ++) {
-    // go through each motor of this controller
-    for (selIdx = '0' ; selIdx <= '1' ; selIdx ++) {
-      // read and save joing position
-      double pos = getJointPos(ctrlID, selIdx);
-      lock_snapshot();
-      phiSnapshot.state.joint[jointIdx++] = 0;
-      unlock_snapshot();
-    }
-  }
-
-  // gyro (return +/- percent of max reading)
-  //
-  // note: we actually accumulate the change in the state
-  // because this runs at a faster rate than the transmission
-  // so data would be lost
-
-  float pitchDelta, yawDelta, rollDelta;
-  HAL_gyroGetDeltas(&pitchDelta, &yawDelta, &rollDelta);
-
-  lock_snapshot();
-
-  phiSnapshot.state.gyro[0] += pitchDelta;
-  phiSnapshot.state.gyro[1] += yawDelta;
-  phiSnapshot.state.gyro[2] += rollDelta;
-
-  unlock_snapshot();
-
-  // temperature
-  float t = HAL_gyroGetTemp();
-  lock_snapshot();
-  phiSnapshot.state.temp = t;
-  unlock_snapshot();
-}
-
------
-
-  usec_loopEnd = phiUpTime();
-  
-  while (true) {
-
-    // time at start of loop
-    usec_loopStart = usec_loopEnd;
-
-    bla bla
-  }
-
------  
-
-  UINT64 usec_loopStart;
-  UINT64 usec_workEnd;
-  UINT64 usec_loopEnd;
-  INT32 usec_error = 0;
-
-
------
-
-    //
-    // Adjust loop sleep
-    //
-
-    // time at end of work
-    usec_workEnd = phiUpTime();
-
-    // sleep any leftover time
-
-    INT32 usec_workTime = (INT32) (usec_workEnd - usec_loopStart);
-    INT32 usec_sleepTime = (INT32) (HW_PUMP_LOOP_PERIOD_USEC - usec_workTime + usec_error);
-
-    if (usec_sleepTime < 0) {
-      // no time left over
-      usec_sleepTime = 0;
-    }
-
-    usleep(usec_sleepTime);
-    usec_loopEnd = phiUpTime();
-
-    // compute error in loop time
-    //
-    // NOTE: this is disabled because it doesn't improve things much
-    // but it DOES increase the standard deviation
-    //
-    // usec_error += (INT32) (HW_PUMP_LOOP_PERIOD_USEC - (usec_loopEnd - usec_loopStart));
-
-    // DEBUG
-    // printf("sleep time = %ld uS, error = %ld uS\n", usec_sleepTime, usec_error);
-    // sleep(1);
-    // usec_loopEnd = phiUpTime();
-
-    // DEBUG - uncomment to disable loop adaptation
-    // usec_error = 0;
-*/ 

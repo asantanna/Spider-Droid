@@ -2,8 +2,8 @@
 // Routines for recording data for statistics
 //
 
-// uncomment this line to build this file standalone
-// #define STANDALONE
+// define symbol STANDALONE build this file standalone
+// e.g.  gcc -DSTANDALONE datalog.c
 
 #ifndef STANDALONE
 
@@ -49,17 +49,17 @@
 #define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
 #define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
 
-#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
+#define TO_TIME64(d)  ((UINT64) (( ((float)(d)) + 100.0f) * 1e6f))
 
-double cubic(
-   double x1, double y1,
-   double x2, double y2,
-   double x3, double y3,
-   double x4, double y4,
-   double x5);
+float cubic(
+   float x1, float y1,
+   float x2, float y2,
+   float x3, float y3,
+   float x4, float y4,
+   float x5);
     
 
-DATALOG* dlog_create(char* pName, char* pUnit, int numElem, double epochSecs) {
+DATALOG* dlog_create(char* pName, char* pUnit, int numElem, float epochSecs) {
 
   int size = sizeof(DATALOG) + numElem * sizeof(DATALOG_ELEM);
   DATALOG* pLog = malloc(size);
@@ -109,7 +109,7 @@ void unlock_dlog(DATALOG* pLog) {
   PHI_MUTEX_RELEASE(&(pLog -> mutex));
 }
 
-void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
+void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, float data) {
 
   // lock
   lock_dlog(pLog);
@@ -126,13 +126,13 @@ void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
   unlock_dlog(pLog);
 }
 
-void dlog_addElem(DATALOG* pLog, double data) {
+void dlog_addElem(DATALOG* pLog, float data) {
   dlog_addElem_withTime(pLog, phiUpTime(), data);
 }
 
-double dlog_avg(DATALOG* pLog, int depth) {
+float dlog_avg(DATALOG* pLog, int depth) {
 
-  double avg = 0;
+  float avg = 0;
 
   // lock
   lock_dlog(pLog);
@@ -146,7 +146,7 @@ double dlog_avg(DATALOG* pLog, int depth) {
   } else {
     
     int i;
-    double sum = 0;
+    float sum = 0;
     int _currIdx = pLog -> currIdx;
     _currIdx = WRAP(_currIdx - depth);
 
@@ -155,7 +155,7 @@ double dlog_avg(DATALOG* pLog, int depth) {
       _currIdx = WRAP(_currIdx + 1);
     }
 
-    avg = ((double)sum) / depth;
+    avg = sum / depth;
   }
 
   // unlock
@@ -165,18 +165,18 @@ double dlog_avg(DATALOG* pLog, int depth) {
 }
 
 void dlog_getStats(DATALOG* pLog, int depth,
-   double* pMinVal, double* pMaxVal, double* pAvgVal, double* pStdVal) {
+   float* pMinVal, float* pMaxVal, float* pAvgVal, float* pStdVal) {
 
   // first get average
-  double avgVal = dlog_avg(pLog, depth);
+  float avgVal = dlog_avg(pLog, depth);
 
   // compute other stats
 
   #define BIG_VAL 1e20
   
-  double minVal =  BIG_VAL;
-  double maxVal = -BIG_VAL;
-  double sqSum = 0;
+  float minVal =  BIG_VAL;
+  float maxVal = -BIG_VAL;
+  float sqSum = 0;
   
   int _currIdx = pLog -> currIdx;
   _currIdx = WRAP(_currIdx - depth);
@@ -185,7 +185,7 @@ void dlog_getStats(DATALOG* pLog, int depth,
   
   for (i = 0 ; i < depth ; i++) {
     
-    double v = pLog -> elem[_currIdx].data;
+    float v = pLog -> elem[_currIdx].data;
     
     if (v < minVal) minVal = v;
     else if (v > maxVal) maxVal = v;
@@ -203,7 +203,7 @@ void dlog_getStats(DATALOG* pLog, int depth,
   *pStdVal = sqrt(sqSum);
 }
 
-double dlog_predict(DATALOG* pLog, UINT64 time) {
+float dlog_predict(DATALOG* pLog, UINT64 time) {
 
   // lock
   lock_dlog(pLog);
@@ -211,7 +211,7 @@ double dlog_predict(DATALOG* pLog, UINT64 time) {
   // look at last "depth" entries and guess the next one
   int _currIdx = WRAP(pLog -> currIdx - 4);
 
-  double val = cubic(
+  float val = cubic(
     pLog -> elem[_currIdx].time,
     pLog -> elem[_currIdx].data,
     pLog -> elem[WRAP(_currIdx + 1)].time,
@@ -229,8 +229,8 @@ double dlog_predict(DATALOG* pLog, UINT64 time) {
 }
 
 void dlog_test()  {
-  double avg;
-  double guess;
+  float avg;
+  float guess;
   int i;
   DATALOG* pLog = dlog_create("test 1", "unit1", 3, 1);
 
@@ -256,16 +256,16 @@ void dlog_test()  {
 
   printf("Testing different depths: ");
 
-  if ((avg = dlog_avg(pLog, 2)) == 3.5) {
-    if (dlog_avg(pLog, 1) == 5) {
+  if ((avg = dlog_avg(pLog, 2)) == 3.5f) {
+    if (dlog_avg(pLog, 1) == 5.0f) {
       printf(PASS "\n");
 
     } else {
-      printf(FAIL " DEPTH 1 - got %f, expected 5\n", avg);
+      printf(FAIL " DEPTH 1 - got %f, expected 5\n", (double) avg);
     }
 
   } else {
-    printf(FAIL " DEPTH 2 - got %f, expected 3.5\n", avg);
+    printf(FAIL " DEPTH 2 - got %f, expected 3.5\n", (double) avg);
   }
 
   printf("Testing invalid depth: ");
@@ -288,11 +288,11 @@ void dlog_test()  {
 
   pLog = dlog_create("test 2", "unit 2", 4, 1);
 
-  double x[] = { -3.8280, -2.5065, 1.3328, 4.1670 };
-  double y[] = { 2.5192, 3.2189, 4.5950, 7.8150 };
+  float x[] = { -3.8280, -2.5065, 1.3328, 4.1670 };
+  float y[] = { 2.5192, 3.2189, 4.5950, 7.8150 };
 
-  double x_guess = 5.7876;
-  double y_guess = 11.6189;
+  float x_guess = 5.7876;
+  float y_guess = 11.6189;
   
   guess = cubic(
     x[0], y[0],
@@ -301,7 +301,7 @@ void dlog_test()  {
     x[3], y[3],
     x_guess);
 
-  CLOSE_ENOUGH(guess, y_guess) ? printf(PASS "\n") : printf(FAIL " - got %g, expected %g\n", guess, y_guess);
+  CLOSE_ENOUGH(guess, y_guess) ? printf(PASS "\n") : printf(FAIL " - got %g, expected %g\n", (double) guess, (double) y_guess);
 
   printf("Testing Cubic Extrapolator (direct + scale): ");
 
@@ -312,7 +312,7 @@ void dlog_test()  {
     TO_TIME64(x[3]), y[3],
     TO_TIME64(x_guess));
 
-  CLOSE_ENOUGH(guess, y_guess) ? printf(PASS "\n") : printf(FAIL " - got %g, expected %g\n", guess, y_guess);
+  CLOSE_ENOUGH(guess, y_guess) ? printf(PASS "\n") : printf(FAIL " - got %g, expected %g\n", (double) guess, (double) y_guess);
   
   printf("Testing Cubic Extrapolator (using dlog_predict): ");
 
@@ -322,7 +322,7 @@ void dlog_test()  {
 
   guess = dlog_predict(pLog, TO_TIME64(x_guess));
 
-  CLOSE_ENOUGH(guess, y_guess) ? printf(PASS "\n") : printf(FAIL " - got %g, expected %g\n", guess, y_guess);
+  CLOSE_ENOUGH(guess, y_guess) ? printf(PASS "\n") : printf(FAIL " - got %g, expected %g\n", (double) guess, (double) y_guess);
 
   // done
   printf("\n");

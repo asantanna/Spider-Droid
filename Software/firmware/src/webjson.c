@@ -601,11 +601,6 @@ JSON_HANDLER(setPower) {
   // copy to cmd snapshot
   setSnapshotMotorVal(motorName, powerVal);
 
-  TODO("DELETE THIS CODE");
-  // HAL_setMotorPower(
-  //  MOTOR_NAME_TO_CTRL_ID(motorName),
-  //  MOTOR_NAME_TO_SEL_IDX(motorName),
-  //  (BYTE) powerVal, bFwd);
 
 quick_exit:
 
@@ -937,7 +932,7 @@ void emitDatalogJson(char*pBuff, DATALOG* pLog, int depths[]) {
     Q(epochSecs) ": %g,\n",
     pLog -> pName,
     pLog -> pUnit,
-    pLog -> epochSecs);
+    (double) pLog -> epochSecs);
 
   int numDepths = 0;
 
@@ -951,7 +946,7 @@ void emitDatalogJson(char*pBuff, DATALOG* pLog, int depths[]) {
 
   // get stats at all requested depths
 
-  double minVal[10], maxVal[10], avgVal[10], stdVal[10];
+  float minVal[10], maxVal[10], avgVal[10], stdVal[10];
 
   for (j = 0 ; j < numDepths ; j++) {
     if (j >= 10) {
@@ -963,28 +958,28 @@ void emitDatalogJson(char*pBuff, DATALOG* pLog, int depths[]) {
   // min
   sprintf(pBuff + strlen(pBuff), Q(min) ": [");
   for (j = 0 ; j < numDepths ; j++) {
-    sprintf(pBuff + strlen(pBuff), "%g, ", minVal[j]);
+    sprintf(pBuff + strlen(pBuff), "%g, ", (double) minVal[j]);
   }
   sprintf(pBuff + strlen(pBuff) - 2, "],\n");
 
   // max
   sprintf(pBuff + strlen(pBuff), Q(max) ": [");
   for (j = 0 ; j < numDepths ; j++) {
-    sprintf(pBuff + strlen(pBuff), "%g, ", maxVal[j]);
+    sprintf(pBuff + strlen(pBuff), "%g, ", (double) maxVal[j]);
   }
   sprintf(pBuff + strlen(pBuff) - 2, "],\n");
 
   // avg
   sprintf(pBuff + strlen(pBuff), Q(avg) ": [");
   for (j = 0 ; j < numDepths ; j++) {
-    sprintf(pBuff + strlen(pBuff), "%g, ", avgVal[j]);
+    sprintf(pBuff + strlen(pBuff), "%g, ", (double) avgVal[j]);
   }
   sprintf(pBuff + strlen(pBuff) - 2, "],\n");
 
   // std dev
   sprintf(pBuff + strlen(pBuff), Q(std) ": [");
   for (j = 0 ; j < numDepths ; j++) {
-    sprintf(pBuff + strlen(pBuff), "%g, ", stdVal[j]);
+    sprintf(pBuff + strlen(pBuff), "%g, ", (double) stdVal[j]);
   }
   sprintf(pBuff + strlen(pBuff) - 2, "]\n");
 

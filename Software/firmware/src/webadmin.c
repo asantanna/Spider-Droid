@@ -352,8 +352,6 @@ void* wa_process_web_request(void* arg)
     }
   }
 
-  TODO("check for HEAD?")
-
   //
   // Check for POST with JSON commands
   //
@@ -409,7 +407,6 @@ void* wa_process_web_request(void* arg)
   // lseek back to the file start ready for reading
   lseek(pagefd, 0, SEEK_SET);
 
-  TODO("Send file time?")
   // TODO: send file time? Remember that .html files will
   // be rewritten to fill in any variables so static files
   // are *always* potentially new.  But maybe we can do

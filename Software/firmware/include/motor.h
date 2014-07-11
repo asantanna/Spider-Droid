@@ -74,8 +74,8 @@
 #define ADC_MAX_RAW                             ((UINT16) 1023)
 #define ADC_RAW_RANGE                           (ADC_MAX_RAW - ADC_MIN_RAW + 1)
 
-#define ADC_RAW_TO_CANON(rawVal)                ( ((rawVal) % ADC_RAW_RANGE) / ((double)ADC_RAW_RANGE) )
-#define ADC_CANON_TO_RAW(canonVal)              ( (UINT16) ((canonVal) * ((double)ADC_RAW_RANGE)) )
+#define ADC_RAW_TO_CANON(rawVal)                ( ((rawVal) % ADC_RAW_RANGE) / ((float)ADC_RAW_RANGE) )
+#define ADC_CANON_TO_RAW(canonVal)              ( (UINT16) ((canonVal) * ((float)ADC_RAW_RANGE)) )
 
 #define ADC_ABS_RAW_DIFF(v1, v2)                ( ( (UINT16) ( ((INT16)(v1)) - ((INT16)(v2)) ) ) % ADC_RAW_RANGE )
 

@@ -13,7 +13,6 @@
 
 #include <phi.h>
 
-
 #define JTEST_MIN_POWER         10
 #define JTEST_MAX_POWER         60
 #define JTEST_POWER_STEPS       10
@@ -22,6 +21,8 @@
 #define JTEST_WAIT_MAX_MULT     25
 
 #define JTEST_JOINT_CHG_DEG     5
+
+WARN("This file is not used");
 
 //
 // STATICS
@@ -173,11 +174,11 @@ BOOL testJointRange(BYTE ctrlID, BYTE selIdx) {
   // find max rev pos
   maxRevPos = moveJointToStop(ctrlID, selIdx, FALSE);
 
-  LOG_INFO("Joint %c%c range: min=%g, max=%d",
+  LOG_INFO("Joint %c%c range: min=%g, max=%g",
     ctrlID, selIdx, (double) maxRevPos, (double) maxFwdPos);
 
-  WARN("Save this range info somewhere");
-  WARN("Use range info to prevent joint damage");
+  // WARN("Save this range info somewhere");
+  // WARN("Use range info to prevent joint damage");
 
   // success
   return TRUE;

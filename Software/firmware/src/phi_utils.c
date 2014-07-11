@@ -154,7 +154,7 @@ void logClose(void) {
 void logTimestamp() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  fprintf(logfp, "T=%.6f secs : ", ((double)phiUpTime()) / 1000000);
+  fprintf(logfp, "T=%.6f secs : ", (double) (phiUpTime() / 1000000));
   // no flush here
 }
 
@@ -250,8 +250,8 @@ void setLED(PHI_LED_COLOR color) {
       }
 }
 
-double phiRand() {
-  return ((double) rand()) / RAND_MAX;
+float phiRand() {
+  return ((float) rand()) / RAND_MAX;
 }
 
 //

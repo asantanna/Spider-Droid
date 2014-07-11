@@ -107,13 +107,13 @@ INT8 gyroGetRawTemp();
 // Data Logging
 //
 
-DATALOG* dlog_create(char* pName, char* pUnit, int numElem, double epochSecs);
-void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data);
-void dlog_addElem(DATALOG* pLog, double data);
-double dlog_avg(DATALOG* pLog, int depth);
-double dlog_predict(DATALOG* pLog, UINT64 time);
+DATALOG* dlog_create(char* pName, char* pUnit, int numElem, float epochSecs);
+void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, float data);
+void dlog_addElem(DATALOG* pLog, float data);
+float dlog_avg(DATALOG* pLog, int depth);
+float dlog_predict(DATALOG* pLog, UINT64 time);
 void dlog_getStats(DATALOG* pLog, int depth,
-   double* pMinVal, double* pMaxVal, double* pAvgVal, double* pStdVal);
+   float* pMinVal, float* pMaxVal, float* pAvgVal, float* pStdVal);
 
 //
 // Peripherals
@@ -147,7 +147,7 @@ void abortProcess(int rc);
 void abortWithMsg(const char* msg);
 
 UINT64 phiUpTime();
-double phiRand();
+float phiRand();
 
 void addToTimespec(struct timespec* pT1, time_t numSecs, DWORD numNano);
 void addTimespecs(struct timespec* pT1, struct timespec* pT2);

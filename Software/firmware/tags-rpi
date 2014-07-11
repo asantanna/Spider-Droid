@@ -1,4 +1,152 @@
 	TAGS	UNSORTED
+UINT32	src/datalog.c	278	    #define UINT32          unsigned long
+UINT64	src/datalog.c	320	    #define UINT64          unsigned long long
+LOG_FATAL	src/datalog.c	367	    #define LOG_FATAL       printf
+phiUpTime	src/datalog.c	402	    UINT64 phiUpTime() {
+BASH_BLACK	src/datalog.c	507	    #define BASH_BLACK      "30"
+BASH_RED	src/datalog.c	540	    #define BASH_RED        "31"
+BASH_GREEN	src/datalog.c	573	    #define BASH_GREEN      "32"
+BASH_YELLOW	src/datalog.c	606	    #define BASH_YELLOW     "33"
+BASH_BLUE	src/datalog.c	639	    #define BASH_BLUE       "34"
+BASH_MAGENTA	src/datalog.c	672	    #define BASH_MAGENTA    "35"
+BASH_CYAN	src/datalog.c	705	    #define BASH_CYAN       "36"
+BASH_WHITE	src/datalog.c	738	    #define BASH_WHITE      "37"
+BASH_START_COLOR	src/datalog.c	772	    #define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	src/datalog.c	820	    #define BASH_STOP_COLOR       "\e[0m"
+DLOG_SIGN	src/datalog.c	867	#define DLOG_SIGN       'DLOG'
+DLOG_SIGN_FREE	src/datalog.c	898	#define DLOG_SIGN_FREE  'DLXX'
+PASS	src/datalog.c	930	#define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
+FAIL	src/datalog.c	995	#define FAIL BASH_START_COLOR(BASH_RED) "FAIL" BASH_STOP_COLOR
+WRAP	src/datalog.c	1059	#define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
+CLOSE_ENOUGH	src/datalog.c	1138	#define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
+TO_TIME64	src/datalog.c	1190	#define TO_TIME64(d)  ((UINT64) (((float)(d) + 100) * 1e6))
+dlog_create	src/datalog.c	1377	DATALOG* dlog_create(char* pName, char* pUnit, int numElem, float epochSecs) {
+dlog_free	src/datalog.c	1887	void dlog_free(DATALOG* pLog) {
+lock_dlog	src/datalog.c	2092	void lock_dlog(DATALOG* pLog) {
+unlock_dlog	src/datalog.c	2277	void unlock_dlog(DATALOG* pLog) {
+dlog_addElem_withTime	src/datalog.c	2470	void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, float data) {
+dlog_addElem	src/datalog.c	2924	void dlog_addElem(DATALOG* pLog, float data) {
+dlog_avg	src/datalog.c	3025	float dlog_avg(DATALOG* pLog, int depth) {
+dlog_getStats	src/datalog.c	3586	void dlog_getStats(DATALOG* pLog, int depth,
+dlog_predict	src/datalog.c	4333	float dlog_predict(DATALOG* pLog, UINT64 time) {
+dlog_test	src/datalog.c	4926	void dlog_test()  {
+main	src/datalog.c	7345	int main()  {
+PHI_VERSION	include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
+INT8	include/phi_defs.h	184	#define INT8            int8_t
+INT16	include/phi_defs.h	215	#define INT16           int16_t
+INT32	include/phi_defs.h	247	#define INT32           int32_t
+INT64	include/phi_defs.h	279	#define INT64           int64_t
+UINT8	include/phi_defs.h	329	#define UINT8           uint8_t
+UINT16	include/phi_defs.h	361	#define UINT16          uint16_t
+UINT32	include/phi_defs.h	394	#define UINT32          uint32_t
+UINT64	include/phi_defs.h	427	#define UINT64          uint64_t
+BYTE	include/phi_defs.h	485	#define BYTE            UINT8
+WORD	include/phi_defs.h	515	#define WORD            UINT16
+DWORD	include/phi_defs.h	546	#define DWORD           UINT32
+BOOL	include/phi_defs.h	577	#define BOOL            UINT8
+FALSE	include/phi_defs.h	608	#define FALSE           0
+TRUE	include/phi_defs.h	634	#define TRUE            1
+COUNTOF	include/phi_defs.h	676	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
+MIN	include/phi_defs.h	740	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
+MAX	include/phi_defs.h	792	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
+PHI_ALLOC	include/phi_defs.h	955	#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
+PHI_ALLOC_N	include/phi_defs.h	1008	#define PHI_ALLOC_N(n)  allocHelper(n)
+PHI_FREE	include/phi_defs.h	1047	#define PHI_FREE(p)     {free(p); p = NULL; }
+PHI_ZERO	include/phi_defs.h	1094	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
+PHI_ZERO_P	include/phi_defs.h	1145	#define PHI_ZERO_P(p,l) memset(p, 0, l)
+BASH_BLACK	include/phi_defs.h	1203	#define BASH_BLACK      "30"
+BASH_RED	include/phi_defs.h	1232	#define BASH_RED        "31"
+BASH_GREEN	include/phi_defs.h	1261	#define BASH_GREEN      "32"
+BASH_YELLOW	include/phi_defs.h	1290	#define BASH_YELLOW     "33"
+BASH_BLUE	include/phi_defs.h	1319	#define BASH_BLUE       "34"
+BASH_MAGENTA	include/phi_defs.h	1348	#define BASH_MAGENTA    "35"
+BASH_CYAN	include/phi_defs.h	1377	#define BASH_CYAN       "36"
+BASH_WHITE	include/phi_defs.h	1406	#define BASH_WHITE      "37"
+BASH_START_COLOR	include/phi_defs.h	1436	#define BASH_START_COLOR(c)   "\e[1;" c "m"
+BASH_STOP_COLOR	include/phi_defs.h	1480	#define BASH_STOP_COLOR       "\e[0m"
+DO_PRAGMA	include/phi_defs.h	1519	#define DO_PRAGMA(x)    _Pragma (#x)
+INFO	include/phi_defs.h	1556	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
+TODO	include/phi_defs.h	1659	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
+WARN	include/phi_defs.h	1761	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
+HACK	include/phi_defs.h	1870	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
+U64_1E6	include/phi_defs.h	1979	#define U64_1E6         ((UINT64)1e6)
+TV_TO_USEC	include/phi_defs.h	2017	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
+LOG_INFO	include/phi_defs.h	2112	#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
+LOG_ERR	include/phi_defs.h	2160	#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
+LOG_FATAL	include/phi_defs.h	2215	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
+STR	include/phi_defs.h	2372	#define STR(s)                #s              /* convert to string */
+STR_MACRO	include/phi_defs.h	2442	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
+Q	include/phi_defs.h	2565	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
+LOGFILE_NAME	include/phi_defs.h	2682	#define LOGFILE_NAME    "/var/log/phi.log"
+VERBOSE_LOG	include/phi_defs.h	2725	#define VERBOSE_LOG     1
+HTTP_BUFFSIZE	include/phi_defs.h	2773	#define HTTP_BUFFSIZE       (16*1024)      // max size of HTTP request/reply
+JSON_TMP_BUFFSIZE	include/phi_defs.h	2850	#define JSON_TMP_BUFFSIZE   (4*1024)       // max size of single JSON reply
+UART_DRIVER_NAME	include/phi_defs.h	2944	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
+SPI0_DRIVER_NAME	include/phi_defs.h	2985	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
+SPI1_DRIVER_NAME	include/phi_defs.h	3028	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
+OFF	include/phi_defs.h	3098	    OFF,
+RED	include/phi_defs.h	3107	    RED,
+FLASH_RED	include/phi_defs.h	3116	    FLASH_RED,
+YELLOW	include/phi_defs.h	3131	    YELLOW,
+FLASH_YELLOW	include/phi_defs.h	3143	    FLASH_YELLOW,
+GREEN	include/phi_defs.h	3161	    GREEN,
+FLASH_GREEN	include/phi_defs.h	3172	    FLASH_GREEN
+PHI_LED_COLOR	include/phi_defs.h	3191	} PHI_LED_COLOR;
+CAM_WIDTH	include/phi_defs.h	3261	#define CAM_WIDTH               8 //160
+CAM_HEIGHT	include/phi_defs.h	3301	#define CAM_HEIGHT              8 // 120
+CAM_NUM_BYTES	include/phi_defs.h	3342	#define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
+DEF_PHILINK_PORT	include/phi_defs.h	3411	#define DEF_PHILINK_PORT  1122
+GYRO_SPI_IDX	include/phi_defs.h	3458	#define GYRO_SPI_IDX      0         // gyro at idx 0
+ADC_SPI_IDX	include/phi_defs.h	3511	#define ADC_SPI_IDX       1         // ADCs at idx 1
+PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3582	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
+PHI_MUTEX_INITVAL	include/phi_defs.h	3634	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
+PHI_MUTEX_DECL	include/phi_defs.h	3696	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name
+PHI_MUTEX_DECL_INIT	include/phi_defs.h	3756	#define PHI_MUTEX_DECL_INIT(name)   PHI_MUTEX_DECL(name) = PHI_MUTEX_INITVAL
+PHI_MUTEX_INIT	include/phi_defs.h	3833	#define PHI_MUTEX_INIT(pMtx)        pthread_mutex_init(pMtx, NULL)
+PHI_MUTEX_GET	include/phi_defs.h	3900	#define PHI_MUTEX_GET(pMtx)         pthread_mutex_lock(pMtx)
+PHI_MUTEX_RELEASE	include/phi_defs.h	3961	#define PHI_MUTEX_RELEASE(pMtx)     pthread_mutex_unlock(pMtx)
+PHI_MUTEX_TRYGET	include/phi_defs.h	4024	#define PHI_MUTEX_TRYGET(pMtx)      pthread_mutex_trylock(pMtx)   // ret 0 if get successful, ret != if failed
+HWPUMP_LOOPS_PER_SEC	include/phi_defs.h	4161	#define HWPUMP_LOOPS_PER_SEC        30
+HW_PUMP_LOOP_PERIOD_USEC	include/phi_defs.h	4200	#define HW_PUMP_LOOP_PERIOD_USEC    ((INT32)(1e6 / HWPUMP_LOOPS_PER_SEC))
+PERFLOG_HWPUMP_ELEM_1SEC	include/phi_defs.h	4302	#define PERFLOG_HWPUMP_ELEM_1SEC      HWPUMP_LOOPS_PER_SEC
+PERFLOG_HWPUMP_ELEM_5SEC	include/phi_defs.h	4361	#define PERFLOG_HWPUMP_ELEM_5SEC      (5 * PERFLOG_HWPUMP_ELEM_1SEC)
+PERFLOG_HWPUMP_ELEM_15SEC	include/phi_defs.h	4430	#define PERFLOG_HWPUMP_ELEM_15SEC     (15 * PERFLOG_HWPUMP_ELEM_1SEC)
+PERFLOG_HWPUMP_NUM_ELEM	include/phi_defs.h	4500	#define PERFLOG_HWPUMP_NUM_ELEM       PERFLOG_HWPUMP_ELEM_15SEC
+PERFLOG_HWPUMP_EPOCH	include/phi_defs.h	4564	#define PERFLOG_HWPUMP_EPOCH          15
+PERFLOG_PHILINK_ELEM_1SEC	include/phi_defs.h	4606	#define PERFLOG_PHILINK_ELEM_1SEC     50
+PERFLOG_PHILINK_ELEM_5SEC	include/phi_defs.h	4647	#define PERFLOG_PHILINK_ELEM_5SEC     (5  * PERFLOG_PHILINK_ELEM_1SEC)
+PERFLOG_PHILINK_ELEM_15SEC	include/phi_defs.h	4718	#define PERFLOG_PHILINK_ELEM_15SEC    (15 * PERFLOG_PHILINK_ELEM_1SEC)
+PERFLOG_PHILINK_NUM_ELEM	include/phi_defs.h	4789	#define PERFLOG_PHILINK_NUM_ELEM      PERFLOG_PHILINK_ELEM_15SEC
+PERFLOG_PHILINK_EPOCH	include/phi_defs.h	4854	#define PERFLOG_PHILINK_EPOCH         15
+REV1_PINS	include/phi_defs.h	5137	#define REV1_PINS {0, 1, 4, 7, 8, 9, 10, 11, 14, 15, 17, 18, 21, 22, 23, 24, 25}
+REV2_PINS	include/phi_defs.h	5282	#define REV2_PINS {2, 3, 4, 7, 8, 9, 10, 11, 14, 15, 17, 18, 22, 23, 24, 25, 27}
+PHI_GPIO_SPI1_SEL	include/phi_defs.h	5389	#define PHI_GPIO_SPI1_SEL        4
+PHI_GPIO_ADC0_SEL	include/phi_defs.h	5424	#define PHI_GPIO_ADC0_SEL       17
+PHI_GPIO_ADC1_SEL	include/phi_defs.h	5459	#define PHI_GPIO_ADC1_SEL       22
+PHI_GPIO_ADC2_SEL	include/phi_defs.h	5494	#define PHI_GPIO_ADC2_SEL       27
+SET_GPIO_TO_INPUT	include/phi_defs.h	5550	#define SET_GPIO_TO_INPUT(g)    *(g_pGpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+SET_GPIO_TO_OUTPUT	include/phi_defs.h	5624	#define SET_GPIO_TO_OUTPUT(g)   *(g_pGpio+((g)/10)) |=  (1<<(((g)%10)*3))
+SET_GPIO_ALT	include/phi_defs.h	5698	#define SET_GPIO_ALT(g,a)       *(g_pGpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+GPIO_READ_ALL	include/phi_defs.h	5810	#define GPIO_READ_ALL       *(g_pGpio+(GPLEV0_OFFSET/4))                              // reads all bits
+GPIO_ISHIGH	include/phi_defs.h	5914	#define GPIO_ISHIGH(pin)    ((((GPIO_READ_ALL) & (1 << (pin))) != 0) ? TRUE : FALSE)  // TRUE if bit is HIGH
+GPIO_ISLOW	include/phi_defs.h	6023	#define GPIO_ISLOW(pin)     (!(GPIO_ISHIGH(pin)))                                     // TRUE if bit is LOW
+GPIO_SET_ALL	include/phi_defs.h	6145	#define GPIO_SET_ALL(v)     {*(g_pGpio+(GPSET0_OFFSET/4)) = (v);}   // SETS bits which are 1 ignores bits which are 0
+GPIO_CLEAR_ALL	include/phi_defs.h	6263	#define GPIO_CLEAR_ALL(v)   {*(g_pGpio+(GPCLR0_OFFSET/4)) = (v);}   // CLEARS bits which are 1 ignores bits which are 0
+GPIO_SET	include/phi_defs.h	6383	#define GPIO_SET(pin)       GPIO_SET_ALL(1<<(pin))
+GPIO_CLEAR	include/phi_defs.h	6434	#define GPIO_CLEAR(pin)     GPIO_CLEAR_ALL(1<<(pin))
+bPhiInit	bin/wwwRoot/page_diag.html	310	      var bPhiInit = false;
+bSetPowerOK	bin/wwwRoot/page_diag.html	338	      var bSetPowerOK = true;
+maxMotorPower	bin/wwwRoot/page_diag.html	368	      var maxMotorPower = 30.0;
+sliderChanged	bin/wwwRoot/page_diag.html	695	      function sliderChanged(percent) {
+maxPowerChanged	bin/wwwRoot/page_diag.html	1335	      function maxPowerChanged(newValue) {
+pageLoaded	bin/wwwRoot/page_diag.html	1654	      function pageLoaded()
+parseJsonReply	bin/wwwRoot/page_diag.html	1998	      function parseJsonReply(obj) {
+pollGyro	bin/wwwRoot/page_diag.html	4380	      function pollGyro() {
+refreshGyro	bin/wwwRoot/page_diag.html	4526	      function refreshGyro() {
+setControllerId	bin/wwwRoot/page_diag.html	4741	      function setControllerId() {
+drawGyroIndicators	bin/wwwRoot/page_diag.html	5047	      function drawGyroIndicators(pitch, yaw, roll) {
+debugTest	bin/wwwRoot/page_diag.html	5812	      function debugTest() {
+debugTest2	bin/wwwRoot/page_diag.html	6027	      function debugTest2() {
 MC_DEF_BAUD	include/polulu_2s9v1.h	107	#define MC_DEF_BAUD   B38400
 MC_CMD_SIGN	include/polulu_2s9v1.h	513	#define MC_CMD_SIGN                 0xAA
 MC_DEFAULT_DEVICE_NUM	include/polulu_2s9v1.h	554	#define MC_DEFAULT_DEVICE_NUM       9
@@ -148,110 +296,6 @@ STAP_NUM_JOINT_ELEM	include/philink.h	888	#define STAP_NUM_JOINT_ELEM     NUM_MO
 STAP_NUM_GYRO_ELEM	include/philink.h	931	#define STAP_NUM_GYRO_ELEM      3
 STAP_NUM_ACCEL_ELEM	include/philink.h	965	#define STAP_NUM_ACCEL_ELEM     3
 PHI_STATE_PACKET	include/philink.h	1391	} PHI_STATE_PACKET;
-PHI_VERSION	include/phi_defs.h	42	#define PHI_VERSION     "0.1 dev"
-INT8	include/phi_defs.h	115	#define INT8            char
-INT16	include/phi_defs.h	144	#define INT16           short
-INT32	include/phi_defs.h	174	#define INT32           long
-INT64	include/phi_defs.h	203	#define INT64           long long
-UINT	include/phi_defs.h	255	#define UINT            unsigned int
-UINT8	include/phi_defs.h	292	#define UINT8           unsigned char
-UINT16	include/phi_defs.h	330	#define UINT16          unsigned short
-UINT32	include/phi_defs.h	369	#define UINT32          unsigned long
-UINT64	include/phi_defs.h	407	#define UINT64          unsigned long long
-BYTE	include/phi_defs.h	475	#define BYTE            UINT8
-WORD	include/phi_defs.h	505	#define WORD            UINT16
-DWORD	include/phi_defs.h	536	#define DWORD           UINT32
-BOOL	include/phi_defs.h	567	#define BOOL            UINT8
-FALSE	include/phi_defs.h	598	#define FALSE           0
-TRUE	include/phi_defs.h	624	#define TRUE            1
-COUNTOF	include/phi_defs.h	666	#define COUNTOF(arr)    ((int) (sizeof(arr) / sizeof(arr[0])) )
-MIN	include/phi_defs.h	730	#define MIN(a,b)        ( ((a) < (b)) ? (a) : (b) )
-MAX	include/phi_defs.h	782	#define MAX(a,b)        ( ((a) > (b)) ? (a) : (b) )
-PHI_ALLOC	include/phi_defs.h	945	#define PHI_ALLOC(D)    ((D*)allocHelper(sizeof(D)))
-PHI_ALLOC_N	include/phi_defs.h	998	#define PHI_ALLOC_N(n)  allocHelper(n)
-PHI_FREE	include/phi_defs.h	1037	#define PHI_FREE(p)     {free(p); p = NULL; }
-PHI_ZERO	include/phi_defs.h	1084	#define PHI_ZERO(v)     memset(&(v), 0, sizeof(v))
-PHI_ZERO_P	include/phi_defs.h	1135	#define PHI_ZERO_P(p,l) memset(p, 0, l)
-BASH_BLACK	include/phi_defs.h	1193	#define BASH_BLACK      "30"
-BASH_RED	include/phi_defs.h	1222	#define BASH_RED        "31"
-BASH_GREEN	include/phi_defs.h	1251	#define BASH_GREEN      "32"
-BASH_YELLOW	include/phi_defs.h	1280	#define BASH_YELLOW     "33"
-BASH_BLUE	include/phi_defs.h	1309	#define BASH_BLUE       "34"
-BASH_MAGENTA	include/phi_defs.h	1338	#define BASH_MAGENTA    "35"
-BASH_CYAN	include/phi_defs.h	1367	#define BASH_CYAN       "36"
-BASH_WHITE	include/phi_defs.h	1396	#define BASH_WHITE      "37"
-BASH_START_COLOR	include/phi_defs.h	1426	#define BASH_START_COLOR(c)   "\e[1;" c "m"
-BASH_STOP_COLOR	include/phi_defs.h	1470	#define BASH_STOP_COLOR       "\e[0m"
-DO_PRAGMA	include/phi_defs.h	1509	#define DO_PRAGMA(x)    _Pragma (#x)
-INFO	include/phi_defs.h	1546	#define INFO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_GREEN)  "INFO - " m BASH_STOP_COLOR))
-TODO	include/phi_defs.h	1649	#define TODO(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_CYAN)  "TODO - " m BASH_STOP_COLOR))
-WARN	include/phi_defs.h	1751	#define WARN(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_YELLOW)    "WARNING - " m BASH_STOP_COLOR))
-HACK	include/phi_defs.h	1860	#define HACK(m)         DO_PRAGMA(message (BASH_START_COLOR(BASH_RED) "HACK - " m BASH_STOP_COLOR))
-U64_1E6	include/phi_defs.h	1969	#define U64_1E6         ((UINT64)1e6)
-TV_TO_USEC	include/phi_defs.h	2007	#define TV_TO_USEC(tv)  ( (((UINT64)tv.tv_sec) * U64_1E6) + ((UINT64)tv.tv_usec) )
-LOG_INFO	include/phi_defs.h	2102	#define LOG_INFO(...)   logMsg("", __VA_ARGS__)
-LOG_ERR	include/phi_defs.h	2150	#define LOG_ERR(...)    logMsg("ERROR: ", __VA_ARGS__)
-LOG_FATAL	include/phi_defs.h	2205	#define LOG_FATAL(...)  { printf("FATAL: "); printf(__VA_ARGS__); printf("\n"); logMsg("FATAL: ", __VA_ARGS__); abortProcess(-1); }
-STR	include/phi_defs.h	2362	#define STR(s)                #s              /* convert to string */
-STR_MACRO	include/phi_defs.h	2432	#define STR_MACRO(m)          STR(m)          /* convert to string (version for use inside a macro - requires two steps */
-Q	include/phi_defs.h	2555	#define Q(s)                  "\"" #s "\""    /* convert to quoted string */
-LOGFILE_NAME	include/phi_defs.h	2672	#define LOGFILE_NAME    "/var/log/phi.log"
-VERBOSE_LOG	include/phi_defs.h	2715	#define VERBOSE_LOG     1
-HTTP_BUFFSIZE	include/phi_defs.h	2763	#define HTTP_BUFFSIZE       (16*1024)      // max size of HTTP request/reply
-JSON_TMP_BUFFSIZE	include/phi_defs.h	2840	#define JSON_TMP_BUFFSIZE   (4*1024)       // max size of single JSON reply
-UART_DRIVER_NAME	include/phi_defs.h	2934	#define UART_DRIVER_NAME  "/dev/ttyAMA0"
-SPI0_DRIVER_NAME	include/phi_defs.h	2975	#define SPI0_DRIVER_NAME  "/dev/spidev0.0"
-SPI1_DRIVER_NAME	include/phi_defs.h	3018	#define SPI1_DRIVER_NAME  "/dev/spidev0.1"
-OFF	include/phi_defs.h	3088	    OFF,
-RED	include/phi_defs.h	3097	    RED,
-FLASH_RED	include/phi_defs.h	3106	    FLASH_RED,
-YELLOW	include/phi_defs.h	3121	    YELLOW,
-FLASH_YELLOW	include/phi_defs.h	3133	    FLASH_YELLOW,
-GREEN	include/phi_defs.h	3151	    GREEN,
-FLASH_GREEN	include/phi_defs.h	3162	    FLASH_GREEN
-PHI_LED_COLOR	include/phi_defs.h	3181	} PHI_LED_COLOR;
-CAM_WIDTH	include/phi_defs.h	3251	#define CAM_WIDTH               8 //160
-CAM_HEIGHT	include/phi_defs.h	3291	#define CAM_HEIGHT              8 // 120
-CAM_NUM_BYTES	include/phi_defs.h	3332	#define CAM_NUM_BYTES           (CAM_WIDTH * CAM_HEIGHT)
-DEF_PHILINK_PORT	include/phi_defs.h	3401	#define DEF_PHILINK_PORT  1122
-GYRO_SPI_IDX	include/phi_defs.h	3448	#define GYRO_SPI_IDX      0         // gyro at idx 0
-ADC_SPI_IDX	include/phi_defs.h	3501	#define ADC_SPI_IDX       1         // ADCs at idx 1
-PHI_MUTEX_VAR_TYPE	include/phi_defs.h	3572	#define PHI_MUTEX_VAR_TYPE          pthread_mutex_t
-PHI_MUTEX_INITVAL	include/phi_defs.h	3624	#define PHI_MUTEX_INITVAL           PTHREAD_MUTEX_INITIALIZER
-PHI_MUTEX_DECL	include/phi_defs.h	3686	#define PHI_MUTEX_DECL(name)        PHI_MUTEX_VAR_TYPE name
-PHI_MUTEX_DECL_INIT	include/phi_defs.h	3746	#define PHI_MUTEX_DECL_INIT(name)   PHI_MUTEX_DECL(name) = PHI_MUTEX_INITVAL
-PHI_MUTEX_INIT	include/phi_defs.h	3823	#define PHI_MUTEX_INIT(pMtx)        pthread_mutex_init(pMtx, NULL)
-PHI_MUTEX_GET	include/phi_defs.h	3890	#define PHI_MUTEX_GET(pMtx)         pthread_mutex_lock(pMtx)
-PHI_MUTEX_RELEASE	include/phi_defs.h	3951	#define PHI_MUTEX_RELEASE(pMtx)     pthread_mutex_unlock(pMtx)
-PHI_MUTEX_TRYGET	include/phi_defs.h	4014	#define PHI_MUTEX_TRYGET(pMtx)      pthread_mutex_trylock(pMtx)   // ret 0 if get successful, ret != if failed
-HWPUMP_LOOPS_PER_SEC	include/phi_defs.h	4151	#define HWPUMP_LOOPS_PER_SEC        30
-HW_PUMP_LOOP_PERIOD_USEC	include/phi_defs.h	4190	#define HW_PUMP_LOOP_PERIOD_USEC    ((INT32)(1e6 / HWPUMP_LOOPS_PER_SEC))
-PERFLOG_HWPUMP_ELEM_1SEC	include/phi_defs.h	4292	#define PERFLOG_HWPUMP_ELEM_1SEC      HWPUMP_LOOPS_PER_SEC
-PERFLOG_HWPUMP_ELEM_5SEC	include/phi_defs.h	4351	#define PERFLOG_HWPUMP_ELEM_5SEC      (5 * PERFLOG_HWPUMP_ELEM_1SEC)
-PERFLOG_HWPUMP_ELEM_15SEC	include/phi_defs.h	4420	#define PERFLOG_HWPUMP_ELEM_15SEC     (15 * PERFLOG_HWPUMP_ELEM_1SEC)
-PERFLOG_HWPUMP_NUM_ELEM	include/phi_defs.h	4490	#define PERFLOG_HWPUMP_NUM_ELEM       PERFLOG_HWPUMP_ELEM_15SEC
-PERFLOG_HWPUMP_EPOCH	include/phi_defs.h	4554	#define PERFLOG_HWPUMP_EPOCH          15
-PERFLOG_PHILINK_ELEM_1SEC	include/phi_defs.h	4596	#define PERFLOG_PHILINK_ELEM_1SEC     50
-PERFLOG_PHILINK_ELEM_5SEC	include/phi_defs.h	4637	#define PERFLOG_PHILINK_ELEM_5SEC     (5  * PERFLOG_PHILINK_ELEM_1SEC)
-PERFLOG_PHILINK_ELEM_15SEC	include/phi_defs.h	4708	#define PERFLOG_PHILINK_ELEM_15SEC    (15 * PERFLOG_PHILINK_ELEM_1SEC)
-PERFLOG_PHILINK_NUM_ELEM	include/phi_defs.h	4779	#define PERFLOG_PHILINK_NUM_ELEM      PERFLOG_PHILINK_ELEM_15SEC
-PERFLOG_PHILINK_EPOCH	include/phi_defs.h	4844	#define PERFLOG_PHILINK_EPOCH         15
-REV1_PINS	include/phi_defs.h	5127	#define REV1_PINS {0, 1, 4, 7, 8, 9, 10, 11, 14, 15, 17, 18, 21, 22, 23, 24, 25}
-REV2_PINS	include/phi_defs.h	5272	#define REV2_PINS {2, 3, 4, 7, 8, 9, 10, 11, 14, 15, 17, 18, 22, 23, 24, 25, 27}
-PHI_GPIO_SPI1_SEL	include/phi_defs.h	5379	#define PHI_GPIO_SPI1_SEL        4
-PHI_GPIO_ADC0_SEL	include/phi_defs.h	5414	#define PHI_GPIO_ADC0_SEL       17
-PHI_GPIO_ADC1_SEL	include/phi_defs.h	5449	#define PHI_GPIO_ADC1_SEL       22
-PHI_GPIO_ADC2_SEL	include/phi_defs.h	5484	#define PHI_GPIO_ADC2_SEL       27
-SET_GPIO_TO_INPUT	include/phi_defs.h	5540	#define SET_GPIO_TO_INPUT(g)    *(g_pGpio+((g)/10)) &= ~(7<<(((g)%10)*3))
-SET_GPIO_TO_OUTPUT	include/phi_defs.h	5614	#define SET_GPIO_TO_OUTPUT(g)   *(g_pGpio+((g)/10)) |=  (1<<(((g)%10)*3))
-SET_GPIO_ALT	include/phi_defs.h	5688	#define SET_GPIO_ALT(g,a)       *(g_pGpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
-GPIO_READ_ALL	include/phi_defs.h	5800	#define GPIO_READ_ALL       *(g_pGpio+(GPLEV0_OFFSET/4))                              // reads all bits
-GPIO_ISHIGH	include/phi_defs.h	5904	#define GPIO_ISHIGH(pin)    ((((GPIO_READ_ALL) & (1 << (pin))) != 0) ? TRUE : FALSE)  // TRUE if bit is HIGH
-GPIO_ISLOW	include/phi_defs.h	6013	#define GPIO_ISLOW(pin)     (!(GPIO_ISHIGH(pin)))                                     // TRUE if bit is LOW
-GPIO_SET_ALL	include/phi_defs.h	6135	#define GPIO_SET_ALL(v)     {*(g_pGpio+(GPSET0_OFFSET/4)) = (v);}   // SETS bits which are 1 ignores bits which are 0
-GPIO_CLEAR_ALL	include/phi_defs.h	6253	#define GPIO_CLEAR_ALL(v)   {*(g_pGpio+(GPCLR0_OFFSET/4)) = (v);}   // CLEARS bits which are 1 ignores bits which are 0
-GPIO_SET	include/phi_defs.h	6373	#define GPIO_SET(pin)       GPIO_SET_ALL(1<<(pin))
-GPIO_CLEAR	include/phi_defs.h	6424	#define GPIO_CLEAR(pin)     GPIO_CLEAR_ALL(1<<(pin))
 _REENTRANT	include/phi.h	97	#define _REENTRANT 1
 _GNU_SOURCE	include/phi.h	119	#define _GNU_SOURCE         // for strcasestr()
 ACCEL_I2C_CLK	include/osepp_adxl345.h	66	#define ACCEL_I2C_CLK             ( 400ul*1000ul )
@@ -685,38 +729,6 @@ eventGate_open	src/event_gate.c	1213	void eventGate_open(PHI_EVENT_GATE* pGate) 
 eventGate_pulse	src/event_gate.c	1450	void eventGate_pulse(PHI_EVENT_GATE* pGate) {
 eventGate_close	src/event_gate.c	1631	void eventGate_close(PHI_EVENT_GATE* pGate) {
 eventGate_wait	src/event_gate.c	2172	int eventGate_wait(PHI_EVENT_GATE* pGate, DWORD msTimeout) {
-UINT32	src/datalog.c	262	    #define UINT32          unsigned long
-UINT64	src/datalog.c	304	    #define UINT64          unsigned long long
-LOG_FATAL	src/datalog.c	351	    #define LOG_FATAL       printf
-phiUpTime	src/datalog.c	386	    UINT64 phiUpTime() {
-BASH_BLACK	src/datalog.c	491	    #define BASH_BLACK      "30"
-BASH_RED	src/datalog.c	524	    #define BASH_RED        "31"
-BASH_GREEN	src/datalog.c	557	    #define BASH_GREEN      "32"
-BASH_YELLOW	src/datalog.c	590	    #define BASH_YELLOW     "33"
-BASH_BLUE	src/datalog.c	623	    #define BASH_BLUE       "34"
-BASH_MAGENTA	src/datalog.c	656	    #define BASH_MAGENTA    "35"
-BASH_CYAN	src/datalog.c	689	    #define BASH_CYAN       "36"
-BASH_WHITE	src/datalog.c	722	    #define BASH_WHITE      "37"
-BASH_START_COLOR	src/datalog.c	756	    #define BASH_START_COLOR(c)   "\e[1;" c "m"
-BASH_STOP_COLOR	src/datalog.c	804	    #define BASH_STOP_COLOR       "\e[0m"
-DLOG_SIGN	src/datalog.c	851	#define DLOG_SIGN       'DLOG'
-DLOG_SIGN_FREE	src/datalog.c	882	#define DLOG_SIGN_FREE  'DLXX'
-PASS	src/datalog.c	914	#define PASS BASH_START_COLOR(BASH_GREEN) "PASS" BASH_STOP_COLOR
-FAIL	src/datalog.c	979	#define FAIL BASH_START_COLOR(BASH_RED) "FAIL" BASH_STOP_COLOR
-WRAP	src/datalog.c	1043	#define WRAP(x) ((x) >= 0) ? ((x) % pLog -> numElem) : ((x) + pLog -> numElem)
-CLOSE_ENOUGH	src/datalog.c	1122	#define CLOSE_ENOUGH(a, b) (abs((a) - (b)) < 1e-3)
-TO_TIME64	src/datalog.c	1174	#define TO_TIME64(d)  ((UINT64) (((d) + 100) * 1e6))
-dlog_create	src/datalog.c	1364	DATALOG* dlog_create(char* pName, char* pUnit, int numElem, double epochSecs) {
-dlog_free	src/datalog.c	1875	void dlog_free(DATALOG* pLog) {
-lock_dlog	src/datalog.c	2080	void lock_dlog(DATALOG* pLog) {
-unlock_dlog	src/datalog.c	2265	void unlock_dlog(DATALOG* pLog) {
-dlog_addElem_withTime	src/datalog.c	2458	void dlog_addElem_withTime(DATALOG* pLog, UINT64 time, double data) {
-dlog_addElem	src/datalog.c	2913	void dlog_addElem(DATALOG* pLog, double data) {
-dlog_avg	src/datalog.c	3016	double dlog_avg(DATALOG* pLog, int depth) {
-dlog_getStats	src/datalog.c	3589	void dlog_getStats(DATALOG* pLog, int depth,
-dlog_predict	src/datalog.c	4346	double dlog_predict(DATALOG* pLog, UINT64 time) {
-dlog_test	src/datalog.c	4940	void dlog_test()  {
-main	src/datalog.c	7289	int main()  {
 UINT32	src/cubic.c	229	    #define UINT32          unsigned long
 UINT64	src/cubic.c	271	    #define UINT64          unsigned long long
 cubic	src/cubic.c	345	double cubic(

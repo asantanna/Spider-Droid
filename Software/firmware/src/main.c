@@ -127,7 +127,6 @@ void globalInit() {
 
 void globalShutdown() {
 
-  TODO("globalShutdown() not fully implemented.");
   LOG_INFO("*** Shutting down hardware ***");
 
   // stop motors
