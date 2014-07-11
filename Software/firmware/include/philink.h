@@ -31,7 +31,7 @@ typedef struct {
 
 typedef struct  __attribute__ ((__packed__)) {
   
-  char      sign     [NUM_SIGN_BYTES];
+  char      sign        [NUM_SIGN_BYTES];
   UINT32    packetID;
 
   // values = [-1, 1]
@@ -54,6 +54,9 @@ typedef struct __attribute__ ((__packed__)) {
   
   char      sign   [NUM_SIGN_BYTES];
   UINT32    packetID;
+  UINT64    phiTime_usec;
+
+  // camera image
   BYTE      image  [STAP_NUM_IMAGE_BYTES];
 
   // position: range [0,1]
