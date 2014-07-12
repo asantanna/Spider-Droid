@@ -94,7 +94,12 @@
 
 // logging
 #define LOGFILE_NAME    "/var/log/phi.log"
-#define VERBOSE_LOG     1
+
+#define LOG_LEVEL                 (LOG_LEVEL_HTTP | LOG_LEVEL_JSON)
+#define LOG_LEVEL_HTTP            0x0001
+#define LOG_LEVEL_HTTP_VERBOSE    0x0002
+#define LOG_LEVEL_JSON            0x0004
+#define LOG_LEVEL_JSON_VERBOSE    0x0008
 
 // HTTP/JSON buffers
 #define HTTP_BUFFSIZE       (16*1024)      // max size of HTTP request/reply

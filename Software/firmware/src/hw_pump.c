@@ -283,6 +283,8 @@ void* hwPump_SPI_thread(void* arg)
       lock_snapshot();
       phiSnapshot.state.joints[jointIdx] = pos;
       unlock_snapshot();
+      // debug
+      // LOG_INFO("pos(%d)=%.4f\n", jointIdx, (double) pos);
     }
 
     //
@@ -491,6 +493,9 @@ void getStateSnapshot(PHI_STATE_PACKET* p) {
   // increment packet ID
   phiSnapshot.state.packetID ++;
 
+  // set time
+  phiSnapshot.state.phiTime_usec = phiUpTime();
+
   // copy state back to caller
   memcpy(p, &phiSnapshot.state, sizeof(*p));
 
@@ -515,7 +520,7 @@ void writeToCmdSnapshot(PHI_CMD_PACKET* p) {
   eventGate_pulse(&egMotorWrite);
 }
 
-void setSnapshotMotorVal(char* motorName, INT8 powerVal) {
+void setSnapshotMotorVal(char* motorName, float powerVal) {
   
   // lock snapshot updates
   lock_snapshot();

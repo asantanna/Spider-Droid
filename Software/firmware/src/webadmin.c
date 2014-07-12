@@ -303,7 +303,10 @@ void* wa_process_web_request(void* arg)
     goto quick_exit;
   }
 
-  LOG_INFO("webAdmin: HTTP request follows:\n%s\n", buffer);
+  // debug
+  if (LOG_LEVEL & LOG_LEVEL_HTTP_VERBOSE) {
+    LOG_INFO("webAdmin: HTTP request follows:\n%s\n", buffer);
+  }
 
   // parse web request
 
@@ -316,8 +319,8 @@ void* wa_process_web_request(void* arg)
   }
 
   // debug
-  if (VERBOSE_LOG) {
-    LOG_INFO("Request parsed to:  meth='%s', path='%s', params='%s', contLen='%s', body='%s'",
+  if (LOG_LEVEL & LOG_LEVEL_HTTP) {
+    LOG_INFO("HTTP request parsed to:  meth='%s', path='%s', params='%s', contLen='%s', body='%s'",
              parsedHttp.pMethod,
              parsedHttp.pPath,
              parsedHttp.pGetParams,
@@ -415,7 +418,11 @@ void* wa_process_web_request(void* arg)
 
   // send header plus blank line
   sprintf(buffer, wa_response_ok_hdr, len, pContentType);
-  LOG_INFO("webAdmin: reply header follows:\n%s\n", buffer);
+  
+  if (LOG_LEVEL & LOG_LEVEL_HTTP_VERBOSE) {
+    LOG_INFO("webAdmin: reply header follows:\n%s\n", buffer);
+  }
+  
   write(socketfd, buffer, strlen(buffer));
 
   // send file in 8KB blocks - last block may be smaller

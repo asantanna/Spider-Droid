@@ -43,7 +43,7 @@ void startHwPump();
 BOOL startPhiLink(char* ipAddr, int port);
 void getStateSnapshot(PHI_STATE_PACKET *p);
 void writeToCmdSnapshot(PHI_CMD_PACKET* p);
-void setSnapshotMotorVal(char* motorName, INT8 powerVal);
+void setSnapshotMotorVal(char* motorName, float powerVal);
 
 //
 // I/O Helpers

@@ -177,7 +177,7 @@ char* processJson(char *pJsonReq) {
 
   // log request
 
-  if (VERBOSE_LOG) {
+  if (LOG_LEVEL & LOG_LEVEL_JSON_VERBOSE) {
 
     LOG_INFO("Parsed JSON request to %d tokens: ", PARSER_NUM_TOK(parser)) ;
 
@@ -258,7 +258,8 @@ char* processJson(char *pJsonReq) {
     // call handler
     PHI_JSON_CMD_REPLY_TYPE* pCmdReply = (*jsonHandler)(&pTok, pJsonReq);
 
-    LOG_INFO("pCmdReply=%lu, reply=%lu", pCmdReply, pCmdReply->pReply);
+    // debug
+    // LOG_INFO("pCmdReply=%lu, reply=%lu", pCmdReply, pCmdReply->pReply);
 
     // save reply
 
@@ -315,7 +316,7 @@ char* processJson(char *pJsonReq) {
     LOG_FATAL("length of reply (%d) is greater than allocation (%d)!", strlen(pJsonReply), repSize);
   }
   
-  if (VERBOSE_LOG) {
+  if (LOG_LEVEL & LOG_LEVEL_JSON_VERBOSE) {
     LOG_INFO("JSON reply:\n%s\n", pJsonReply);
   }
 
@@ -324,7 +325,7 @@ quick_exit:
   while (pRepHead != NULL) {
     PHI_JSON_CMD_REPLY_TYPE* pNext = pRepHead -> pNext;
     // debug
-    LOG_INFO("freeing pCmdReply=%lu, reply=%lu", pRepHead, pRepHead->pReply);
+    // LOG_INFO("freeing pCmdReply=%lu, reply=%lu", pRepHead, pRepHead->pReply);
     // free part allocated with strdup
     free(pRepHead -> pReply);
     // free part allocated with PHI_ALLOC
@@ -537,7 +538,7 @@ JSON_HANDLER(setPower) {
   
   jsmntok_t* pTok = *ppTok;
   char motorName[3] = {0, 0, 0};
-  int powerVal = -1;
+  float powerVal = 0xdeadbeef;
   int toksRead = 2;
 
   while (toksRead < _numChild) {
@@ -575,10 +576,10 @@ JSON_HANDLER(setPower) {
         goto error_exit;
       }
 
-      int percent = atoi(TOK_START(pTok));
+      float percent = atof(TOK_START(pTok));
 
-      // [-127,127]
-      powerVal = (percent * 127) / 100;
+      // convert [-100, 100] to [-1,1]
+      powerVal = percent / 100;
 
     } else {
       // unknown property
@@ -591,12 +592,14 @@ JSON_HANDLER(setPower) {
     toksRead ++;
   }
 
-  if ((motorName[0] == 0) || (powerVal == -1)) {
+  if ((motorName[0] == 0) || (powerVal == 0xdeadbeef)) {
     sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.setPower: parameters missing.) );
     goto error_exit;
   }
-
-  LOG_INFO("JSON.setPower: setting motor %c%c to power=%d", motorName[0], motorName[1], powerVal);
+  
+  if (LOG_LEVEL & LOG_LEVEL_JSON) {
+    LOG_INFO("JSON.setPower: setting motor %c%c to power=%.2f", motorName[0], motorName[1], (double) powerVal);
+  }
 
   // copy to cmd snapshot
   setSnapshotMotorVal(motorName, powerVal);
@@ -660,7 +663,9 @@ JSON_HANDLER(setMCtlId) {
     goto error_exit;
   }
 
-  LOG_INFO("JSON.setMCtlId: changing motor controller id '%d' to '%d'", oldId, newId);
+  if (LOG_LEVEL & LOG_LEVEL_JSON) {
+    LOG_INFO("JSON.setMCtlId: changing motor controller id '%d' to '%d'", oldId, newId);
+  }
   
   HAL_setControllerId(oldId, newId);
 
@@ -801,7 +806,9 @@ JSON_HANDLER(startPhiLink) {
     goto error_exit;
   }
 
-  LOG_INFO("JSON.startPhiLink: starting link to host='%s:%d' ...", hostName, port);
+  if (LOG_LEVEL & LOG_LEVEL_JSON) {
+    LOG_INFO("JSON.startPhiLink: starting link to host='%s:%d' ...", hostName, port);
+  }
   
   if (startPhiLink(hostName, port) == FALSE) {
     sprintf(_buff + strlen(_buff), Q(error) ":" Q(JSON.startPhiLink: startPhiLink returned false.) );

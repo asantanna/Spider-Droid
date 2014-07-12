@@ -1,4 +1,36 @@
 	TAGS	UNSORTED
+cmds	src/hw_pump.c	394	  PHI_CMD_PACKET cmds;
+state	src/hw_pump.c	419	  PHI_STATE_PACKET state;
+PHI_SNAPSHOT	src/hw_pump.c	429	} PHI_SNAPSHOT;
+phiSnapshot	src/hw_pump.c	464	static PHI_SNAPSHOT phiSnapshot;
+egMotorWrite	src/hw_pump.c	596	static PHI_EVENT_GATE egMotorWrite;;
+numMotorTimeouts	src/hw_pump.c	665	static DWORD numMotorTimeouts = 0;
+startHwPump	src/hw_pump.c	1413	void startHwPump() {
+UART_loopStart_save	src/hw_pump.c	3215	static UINT64 UART_loopStart_save = 0;
+hwPump_UART_thread	src/hw_pump.c	3247	void* hwPump_UART_thread(void* arg)
+SPI_loopStart_save	src/hw_pump.c	6154	static UINT64 SPI_loopStart_save = 0;
+hwPump_SPI_thread	src/hw_pump.c	6186	void* hwPump_SPI_thread(void* arg)
+I2C_loopStart_save	src/hw_pump.c	8420	static UINT64 I2C_loopStart_save = 0;
+hwPump_I2C_thread	src/hw_pump.c	8451	void* hwPump_I2C_thread(void* arg)
+lock_snapshot	src/hw_pump.c	9653	void lock_snapshot() {
+unlock_snapshot	src/hw_pump.c	9710	void unlock_snapshot() {
+initSnapshot	src/hw_pump.c	9815	void initSnapshot() {
+getStateSnapshot	src/hw_pump.c	10846	void getStateSnapshot(PHI_STATE_PACKET* p) {
+writeToCmdSnapshot	src/hw_pump.c	11224	void writeToCmdSnapshot(PHI_CMD_PACKET* p) {
+setSnapshotMotorVal	src/hw_pump.c	11519	void setSnapshotMotorVal(char* motorName, INT8 powerVal) {
+bPhiInit	bin/wwwRoot/page_diag.html	310	      var bPhiInit = false;
+bSetPowerOK	bin/wwwRoot/page_diag.html	338	      var bSetPowerOK = true;
+maxMotorPower	bin/wwwRoot/page_diag.html	368	      var maxMotorPower = 30.0;
+sliderChanged	bin/wwwRoot/page_diag.html	695	      function sliderChanged(percent) {
+maxPowerChanged	bin/wwwRoot/page_diag.html	1335	      function maxPowerChanged(newValue) {
+pageLoaded	bin/wwwRoot/page_diag.html	1654	      function pageLoaded()
+parseJsonReply	bin/wwwRoot/page_diag.html	1998	      function parseJsonReply(obj) {
+pollGyro	bin/wwwRoot/page_diag.html	4380	      function pollGyro() {
+refreshGyro	bin/wwwRoot/page_diag.html	4526	      function refreshGyro() {
+setControllerId	bin/wwwRoot/page_diag.html	4741	      function setControllerId() {
+drawGyroIndicators	bin/wwwRoot/page_diag.html	5047	      function drawGyroIndicators(pitch, yaw, roll) {
+debugTest	bin/wwwRoot/page_diag.html	5812	      function debugTest() {
+debugTest2	bin/wwwRoot/page_diag.html	6027	      function debugTest2() {
 MAX_JSON_TOKENS	src/webjson.c	913	#define MAX_JSON_TOKENS       256
 PARSER_NUM_TOK	src/webjson.c	979	#define PARSER_NUM_TOK(parser)  ((parser).toknext)
 TOK_START	src/webjson.c	1031	#define TOK_START(pTok)       (pJsonReq + (pTok)->start)
@@ -154,25 +186,6 @@ jsmn_parse_primitive	src/jsmn.c	737	static jsmnerr_t jsmn_parse_primitive(jsmn_p
 jsmn_parse_string	src/jsmn.c	1819	static jsmnerr_t jsmn_parse_string(jsmn_parser *parser, const char *js,
 jsmn_parse	src/jsmn.c	2989	jsmnerr_t jsmn_parse(jsmn_parser *parser, const char *js, jsmntok_t *tokens, 
 jsmn_init	src/jsmn.c	5938	void jsmn_init(jsmn_parser *parser) {
-cmds	src/hw_pump.c	394	  PHI_CMD_PACKET cmds;
-state	src/hw_pump.c	419	  PHI_STATE_PACKET state;
-PHI_SNAPSHOT	src/hw_pump.c	429	} PHI_SNAPSHOT;
-phiSnapshot	src/hw_pump.c	464	static PHI_SNAPSHOT phiSnapshot;
-egMotorWrite	src/hw_pump.c	596	static PHI_EVENT_GATE egMotorWrite;;
-numMotorTimeouts	src/hw_pump.c	665	static DWORD numMotorTimeouts = 0;
-startHwPump	src/hw_pump.c	1413	void startHwPump() {
-UART_loopStart_save	src/hw_pump.c	3215	static UINT64 UART_loopStart_save = 0;
-hwPump_UART_thread	src/hw_pump.c	3247	void* hwPump_UART_thread(void* arg)
-SPI_loopStart_save	src/hw_pump.c	6154	static UINT64 SPI_loopStart_save = 0;
-hwPump_SPI_thread	src/hw_pump.c	6186	void* hwPump_SPI_thread(void* arg)
-I2C_loopStart_save	src/hw_pump.c	8420	static UINT64 I2C_loopStart_save = 0;
-hwPump_I2C_thread	src/hw_pump.c	8451	void* hwPump_I2C_thread(void* arg)
-lock_snapshot	src/hw_pump.c	9653	void lock_snapshot() {
-unlock_snapshot	src/hw_pump.c	9710	void unlock_snapshot() {
-initSnapshot	src/hw_pump.c	9815	void initSnapshot() {
-getStateSnapshot	src/hw_pump.c	10846	void getStateSnapshot(PHI_STATE_PACKET* p) {
-writeToCmdSnapshot	src/hw_pump.c	11224	void writeToCmdSnapshot(PHI_CMD_PACKET* p) {
-setSnapshotMotorVal	src/hw_pump.c	11519	void setSnapshotMotorVal(char* motorName, INT8 powerVal) {
 HAL_STUB_initPeripherals	src/hal_stub.c	45	char* HAL_STUB_initPeripherals() {
 GYRO_UPDATE_EVERY	src/hal_stub.c	147	#define GYRO_UPDATE_EVERY 0.01f
 HAL_STUB_gyroGetDeltas	src/hal_stub.c	178	void  HAL_STUB_gyroGetDeltas(float* pPitchDelta, float* pYawDelta, float* pRollDelta) {
