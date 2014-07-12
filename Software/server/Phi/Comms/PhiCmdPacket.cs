@@ -24,7 +24,7 @@ namespace Phi {
     private static PACKET_FIELD_DEF[] fieldDefs = {
       new PACKET_FIELD_DEF("sign", 4),
       new PACKET_FIELD_DEF("packet_id", 4),
-      new PACKET_FIELD_DEF("motor_cmds", NUM_MOTOR_ELEM * sizeof(byte)),
+      new PACKET_FIELD_DEF("motor_cmds", NUM_MOTOR_ELEM * sizeof(float)),       // range: [-1, 1]
     };
 
     //
@@ -36,6 +36,12 @@ namespace Phi {
     internal PhiCmdPacket() : base(fieldDefs) {
       // init signature
       CMD_PACKET_SIGN.CopyTo(packetData, fieldOffs[(int)CMD_FIELD_ENUM.SIGN]);
+    }
+
+    internal void writeMotorData(double[] motors) {
+      for (int i = 0 ; i < NUM_MOTOR_ELEM ; i++) {
+        PhiGlobals.WRITE_FLOAT((float)motors[i], packetData, fieldOffs[(int)CMD_FIELD_ENUM.MOTOR_CMDS] + (i * sizeof(float)));
+      }
     }
 
   } // class

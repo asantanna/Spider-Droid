@@ -56,6 +56,9 @@ namespace Phi {
         // One time initializations
         //
 
+        // create controllers
+        PhiLink.createPhiControllers();
+
         // start Phi Link listener
         startPhiLink();
 
@@ -136,25 +139,25 @@ namespace Phi {
       bool newBlinky = false;
 
       switch (PhiLink.linkStatus) {
-        case PhiLink.PhiLinkStatus.LINK_OFF:
+        case PhiLink.PHI_LINK_STATUS.LINK_OFF:
           LinkStatusText.Text = " OFF ";
           break;
-        case PhiLink.PhiLinkStatus.LINK_STARTED:
+        case PhiLink.PHI_LINK_STATUS.LINK_STARTED:
           LinkStatusText.Text = " INITIALIZING ";
           newBlinky = true;
           break;
-        case PhiLink.PhiLinkStatus.LINK_CONNECTING:
+        case PhiLink.PHI_LINK_STATUS.LINK_CONNECTING:
           LinkStatusText.Text = " WAITING ... ";
           newBlinky = true;
           break;
-        case PhiLink.PhiLinkStatus.LINK_CONNECTED:
+        case PhiLink.PHI_LINK_STATUS.LINK_CONNECTED:
           LinkStatusText.Text = " CONNECTED ";
           break;
-        case PhiLink.PhiLinkStatus.LINK_ERROR:
+        case PhiLink.PHI_LINK_STATUS.LINK_ERROR:
           LinkStatusText.Text = " ERROR ";
           newBlinky = true;
           break;
-        case PhiLink.PhiLinkStatus.LINK_CLOSED:
+        case PhiLink.PHI_LINK_STATUS.LINK_CLOSED:
           LinkStatusText.Text = " CLOSED ";
           newBlinky = true;
           break;

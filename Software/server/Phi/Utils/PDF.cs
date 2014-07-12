@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Phi {
+namespace Phi.Utils {
 
   public class PDF {
   

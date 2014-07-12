@@ -30,7 +30,7 @@ namespace Phi {
     const Int32 PHI_LINK_PORT = 1122;
 
     // PhiLink communication rate
-    internal const double DESIRED_LOOP_FPS = 20;
+    internal const double DESIRED_LOOP_FPS = 40;
     const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
 
     // adaptive sleep
@@ -45,18 +45,18 @@ namespace Phi {
 
     // status of link
     
-    internal enum PhiLinkStatus {
+    internal enum PHI_LINK_STATUS {
       LINK_OFF,
       LINK_STARTED,
       LINK_CONNECTING,
       LINK_CONNECTED,
+      LINK_DISCONNECTED,
       LINK_ERROR,
       LINK_CLOSED
     }
 
-    internal static PhiLinkStatus linkStatus = PhiLinkStatus.LINK_OFF;
+    internal static PHI_LINK_STATUS linkStatus = PHI_LINK_STATUS.LINK_OFF;
 
-    private static Task commLoopTask = null;
     private static UInt32 loopCount = 0;
     private static double secsThisLoop = 0;
     private static double accum_secsPerLoop = DESIRED_SECS_PER_LOOP;
@@ -64,6 +64,20 @@ namespace Phi {
     private static double sleepError = 0;
 
     private static UInt32 lastPacketID = 0;
+
+    // Phi Controllers
+
+     private enum PHI_CONTROLLER_STATUS {
+      NO_CONTROLLER,
+      STARTUP,
+      EVE,
+    }
+
+    private static PHI_CONTROLLER_STATUS controllerStatus = PHI_CONTROLLER_STATUS.NO_CONTROLLER;
+
+    private static IPhiController startupController = null;
+    // private static IPhiController eveController = null;
+    private static IPhiController activeController = null;
 
     // sync object - this is used because many of the properties in this
     // class can be accessed by two different threads: directly by the
@@ -80,9 +94,20 @@ namespace Phi {
 
     private static double[] joints = new double[PhiBasePacket.NUM_MOTOR_ELEM];
 
+
     //
     // CODE
     //
+
+    static internal void createPhiControllers() {
+
+      // alloc controllers
+      startupController = new PhiStartup();
+
+      // make startup controller active
+      activeController = startupController;
+      controllerStatus = PHI_CONTROLLER_STATUS.STARTUP;
+    }
 
     static internal void phiLinkTask() {
 
@@ -95,7 +120,7 @@ namespace Phi {
       TcpListener phiLinkListener = new TcpListener(IPAddress.Any, PHI_LINK_PORT);
 
       // change status to initializing
-      setLinkStatus(PhiLinkStatus.LINK_STARTED);
+      setLinkStatus(PHI_LINK_STATUS.LINK_STARTED);
 
       // connect
 
@@ -106,20 +131,20 @@ namespace Phi {
         phiLinkListener.Start();
 
         // change status to waiting
-        setLinkStatus(PhiLinkStatus.LINK_CONNECTING);
+        setLinkStatus(PHI_LINK_STATUS.LINK_CONNECTING);
 
         // wait for a phi to connect
         client = phiLinkListener.AcceptTcpClient();
 
       } catch (SocketException e) {
         // something went wrong
-        setLinkStatus(PhiLinkStatus.LINK_ERROR);
+        setLinkStatus(PHI_LINK_STATUS.LINK_ERROR);
         Console.WriteLine("PhiLink.startListener: got exception when starting listener: SocketException: {0}", e);
         return;
       }
 
       // change status to connected
-      setLinkStatus(PhiLinkStatus.LINK_CONNECTED);
+      setLinkStatus(PHI_LINK_STATUS.LINK_CONNECTED);
 
       // turn off "Nagle" algorithm so data is sent immediately
       Socket s = client.Client;
@@ -132,9 +157,12 @@ namespace Phi {
 
       if (stream != null) {
         commLoop(stream);
+        // commLoop returned - disconnected or error
+        // TODO: just say disconnected for now and exit
+        setLinkStatus(PhiLink.PHI_LINK_STATUS.LINK_DISCONNECTED);
       } else {
         // no stream? say error
-        setLinkStatus(PhiLink.PhiLinkStatus.LINK_ERROR);
+        setLinkStatus(PhiLink.PHI_LINK_STATUS.LINK_ERROR);
       }
 
       // comm loop returned
@@ -151,8 +179,8 @@ namespace Phi {
       PhiCmdPacket cmdPacket = new PhiCmdPacket();
       PhiStatePacket statePacket = new PhiStatePacket();
 
-      // initialize Eve
-      // eve.Init();
+      // initialize controller
+      activeController.Init();
 
       // init statistics 
       double tickPeriod = 1.0 / Stopwatch.Frequency;
@@ -164,11 +192,19 @@ namespace Phi {
       
       while (true) {
 
-        // grab Eve outputs
-        // eve.writeOutputs(cmdPacket.packetData);
+        // grab controller outputs
+        activeController.readOutputs(cmdPacket);
 
-        // send eve outputs as command packet to PHI
-        phiStream.Write(cmdPacket.packetData, 0, cmdPacket.Length);
+        // send controller outputs as command packet to PHI
+
+        try {
+          phiStream.Write(cmdPacket.packetData, 0, cmdPacket.Length);
+        } catch (Exception e) {
+          // error - disconnected?
+          setLinkStatus(PHI_LINK_STATUS.LINK_ERROR);
+          Console.WriteLine("phiStream.Write: got exception : Exception: {0}", e);
+          break;
+        }
 
         // read PHI's status
 
@@ -177,13 +213,14 @@ namespace Phi {
           nRead += phiStream.Read(statePacket.packetData, nRead, statePacket.Length - nRead);
         }
 
-        // write sensor states into Eve
-        
+        // parse state for UI
         parseState(statePacket);
-        // eve.writeInputs();
 
-        // step Eve
-        // eve.Step();
+        // load new state into controller
+        activeController.loadInputs(statePacket);
+
+        // step controller
+        activeController.Step();
 
         // count loop
         loopCount++;
@@ -219,26 +256,26 @@ namespace Phi {
       }
       
       // if we get here, loop was cancelled
-      // setLinkStatus(PhiLinkStatus.CANCELLED);
+      return;
     }
 
-    private static double clampRange(double deg, double absMax) {
+    private static double clampRange(double val, double absMax) {
 
-      if (deg > absMax) {
-        deg -= absMax * 2;
-      } else if (deg < -absMax) {
-        deg += absMax * 2;
+      if (val > absMax) {
+        val -= absMax * 2;
+      } else if (val < -absMax) {
+        val += absMax * 2;
       }
 
-      return deg;
+      return val;
     }
 
     private static void parseState(PhiStatePacket statePacket) {
       lock (dataLock) {
         lastPacketID = statePacket.getPacketID();
-        pitch = statePacket.getPitch();
-        yaw = statePacket.getYaw();
-        roll = statePacket.getRoll();
+        pitch += statePacket.getPitchDelta() * 360;
+        yaw += statePacket.getYawDelta() * 360;
+        roll += statePacket.getRollDelta() * 360;
         statePacket.getJointData(joints);
       }
     }
@@ -255,7 +292,7 @@ namespace Phi {
     // Misc
     //
 
-    internal static void setLinkStatus(PhiLinkStatus status) {
+    internal static void setLinkStatus(PHI_LINK_STATUS status) {
       linkStatus = status;
       // notify change for UI
       PhiGlobals.mainWindow.notifyPhiLinkChanged();
@@ -293,28 +330,28 @@ namespace Phi {
 
     internal static double getGyroAccumPitch() {
       lock (dataLock) {
-        // return change [0,1]?  HACK  (how about negative .. sheesh)
+        // unit = degrees
         return pitch;
       }
     }
 
     internal static double getGyroAccumYaw() {
       lock (dataLock) {
-        // return change [0,1]?  HACK 
+        // unit = degrees
         return yaw;
       }
     }
 
     internal static double getGyroAccumRoll() {
       lock (dataLock) {
-        // return change [0,1]?  HACK 
+        // unit = degrees
         return roll;
       }
     }
 
     internal static double getJointPos(int idx) {
       lock (dataLock) {
-        // Phi returns canonical [0, 1.0] to represent [0, 360]
+        // Phi returns canonical [0, 1]
         return joints[idx];
       }
     }

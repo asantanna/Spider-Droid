@@ -33,9 +33,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\PhiIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -53,7 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Core\IPhiController.cs" />
     <Compile Include="Comms\PhiBasePacket.cs" />
+    <Compile Include="PhiControllers\Startup\PhiStartup.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UI\PieControl.xaml.cs">
       <DependentUpon>PieControl.xaml</DependentUpon>
@@ -107,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comms\PhiCmdPacket.cs" />
-    <Compile Include="PhiGlobals.cs" />
+    <Compile Include="Core\PhiGlobals.cs" />
     <Compile Include="Comms\PhiLink.cs" />
     <Compile Include="Comms\PhiStatePacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -140,7 +146,10 @@
     <Resource Include="UI\Letter_Phi.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Eve\" />
+    <Content Include="Resources\PhiIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PhiControllers\Eve\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
