@@ -11,6 +11,16 @@
 // Note: motor power is [0,127] plus a direction flag
 //
 
+//
+// WARNING!
+//
+// THIS FILE IS NOT USED IN THE NORMAL COURSE OF EVENTS.
+// THE SERVER STARTUP CONTROLLER DOES ALL THIS.
+// THIS CODE CAN ONLY BE EXECUTED BY A JSON REQUEST.
+//
+// *********   CODE NEVER TESTED!   *********
+//
+
 #include <phi.h>
 
 #define JTEST_MIN_POWER         10
@@ -21,8 +31,6 @@
 #define JTEST_WAIT_MAX_MULT     25
 
 #define JTEST_JOINT_CHG_DEG     5
-
-WARN("This file is not used");
 
 //
 // STATICS
