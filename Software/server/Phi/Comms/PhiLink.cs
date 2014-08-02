@@ -67,13 +67,13 @@ namespace Phi {
 
     // Phi Controllers
 
-     private enum PHI_CONTROLLER_STATUS {
+     private enum PHI_CONTROLLER_TYPE {
       NO_CONTROLLER,
       STARTUP,
       EVE,
     }
 
-    private static PHI_CONTROLLER_STATUS controllerStatus = PHI_CONTROLLER_STATUS.NO_CONTROLLER;
+    private static PHI_CONTROLLER_TYPE controllerType = PHI_CONTROLLER_TYPE.NO_CONTROLLER;
 
     private static IPhiController startupController = null;
     // private static IPhiController eveController = null;
@@ -86,14 +86,17 @@ namespace Phi {
     
     internal static object dataLock = new object();
 
-    // state of PHI
+    /* DELETE ME - HACK - another state is not kept here - only packets
+    //
+    // PHI STATE
+    //
 
     private static double pitch = 0;
     private static double yaw = 0;
     private static double roll = 0;
 
     private static double[] joints = new double[PhiBasePacket.NUM_MOTOR_ELEM];
-
+    */
 
     //
     // CODE
@@ -103,18 +106,14 @@ namespace Phi {
 
       // alloc controllers
       startupController = new PhiStartup();
+      // allocate eve controllero
 
       // make startup controller active
       activeController = startupController;
-      controllerStatus = PHI_CONTROLLER_STATUS.STARTUP;
+      controllerType = PHI_CONTROLLER_TYPE.STARTUP;
     }
 
     static internal void phiLinkTask() {
-
-      // reset some vars
-      pitch = 0;
-      yaw = 0;
-      roll = 0;
 
       // create listener (accept connections from any address)
       TcpListener phiLinkListener = new TcpListener(IPAddress.Any, PHI_LINK_PORT);
@@ -193,6 +192,8 @@ namespace Phi {
       while (true) {
 
         // grab controller outputs
+        // Note: this are the commands to PHI
+
         activeController.readOutputs(cmdPacket);
 
         // send controller outputs as command packet to PHI
@@ -213,14 +214,13 @@ namespace Phi {
           nRead += phiStream.Read(statePacket.packetData, nRead, statePacket.Length - nRead);
         }
 
-        // parse state for UI
-        parseState(statePacket);
-
         // load new state into controller
+        // Note: this is the state we retrived from PHI
+
         activeController.loadInputs(statePacket);
 
         // step controller
-        activeController.Step();
+        activeController.Step(statePacket, cmdPacket);
 
         // count loop
         loopCount++;
@@ -259,17 +259,7 @@ namespace Phi {
       return;
     }
 
-    private static double clampRange(double val, double absMax) {
-
-      if (val > absMax) {
-        val -= absMax * 2;
-      } else if (val < -absMax) {
-        val += absMax * 2;
-      }
-
-      return val;
-    }
-
+    /* DELETE ME HACK
     private static void parseState(PhiStatePacket statePacket) {
       lock (dataLock) {
         lastPacketID = statePacket.getPacketID();
@@ -287,6 +277,7 @@ namespace Phi {
         roll  = 0;
       }
     }
+     */
 
     //
     // Misc
@@ -316,6 +307,30 @@ namespace Phi {
       }
     }
 
+    internal static double getGyroAccumPitch() {
+      lock (dataLock) {
+        // unit = degrees
+        throw new NotImplementedException();
+        // return pitch;
+      }
+    }
+
+    internal static double getGyroAccumYaw() {
+      lock (dataLock) {
+        // unit = degrees
+        throw new NotImplementedException();
+        // return yaw;
+      }
+    }
+
+    internal static double getGyroAccumRoll() {
+      lock (dataLock) {
+        // unit = degrees
+        throw new NotImplementedException();
+        // return 0;
+      }
+    }
+
     internal static UInt32 getLastPacketID() {
       lock (dataLock) {
         return lastPacketID;
@@ -328,32 +343,15 @@ namespace Phi {
       }
     }
 
-    internal static double getGyroAccumPitch() {
-      lock (dataLock) {
-        // unit = degrees
-        return pitch;
-      }
-    }
-
-    internal static double getGyroAccumYaw() {
-      lock (dataLock) {
-        // unit = degrees
-        return yaw;
-      }
-    }
-
-    internal static double getGyroAccumRoll() {
-      lock (dataLock) {
-        // unit = degrees
-        return roll;
-      }
-    }
-
     internal static double getJointPos(int idx) {
       lock (dataLock) {
         // Phi returns canonical [0, 1]
-        return joints[idx];
+        // HACK TODO
+        return 0;
       }
+    }
+
+    internal static void setMotorPower(int motorIdx, double power) {
     }
 
   }  // class

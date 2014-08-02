@@ -249,7 +249,8 @@ namespace Phi {
     }
 
     private void BtnResetGyro_Click(object sender, RoutedEventArgs e) {
-      PhiLink.resetGyroAccum();
+      throw new NotImplementedException();
+      // PhiLink.resetGyroAccum();
     }
 
   }
