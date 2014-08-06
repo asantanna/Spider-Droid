@@ -22,14 +22,14 @@ namespace Phi {
       InitializeComponent();
     }
 
-    internal void update(
+    public void update(
       double hipMotorVal, double hipJointPos,
       double thighMotorVal, double thighJointPos,
       double kneeMotorVal, double kneeJointPos) {
 
       hipJoint.update(hipMotorVal, hipJointPos);
       thighJoint.update(thighMotorVal, thighJointPos);
-      kneeJoint.update(kneeMotorVal, kneeJointPos);
+      shinJoint.update(kneeMotorVal, kneeJointPos);
     }
 
   }

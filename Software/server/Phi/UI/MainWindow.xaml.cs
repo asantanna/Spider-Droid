@@ -56,12 +56,6 @@ namespace Phi {
         // One time initializations
         //
 
-        // create controllers
-        PhiLink.createPhiControllers();
-
-        // start Phi Link listener
-        startPhiLink();
-
         // init gyro controls
         PieCtrl_Pitch.titleName.Text = "Pitch";
         PieCtrl_Yaw.titleName.Text = "Yaw";
@@ -69,28 +63,31 @@ namespace Phi {
 
         // init leg controls
 
-        LF_Leg.legLabel.Content = "Left Front";
+        LF_Leg.legLabel.Content = "Left Front (A)";
         LF_Leg.hipJoint.label.Content = "H";
         LF_Leg.thighJoint.label.Content = "T";
-        LF_Leg.kneeJoint.label.Content = "K";
+        LF_Leg.shinJoint.label.Content = "S";
 
-        RF_Leg.legLabel.Content = "Right Front";
+        RF_Leg.legLabel.Content = "Right Front (B)";
         RF_Leg.hipJoint.label.Content = "H";
         RF_Leg.thighJoint.label.Content = "T";
-        RF_Leg.kneeJoint.label.Content = "K";
+        RF_Leg.shinJoint.label.Content = "S";
 
-        LB_Leg.legLabel.Content = "Left Back";
+        LB_Leg.legLabel.Content = "Left Back (C)";
         LB_Leg.hipJoint.label.Content = "H";
         LB_Leg.thighJoint.label.Content = "T";
-        LB_Leg.kneeJoint.label.Content = "K";
+        LB_Leg.shinJoint.label.Content = "S";
 
-        RB_Leg.legLabel.Content = "Right Back";
+        RB_Leg.legLabel.Content = "Right Back (D)";
         RB_Leg.hipJoint.label.Content = "H";
         RB_Leg.thighJoint.label.Content = "T";
-        RB_Leg.kneeJoint.label.Content = "K";
+        RB_Leg.shinJoint.label.Content = "S";
 
         // enable timer that refreses UI
         enableUpdateTimer(true);
+
+        // start Phi Link listener
+        startPhiLink();
       }
     }
 
@@ -129,7 +126,7 @@ namespace Phi {
       }
     }
 
-    internal void notifyPhiLinkChanged() {
+    public void notifyPhiLinkChanged() {
       // called by other threads to tell the UI thread that the phiLink status has changed
       bPhiLinkChanged = true;
     }
@@ -200,29 +197,41 @@ namespace Phi {
       ctlPacketId.Text = PhiLink.getLastPacketID().ToString();
       ctlSleepError.Text = (PhiLink.getSleepError() * 1000).ToString("F1");
 
-      PieCtrl_Pitch.update(PhiLink.getGyroAccumPitch());
-      PieCtrl_Yaw.update(PhiLink.getGyroAccumYaw());
-      PieCtrl_Roll.update(PhiLink.getGyroAccumRoll());
+      // HACK - disabled for now
+      // PieCtrl_Pitch.update(PhiLink.getGyroAccumPitch());
+      // PieCtrl_Yaw.update(PhiLink.getGyroAccumYaw());
+      // PieCtrl_Roll.update(PhiLink.getGyroAccumRoll());
+
+      PhiModel m = PhiGlobals.model;
+
+      const int A = PhiModel.LEG_A_IDX;
+      const int B = PhiModel.LEG_B_IDX;
+      const int C = PhiModel.LEG_C_IDX;
+      const int D = PhiModel.LEG_D_IDX;
+
+      const int H = PhiLeg.HIP_IDX;
+      const int T = PhiLeg.THIGH_IDX;
+      const int S = PhiLeg.SHIN_IDX;
 
       (LegGrid.FindName("LF_Leg") as LegBox).update(
-        -0.5, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LFH),
-         0.2, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LFT),
-         0.9, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LFK));
+        m.legs[A].joints[H].getPower(), m.legs[A].joints[H].getPos(),
+        m.legs[A].joints[T].getPower(), m.legs[A].joints[T].getPos(),
+        m.legs[A].joints[S].getPower(), m.legs[A].joints[S].getPos());
 
       (LegGrid.FindName("RF_Leg") as LegBox).update(
-        -1.0, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RFH),
-        -0.9, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RFT),
-        -0.8, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RFK));
+        m.legs[B].joints[H].getPower(), m.legs[B].joints[H].getPos(),
+        m.legs[B].joints[T].getPower(), m.legs[B].joints[T].getPos(),
+        m.legs[B].joints[S].getPower(), m.legs[B].joints[S].getPos());
 
       (LegGrid.FindName("LB_Leg") as LegBox).update(
-         1.0,  PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LBH),
-         0.66, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LBT),
-         0.33, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_LBK));
+        m.legs[C].joints[H].getPower(), m.legs[C].joints[H].getPos(),
+        m.legs[C].joints[T].getPower(), m.legs[C].joints[T].getPos(),
+        m.legs[C].joints[S].getPower(), m.legs[C].joints[S].getPos());
 
       (LegGrid.FindName("RB_Leg") as LegBox).update(
-        -1.0,  PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RBH),
-        -0.66, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RBT),
-        -0.33, PhiLink.getJointPos((int) PhiBasePacket.MOTOR_IDX.IDX_RBK));
+        m.legs[D].joints[H].getPower(), m.legs[D].joints[H].getPos(),
+        m.legs[D].joints[T].getPower(), m.legs[D].joints[T].getPos(),
+        m.legs[D].joints[S].getPower(), m.legs[D].joints[S].getPos());
 
     }
 
@@ -249,8 +258,43 @@ namespace Phi {
     }
 
     private void BtnResetGyro_Click(object sender, RoutedEventArgs e) {
-      throw new NotImplementedException();
+      throw new NotImplementedException("reset gyro");
       // PhiLink.resetGyroAccum();
+    }
+
+    private void menuFile_Exit(object sender, RoutedEventArgs e) {
+      // TODO HACK - we should create an action to safe the legs and
+      // when it is done we should close
+      this.Close();
+    }
+
+    private void menuActions_LegsToSafe(object sender, RoutedEventArgs e) {
+
+    }
+
+    private void menuActions_CrudeStandUp(object sender, RoutedEventArgs e) {
+
+    }
+
+    private void menuActions_TestLegs(object sender, RoutedEventArgs e) {
+      // begin startup tests
+      IPhiController controller = PhiLink.getActiveController();
+      if (controller == null) {
+        MessageBox.Show("No controller. (Connect with PHI first.)");
+
+      } else if (controller.GetType() != typeof(StartupController)) {
+        MessageBox.Show("Wrong controller type! Operation only valid with StartupController.");
+      } else {
+        (controller as StartupController).startTests();
+      }
+    }
+
+    private void menuActions_AbortAll(object sender, RoutedEventArgs e) {
+      PhiGlobals.model.abortAllActionsAndDump();
+    }
+
+    private void menuActions_DumpActions(object sender, RoutedEventArgs e) {
+      PhiGlobals.model.dumpActionHierarchy();
     }
 
   }

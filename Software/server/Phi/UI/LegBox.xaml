@@ -31,7 +31,7 @@
             <local:JointBox x:Name="thighJoint"
                             Margin="10,0"
                             BorderThickness="12,0,0,0" />
-            <local:JointBox x:Name="kneeJoint"
+            <local:JointBox x:Name="shinJoint"
                             BorderThickness="12,0,0,0" />
         </StackPanel>
 
