@@ -1,0 +1,4 @@
+#! /bin/bash
+
+git diff --stat --color remotes/origin/master..master
+
