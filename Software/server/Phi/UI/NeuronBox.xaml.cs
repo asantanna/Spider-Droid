@@ -24,8 +24,11 @@ namespace Phi {
 
     // value has range [-1, 1]
     public void update(double value) {
-      double w = ActualWidth * Math.Abs(value);
-      double h = ActualHeight * Math.Abs(value);
+
+      const double SCALE = 1.5;
+      double w = ActualWidth  * Math.Abs(value * SCALE);
+      double h = ActualHeight * Math.Abs(value * SCALE);
+
       ellipse.Height = h;
       ellipse.Width = w;
 

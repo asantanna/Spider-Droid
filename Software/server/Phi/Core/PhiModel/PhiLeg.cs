@@ -90,11 +90,38 @@ namespace Phi {
         joint.shutdown();
       }
     }
+    
+    //
+    // ACTION FACTORY
+    //
+
+    public PhiAction createAction_calibrateLeg() {
+
+      return
+        new PhiAction_Sequence(name: "calibrate_leg", 
+                               actions:  new PhiAction[] {
+
+          new PhiAction_SeekWithTimeout(name: "clear_shin",
+                                        joint: joints[PhiLeg.SHIN_IDX],
+                                        targetPos: 0.9),
+
+          joints[PhiLeg.THIGH_IDX].createAction_calibrateJoint(0.1),      // test range of thigh joint
+          joints[PhiLeg.SHIN_IDX].createAction_calibrateJoint(0.5),       // test range of shin joint
+
+      });
+    }
+
+    public PhiAction createAction_extendLegFlat() {
+      return
+        new PhiAction_Group(name: "extend_leg_flat",
+                            actions: new PhiAction[] {
+
+          new PhiAction_SeekWithTimeout(name: "extend_thigh", joint: joints[PhiLeg.THIGH_IDX], targetPos: 0.1),
+          new PhiAction_SeekWithTimeout(name: "extend_shin",  joint: joints[PhiLeg.SHIN_IDX],  targetPos: 0.8),
+
+      });
+    }
 
   } // PhiLeg class
-
-  //
-  // PHI ACTIONS
-  //
 
 } // namesapce

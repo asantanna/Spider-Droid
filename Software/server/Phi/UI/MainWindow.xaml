@@ -25,17 +25,33 @@
                               Click="menuFile_Exit"/>
                 </MenuItem>
                 <MenuItem Header="Actions">
-                    <MenuItem Header="Legs to Safe Position" 
-                              Click="menuActions_LegsToSafe" />
-                    <MenuItem Header="Crude Stand Up" 
-                              Click="menuActions_CrudeStandUp"/>
-                    <MenuItem Header="Test Legs" 
-                              Click="menuActions_TestLegs"/>
+                    
+                    <MenuItem Header="Run Startup Tests"
+                              Click="menuActions_runStartupTests" />
+                    <MenuItem Header="Run Startup Tests FOREVER"
+                              Click="menuActions_runStartupTestsForever" />
+                    
                     <Separator />
-                    <MenuItem Header="Abort All Actions"
-                              Click="menuActions_AbortAll" />
+                        
+                    <MenuItem Header="Leg Commands">
+
+                        <MenuItem Header="Extend Flat ..."
+                                  Click="menuActions_ExtendFlat" />
+                        <MenuItem Header="Legs to Safe Position"
+                                  Click="menuActions_LegsToSafe" />
+                        <MenuItem Header="Crude Stand Up"
+                                  Click="menuActions_CrudeStandUp" />
+                        <MenuItem Header="Test Legs"
+                                  Click="menuActions_TestLegs" />
+                        
+                    </MenuItem>
+                    
+                    <Separator />
+                        
                     <MenuItem Header="Dump Actions"
                               Click="menuActions_DumpActions" />
+                    <MenuItem Header="Abort All Actions"
+                              Click="menuActions_AbortAll" />
                 </MenuItem>
             </Menu>
         </DockPanel>

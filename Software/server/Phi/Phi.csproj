@@ -88,8 +88,12 @@
     <Compile Include="Core\PhiModel\PhiJoint.cs" />
     <Compile Include="Core\PhiModel\PhiLeg.cs" />
     <Compile Include="Core\PhiModel\PhiModel.cs" />
-    <Compile Include="PhiControllers\StartupController.cs" />
+    <Compile Include="PhiControllers\Startup\StartupController.cs" />
+    <Compile Include="PhiControllers\Startup\StartupTests.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UI\DlgSelectLeg.xaml.cs">
+      <DependentUpon>DlgSelectLeg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\PieControl.xaml.cs">
       <DependentUpon>PieControl.xaml</DependentUpon>
     </Compile>
@@ -107,6 +111,10 @@
     </Compile>
     <Compile Include="Utils\InfoT.cs" />
     <Compile Include="Utils\PDF.cs" />
+    <Page Include="UI\DlgSelectLeg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

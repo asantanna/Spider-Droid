@@ -43,7 +43,7 @@ namespace Phi {
     }
 
     public void addChildAction(PhiAction action) {
-      rootAction.addChildAction(action);
+      rootAction.addChild(action);
     }
 
     public UInt64 getPhiTime() {

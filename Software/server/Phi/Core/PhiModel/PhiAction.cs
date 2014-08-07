@@ -21,6 +21,12 @@ namespace Phi {
       DONE,
     }
 
+    [Flags]
+    public enum ACTION_FLAGS {
+      NONE          = 0,
+      AUTO_REMOVE   = 0x0001,       // once action completes, it will remove itself automatically from its parent
+    }
+
     // delegate for RunBlockAction
     public delegate void PhiActionCodeBlock();
     
@@ -37,10 +43,11 @@ namespace Phi {
     //
 
     string name;
-    protected ACTION_STATE actionState;
     protected int id;
     protected int parentId;
+    protected ACTION_STATE actionState;
     protected PhiActionCodeBlock codeBlock;
+    ACTION_FLAGS flags;
 
     //
     // CODE
@@ -52,6 +59,7 @@ namespace Phi {
       id = nextId++;
       parentId = NO_PARENT_ID;          // assigned during addChildAction
       codeBlock = null;                 // assigned by creator method
+      flags = ACTION_FLAGS.NONE;
       dict.Add(id, this);
     }
 
@@ -64,12 +72,6 @@ namespace Phi {
       return id;
     }
 
-    public static void resetActionFramework() {
-      // only used when aborting everything    
-      nextId = ROOT_ACTION_ID;
-      dict.Clear();
-    }
-
     public ACTION_STATE getState() {
       return actionState;
     }
@@ -78,12 +80,32 @@ namespace Phi {
       parentId = _parentId;
     }
 
+    public ACTION_FLAGS getFlags() {
+      return flags;
+    }
+
+    public void clearFlagBits(ACTION_FLAGS bitsToClear) {
+      flags &= ~bitsToClear;
+    }
+
+    public void setFlagBits(ACTION_FLAGS bitsToSet) {
+      flags |= bitsToSet;
+    }
+
     public void step() {
       // "step" the action - i.e. run its code block
       codeBlock();
+
+      if ( (actionState == ACTION_STATE.DONE) &&
+           (parentId != NO_PARENT_ID) &&
+           ((getFlags() & ACTION_FLAGS.AUTO_REMOVE) != 0))
+      {
+        // action is done, has a parent and the auto remove flag is set
+        removeFromParent();
+      }
     }
 
-    public virtual void addChildAction(PhiAction child) {
+    public virtual void addChild(PhiAction child) {
       throw new NotSupportedException("Cannot add children to simple actions - only to groups and sequences");
     }
 
@@ -94,18 +116,26 @@ namespace Phi {
         throw new NotImplementedException("cannot find parent action! This is a bug");
       }
       // make sure it is a group
-      if (parent.GetType() != typeof(PhiAction_Group)) {
-        throw new NotImplementedException("parent is not a group! This is a bug");
+      if ((parent is PhiAction_Group) == false) {
+        throw new NotImplementedException("parent is not a group (or subclass of group)! This is a bug");
       }
       // ask parent to remove us from its list
-      (parent as PhiAction_Group).removeChildAction(this);
-      // note: no need to remove from dictionary - destructor does this
-      // so all simple actions also get removed
+      (parent as PhiAction_Group).removeChild(this);
     }
     
-    public void reset() {
+    public virtual void reset() {
       // reset action
       actionState = ACTION_STATE.INIT;
+    }
+
+    public virtual void discard() {
+      parentId = NO_PARENT_ID;
+      dict.Remove(id);
+    }
+    public static void resetActionFramework() {
+      // only used when aborting everything    
+      nextId = ROOT_ACTION_ID;
+      dict.Clear();
     }
 
     public void dumpCommon(string indentString, string header) {
@@ -117,11 +147,6 @@ namespace Phi {
     public virtual void dump(string indentString = "") {
       dumpCommon("???", indentString);
       Console.WriteLine();
-    }
-
-    public virtual void discard() {
-      parentId = NO_PARENT_ID;
-      dict.Remove(id);
     }
 
   } // class PhiAction
@@ -140,12 +165,12 @@ namespace Phi {
 
     protected List<PhiAction> children = new List<PhiAction>();
 
-    public PhiAction_Group(PhiAction[] actions, int repeatCount = 1) : base() {
+    public PhiAction_Group(PhiAction[] actions, string name = "", int repeatCount = 1) : base(name) {
       this.repeatCount = repeatCount;
       codeBlock = groupCodeBlock;
       // add children to list
       foreach (PhiAction action in actions) {
-        addChildAction(action);
+        addChild(action);
       }
     }
 
@@ -192,7 +217,7 @@ namespace Phi {
       execCount ++;
       if ((repeatCount == REPEAT_FOREVER) || (execCount < repeatCount)) {
         // group will repeat - reset all actions in our tree to INIT state so they run again
-        resetAllChildren();
+        reset();
       } else {
         // group will not repeat on its own - mark it DONE
         actionState = ACTION_STATE.DONE;
@@ -206,12 +231,12 @@ namespace Phi {
       }
     }
 
-    override public void addChildAction(PhiAction child) {
+    override public void addChild(PhiAction child) {
       child.setParentId(id);
       children.Add(child);
     }
 
-    public void removeChildAction(PhiAction child) {
+    public void removeChild(PhiAction child) {
       children.Remove(child);
       child.discard();
     }
@@ -221,11 +246,14 @@ namespace Phi {
       // make list copy for iteration
       List<PhiAction> childrenCopy = children.ToList();
       foreach (PhiAction child in childrenCopy) {
-        removeChildAction(child);
+        removeChild(child);
       }
     }
 
-    public void resetAllChildren() {
+    public override void reset() {
+      // reset group
+      base.reset();
+      // reset children
       foreach (PhiAction child in children) {
         child.reset();
       }
@@ -252,7 +280,7 @@ namespace Phi {
 
     int currChildIdx;
 
-    public PhiAction_Sequence(PhiAction[] actions) : base(actions) {
+    public PhiAction_Sequence(PhiAction[] actions, string name = "", int repeatCount = 1) : base(actions, name, repeatCount) {
       codeBlock = sequenceCodeBlock;
       // children already added by group ctor
     }
@@ -296,9 +324,10 @@ namespace Phi {
 
     PhiActionCodeBlock userCodeBlock;
 
-    public PhiAction_RunBlock(PhiActionCodeBlock _userCodeBlock, string name = "") : base(name) {
+    public PhiAction_RunBlock(PhiActionCodeBlock code, string name = "") : base(name) {
 
-      userCodeBlock = _userCodeBlock;
+      // save for dump()
+      userCodeBlock = code;
 
       codeBlock = delegate() {
         if (actionState == ACTION_STATE.INIT) {

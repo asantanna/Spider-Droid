@@ -7,11 +7,7 @@ using System.Threading.Tasks;
 
 namespace Phi {
 
-  class StartupController : IPhiController {
-
-    //
-    // VARS
-    //
+  partial class StartupController : IPhiController {
 
     //
     // CODE
@@ -56,30 +52,6 @@ namespace Phi {
     void IPhiController.shutdown() {
       // pass on to model
       (PhiGlobals.model as IPhiController).shutdown();
-    }
-
-    //
-    // INITIALIZATION TESTS
-    //
-
-    public void startTests() {
-      Console.WriteLine("Starting tests ...");
-      // test range of leg A
-      PhiGlobals.model.addChildAction(
-        new PhiAction_Sequence(new PhiAction[]
-        {
-          PhiGlobals.model.legs[PhiModel.LEG_A_IDX].joints[PhiLeg.THIGH_IDX].createAction_testJointRange(),
-          new PhiAction_RunBlock(testsComplete),
-        }
-        ));
-
-      // DEBUG
-      PhiGlobals.model.dumpActionHierarchy();
-    }
-
-    public static void testsComplete() {
-      Console.WriteLine("Startup tests complete");
-      // switch to eve controller or something
     }
 
   } // class

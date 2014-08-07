@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Phi.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -17,9 +18,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Phi {
-  /// <summary>
-  /// Interaction logic for MainWindow.xaml
-  /// </summary>
+
   public partial class MainWindow : Window {
 
     //
@@ -262,39 +261,79 @@ namespace Phi {
       // PhiLink.resetGyroAccum();
     }
 
+    //
+    // FILE MENU
+    //
+
     private void menuFile_Exit(object sender, RoutedEventArgs e) {
       // TODO HACK - we should create an action to safe the legs and
       // when it is done we should close
       this.Close();
     }
 
-    private void menuActions_LegsToSafe(object sender, RoutedEventArgs e) {
+    //
+    // ACTIONS MENU
+    //
 
-    }
-
-    private void menuActions_CrudeStandUp(object sender, RoutedEventArgs e) {
-
-    }
-
-    private void menuActions_TestLegs(object sender, RoutedEventArgs e) {
-      // begin startup tests
+    private StartupController getStartupController() {
       IPhiController controller = PhiLink.getActiveController();
       if (controller == null) {
         MessageBox.Show("No controller. (Connect with PHI first.)");
 
       } else if (controller.GetType() != typeof(StartupController)) {
         MessageBox.Show("Wrong controller type! Operation only valid with StartupController.");
-      } else {
-        (controller as StartupController).startTests();
+        controller = null;
+      }
+      return (controller as StartupController);
+    }
+
+    private void menuActions_runStartupTests(object sender, RoutedEventArgs e) {
+      // run startup tests ONCE
+      StartupController controller = getStartupController();
+      if (controller != null) {
+        controller.startTests();
       }
     }
 
-    private void menuActions_AbortAll(object sender, RoutedEventArgs e) {
-      PhiGlobals.model.abortAllActionsAndDump();
+    private void menuActions_runStartupTestsForever(object sender, RoutedEventArgs e) {
+      // run startup tests FOREVER (use Abort All to quie)
+      StartupController controller = getStartupController();
+      if (controller != null) {
+        controller.startTests(bRepeatForever: true);
+      }
+    }
+
+    private void menuActions_ExtendFlat(object sender, RoutedEventArgs e) {
+
+      // have user select leg
+      DlgSelectLeg dlg = new DlgSelectLeg();
+      dlg.Owner = this;
+      dlg.ShowDialog();
+
+      if (dlg.DialogResult == true) {
+        StartupController controller = getStartupController();
+        if (controller != null) {
+          controller.extendLegFlat(dlg.getLegIdx());
+        }
+      }
+    }
+
+    private void menuActions_LegsToSafe(object sender, RoutedEventArgs e) {
+    }
+
+    private void menuActions_CrudeStandUp(object sender, RoutedEventArgs e) {
+    }
+
+    private void menuActions_TestLegs(object sender, RoutedEventArgs e) {
     }
 
     private void menuActions_DumpActions(object sender, RoutedEventArgs e) {
       PhiGlobals.model.dumpActionHierarchy();
+    }
+
+    private void menuActions_AbortAll(object sender, RoutedEventArgs e) {
+      Console.WriteLine("* Aborting all actions!");
+      PhiGlobals.model.abortAllActionsAndDump();
     }
 
   }
