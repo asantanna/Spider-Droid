@@ -40,16 +40,6 @@ namespace Phi {
       }
     }
 
-    /*public PhiAction createAction_testLeg() {
-      return new PhiAction_Sequence(new PhiAction[] {
-        joints[PhiLeg.THIGH_IDX].createAction_testJointRange(),
-        new PhiAction_RunBlock(delegate() {
-          // save max
-          maxJointPos = PHI_currPos;
-        }),
-      });
-    }*/
-
     // IPHICONTROLLER INTERFACE
 
     bool IPhiController.init(PhiStatePacket phiState, PhiCmdPacket phiCmds) {
@@ -92,24 +82,28 @@ namespace Phi {
     }
     
     //
-    // ACTION FACTORY
+    // PHI ACTIONS
     //
 
-    public PhiAction createAction_calibrateLeg() {
+    public class Calibrate : PhiAction_Sequence {
 
-      return
-        new PhiAction_Sequence(name: "calibrate_leg", 
-                               actions:  new PhiAction[] {
+      public Calibrate(PhiLeg leg) : base (name: "calibrate_leg", 
+                                           actions:  new PhiAction[] {
 
           new PhiAction_SeekWithTimeout(name: "clear_shin",
-                                        joint: joints[PhiLeg.SHIN_IDX],
+                                        joint: leg.joints[PhiLeg.SHIN_IDX],
                                         targetPos: 0.9),
 
-          joints[PhiLeg.THIGH_IDX].createAction_calibrateJoint(0.1),      // test range of thigh joint
-          joints[PhiLeg.SHIN_IDX].createAction_calibrateJoint(0.5),       // test range of shin joint
+          leg.joints[PhiLeg.THIGH_IDX].createAction_calibrateJoint(0.1),      // test range of thigh joint
+          leg.joints[PhiLeg.SHIN_IDX].createAction_calibrateJoint(0.5),       // test range of shin joint
 
-      });
+      }){}
     }
+
+/* DELETE ME SOON
+    public PhiAction createAction_calibrateLeg() {
+      return
+    } */
 
     public PhiAction createAction_extendLegFlat() {
       return
@@ -118,6 +112,17 @@ namespace Phi {
 
           new PhiAction_SeekWithTimeout(name: "extend_thigh", joint: joints[PhiLeg.THIGH_IDX], targetPos: 0.1),
           new PhiAction_SeekWithTimeout(name: "extend_shin",  joint: joints[PhiLeg.SHIN_IDX],  targetPos: 0.8),
+
+      });
+    }
+
+    public PhiAction createAction_centerJoints() {
+      return
+        new PhiAction_Group(name: "center_joints",
+                            actions: new PhiAction[] {
+
+          new PhiAction_SeekWithTimeout(name: "center_thigh", joint: joints[PhiLeg.THIGH_IDX], targetPos: 0.5),
+          new PhiAction_SeekWithTimeout(name: "center_shin",  joint: joints[PhiLeg.SHIN_IDX],  targetPos: 0.5),
 
       });
     }

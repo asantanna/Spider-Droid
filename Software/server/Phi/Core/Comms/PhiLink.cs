@@ -30,7 +30,7 @@ namespace Phi {
     const Int32 PHI_LINK_PORT = 1122;
 
     // PhiLink communication rate
-    public const double DESIRED_LOOP_FPS = 40;
+    public const double DESIRED_LOOP_FPS = 80;
     const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
 
     // adaptive sleep

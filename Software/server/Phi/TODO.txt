@@ -1,0 +1,24 @@
+﻿
+TO DO LIST
+==========
+
+PHI SERVER:
+
+1) Implement JSON calling routines.
+
+2) Add connect button that calls JSON startPhiLink
+
+PHI FIRMWARE:
+
+1) HW pumps need to run at a rate adequate to the frame rate. Add new param 
+   to JSON start phi link command for server to communicate expected frame rate.
+   Use this to set pump delay.
+
+2) Performance web page does not correctly report UART expected loop period.  This is
+   because it now runs off of an event.  Change it to report frame period.
+
+3) Figure out some way to make PHI connect again when the link is broken.
+
+   
+
+

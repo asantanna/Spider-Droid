@@ -85,7 +85,7 @@ namespace Phi {
       Console.WriteLine("============================");
       Console.WriteLine("  PhiAction Hierarchy Dump");
       Console.WriteLine("============================");
-      Console.WriteLine();
+      Console.WriteLine("dictionary size = {0}", PhiAction.getDictSize());
       rootNode.dump();
     }
 

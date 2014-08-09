@@ -132,10 +132,15 @@ namespace Phi {
       parentId = NO_PARENT_ID;
       dict.Remove(id);
     }
+
     public static void resetActionFramework() {
       // only used when aborting everything    
       nextId = ROOT_ACTION_ID;
       dict.Clear();
+    }
+
+    public static int getDictSize() {
+      return dict.Count;
     }
 
     public void dumpCommon(string indentString, string header) {

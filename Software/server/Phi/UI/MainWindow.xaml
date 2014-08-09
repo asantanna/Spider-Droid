@@ -35,6 +35,8 @@
                         
                     <MenuItem Header="Leg Commands">
 
+                        <MenuItem Header="Center Joints ..."
+                                  Click="menuActions_CenterJoints" />
                         <MenuItem Header="Extend Flat ..."
                                   Click="menuActions_ExtendFlat" />
                         <MenuItem Header="Legs to Safe Position"

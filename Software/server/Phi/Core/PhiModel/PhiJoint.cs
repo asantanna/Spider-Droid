@@ -22,7 +22,7 @@ namespace Phi {
     public const double JOINT_POS_TOLERANCE = 0.01;
 
     // motor power used for startup tests
-    public const double TEST_MOTOR_POWER = 0.2;  
+    public const double TEST_MOTOR_POWER = 0.4;  
 
     //
     // VARS
@@ -163,6 +163,8 @@ namespace Phi {
           if (PhiGlobals.approxEq(PHI_currPos, targetPos, JOINT_POS_TOLERANCE)) {
             // reached target - done
             setIdle();
+            // DEBUG
+            Console.WriteLine("*** SUCCESS when seeking to joint position={0:G3}, minDelta={1:G3}", targetPos, minSeekDelta);
           } else {
             // not at target
             if ( ((motorPower > 0) && (delta > 0)) ||
@@ -170,14 +172,14 @@ namespace Phi {
               // overshot target - done
               setIdle();
               // DEBUG
-              Console.WriteLine("*** Overshoot occurred when seeking to joint position, minDelta={0:G3}", minSeekDelta);
+              Console.WriteLine("*** Overshoot occurred when seeking to joint position={0:G3}, minDelta={1:G3}", targetPos, minSeekDelta);
             } else {
               // on way to target - check if moving
               double hack = motorPower;
               checkForMoveTimeout();
               // DEBUG
               if (jointState == JOINT_STATE.TIMEOUT_IDLE) {
-                Console.WriteLine("*** Timeout occurred when seeking to joint position, minDelta={0:G3}", minSeekDelta);
+                Console.WriteLine("*** Timeout occurred when seeking to joint position={0:G3}, minDelta={1:G3}", targetPos, minSeekDelta);
               }
             }
           }

@@ -304,7 +304,6 @@ namespace Phi {
     }
 
     private void menuActions_ExtendFlat(object sender, RoutedEventArgs e) {
-
       // have user select leg
       DlgSelectLeg dlg = new DlgSelectLeg();
       dlg.Owner = this;
@@ -314,6 +313,20 @@ namespace Phi {
         StartupController controller = getStartupController();
         if (controller != null) {
           controller.extendLegFlat(dlg.getLegIdx());
+        }
+      }
+    }
+
+    private void menuActions_CenterJoints(object sender, RoutedEventArgs e) {
+      // have user select leg
+      DlgSelectLeg dlg = new DlgSelectLeg();
+      dlg.Owner = this;
+      dlg.ShowDialog();
+
+      if (dlg.DialogResult == true) {
+        StartupController controller = getStartupController();
+        if (controller != null) {
+          controller.centerJoints(dlg.getLegIdx());
         }
       }
     }
@@ -332,7 +345,7 @@ namespace Phi {
     }
 
     private void menuActions_AbortAll(object sender, RoutedEventArgs e) {
-      Console.WriteLine("* Aborting all actions!");
+      Console.WriteLine("*** Aborting all actions!");
       PhiGlobals.model.abortAllActionsAndDump();
     }
 

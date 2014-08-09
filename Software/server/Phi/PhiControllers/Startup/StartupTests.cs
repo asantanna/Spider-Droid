@@ -23,7 +23,9 @@ namespace Phi {
                                repeatCount: bRepeatForever ? PhiAction_Group.REPEAT_FOREVER : 1,
                                actions: new PhiAction[] {
 
-          PhiGlobals.model.legs[PhiModel.LEG_A_IDX].createAction_calibrateLeg(),      // test range of leg A
+          new PhiLeg.Calibrate(PhiGlobals.model.legs[PhiModel.LEG_A_IDX]),
+                        
+//          PhiGlobals.model.legs[PhiModel.LEG_A_IDX].createAction_calibrateLeg(),      // test range of leg A
 
           new PhiAction_RunBlock(testsComplete),                                      // call tests done function
 
@@ -42,7 +44,13 @@ namespace Phi {
     public void extendLegFlat(int legIdx) {
       // create an action to extend leg
       PhiLeg leg = PhiGlobals.model.legs[legIdx];
-      PhiGlobals.model.addChildAction( leg.createAction_extendLegFlat());
+      PhiGlobals.model.addChildAction(leg.createAction_extendLegFlat());
+    }
+
+    public void centerJoints(int legIdx) {
+      // create an action to extend leg
+      PhiLeg leg = PhiGlobals.model.legs[legIdx];
+      PhiGlobals.model.addChildAction(leg.createAction_centerJoints());
     }
 
   }
