@@ -1,4 +1,5 @@
 ﻿using Phi.UI;
+using Phi.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,10 @@ namespace Phi {
 
       // save ref
       PhiGlobals.mainWindow = this;
+
+      // create hidden log windows
+      PhiGlobals.logForm = new LogForm();
+
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e) {
@@ -54,6 +59,9 @@ namespace Phi {
         //
         // One time initializations
         //
+
+        // create model
+        PhiGlobals.model = new PhiModel();
 
         // init gyro controls
         PieCtrl_Pitch.titleName.Text = "Pitch";
@@ -338,6 +346,7 @@ namespace Phi {
     }
 
     private void menuActions_TestLegs(object sender, RoutedEventArgs e) {
+      CircularBuffer<int>.test();
     }
 
     private void menuActions_DumpActions(object sender, RoutedEventArgs e) {
@@ -347,6 +356,26 @@ namespace Phi {
     private void menuActions_AbortAll(object sender, RoutedEventArgs e) {
       Console.WriteLine("*** Aborting all actions!");
       PhiGlobals.model.abortAllActionsAndDump();
+    }
+
+    private void menuLogs_showWindow(object sender, RoutedEventArgs e) {
+
+      // create a test node
+      System.Windows.Forms.TreeNode testNode = new System.Windows.Forms.TreeNode("TestLog");
+      testNode.Name = "TestNode";
+      testNode.Text = "TestLog";
+
+      // create a log for it
+      // Note: log is added to tree automatically
+      PhiLog_Double log = new PhiLog_Double(5, logName: "test log", dataName: "test_double");
+      log.Add(1, 10);
+      log.Add(2, 25);
+      log.Add(3, 32);
+      log.Add(4, 18);
+      log.Add(5, 2);
+      testNode.Tag = log;
+
+      PhiGlobals.logForm.Show();
     }
 
   }

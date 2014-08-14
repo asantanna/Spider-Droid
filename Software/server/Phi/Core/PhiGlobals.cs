@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Phi.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,10 +22,11 @@ namespace Phi
 
     public static bool bInit = false;
     public static MainWindow mainWindow = null;
+    public static LogForm logForm = null;
     public static System.Text.UTF8Encoding encoding;
 
     // model of PHI
-    public static PhiModel model = new PhiModel();
+    public static PhiModel model;
 
     //
     // GLOBAL FUNCTIONS

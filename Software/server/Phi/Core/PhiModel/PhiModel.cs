@@ -21,7 +21,7 @@ namespace Phi {
     //
 
     public PhiLeg[] legs = new PhiLeg[4];
-    private PhiAction_Group rootAction;
+    private PA_Group rootAction;
 
     // from PHI state
     private UInt64 PHI_currTime;
@@ -33,16 +33,16 @@ namespace Phi {
     public PhiModel() {
 
       // allocate legs                              // joint[TSH] : joint_idx [0-11] : JSON motor name "[A-F][0-1]"
-      legs[LEG_A_IDX] = new PhiLeg(LEG_A_IDX);      // motors T:0:"A0", S:1:"A1", H:8:"E0"
-      legs[LEG_B_IDX] = new PhiLeg(LEG_B_IDX);      // motors T:2:"B0", S:3:"B1", H:9:"E1"
-      legs[LEG_C_IDX] = new PhiLeg(LEG_C_IDX);      // motors T:4:"C0", S:5:"C1", H:10:"F0"
-      legs[LEG_D_IDX] = new PhiLeg(LEG_D_IDX);      // motors T:6:"D0", S:7:"D1", H:11:"F1"
+      legs[LEG_A_IDX] = new PhiLeg("A", LEG_A_IDX);      // motors T:0:"A0", S:1:"A1", H:8:"E0"
+      legs[LEG_B_IDX] = new PhiLeg("B", LEG_B_IDX);      // motors T:2:"B0", S:3:"B1", H:9:"E1"
+      legs[LEG_C_IDX] = new PhiLeg("C", LEG_C_IDX);      // motors T:4:"C0", S:5:"C1", H:10:"F0"
+      legs[LEG_D_IDX] = new PhiLeg("D", LEG_D_IDX);      // motors T:6:"D0", S:7:"D1", H:11:"F1"
 
       // create the root action
       abortAllActions();
     }
 
-    public void addChildAction(PhiAction action) {
+    public void addChildAction(PhiActionBase action) {
       rootAction.addChild(action);
     }
 
@@ -59,16 +59,16 @@ namespace Phi {
       // actions stop before start messing around
       rootAction = null;
       // reset action system
-      PhiAction.resetActionFramework();
+      PhiActionBase.resetActionFramework();
       // create a new root action
-      rootAction = new PhiAction_Group(new PhiAction[0], repeatCount: PhiAction_Group.REPEAT_FOREVER);
+      rootAction = new PA_Group(new PhiActionBase[0], repeatCount: PA_Group.REPEAT_FOREVER);
       // reset the model
       reset();
     }
 
     public void abortAllActionsAndDump() {
       // save old hierarchy
-      PhiAction_Group oldRoot = rootAction;
+      PA_Group oldRoot = rootAction;
       // abort all actions
       abortAllActions();
       // dump old hierarchy to console
@@ -78,14 +78,14 @@ namespace Phi {
       System.GC.Collect();
     }
 
-    public void dumpActionHierarchy(PhiAction_Group rootNode = null) {
+    public void dumpActionHierarchy(PA_Group rootNode = null) {
       if (rootNode == null) {
         rootNode = rootAction;
       }
       Console.WriteLine("============================");
       Console.WriteLine("  PhiAction Hierarchy Dump");
       Console.WriteLine("============================");
-      Console.WriteLine("dictionary size = {0}", PhiAction.getDictSize());
+      Console.WriteLine("dictionary size = {0}", PhiActionBase.getDictSize());
       rootNode.dump();
     }
 

@@ -6,7 +6,19 @@ PHI SERVER:
 
 1) Implement JSON calling routines.
 
-2) Add connect button that calls JSON startPhiLink
+2) Add connect button that calls JSON startPhiLink()
+
+3) Change action factory methods to classes ... it's nicer
+
+4) Think about what a reasonable frame rate is.  Think of the speed of joints
+   in ADC units and what kind of angle resolution one might expect given
+   a particular tolerance, timeout, etc.
+
+5) Joint position tolerance should be a parameter because different values
+   are achievable at different speeds.
+
+6) write some sort of MoveAction that takes speed into account.  Should ramp
+   up?  Allow specification of max power?
 
 PHI FIRMWARE:
 

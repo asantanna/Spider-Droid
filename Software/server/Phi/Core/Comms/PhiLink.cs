@@ -31,7 +31,7 @@ namespace Phi {
 
     // PhiLink communication rate
     public const double DESIRED_LOOP_FPS = 80;
-    const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
+    public const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
 
     // adaptive sleep
     const double SLEEP_ERROR_ACCUM_RATE = (1.0 / 1e3);

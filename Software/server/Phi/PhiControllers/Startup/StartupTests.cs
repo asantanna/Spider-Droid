@@ -19,15 +19,13 @@ namespace Phi {
       // create an action for the startup tests
 
       PhiGlobals.model.addChildAction(
-        new PhiAction_Sequence(name: "startup_tests",
-                               repeatCount: bRepeatForever ? PhiAction_Group.REPEAT_FOREVER : 1,
-                               actions: new PhiAction[] {
+        new PA_Sequence(name: "startup_tests",
+                               repeatCount: bRepeatForever ? PA_Group.REPEAT_FOREVER : 1,
+                               actions: new PhiActionBase[] {
 
-          new PhiLeg.Calibrate(PhiGlobals.model.legs[PhiModel.LEG_A_IDX]),
+          new PhiLeg.PA_Calibrate(PhiGlobals.model.legs[PhiModel.LEG_A_IDX]),
                         
-//          PhiGlobals.model.legs[PhiModel.LEG_A_IDX].createAction_calibrateLeg(),      // test range of leg A
-
-          new PhiAction_RunBlock(testsComplete),                                      // call tests done function
+          new PA_RunBlock(testsComplete),                                      // call tests done function
 
         })
       );
