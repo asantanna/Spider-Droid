@@ -39,9 +39,40 @@ namespace Phi {
     const double TRAJ_R1   = 0.25;
     const double TRAJ_R2   = 0.25;
 
+    // log tree view node name (key)
+    public const string LOG_NODENAME_JOINT_PREFIX = "logNode_Joint_";
+
     //
     // VARS
     //
+
+    private PhiLeg parent;
+    public string name;
+
+    private int motorIdx;
+    private double motorPower;            // range [-1, 1]
+
+    // used by seek functions
+    private double targetPos;
+
+    // used by adaptive seek function
+    private double maxAbsPower;
+    private double startTime;
+    private double deltaP;
+    private double deltaT;
+    private PhiLog_Double historyLog;
+
+    // from PHI state
+    private double PHI_currPos;           // range [0, 1]
+
+    // for timeouts
+    private double lastMovePos;
+    private UInt64 lastMoveTime;
+
+    // limits
+    private double minJointPos;
+    private double maxJointPos;
+    private double centerJointPos;
 
     // JOINT_STATE
 
@@ -56,31 +87,8 @@ namespace Phi {
 
     private JOINT_STATE jointState;
 
-    private string name;
-    private int motorIdx;
-    private double motorPower;            // range [-1, 1]
-
-    // used by seek functions
-    private double targetPos;
-
-    // used by adaptive seek function
-    private double maxAbsPower;
-    private double startTime;
-    private double deltaP;
-    private double deltaT;
-    private PhiLog_Double history;
-
-    // from PHI state
-    private double PHI_currPos;           // range [0, 1]
-
-    // for timeouts
-    private double lastMovePos;
-    private UInt64 lastMoveTime;
-
-    // limits
-    private double minJointPos;
-    private double maxJointPos;
-    private double centerJointPos;
+    // log tree view node
+    private System.Windows.Forms.TreeNode logTreeNode;
 
     // DEBUG
     private double minDeltaPos;        // used for debugging tolerances
@@ -89,10 +97,18 @@ namespace Phi {
     // CODE
     //
 
-    public PhiJoint(string name, int motorIdx) {
+    public PhiJoint(PhiLeg parent, string name, int motorIdx) {
+      this.parent = parent;
       this.name = name;
       this.motorIdx = motorIdx;
-      history = new PhiLog_Double(4, logName: "joint " + name + ": AS History", dataName: "Position");
+      historyLog = null;
+
+      // create log node
+      logTreeNode = new System.Windows.Forms.TreeNode(LOG_NODENAME_JOINT_PREFIX + name);
+      logTreeNode.Tag = null;
+      logTreeNode.Text = "Joint " + name;
+      parent.logTreeNode.Nodes.Add(logTreeNode);
+
     }
 
     public void reset() {
@@ -129,6 +145,10 @@ namespace Phi {
 
     public double getDuration() {
       return deltaT;
+    }
+
+    public PhiLogBase getHistoryLog() {
+      return historyLog;
     }
 
     public bool isIdle() {
@@ -386,12 +406,25 @@ namespace Phi {
     //
 
     bool IPhiController.init(PhiStatePacket phiState, PhiCmdPacket phiCmds) {
+
+      // stop motor
       setIdle();
+
+      // allocate log used by adaptive seek and add to tree
+      historyLog = new PhiLog_Double(4, logName: "joint " + name + ": AS History");
+      historyLog.setDataName("position");
+      historyLog.setDataRange(0, 1);
+
+      historyLog.addToLogWindow(parent.logTreeNode,
+                                name:parent.name + name + "_ASInternal",
+                                text: "Adaptive Seek Internal");
+
       return true;
     }
 
     void IPhiController.loadData(PhiStatePacket phiState) {
       PHI_currPos = phiState.getJointPos(motorIdx);
+      historyLog.Add(PhiGlobals.model.getPhiTime(), PHI_currPos);
     }
 
     void IPhiController.step() {

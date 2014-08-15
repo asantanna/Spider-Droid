@@ -359,15 +359,18 @@ namespace Phi {
     }
 
     private void menuLogs_showWindow(object sender, RoutedEventArgs e) {
+      PhiGlobals.logForm.Show();
+    }
+
+    private void menuDebug_Click(object sender, RoutedEventArgs e) {
 
       // create a test node
       System.Windows.Forms.TreeNode testNode = new System.Windows.Forms.TreeNode("TestLog");
-      testNode.Name = "TestNode";
-      testNode.Text = "TestLog";
+      testNode.Text = "Test Log";
 
       // create a log for it
       // Note: log is added to tree automatically
-      PhiLog_Double log = new PhiLog_Double(5, logName: "test log", dataName: "test_double");
+      PhiLog_Double log = new PhiLog_Double(5, logName: "test log");
       log.Add(1, 10);
       log.Add(2, 25);
       log.Add(3, 32);
@@ -375,7 +378,8 @@ namespace Phi {
       log.Add(5, 2);
       testNode.Tag = log;
 
-      PhiGlobals.logForm.Show();
+      // add to root node
+      PhiGlobals.logForm.logTreeRootNode.Nodes.Add(testNode);
     }
 
   }

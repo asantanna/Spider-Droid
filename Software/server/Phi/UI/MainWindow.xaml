@@ -55,10 +55,17 @@
                     <MenuItem Header="Abort All Actions"
                               Click="menuActions_AbortAll" />
                 </MenuItem>
+                
                 <MenuItem Header="Log">
                     <MenuItem Header="Show Log Window"
                               Click="menuLogs_showWindow" />
                 </MenuItem>
+                
+                <MenuItem Header="DEBUG">
+                    <MenuItem Header="Create Test Log"
+                              Click="menuDebug_Click" />
+                </MenuItem>
+
             </Menu>
         </DockPanel>
 

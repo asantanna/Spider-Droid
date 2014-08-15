@@ -1,5 +1,6 @@
 ﻿
 
+using Phi.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Phi {
-  class PhiModel : IPhiController {
+  public class PhiModel : IPhiController {
 
     // CONSTANTS
 
@@ -16,12 +17,20 @@ namespace Phi {
     public const int LEG_C_IDX = 2;
     public const int LEG_D_IDX = 3;
 
+    // log tree view node name (key)
+    public const string LOG_NODENAME_MODEL = "logNode_Model";
+
     //
     // VARS
     //
 
     public PhiLeg[] legs = new PhiLeg[4];
+
+    // root of action hierarchy
     private PA_Group rootAction;
+
+    // log tree view node
+    public System.Windows.Forms.TreeNode logTreeNode;
 
     // from PHI state
     private UInt64 PHI_currTime;
@@ -32,11 +41,20 @@ namespace Phi {
 
     public PhiModel() {
 
-      // allocate legs                              // joint[TSH] : joint_idx [0-11] : JSON motor name "[A-F][0-1]"
-      legs[LEG_A_IDX] = new PhiLeg("A", LEG_A_IDX);      // motors T:0:"A0", S:1:"A1", H:8:"E0"
-      legs[LEG_B_IDX] = new PhiLeg("B", LEG_B_IDX);      // motors T:2:"B0", S:3:"B1", H:9:"E1"
-      legs[LEG_C_IDX] = new PhiLeg("C", LEG_C_IDX);      // motors T:4:"C0", S:5:"C1", H:10:"F0"
-      legs[LEG_D_IDX] = new PhiLeg("D", LEG_D_IDX);      // motors T:6:"D0", S:7:"D1", H:11:"F1"
+      // create log node
+      logTreeNode = new System.Windows.Forms.TreeNode(LOG_NODENAME_MODEL);
+      logTreeNode.Tag = null;
+      logTreeNode.Text = "Model";
+      PhiGlobals.logForm.logTreeRootNode.Nodes.Add(logTreeNode);
+
+      // allocate legs                                         // joint[TSH] : joint_idx [0-11] : JSON motor name "[A-F][0-1]"
+      legs[LEG_A_IDX] = new PhiLeg(this, "A", LEG_A_IDX);      // motors T:0:"A0", S:1:"A1", H:8:"E0"
+      legs[LEG_B_IDX] = new PhiLeg(this, "B", LEG_B_IDX);      // motors T:2:"B0", S:3:"B1", H:9:"E1"
+      legs[LEG_C_IDX] = new PhiLeg(this, "C", LEG_C_IDX);      // motors T:4:"C0", S:5:"C1", H:10:"F0"
+      legs[LEG_D_IDX] = new PhiLeg(this, "D", LEG_D_IDX);      // motors T:6:"D0", S:7:"D1", H:11:"F1"
+
+      // show all log nodes
+      LogForm.getLogTreeView().ExpandAll();
 
       // create the root action
       abortAllActions();
