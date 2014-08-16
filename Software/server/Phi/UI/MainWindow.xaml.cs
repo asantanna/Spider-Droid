@@ -346,7 +346,6 @@ namespace Phi {
     }
 
     private void menuActions_TestLegs(object sender, RoutedEventArgs e) {
-      CircularBuffer<int>.test();
     }
 
     private void menuActions_DumpActions(object sender, RoutedEventArgs e) {
@@ -362,7 +361,7 @@ namespace Phi {
       PhiGlobals.logForm.Show();
     }
 
-    private void menuDebug_Click(object sender, RoutedEventArgs e) {
+    private void menuDebug_createTestLog(object sender, RoutedEventArgs e) {
 
       // create a test node
       System.Windows.Forms.TreeNode testNode = new System.Windows.Forms.TreeNode("TestLog");
@@ -371,15 +370,19 @@ namespace Phi {
       // create a log for it
       // Note: log is added to tree automatically
       PhiLog_Double log = new PhiLog_Double(5, logName: "test log");
-      log.Add(1, 10);
-      log.Add(2, 25);
-      log.Add(3, 32);
-      log.Add(4, 18);
-      log.Add(5, 2);
+      log.Add(1000, 10);
+      log.Add(2000, 25);
+      log.Add(3000, 32);
+      log.Add(4000, 18);
+      log.Add(5000, 2);
       testNode.Tag = log;
 
       // add to root node
       PhiGlobals.logForm.logTreeRootNode.Nodes.Add(testNode);
+    }
+
+    private void menuDebug_runClassTests(object sender, RoutedEventArgs e) {
+      PhiGlobals.runClassTests();
     }
 
   }

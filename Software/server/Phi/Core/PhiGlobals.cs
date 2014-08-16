@@ -1,4 +1,5 @@
 ﻿using Phi.UI;
+using Phi.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Phi
 {
-  static class PhiGlobals
+  static partial class PhiGlobals
   {
     //
     // CONST
@@ -87,6 +88,27 @@ namespace Phi
       Buffer.BlockCopy(_f, 0, ba, offset, 4);
     }
 
+    // approximate comparison
+    public static bool approxEq(double a, double b, double eps) {
+      return (Math.Abs(a-b) <= eps);
+    }
+
+    //
+    // Class test suites
+    //
+
+    static public void runClassTests() {
+
+      Console.WriteLine("***");
+      Console.WriteLine("*** Starting class tests");
+      Console.WriteLine("***");
+
+      // generic classes have test suites in PhiGlobals to make things less messy in the debugger
+      PhiGlobals.runClassTest_CircularBuffer();
+      PhiGlobals.runClassTest_ListWithReusableElements();
+
+      Console.WriteLine("*** Done" );
+    }
 
     //
     // BYTE ORDER REVERSAL ROUTINES
@@ -109,11 +131,6 @@ namespace Phi
              (value & 0x0000000000FF0000UL) << 24 | (value & 0x00000000FF000000UL) << 8  |
              (value & 0x000000FF00000000UL) >> 8  | (value & 0x0000FF0000000000UL) >> 24 |
              (value & 0x00FF000000000000UL) >> 40 | (value & 0xFF00000000000000UL) >> 56;
-    }
-
-    // approximate comparison
-    public static bool approxEq(double a, double b, double eps) {
-      return (Math.Abs(a-b) <= eps);
     }
 
   } // PhiGlobals class

@@ -2,34 +2,66 @@
 TO DO LIST
 ==========
 
-PHI SERVER:
+#
+# PHI SERVER
+#
 
-1) Implement JSON calling routines.
+* Implement JSON calling routines.
 
-2) Add connect button that calls JSON startPhiLink()
+* Implement better connectivity - see description in firmaware
 
-3) Change action factory methods to classes ... it's nicer
+* Change action factory methods to classes ... it's nicer
 
-4) Think about what a reasonable frame rate is.  Think of the speed of joints
-   in ADC units and what kind of angle resolution one might expect given
-   a particular tolerance, timeout, etc.
+* Think about what a reasonable frame rate is.  Think of the speed of joints
+  in ADC units and what kind of angle resolution one might expect given
+  a particular tolerance, timeout, etc.
 
-5) Joint position tolerance should be a parameter because different values
-   are achievable at different speeds.
+* Joint position tolerance should be a parameter because different values
+  are achievable at different speeds.
 
-6) write some sort of MoveAction that takes speed into account.  Should ramp
-   up?  Allow specification of max power?
+* Write some sort of MoveAction that takes speed into account.  Should ramp
+  up?  Allow specification of max power?  Or is adaptive seek enough?
 
-PHI FIRMWARE:
+* Adaptive seek logs require non-circular buffers.  Implement.
 
-1) HW pumps need to run at a rate adequate to the frame rate. Add new param 
-   to JSON start phi link command for server to communicate expected frame rate.
-   Use this to set pump delay.
+* Set up some sort of DEBUG flag bit field with checked menu to enable.
 
-2) Performance web page does not correctly report UART expected loop period.  This is
-   because it now runs off of an event.  Change it to report frame period.
 
-3) Figure out some way to make PHI connect again when the link is broken.
+#
+# PHI FIRMWARE
+#
+
+* HW pumps need to run at a rate adequate to the frame rate. Add new param 
+  to JSON start phi link command for server to communicate expected frame rate.
+  Use this to set pump delay.
+
+* Performance web page does not correctly report UART expected loop period.  This is
+  because it now runs off of an event.  Change it to report expected frame period.
+
+* Check motor controller initialization - last time I looked, it was not in an ideal mode.
+
+* Improve PhiLink connectivity.
+
+	1) When Phi starts up, it sets serverIP to zero and starts the PhiLink thread immediately.
+	   While serverIP is zero, the thread goes into an infinite loop sending out a UDP broadcast
+	   beacon every second or so.
+
+	2) The server is listening for the beacon and when it receives it, it determines Phi's IP address
+	   from the packet and calls a new JSON setServerIP call to pass the server's IP to Phi.  Upon
+	   return from the JSON call, the server closes its beacon listening port and opens its PhiLink
+	   listening port.
+
+	4) When Phi receives the setServerIP call, it sets the serverIP variable, releasing the PhiLink thread
+	   from its infinite loop that sends the UDP beacon packets.  The thread now connects to the server
+	   and starts its comm loop.
+
+	5) When the server exits, Phi gets an error.  This should make the comm loop fall back to
+	   beacon mode.
+
+
+
+
+	
 
    
 

@@ -20,6 +20,14 @@
                   IsMainMenu="True"
                   VerticalAlignment="Top"
                   DockPanel.Dock="Top">
+                
+                <!-- This is needed for the right aligned DEBUG menu -->
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <DockPanel HorizontalAlignment="Stretch" />
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+                
                 <MenuItem Header="File">
                     <MenuItem Header="Exit"
                               Click="menuFile_Exit"/>
@@ -45,7 +53,6 @@
                                   Click="menuActions_CrudeStandUp" />
                         <MenuItem Header="Test Legs"
                                   Click="menuActions_TestLegs" />
-                        
                     </MenuItem>
                     
                     <Separator />
@@ -56,14 +63,17 @@
                               Click="menuActions_AbortAll" />
                 </MenuItem>
                 
-                <MenuItem Header="Log">
+                <MenuItem Header="Debug" HorizontalAlignment="Right">
                     <MenuItem Header="Show Log Window"
                               Click="menuLogs_showWindow" />
-                </MenuItem>
-                
-                <MenuItem Header="DEBUG">
+                    
+                    <Separator />
+                    
                     <MenuItem Header="Create Test Log"
-                              Click="menuDebug_Click" />
+                              Click="menuDebug_createTestLog" />
+                    
+                    <MenuItem Header="Run Class Tests" Click="menuDebug_runClassTests" />
+                             
                 </MenuItem>
 
             </Menu>

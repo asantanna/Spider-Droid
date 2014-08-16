@@ -90,6 +90,7 @@
     <Compile Include="Core\PhiModel\PhiActions.cs" />
     <Compile Include="Core\PhiModel\PhiJoint.cs" />
     <Compile Include="Core\PhiModel\PhiLeg.cs" />
+    <Compile Include="Core\PhiModel\PhiLog_SimpleMove.cs" />
     <Compile Include="Core\PhiModel\PhiModel.cs" />
     <Compile Include="PhiControllers\Startup\StartupController.cs" />
     <Compile Include="PhiControllers\Startup\StartupTests.cs" />
@@ -119,7 +120,9 @@
       <DependentUpon>LegBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\CircularBuffer.cs" />
+    <Compile Include="Utils\CubicInterpolator.cs" />
     <Compile Include="Utils\InfoT.cs" />
+    <Compile Include="Utils\ListWithReusableElements.cs" />
     <Compile Include="Utils\PDF.cs" />
     <Compile Include="Utils\PhiLogBase.cs" />
     <Compile Include="Utils\PhiLog_Double.cs" />
@@ -199,6 +202,7 @@
     <Resource Include="UI\Letter_Phi.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="TODO_DONE.txt" />
     <Resource Include="TODO.txt" />
     <Resource Include="PhiIcon.ico" />
     <Content Include="Resources\PhiIcon.ico" />

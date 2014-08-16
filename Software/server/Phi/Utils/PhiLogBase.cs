@@ -16,6 +16,9 @@ namespace Phi.Utils {
 
     string name;
 
+    private MarkerStyle markerStyle = MarkerStyle.Circle;
+    private System.Drawing.Color markerColor = System.Drawing.Color.Red;
+
     // different types of logs can use different types of buffers
     protected object buffer = null;
 
@@ -25,7 +28,6 @@ namespace Phi.Utils {
 
     public PhiLogBase (string name) {
       this.name = name;
-
       // buffer not passed in constructor because it causes
       // problems in derived classes since base constructors 
       // need to be called at the declaration line
@@ -35,11 +37,24 @@ namespace Phi.Utils {
       this.buffer = bufferToUse;
     }
 
+    public void setMarkerStyle(MarkerStyle style) {
+      markerStyle = style;
+    }
+
+    public void setMarkerColor(System.Drawing.Color color) {
+      markerColor = color;
+    }
+
     protected Series createSeries(Chart chart, string seriesName, SeriesChartType chartType) {
       Series series = new Series();
       series.ChartArea = chart.ChartAreas[0].Name;
       series.ChartType = chartType;
       series.Name = seriesName;
+
+      // set marker type
+      series.MarkerStyle = markerStyle;
+      series.MarkerColor = System.Drawing.Color.Blue;//markerColor;
+
       // add to chart
       chart.Series.Add(series);
       return series;

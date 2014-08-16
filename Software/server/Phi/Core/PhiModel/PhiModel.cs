@@ -161,9 +161,4 @@ namespace Phi {
     void IPhiController.shutdown() {
       // pass on to children
       foreach (IPhiController leg in legs) {
-        leg.shutdown();
-      }
-    }
-
-  } // PhiModel class
-} // namespace
+        le

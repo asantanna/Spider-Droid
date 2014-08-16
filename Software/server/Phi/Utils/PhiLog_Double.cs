@@ -7,18 +7,34 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Phi.Utils {
 
-  public class PhiLog_Double : PhiLogBase {
+  public class PhiLog_Double : PhiLogBase, IEnumerable<PhiLog_Double.BufferItem> {
 
     private SeriesChartType chartType;
     private string dataName;
+    private bool bIsCircular;
     private Series chartSeries;
     private double dataMin;
     private double dataMax;
 
+    public int Length { 
+      get {
+        if (bIsCircular) {
+          return (buffer as CircularBuffer<PhiLog_Double.BufferItem>).Length;
+        } else {
+          return (buffer as ListWithReusableElements<PhiLog_Double.BufferItem>).Count;
+        }
+      }
+    }
 
-    public PhiLog_Double(int depth, 
+    //
+    // Code
+    //
+
+    public PhiLog_Double(int preAllocLength, 
                          string logName,
                          bool bIsCircular = true) : base(logName) {
+      
+      this.bIsCircular = bIsCircular;
 
       setChartType(SeriesChartType.Spline);
       setDataName("double");
@@ -29,10 +45,9 @@ namespace Phi.Utils {
       dataMax = 0;
 
       if (bIsCircular == true) {
-        setBuffer(new CircularBuffer<BufferItem>(depth));
-
+        setBuffer(new CircularBuffer<BufferItem>(preAllocLength));
       } else {
-        throw new NotImplementedException("Non-circular buffers not supported yet.");
+        setBuffer(new ListWithReusableElements<BufferItem>(preAllocLength));
       }
     }
 
@@ -43,6 +58,13 @@ namespace Phi.Utils {
     public void setDataRange(double min, double max) {
       dataMin = min;
       dataMax = max;
+    }
+
+    public void Clear() {
+      // only makes sense with non-circular buffers
+      if (!bIsCircular) {
+        (buffer as ListWithReusableElements<BufferItem>).Clear();
+      }
     }
 
     public void setChartType(SeriesChartType chartType) {
@@ -62,20 +84,47 @@ namespace Phi.Utils {
 
       lock (this) {
 
-        // cycle thru once to determine min and max time
+        if (bIsCircular) {
 
-        foreach (BufferItem item in (buffer as CircularBuffer<BufferItem>)) {
-          double t = item.time;
-          minT = Math.Min(minT, t);
-          maxT = Math.Max(maxT, t);
-        }
+          // circular buffer
+          CircularBuffer<BufferItem> circBuff = (buffer as CircularBuffer<BufferItem>);
 
-        // now add to graph (time is in mS relative to largest)
+          // cycle thru once to determine min and max time
 
-        foreach (BufferItem item in (buffer as CircularBuffer<BufferItem>)) {
-          // add item - convert to mS
-          double msDelta = (item.time - maxT) / 1000;
-          chartSeries.Points.Add(new DataPoint(msDelta, item.data));
+          foreach (BufferItem item in circBuff) {
+            double t = item.time;
+            minT = Math.Min(minT, t);
+            maxT = Math.Max(maxT, t);
+          }
+
+          // now add to graph (time is in mS relative to largest)
+
+          foreach (BufferItem item in circBuff) {
+            // add item - convert to mS
+            double msDelta = (item.time - maxT) / 1000;
+            chartSeries.Points.Add(new DataPoint(msDelta, item.data));
+          }
+
+        } else {
+
+          // reusable list
+          ListWithReusableElements<PhiLog_Double.BufferItem> listBuff = (buffer as ListWithReusableElements<PhiLog_Double.BufferItem>);
+
+          // cycle thru once to determine min and max time
+
+          foreach (BufferItem item in listBuff) {
+            double t = item.time;
+            minT = Math.Min(minT, t);
+            maxT = Math.Max(maxT, t);
+          }
+
+          // now add to graph (time is in mS relative to largest)
+
+          foreach (BufferItem item in listBuff) {
+            // add item - convert to mS
+            double msDelta = (item.time - maxT) / 1000;
+            chartSeries.Points.Add(new DataPoint(msDelta, item.data));
+          }
         }
         
       } // lock
@@ -91,14 +140,16 @@ namespace Phi.Utils {
       Axis axis =  chartArea.AxisX;
       axis.Title = "time (mS)";
       axis.LabelStyle.Format = "F1";
-      axis.Minimum = (minT - maxT) / 1000;
-      axis.Maximum = 0.000001;
+      double range = (maxT - minT) / 1000;
+      const double SLOP = 0.1;
+      axis.Minimum = -range * (1 + SLOP);
+      axis.Maximum = range * SLOP;
 
       // data axis
 
       axis =  chartArea.AxisY;
       axis.Title = dataName;
-      axis.LabelStyle.Format = "F2";
+      axis.LabelStyle.Format = "F1";
 
       if (dataMin != dataMax) {
         // set data range
@@ -116,17 +167,41 @@ namespace Phi.Utils {
     }
 
     public void Add(UInt64 time, double data) {
+      BufferItem newItem = new BufferItem(time, data);
       // lock to prevent change during chart population
       lock (this) {
-        (buffer as CircularBuffer<BufferItem>).Add(new BufferItem(time, data));
-      }
+        if (bIsCircular) {
+          // circular buffer
+          (buffer as CircularBuffer<BufferItem>).Add(newItem);
+        } else {
+          // reusable list
+          ListWithReusableElements<PhiLog_Double.BufferItem> list = (buffer as ListWithReusableElements<PhiLog_Double.BufferItem>);
+          BufferItem item = list.getNewItem();
+          item.time = time;
+          item.data = data;
+        } 
+      } // lock
+
+    }
+
+    //
+    // IEnumerator interface
+    //
+
+    IEnumerator<PhiLog_Double.BufferItem> IEnumerable<PhiLog_Double.BufferItem>.GetEnumerator() {
+      return (buffer as IEnumerable<PhiLog_Double.BufferItem>).GetEnumerator();
+    }
+
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+      // pass on to specific one
+      return (this as IEnumerable<PhiLog_Double.BufferItem>).GetEnumerator();
     }
 
     //
     // Buffer Item
     //
 
-    class BufferItem {
+    public class BufferItem {
       public UInt64 time;
       public double data;
 
@@ -144,4 +219,5 @@ namespace Phi.Utils {
     } // class BufferItem
 
   } // class PhiLogTimeScalar
+
 } // namespace
