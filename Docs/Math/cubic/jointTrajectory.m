@@ -26,7 +26,7 @@ function jointTrajectory
     syms P1_y  P2_y
     
     FRAC_ACCEL = 0.2;
-    FRAC_DECEL = 0.2;
+    FRAC_DECEL = 0.4;
 
     C1 = [0, R1];
     C2 = [1, (1-R2) ];
@@ -61,6 +61,12 @@ function jointTrajectory
         sol_R1 = eval(sol.R1(n));
         sol_R2 = eval(sol.R2(n));
         fprintf('sol(%d): P1.y=%g, p2.y=%g, R1=%g, R2=%g\n', n, sol_P1_y, sol_P2_y, sol_R1, sol_R2);
+        
+        if ((sol_R1 < 0) || (sol_R2 < 0))
+            % sometimes Matlab gives "spurious solutions" - ignore
+            fprintf('*** Ignoring Matlab "spurious solution"\n');
+            continue;
+        end
         
         if (sol_P1_y < sol_P2_y)
             correctN = n;
