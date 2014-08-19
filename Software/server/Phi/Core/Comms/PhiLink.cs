@@ -274,5 +274,4 @@ namespace Phi {
     }
 
   }  // class
-}  // namespace
-
+}  // namespac

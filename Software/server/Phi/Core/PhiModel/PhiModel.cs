@@ -33,7 +33,7 @@ namespace Phi {
     public System.Windows.Forms.TreeNode logTreeNode;
 
     // from PHI state
-    private UInt64 PHI_currTime;
+    public UInt64 PHI_currTime;
 
     //
     // CODE
@@ -45,6 +45,9 @@ namespace Phi {
       logTreeNode = new System.Windows.Forms.TreeNode(LOG_NODENAME_MODEL);
       logTreeNode.Tag = null;
       logTreeNode.Text = "Model";
+
+      // This should not use "LogForm.invokeAddNode" because the log window might not be created yet.
+      // Note: this is OK because we are running on the UI thread anyway
       PhiGlobals.logForm.logTreeRootNode.Nodes.Add(logTreeNode);
 
       // allocate legs                                         // joint[TSH] : joint_idx [0-11] : JSON motor name "[A-F][0-1]"
@@ -54,7 +57,7 @@ namespace Phi {
       legs[LEG_D_IDX] = new PhiLeg(this, "D", LEG_D_IDX);      // motors T:6:"D0", S:7:"D1", H:11:"F1"
 
       // show all log nodes
-      LogForm.getLogTreeView().ExpandAll();
+      PhiGlobals.logForm.ExpandAll();
 
       // create the root action
       abortAllActions();
@@ -62,10 +65,6 @@ namespace Phi {
 
     public void addChildAction(PhiActionBase action) {
       rootAction.addChild(action);
-    }
-
-    public UInt64 getPhiTime() {
-      return PHI_currTime;
     }
 
     //
@@ -161,4 +160,9 @@ namespace Phi {
     void IPhiController.shutdown() {
       // pass on to children
       foreach (IPhiController leg in legs) {
-        le
+        leg.shutdown();
+      }
+    }
+
+  } // PhiModel class
+} // namespace

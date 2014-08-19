@@ -22,7 +22,7 @@ namespace Phi {
 
       public PA_Calibrate(PhiLeg leg)
         : base(name: "calibrate_leg",
-                actions: new PhiActionBase[] {
+               actions: new PhiActionBase[] {
 
           new PhiJoint.PA_SeekWithTimeout(name: "clear_shin",
                                                  joint: leg.joints[PhiLeg.SHIN_IDX],
@@ -59,6 +59,76 @@ namespace Phi {
 
       });
     }
+
+    // TEST LEG ACTION
+
+    public class PA_TestLeg : PA_Sequence {
+
+      public PA_TestLeg(PhiLeg leg)
+        : base(name: "test_leg",
+               actions: new PhiActionBase[] {
+
+          new PhiJoint.PA_SeekWithTimeout(name: "clear_shin",
+                                                 joint: leg.joints[PhiLeg.SHIN_IDX],
+                                                 targetPos: 0.9),
+
+          new PhiJoint.PA_MoveWithTimeout(name: "extend_thigh",
+                                          joint: leg.joints[PhiLeg.THIGH_IDX],
+                                          power: PhiJoint.TEST_MOTOR_POWER),
+
+          // duration 1000 mS
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.1,
+                                                  maxAbsPower: 0.5,
+                                                  msDuration:  1000),
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.9,
+                                                  maxAbsPower: 0.5,
+                                                  msDuration:  1000),
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.1,
+                                                  maxAbsPower: 0.5,
+                                                  msDuration:  1000),
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.9,
+                                                  maxAbsPower: 0.5,
+                                                  msDuration:  1000),
+
+          // duration 700
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.1,
+                                                  maxAbsPower: 0.5,
+                                                  msDuration:  500),
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.9,
+                                                  maxAbsPower: 0.5,
+                                                  msDuration:  500),
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.1,
+                                                  maxAbsPower: 0.5,
+                                                  msDuration:  500),
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.9,
+                                                  maxAbsPower: 0.5,
+                                                  msDuration:  500),
+      }) { }
+    } // class Calibrate
 
   } // class PhiLeg
 
@@ -248,7 +318,7 @@ namespace Phi {
                 // figure out which way to move
                 double power = (joint.getPos() <= targetPos) ? ABS_START_POWER : -ABS_START_POWER;
                 // set power
-                joint.seekWithTimeout(power, targetPos);
+                joint.adaptiveSeekWithTimeout(targetPos: targetPos, maxAbsPower: maxAbsPower, msDuration: msDuration);    
                 actionState = ACTION_STATE.RUNNING;
               }
               break;
@@ -485,13 +555,13 @@ namespace Phi {
         switch (actionState) {
           case ACTION_STATE.INIT: {
               // save wake time
-              wakeup_uSecs = PhiGlobals.model.getPhiTime() + (mSecs * 1000);
+              wakeup_uSecs = PhiGlobals.model.PHI_currTime + (mSecs * 1000);
               actionState = ACTION_STATE.RUNNING;
             }
             break;
 
           case ACTION_STATE.RUNNING: {
-              if (wakeup_uSecs >= PhiGlobals.model.getPhiTime()) {
+              if (wakeup_uSecs >= PhiGlobals.model.PHI_currTime) {
                 // time to make up
                 actionState = ACTION_STATE.DONE;
               }

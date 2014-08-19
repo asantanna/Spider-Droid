@@ -1,6 +1,7 @@
 ﻿using Phi.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,18 +30,29 @@ namespace Phi {
     public const double JOINT_POS_TOLERANCE = 0.01;
 
     // motor power used for startup tests
-    public const double TEST_MOTOR_POWER = 0.4;  
+    public const double TEST_MOTOR_POWER = 0.3;  
 
     // prototype trajectory of joint - for more info, see MATLAB "JointTrajectory.m"
-    const double TRAJ_P1_X = 0.2;
-    const double TRAJ_P1_Y = 0.1;
-    const double TRAJ_P2_X = 0.8;
-    const double TRAJ_P2_Y = 0.9;
-    const double TRAJ_R1   = 0.25;
-    const double TRAJ_R2   = 0.25;
+    const double FRAC_ACCEL = 0.2;
+    const double FRAC_DECEL = 0.4;            // orig = 0.2;
+    const double TRAJ_P1_X  = FRAC_ACCEL;
+    const double TRAJ_P1_Y  = 0.112795;       // orig = 0.1;
+    const double TRAJ_P2_X  = 1-FRAC_DECEL;
+    const double TRAJ_P2_Y  = 0.774411;       // orig = 0.9;
+    const double TRAJ_R1    = 0.233711;       // orig = 0.25;
+    const double TRAJ_R2    = 0.467421;       // orig = 0.25;
 
     // log tree view node name (key)
     public const string LOG_NODENAME_JOINT_PREFIX = "logNode_Joint_";
+
+    // when logging, enterring idle is deferred by this amount so we can watch
+    // for overshoots
+    const UInt64 DEFER_IDLE_USECS = 300 * MSECS;
+
+    // this is how many frames ahead adaptive seek predicts
+    const int PREDICTION_LOOKAHEAD_FRAMES = 1;
+    const UInt64 PREDICTION_LOOKAHEAD_USECS = (UInt64) 
+      (PREDICTION_LOOKAHEAD_FRAMES * PhiLink.DESIRED_SECS_PER_FRAME * SECS);
 
     //
     // VARS
@@ -54,12 +66,13 @@ namespace Phi {
 
     // used by seek functions
     private double targetPos;
+    private UInt64 deferralEndTime;
 
     // used by adaptive seek function
     private double maxAbsPower;
-    private double startTime;
-    private double deltaP;
-    private double deltaT;
+    private double cmdStartPos;
+    private double proto_deltaP;
+    private double proto_deltaT;
     private PhiLog_Double log_recentPos;
 
     // from PHI state
@@ -78,7 +91,8 @@ namespace Phi {
 
     private enum JOINT_STATE {
       IDLE = 0,
-      TIMEOUT_IDLE,
+      DEFERRING_IDLE,
+
       MOVE_WITH_TIMEOUT,
       SEEK_POS_WITH_TIMEOUT,
       ADAPTIVE_SEEK_POS_WITH_TIMEOUT,
@@ -89,10 +103,11 @@ namespace Phi {
     // log tree view node
     private System.Windows.Forms.TreeNode logTreeNode;
 
-    // DEBUG
-
-    private double minDeltaPos;                 // used for debugging tolerances
-    private PhiLog_SimpleMove log_simpleMovePerformance;
+    // logs
+    private PhiLogBase activeMoveLog = null;
+    protected UInt64 cmdStartTime;
+    protected UInt64 cmdCompletionTime;
+    protected UInt64 cmdIdleTime;
 
     //
     // CODE
@@ -111,23 +126,13 @@ namespace Phi {
       parent.logTreeNode.Nodes.Add(logTreeNode);
 
       // allocate log of recent positions used by adaptive seek
+      // Note: we keep track of the minimum of 4 plus something related
+      //       the number of frames we are looking ahead
 
-      log_recentPos = new PhiLog_Double(4, logName: "joint " + name + ": AS History");
+      int numExtra = PREDICTION_LOOKAHEAD_FRAMES - 1;
+      log_recentPos = new PhiLog_Double(4 + numExtra, logName: "joint " + name + ": AS History");
       log_recentPos.setDataName("position");
       log_recentPos.setDataRange(0, 1);
-
-      log_recentPos.addToLogWindow(parentNode: logTreeNode,
-                                name: parent.name + name + "_ASInternal",
-                                text: "Recent Pos (adaptSeek)");
-
-      // allocate log for debugging performance of simple movements
-
-      log_simpleMovePerformance = new PhiLog_SimpleMove("Simple Move Perf");
-
-      log_simpleMovePerformance.addToLogWindow(parentNode: logTreeNode,
-                                               name: parent.name + name + "_SM_PerfLog",
-                                               text: "Simple Move SnapShot");
-
     }
 
     public void reset() {
@@ -140,6 +145,16 @@ namespace Phi {
     public void setIdle() {
       jointState = JOINT_STATE.IDLE;
       PHI_motorPower = 0;
+      if (PhiGlobals.model != null) {
+        cmdIdleTime  = PhiGlobals.model.PHI_currTime;
+      }
+    }
+
+    public void deferIdle() {
+      // stop motor but don't go into idle state just yet
+      PHI_motorPower = 0;
+      deferralEndTime = PhiGlobals.model.PHI_currTime + DEFER_IDLE_USECS;
+      jointState = JOINT_STATE.DEFERRING_IDLE;
     }
 
     public int getIndex() {
@@ -163,7 +178,7 @@ namespace Phi {
     }
 
     public double getDuration() {
-      return deltaT;
+      return proto_deltaT;
     }
 
     public PhiLogBase getHistoryLog() {
@@ -171,49 +186,65 @@ namespace Phi {
     }
 
     public bool isIdle() {
-      return (jointState == JOINT_STATE.IDLE) || (jointState == JOINT_STATE.TIMEOUT_IDLE);
+      return (jointState == JOINT_STATE.IDLE);
     }
 
     public void causeTimeout() {
-      jointState = JOINT_STATE.TIMEOUT_IDLE;
-      PHI_motorPower = 0;
+      commandComplete();
     }
 
     public void moveWithTimeout(double power) {
 
-      // reset simple move log and add first point
-      log_simpleMovePerformance.Clear();
-      log_simpleMovePerformance.Add(PhiGlobals.model.PHI_currTime, PHI_currPos, PHI_motorPower);
-
-      // debug
-      Console.WriteLine("moveWithTimeout() - time={0}", PhiGlobals.model.PHI_currTime);
-
       jointState = JOINT_STATE.MOVE_WITH_TIMEOUT;
+      double origPower = PHI_motorPower;
       PHI_motorPower = power;
+      cmdStartTime = PhiGlobals.model.PHI_currTime;
       resetTimeout();
+
+      // allocate log for debugging performance of simple movements
+
+      if (true) {  // TODO: add debug flags here
+        Debug.Assert(activeMoveLog == null, "activeLog != null ?!?!");
+        activeMoveLog = new PhiLog_SimpleMove("Simple Move");
+        (activeMoveLog as PhiLog_SimpleMove).Add(PhiGlobals.model.PHI_currTime, PHI_currPos, origPower);
+      }
+
+      // DEBUG
+      // Console.WriteLine("moveWithTimeout() - time={0}", PhiGlobals.model.PHI_currTime);
     }
 
     public void seekWithTimeout(double power, double targetPos) {
       jointState = JOINT_STATE.SEEK_POS_WITH_TIMEOUT;
+      double origPower = PHI_motorPower;
       PHI_motorPower = power;
       this.targetPos = targetPos;
+      cmdStartTime = PhiGlobals.model.PHI_currTime;
       resetTimeout();
-      // DEBUG
-      minDeltaPos = 1.0;
+
+      // allocate log for debugging performance of simple seek
+      if (true) {  // TODO: add debug flags here
+        Debug.Assert(activeMoveLog == null, "activeLog != null ?!?!");
+        activeMoveLog = new PhiLog_SimpleSeek("Simple Seek", targetPos);
+        (activeMoveLog as PhiLog_SimpleSeek).Add(PhiGlobals.model.PHI_currTime, PHI_currPos, origPower);
+      }
     }
 
-    public void adaptiveSeekWithTimeout(double targetPos, double absMaxPower, double msDuration = 0) {
+    public void adaptiveSeekWithTimeout(double targetPos, double maxAbsPower, double msDuration = 0) {
 
       jointState = JOINT_STATE.ADAPTIVE_SEEK_POS_WITH_TIMEOUT;
-      this.maxAbsPower = absMaxPower;
+      this.maxAbsPower = maxAbsPower;
       this.targetPos = targetPos;
-      deltaP = targetPos - PHI_currPos;
-      startTime = PhiGlobals.model.PHI_currTime;
+      cmdStartTime = PhiGlobals.model.PHI_currTime;
+      cmdStartPos = PHI_currPos;
+      proto_deltaP = targetPos - cmdStartPos;
+
+      double origPower = PHI_motorPower;
+      PHI_motorPower = proto_deltaP > 0 ? TEST_MOTOR_POWER : -TEST_MOTOR_POWER;
 
       // figure out type
       if (msDuration != 0) {
         // duration specified - we want to complete this move in the specified time
-        this.deltaT = msDuration * MSECS;
+        proto_deltaT = msDuration * MSECS;
       } else {
         // duration NOT specified - this means we want move as quickly as possible
         // TODO: not implemented yet
@@ -223,8 +254,23 @@ namespace Phi {
       // set up for timeouts
       resetTimeout();
 
-      // DEBUG
-      minDeltaPos = 1.0;
+      // allocate log for debugging performance of simple movements
+      if (true) {  // TODO: add debug flags here
+        Debug.Assert(activeMoveLog == null, "activeLog != null ?!?!");
+        activeMoveLog = new PhiLog_AdaptiveSeek("Adaptive Seek", targetPos, (UInt64) (cmdStartTime + proto_deltaT));
+
+        double predPos; UInt64 predTime;
+        movePredict(out predPos, out predTime);
+        double idealPos = protoTrajectory(predTime);
+
+        (activeMoveLog as PhiLog_AdaptiveSeek).Add(
+                              time: PhiGlobals.model.PHI_currTime,
+                              position: PHI_currPos,
+                              power: origPower,
+                              predTime: predTime,
+                              idealPos: idealPos,
+                              interpPos: predPos);
+      }
     }
 
     void resetTimeout() {
@@ -233,15 +279,65 @@ namespace Phi {
       lastMoveTime = PhiGlobals.model.PHI_currTime;
     }
 
+    void commandComplete(bool bDeferIdle = false) {
+
+      cmdCompletionTime = PhiGlobals.model.PHI_currTime;
+
+      if (bDeferIdle && (activeMoveLog != null)) {
+        // logging  and deferred idle requested
+        deferIdle();
+      } else {
+        setIdle();
+      } 
+    }
+
+    //
+    // JOINT STATE MACHINE
+    //
+
     void jointStateMachine() {
+
       switch (jointState) {
 
         case JOINT_STATE.IDLE:
-          // do nothing
+
+          if (activeMoveLog != null) {
+
+            // was logging something - add to log window
+
+            activeMoveLog.setTimeRange(cmdStartTime, cmdIdleTime, cmdCompletionTime);
+
+            activeMoveLog.addToLogWindow(parentNode: logTreeNode,
+                                         name: parent.name + name + "_SM_PerfLog",
+                                         text: String.Format("T={0:F2}s: " + activeMoveLog.name, cmdStartTime / 1e6));
+
+            activeMoveLog = null;
+          }
+
           break;
 
-        case JOINT_STATE.TIMEOUT_IDLE:
-          // do nothing - this is an idle state ENTERED because of a timeout
+        case JOINT_STATE.DEFERRING_IDLE:
+
+          // when logging, seek commands use this state to defer entering
+          // the idle state so we can keep logging to check for overshoots
+
+          UInt64 currTime = PhiGlobals.model.PHI_currTime;
+
+          if (activeMoveLog is PhiLog_SimpleMove) {
+            (activeMoveLog as PhiLog_SimpleMove).Add(currTime, PHI_currPos, PHI_motorPower);
+          } else if (activeMoveLog is PhiLog_SimpleSeek) {
+            (activeMoveLog as PhiLog_SimpleSeek).Add(currTime, PHI_currPos, PHI_motorPower);
+          } else if (activeMoveLog is PhiLog_AdaptiveSeek) {
+            throw new NotImplementedException();
+          } else {
+            throw new NotImplementedException("unknown state in DEFERRING_IDLE");
+          }
+
+          if (currTime >= deferralEndTime) {
+            deferralEndTime = 0;
+            setIdle();
+          }
+
           break;
 
         case JOINT_STATE.MOVE_WITH_TIMEOUT:
@@ -249,13 +345,16 @@ namespace Phi {
           // time out if haven't moved in a while
           checkForMoveTimeout();
 
-          // debug
-          if (jointState == JOINT_STATE.TIMEOUT_IDLE) {
-            Console.WriteLine("timeout in move simple - time={0}", PhiGlobals.model.PHI_currTime);
+          // log position and power
+          if (activeMoveLog != null) {
+            (activeMoveLog as PhiLog_SimpleMove).Add(PhiGlobals.model.PHI_currTime, PHI_currPos, PHI_motorPower);
           }
 
-          // log position and power
-          log_simpleMovePerformance.Add(PhiGlobals.model.PHI_currTime, PHI_currPos, PHI_motorPower);
+          // DEBUG
+          // if (jointState != JOINT_STATE.MOVE_WITH_TIMEOUT) {
+            // timeout
+            //  Console.WriteLine("timeout in move simple - time={0}", PhiGlobals.model.PHI_currTime);
+          // }
 
           break;
 
@@ -272,87 +371,78 @@ namespace Phi {
 
     void jointStateMachine_simpleSeekWithTimeout() {
 
-      double deltaPos = PHI_currPos-targetPos;
-
-      // DEBUG
-      if (Math.Abs(deltaPos) < Math.Abs(minDeltaPos)) {
-        minDeltaPos = deltaPos;
+      // log position and power
+      if (activeMoveLog != null) {
+        (activeMoveLog as PhiLog_SimpleSeek).Add(PhiGlobals.model.PHI_currTime, PHI_currPos, PHI_motorPower);
       }
 
       // check if done
+
       if (PhiGlobals.approxEq(PHI_currPos, targetPos, JOINT_POS_TOLERANCE)) {
 
-        // reached target - done
-        setIdle();
+        // reached target
+        commandComplete(bDeferIdle: true);
 
         // DEBUG
-        Console.WriteLine("*** SUCCESS when seeking to joint position={0:G3}, minDelta={1:G3}",
-          targetPos, minDeltaPos);
+        Console.WriteLine("*** SUCCESS when seeking to joint position={0:G3}", targetPos);
 
       } else {
 
         // not at target
-        if ( ((PHI_motorPower > 0) && (deltaPos > 0)) ||
+        double deltaPos = PHI_currPos-targetPos;
+        if (((PHI_motorPower > 0) && (deltaPos > 0)) ||
              ((PHI_motorPower < 0) && (deltaPos < 0))) {
 
           // overshot target - done
-          setIdle();
+          commandComplete(bDeferIdle: true);
 
           // DEBUG
-          Console.WriteLine("*** Overshoot occurred when seeking to joint position={0:G3}, minDelta={1:G3}",
-            targetPos, minDeltaPos);
+          Console.WriteLine("*** Overshoot occurred when seeking to joint position={0:G3}", targetPos);
 
         } else {
 
-          // on way to target
-          // time out if haven't moved in a while
+          // on way to target - time out if haven't moved in a while
           checkForMoveTimeout();
 
           // DEBUG
-          if (jointState == JOINT_STATE.TIMEOUT_IDLE) {
-            Console.WriteLine("*** Timeout occurred when seeking to joint position={0:G3}, minDelta={1:G3}",
-              targetPos, minDeltaPos);
-          }
+          //if (jointState != JOINT_STATE.SEEK_POS_WITH_TIMEOUT) {
+            // timed out
+            // Console.WriteLine("*** Timeout occurred when seeking to joint position={0:G3}", targetPos);
+          //}
         }
       }
-
-      // DEBUG
-      // Console.WriteLine("joint seek: curr={0:G3}, target={1:G3}, delta={2:G3}", 
-      //                   PHI_currPos, targetPos, Math.Abs(PHI_currPos-targetPos));
     }
 
     void jointStateMachine_adaptiveSeekWithTimeout() {
 
-      double deltaPos = PHI_currPos-targetPos;
+      UInt64 currTime = PhiGlobals.model.PHI_currTime;
 
-      // DEBUG
-      if (Math.Abs(deltaPos) < Math.Abs(minDeltaPos)) {
-        minDeltaPos = deltaPos;
+      // log position and power
+      if (activeMoveLog != null) {
+        (activeMoveLog as PhiLog_SimpleSeek).Add(currTime, PHI_currPos, PHI_motorPower);
       }
 
       // check if done
       if (PhiGlobals.approxEq(PHI_currPos, targetPos, JOINT_POS_TOLERANCE)) {
 
-        // reached target - done
-        setIdle();
+        // reached target
+        commandComplete(bDeferIdle: true);
 
         // DEBUG
-        Console.WriteLine("*** SUCCESS when adapt_seeking to joint position={0:G3}, minDelta={1:G3}",
-          targetPos, minDeltaPos);
+        Console.WriteLine("*** SUCCESS when adapt_seeking to joint position={0:G3}", targetPos);
 
       } else {
 
         // not at target
-
+        double deltaPos = PHI_currPos - targetPos;
         if ( ((PHI_motorPower > 0) && (deltaPos > 0)) ||
              ((PHI_motorPower < 0) && (deltaPos < 0))) {
-
-          // overshot target - done
-          setIdle();
+          
+          // overshot target
+          commandComplete(bDeferIdle: true);
 
           // DEBUG
-          Console.WriteLine("*** Overshoot occurred when adapt_seeking to joint position={0:G3}, minDelta={1:G3}",
-            targetPos, minDeltaPos);
+          Console.WriteLine("*** Overshoot occurred when adapt_seeking to joint position={0:G3}", targetPos);
 
         } else {
 
@@ -361,14 +451,39 @@ namespace Phi {
           checkForMoveTimeout();
 
           // predict if our next position will follow our desired trajectory
-          double nextT = PhiGlobals.model.PHI_currTime + (PhiLink.DESIRED_SECS_PER_LOOP * SECS);
-          double predPos = CubicInterpolator.interpolateFromLog(log_recentPos, nextT);
-          double predError = predPos - protoTrajectory(nextT - startTime);
+          double predPos; UInt64 predTime;
+          movePredict(out predPos, out predTime);
+          double idealPos = protoTrajectory(predTime);
+          double predError = predPos - idealPos;
+
+          // adjust power to keep on track
+          // TODO: the logic below is too simple (doesn't allow power to change sign, etc)
+          double errorFrac = 1; // Math.Min(Math.Abs(predError), 0.05) / 0.05;
+          if (Math.Sign(predError) * Math.Sign(PHI_motorPower) > 0) {
+            // too fast
+            PHI_motorPower /= 1.05 * errorFrac;
+          } else {
+            // too slow
+            PHI_motorPower *= 1.2 * errorFrac;
+            if (Math.Abs(PHI_motorPower) > maxAbsPower) {
+              PHI_motorPower = Math.Sign(PHI_motorPower) * maxAbsPower;
+            }
+          }
+
+          if (activeMoveLog != null) {
+
+            (activeMoveLog as PhiLog_AdaptiveSeek).Add(
+                                  time: PhiGlobals.model.PHI_currTime,
+                                  position: PHI_currPos,
+                                  power: PHI_motorPower,
+                                  predTime: predTime,
+                                  idealPos: idealPos,
+                                  interpPos: predPos);
+          }
 
           // DEBUG
-          if (jointState == JOINT_STATE.TIMEOUT_IDLE) {
-            Console.WriteLine("*** Timeout occurred when adapt_seeking to joint position={0:G3}, minDelta={1:G3}",
-              targetPos, minDeltaPos);
+          if (jointState != JOINT_STATE.ADAPTIVE_SEEK_POS_WITH_TIMEOUT) {
+            Console.WriteLine("*** Timeout occurred when adapt_seeking to joint position={0:G3}", targetPos);
           }
         }
       }
@@ -376,6 +491,11 @@ namespace Phi {
       // DEBUG
       // Console.WriteLine("joint adaptive seek: curr={0:G3}, target={1:G3}, delta={2:G3}", 
       //                   PHI_currPos, targetPos, Math.Abs(PHI_currPos-targetPos));
+    }
+
+    void movePredict(out double predPos, out UInt64 predTime) {
+       predTime = PhiGlobals.model.PHI_currTime + PREDICTION_LOOKAHEAD_USECS;
+       predPos = CubicInterpolator.interpolateFromLog(log_recentPos, predTime);
     }
 
     void checkForMoveTimeout() {
@@ -397,8 +517,8 @@ namespace Phi {
 
       double p = 0;
 
-      // adjust t so complete at t = deltaT
-      t = t / deltaT;
+      // adjust t so complete at t = cmdStartTime + deltaT
+      t = (t-cmdStartTime) / proto_deltaT;
 
       // find out which phase we're in
       if (t < 0) {
@@ -426,7 +546,7 @@ namespace Phi {
       }
 
       // adjust p so total move p = deltaP
-      p = p * deltaP;
+      p = cmdStartPos + p * proto_deltaP;
 
       return p;
     }

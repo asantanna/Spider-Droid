@@ -93,10 +93,4 @@ namespace Phi.UI {
         object log = selNode.Tag;
         if (log != null) {
           // clear previous log being displayed
-          (log as PhiLogBase).clearChart(LogChart);
-        }
-      }
-    }
-
-  }
-}
+          (log as P

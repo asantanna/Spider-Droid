@@ -86,6 +86,8 @@
     </ApplicationDefinition>
     <Compile Include="Core\IPhiController.cs" />
     <Compile Include="Core\Comms\PhiBasePacket.cs" />
+    <Compile Include="Core\PhiModel\PhiLog_AdaptiveSeek.cs" />
+    <Compile Include="Core\PhiModel\PhiLog_SimpleSeek.cs" />
     <Compile Include="Core\PhiModel\PhiActionBase.cs" />
     <Compile Include="Core\PhiModel\PhiActions.cs" />
     <Compile Include="Core\PhiModel\PhiJoint.cs" />

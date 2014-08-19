@@ -198,7 +198,7 @@ namespace Phi {
 
       // update PHI state UI
 
-      LinkFrameRateText.Text = PhiLink.getAvgFrameRate().ToString("F1") + " / " + PhiLink.DESIRED_LOOP_FPS + " Hz";
+      LinkFrameRateText.Text = PhiLink.getAvgFrameRate().ToString("F1") + " / " + PhiLink.DESIRED_FPS + " Hz";
       AvgIdleText.Text = (PhiLink.getAvgIdle() * 100).ToString("F1") + " %";
       ctlNumLoops.Text  = PhiLink.getLoopCount().ToString();
       ctlPacketId.Text = PhiLink.getLastPacketID().ToString();
@@ -345,7 +345,18 @@ namespace Phi {
     private void menuActions_CrudeStandUp(object sender, RoutedEventArgs e) {
     }
 
-    private void menuActions_TestLegs(object sender, RoutedEventArgs e) {
+    private void menuActions_TestLeg(object sender, RoutedEventArgs e) {
+      // have user select leg
+      DlgSelectLeg dlg = new DlgSelectLeg();
+      dlg.Owner = this;
+      dlg.ShowDialog();
+
+      if (dlg.DialogResult == true) {
+        StartupController controller = getStartupController();
+        if (controller != null) {
+          controller.testLeg(dlg.getLegIdx());
+        }
+      }
     }
 
     private void menuActions_DumpActions(object sender, RoutedEventArgs e) {

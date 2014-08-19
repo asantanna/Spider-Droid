@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Phi.Utils {
       
       this.bIsCircular = bIsCircular;
 
-      setChartType(SeriesChartType.Spline);
+      setChartType(SeriesChartType.Line);
       setDataName("double");
       chartSeries = null;
 
@@ -67,103 +68,9 @@ namespace Phi.Utils {
       }
     }
 
-    public void setChartType(SeriesChartType chartType) {
-      this.chartType = chartType;
-    }
-
-    public override void populateChart(Chart chart) {
-
-      // create a series for the chart
-      chartSeries = createSeries(chart, dataName,  chartType);
-
-      // populate it with log contents
-      // note: lock to prevent changing by comm thread
-
-      double minT = Double.MaxValue;
-      double maxT = Double.MinValue;
-
-      lock (this) {
-
-        if (bIsCircular) {
-
-          // circular buffer
-          CircularBuffer<BufferItem> circBuff = (buffer as CircularBuffer<BufferItem>);
-
-          // cycle thru once to determine min and max time
-
-          foreach (BufferItem item in circBuff) {
-            double t = item.time;
-            minT = Math.Min(minT, t);
-            maxT = Math.Max(maxT, t);
-          }
-
-          // now add to graph (time is in mS relative to largest)
-
-          foreach (BufferItem item in circBuff) {
-            // add item - convert to mS
-            double msDelta = (item.time - maxT) / 1000;
-            chartSeries.Points.Add(new DataPoint(msDelta, item.data));
-          }
-
-        } else {
-
-          // reusable list
-          ListWithReusableElements<PhiLog_Double.BufferItem> listBuff = (buffer as ListWithReusableElements<PhiLog_Double.BufferItem>);
-
-          // cycle thru once to determine min and max time
-
-          foreach (BufferItem item in listBuff) {
-            double t = item.time;
-            minT = Math.Min(minT, t);
-            maxT = Math.Max(maxT, t);
-          }
-
-          // now add to graph (time is in mS relative to largest)
-
-          foreach (BufferItem item in listBuff) {
-            // add item - convert to mS
-            double msDelta = (item.time - maxT) / 1000;
-            chartSeries.Points.Add(new DataPoint(msDelta, item.data));
-          }
-        }
-        
-      } // lock
-
-      //
-      // Set chart appearance
-      //
-
-      ChartArea chartArea = chart.ChartAreas[0];
-
-      // time axis
-
-      Axis axis =  chartArea.AxisX;
-      axis.Title = "time (mS)";
-      axis.LabelStyle.Format = "F1";
-      double range = (maxT - minT) / 1000;
-      const double SLOP = 0.1;
-      axis.Minimum = -range * (1 + SLOP);
-      axis.Maximum = range * SLOP;
-
-      // data axis
-
-      axis =  chartArea.AxisY;
-      axis.Title = dataName;
-      axis.LabelStyle.Format = "F1";
-
-      if (dataMin != dataMax) {
-        // set data range
-        axis.Minimum = dataMin;
-        axis.Maximum = dataMax;
-      }
-
-    }
-
-    public override void clearChart(Chart chart) {
-      if (chartSeries != null) {
-        deleteSeries(chart, chartSeries);
-        chartSeries = null;
-      }
+    public override void disposeLog() {
+      // dispose base!
+      (this as IDisposable).Dispose();
     }
 
     public void Add(UInt64 time, double data) {
@@ -179,9 +86,128 @@ namespace Phi.Utils {
           BufferItem item = list.getNewItem();
           item.time = time;
           item.data = data;
-        } 
+        }
+      } // lock
+    }
+
+    public double[] getMovingAverage(double accumRate = 0) {
+      int logLen = Length;
+      Debug.Assert(logLen >= 4);
+      double[] movAvg = new double[logLen];
+      double accum = 0;
+      int idx = 0;
+
+      if (accumRate == 0) {
+        // means avg will be used for interpolation which needs 4 items
+        // calculate rate such that deepest item is 1/10 of sum:
+        //    depth = len - 4
+        //    h^depth = 1/10
+        //      h = (1/10) ^ 1/depth
+        double depth = logLen - 4; 
+        accumRate = 1 - Math.Pow(1.0/10, 1.0 / depth);
+      }
+      
+      double histRate = 1 - accumRate;
+      foreach (BufferItem item in this) {
+        if (idx == 0) {
+          accum = item.data;
+        } else {
+          accum = (accum * histRate) + (histRate * item.data);
+        }
+        // save to array
+        movAvg[idx++] = accum;
+      }
+      return movAvg;
+    }
+
+    //
+    // Chart related functions
+    //
+
+    public void setChartType(SeriesChartType chartType) {
+      this.chartType = chartType;
+    }
+
+    public override void addToChart(Chart chart) {
+
+      // add color to palette
+      chart_addToPalette(chart, chart_getLineColor());
+
+      // create a series for the chart
+      chartSeries = chart_createSeries(chart, dataName,  chartType);
+
+      // populate it with log contents
+      // note: lock to prevent changing by comm thread
+
+      lock (this) {
+
+        if (bIsCircular) {
+
+          // circular buffer
+          CircularBuffer<BufferItem> circBuff = (buffer as CircularBuffer<BufferItem>);
+
+          // add to chart (time is in mS relative to origin)
+
+          foreach (BufferItem item in circBuff) {
+            // add item - convert to mS
+            double timeVal = (item.time - originTimeVal) / 1000;
+            chartSeries.Points.Add(new DataPoint(timeVal, item.data));
+          }
+
+        } else {
+
+          // reusable list
+          ListWithReusableElements<PhiLog_Double.BufferItem> listBuff = (buffer as ListWithReusableElements<PhiLog_Double.BufferItem>);
+
+          // add to chart (time is in mS relative to origin)
+
+          foreach (BufferItem item in listBuff) {
+            // add item - convert to mS
+            double timeVal = (item.time - originTimeVal) / 1000;
+            chartSeries.Points.Add(new DataPoint(timeVal, item.data));
+          }
+        }
+       
       } // lock
 
+      // Set chart appearance
+      ChartArea chartArea = chart.ChartAreas[0];
+
+      // time axis
+
+      Axis axis =  chartArea.AxisX;
+      axis.Title = "time (mS)";
+      axis.LabelStyle.Format = "F1";
+      const double SLOP = 0.025;
+      double range = maxTimeVal - minTimeVal;
+      double extra = SLOP * range;
+      axis.Minimum = (minTimeVal - originTimeVal - extra) / 1000;
+      axis.Maximum = (maxTimeVal - originTimeVal + extra) / 1000;
+
+      // data axis
+
+      if (bUseY2Axis == false) {
+        axis =  chartArea.AxisY;
+      } else {
+        axis =  chartArea.AxisY2;
+      }
+
+      axis.Title = dataName;
+      axis.LabelStyle.Format = "F1";
+
+      if (dataMin != dataMax) {
+        // set data range
+        axis.Minimum = dataMin;
+        axis.Maximum = dataMax;
+      }
+
+    }
+
+    public override void clearChart(Chart chart) {
+      if (chartSeries != null) {
+        chart_deleteSeries(chart, chartSeries);
+        chartSeries = null;
+      }
     }
 
     //
@@ -214,7 +240,7 @@ namespace Phi.Utils {
       }
 
       public string ToString(string dataName) {
-        return string.Format("t: %d, %s: %g", time, dataName, data);
+        return string.Format("t: {0}, {1}: {2:F3}", time, dataName, data);
       }
     } // class BufferItem
 

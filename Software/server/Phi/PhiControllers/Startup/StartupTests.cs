@@ -51,5 +51,23 @@ namespace Phi {
       PhiGlobals.model.addChildAction(leg.createAction_centerJoints());
     }
 
-  }
-}
+    public void testLeg(int legIdx) {
+
+      bool bRepeatForever = false;
+
+      PhiGlobals.model.addChildAction(
+        new PA_Sequence(name: "startup_tests",
+                               repeatCount: bRepeatForever ? PA_Group.REPEAT_FOREVER : 1,
+                               actions: new PhiActionBase[] {
+
+          new PhiLeg.PA_TestLeg(PhiGlobals.model.legs[PhiModel.LEG_A_IDX]),
+
+        })
+      );
+
+      // DEBUG
+      // PhiGlobals.model.dumpActionHierarchy();
+    }
+
+  } // class StartupController()
+} // namespace

@@ -35,7 +35,9 @@
                 <MenuItem Header="Actions">
                     
                     <MenuItem Header="Run Startup Tests"
-                              Click="menuActions_runStartupTests" />
+                              Click="menuActions_runStartupTests"
+                              InputGestureText="Ctrl+T" />
+                    
                     <MenuItem Header="Run Startup Tests FOREVER"
                               Click="menuActions_runStartupTestsForever" />
                     
@@ -52,7 +54,8 @@
                         <MenuItem Header="Crude Stand Up"
                                   Click="menuActions_CrudeStandUp" />
                         <MenuItem Header="Test Legs"
-                                  Click="menuActions_TestLegs" />
+                                  Click="menuActions_TestLeg"
+                                  InputGestureText="Ctrl+D" />
                     </MenuItem>
                     
                     <Separator />
@@ -65,7 +68,8 @@
                 
                 <MenuItem Header="Debug" HorizontalAlignment="Right">
                     <MenuItem Header="Show Log Window"
-                              Click="menuLogs_showWindow" />
+                              Click="menuLogs_showWindow"
+                              InputGestureText="Ctrl+L" />
                     
                     <Separator />
                     
