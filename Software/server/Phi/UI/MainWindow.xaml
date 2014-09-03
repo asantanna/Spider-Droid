@@ -22,51 +22,83 @@
                   DockPanel.Dock="Top">
                 
                 <!-- This is needed for the right aligned DEBUG menu -->
+               
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
                         <DockPanel HorizontalAlignment="Stretch" />
                     </ItemsPanelTemplate>
                 </Menu.ItemsPanel>
                 
-                <MenuItem Header="File">
-                    <MenuItem Header="Exit"
-                              Click="menuFile_Exit"/>
+                <MenuItem Header="_File">
+                    <MenuItem Header="Exit" Click="menuFile_Exit"/>
                 </MenuItem>
-                <MenuItem Header="Actions">
-                    
-                    <MenuItem Header="Run Startup Tests"
-                              Click="menuActions_runStartupTests"
-                              InputGestureText="Ctrl+T" />
-                    
-                    <MenuItem Header="Run Startup Tests FOREVER"
-                              Click="menuActions_runStartupTestsForever" />
+                
+                <MenuItem Header="_Actions" InputGestureText="A">
+
+                    <MenuItem Header="Run Startup Tests" Click="menuActions_runStartupTests" />
                     
                     <Separator />
-                        
-                    <MenuItem Header="Leg Commands">
 
-                        <MenuItem Header="Center Joints ..."
-                                  Click="menuActions_CenterJoints" />
-                        <MenuItem Header="Extend Flat ..."
-                                  Click="menuActions_ExtendFlat" />
-                        <MenuItem Header="Legs to Safe Position"
-                                  Click="menuActions_LegsToSafe" />
-                        <MenuItem Header="Crude Stand Up"
-                                  Click="menuActions_CrudeStandUp" />
-                        <MenuItem Header="Test Legs"
-                                  Click="menuActions_TestLeg"
-                                  InputGestureText="Ctrl+D" />
+                    <MenuItem Header="_Center Joints">
+                       <MenuItem Header="Leg _A" Click="menuActions_CenterJoints_A" />
+                       <MenuItem Header="Leg _B" Click="menuActions_CenterJoints_B" />
+                       <MenuItem Header="Leg _C" Click="menuActions_CenterJoints_C" />
+                       <MenuItem Header="Leg _D" Click="menuActions_CenterJoints_D" />
+                       <Separator />
+                       <MenuItem Header="A_LL" Click="menuActions_CenterJoints_All" />
+                    </MenuItem>
+
+                    <MenuItem Header="E_xtend Full">
+                       <MenuItem Header="Leg _A" Click="menuActions_ExtendLegFull_A" />
+                       <MenuItem Header="Leg _B" Click="menuActions_ExtendLegFull_B" />
+                       <MenuItem Header="Leg _C" Click="menuActions_ExtendLegFull_C" />
+                       <MenuItem Header="Leg _D" Click="menuActions_ExtendLegFull_D" />
+                       <Separator />
+                       <MenuItem Header="A_LL" Click="menuActions_ExtendLegFull_All" />
+                    </MenuItem>
+                    
+                    <MenuItem Header="_Test Leg">
+                       <MenuItem Header="Leg _A" Click="menuActions_TestLeg_A" />
+                       <MenuItem Header="Leg _B" Click="menuActions_TestLeg_B" />
+                       <MenuItem Header="Leg _C" Click="menuActions_TestLeg_C" />
+                       <MenuItem Header="Leg _D" Click="menuActions_TestLeg_D" />
+                       <Separator />
+                       <MenuItem Header="A_LL" Click="menuActions_TestLeg_All" />
                     </MenuItem>
                     
                     <Separator />
                         
-                    <MenuItem Header="Dump Actions"
-                              Click="menuActions_DumpActions" />
-                    <MenuItem Header="Abort All Actions"
-                              Click="menuActions_AbortAll" />
+                    <MenuItem Header="Dump Actions" Click="menuActions_DumpActions" />
+                    <MenuItem Header="Abort All Actions" Click="menuActions_AbortAll" />
+                    
+                    <Separator />
+                    
+                    <MenuItem Header="_Options">
+                       
+                       <MenuItem Header="Run _Forever Mode"
+                                 IsCheckable="True"
+                                 Click="menuAction_runForever" />
+                       
+                       <MenuItem Header="_Power">
+                          <MenuItem Header="_20%"  IsCheckable="True" Click="menuAction_powerTo20" />
+                          <MenuItem Header="_30%"  IsCheckable="True" Click="menuAction_powerTo30" />
+                          <MenuItem Header="_40%"  IsCheckable="True" Click="menuAction_powerTo40" />
+                          <MenuItem Header="_50%"  IsCheckable="True" Click="menuAction_powerTo50" IsChecked="True" />
+                          <MenuItem Header="_75%"  IsCheckable="True" Click="menuAction_powerTo75" />
+                          <MenuItem Header="1_00%" IsCheckable="True" Click="menuAction_powerTo100" />
+                       </MenuItem>
+                       
+                    </MenuItem>
+                    
+                    <!--
+                    <MenuItem Header="Legs to Safe Position" Click="menuActions_LegsToSafe" />
+                    
+                    <MenuItem Header="Crude Stand Up" Click="menuActions_CrudeStandUp" />
+                    -->   
+                    
                 </MenuItem>
                 
-                <MenuItem Header="Debug" HorizontalAlignment="Right">
+                <MenuItem Header="_Debug" HorizontalAlignment="Right">
                     <MenuItem Header="Show Log Window"
                               Click="menuLogs_showWindow"
                               InputGestureText="Ctrl+L" />

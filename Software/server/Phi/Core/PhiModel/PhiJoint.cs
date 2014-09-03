@@ -29,9 +29,6 @@ namespace Phi {
     // Values closer than the tolerance below are considered "equal"
     public const double JOINT_POS_TOLERANCE = 0.01;
 
-    // motor power used for startup tests
-    public const double TEST_MOTOR_POWER = 0.3;  
-
     // prototype trajectory of joint - for more info, see MATLAB "JointTrajectory.m"
     const double FRAC_ACCEL = 0.2;
     const double FRAC_DECEL = 0.4;            // orig = 0.2;
@@ -239,7 +236,7 @@ namespace Phi {
       proto_deltaP = targetPos - cmdStartPos;
 
       double origPower = PHI_motorPower;
-      PHI_motorPower = proto_deltaP > 0 ? TEST_MOTOR_POWER : -TEST_MOTOR_POWER;
+      PHI_motorPower = proto_deltaP > 0 ? PhiGlobals.testMotorPower : -PhiGlobals.testMotorPower;
 
       // figure out type
       if (msDuration != 0) {

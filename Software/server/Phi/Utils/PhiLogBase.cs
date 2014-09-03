@@ -64,7 +64,6 @@ namespace Phi.Utils {
       lineColor = color;
     }
 
-
     public void chart_useY2Axis() {
       bUseY2Axis = true;
     }

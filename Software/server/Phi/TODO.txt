@@ -26,6 +26,11 @@ TO DO LIST
 
 * Set up some sort of DEBUG flag bit field with checked menu to enable.
 
+* There's some sort of bug where the "activeLog == NULL" assertion fails.
+
+* Also think about what can happen if there's a forever action and we add another.
+  Are lists being duplicated everywhere they should to prevent changes?
+
 
 #
 # PHI FIRMWARE

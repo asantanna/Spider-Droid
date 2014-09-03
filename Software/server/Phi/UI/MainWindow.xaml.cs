@@ -34,6 +34,8 @@ namespace Phi {
 
     private bool bPhiLinkChanged = false;
 
+    private bool bForeverMode = false;
+
     //
     // CODE
     //
@@ -45,9 +47,11 @@ namespace Phi {
       // save ref
       PhiGlobals.mainWindow = this;
 
-      // create hidden log windows
+      // create hidden log windows and call show() so thread gets created
+      // (needed by Invoke) and then hide it immediately
       PhiGlobals.logForm = new LogForm();
-
+      PhiGlobals.logForm.Show();
+      PhiGlobals.logForm.Hide();
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e) {
@@ -296,68 +300,147 @@ namespace Phi {
     }
 
     private void menuActions_runStartupTests(object sender, RoutedEventArgs e) {
-      // run startup tests ONCE
       StartupController controller = getStartupController();
       if (controller != null) {
-        controller.startTests();
+        controller.startTests(bRepeatForever: bForeverMode);
       }
     }
 
-    private void menuActions_runStartupTestsForever(object sender, RoutedEventArgs e) {
-      // run startup tests FOREVER (use Abort All to quie)
+    //
+    // LEG COMMANDS
+    //
+
+    // EXTEND LEG
+    
+    private void extendLegX(int legIdx) {
       StartupController controller = getStartupController();
       if (controller != null) {
-        controller.startTests(bRepeatForever: true);
+        controller.extendLegFull(legIdx, bForeverMode ? PA_Group.REPEAT_FOREVER : 1);
       }
     }
 
-    private void menuActions_ExtendFlat(object sender, RoutedEventArgs e) {
-      // have user select leg
-      DlgSelectLeg dlg = new DlgSelectLeg();
-      dlg.Owner = this;
-      dlg.ShowDialog();
+    private void menuActions_ExtendLegFull_A(object sender, RoutedEventArgs e) {
+      extendLegX(PhiModel.LEG_A_IDX);
+    }
 
-      if (dlg.DialogResult == true) {
-        StartupController controller = getStartupController();
-        if (controller != null) {
-          controller.extendLegFlat(dlg.getLegIdx());
+    private void menuActions_ExtendLegFull_B(object sender, RoutedEventArgs e) {
+      extendLegX(PhiModel.LEG_B_IDX);
+    }
+
+    private void menuActions_ExtendLegFull_C(object sender, RoutedEventArgs e) {
+      extendLegX(PhiModel.LEG_C_IDX);
+    }
+
+    private void menuActions_ExtendLegFull_D(object sender, RoutedEventArgs e) {
+      extendLegX(PhiModel.LEG_D_IDX);
+    }
+
+    private void menuActions_ExtendLegFull_All(object sender, RoutedEventArgs e) {
+      for (int i = PhiModel.LEG_A_IDX ; i <= PhiModel.LEG_D_IDX ; i++) {
+        extendLegX(i);
+      }
+    }
+
+    // CENTER JOINT
+
+    private void centerJointsX(int legIdx) {
+      StartupController controller = getStartupController();
+      if (controller != null) {
+        controller.centerJoints(legIdx, bForeverMode ? PA_Group.REPEAT_FOREVER : 1);
+      }
+    }
+    
+    private void menuActions_CenterJoints_A(object sender, RoutedEventArgs e) {
+      centerJointsX(PhiModel.LEG_A_IDX);
+    }
+
+    private void menuActions_CenterJoints_B(object sender, RoutedEventArgs e) {
+      centerJointsX(PhiModel.LEG_B_IDX);
+    }
+
+    private void menuActions_CenterJoints_C(object sender, RoutedEventArgs e) {
+      centerJointsX(PhiModel.LEG_C_IDX);
+    }
+    
+    private void menuActions_CenterJoints_D(object sender, RoutedEventArgs e) {
+      centerJointsX(PhiModel.LEG_D_IDX);
+    }
+    
+    private void menuActions_CenterJoints_All(object sender, RoutedEventArgs e) {
+      for (int i = PhiModel.LEG_A_IDX ; i <= PhiModel.LEG_D_IDX ; i++) {
+        centerJointsX(i);
+      }
+    }
+
+    //
+    // TEST LEG
+    //
+    
+    private void testLegX(int legIdx) {
+      StartupController controller = getStartupController();
+      if (controller != null) {
+        controller.testLeg(legIdx, bForeverMode ? PA_Group.REPEAT_FOREVER : 1);
+      }
+    }
+
+    private void menuActions_TestLeg_A(object sender, RoutedEventArgs e) {
+      testLegX(PhiModel.LEG_A_IDX);
+    }
+
+    private void menuActions_TestLeg_B(object sender, RoutedEventArgs e) {
+      testLegX(PhiModel.LEG_B_IDX);
+    }
+
+    private void menuActions_TestLeg_C(object sender, RoutedEventArgs e) {
+      testLegX(PhiModel.LEG_C_IDX);
+    }
+
+    private void menuActions_TestLeg_D(object sender, RoutedEventArgs e) {
+      testLegX(PhiModel.LEG_D_IDX);
+    }
+
+    private void menuActions_TestLeg_All(object sender, RoutedEventArgs e) {
+      for (int i = PhiModel.LEG_A_IDX ; i <= PhiModel.LEG_D_IDX ; i++) {
+        testLegX(i);
+      }
+    }
+
+    // options
+
+    private void menuAction_runForever(object sender, RoutedEventArgs e) {
+      if ((sender as MenuItem).IsChecked) {
+        bForeverMode = true;
+      } else {
+        bForeverMode = false;
+      }
+    }
+
+    private void setTestPower(double power, object sender) {
+      MenuItem selItem = (sender as MenuItem);
+      MenuItem parent = (selItem.Parent as MenuItem);
+
+      foreach (MenuItem item in parent.Items) {
+        if (item == selItem) {
+          item.IsChecked = true;
+        } else {
+          item.IsChecked = false;
         }
       }
+
+      // set global value
+      PhiGlobals.testMotorPower = power;
     }
+    
+    private void menuAction_powerTo20(object sender, RoutedEventArgs e)  { setTestPower(20.0/100,  sender); }
+    private void menuAction_powerTo30(object sender, RoutedEventArgs e)  { setTestPower(30.0/100,  sender); }
+    private void menuAction_powerTo40(object sender, RoutedEventArgs e)  { setTestPower(40.0/100,  sender); }
+    private void menuAction_powerTo50(object sender, RoutedEventArgs e)  { setTestPower(50.0/100,  sender); }
+    private void menuAction_powerTo75(object sender, RoutedEventArgs e)  { setTestPower(75.0/100,  sender); }
+    private void menuAction_powerTo100(object sender, RoutedEventArgs e) { setTestPower(100.0/100, sender); }
 
-    private void menuActions_CenterJoints(object sender, RoutedEventArgs e) {
-      // have user select leg
-      DlgSelectLeg dlg = new DlgSelectLeg();
-      dlg.Owner = this;
-      dlg.ShowDialog();
-
-      if (dlg.DialogResult == true) {
-        StartupController controller = getStartupController();
-        if (controller != null) {
-          controller.centerJoints(dlg.getLegIdx());
-        }
-      }
-    }
-
-    private void menuActions_LegsToSafe(object sender, RoutedEventArgs e) {
-    }
-
-    private void menuActions_CrudeStandUp(object sender, RoutedEventArgs e) {
-    }
-
-    private void menuActions_TestLeg(object sender, RoutedEventArgs e) {
-      // have user select leg
-      DlgSelectLeg dlg = new DlgSelectLeg();
-      dlg.Owner = this;
-      dlg.ShowDialog();
-
-      if (dlg.DialogResult == true) {
-        StartupController controller = getStartupController();
-        if (controller != null) {
-          controller.testLeg(dlg.getLegIdx());
-        }
-      }
-    }
+    //
+    // DUMP / ABORT ACTIONS
+    //
 
     private void menuActions_DumpActions(object sender, RoutedEventArgs e) {
       PhiGlobals.model.dumpActionHierarchy();
@@ -379,7 +462,6 @@ namespace Phi {
       testNode.Text = "Test Log";
 
       // create a log for it
-      // Note: log is added to tree automatically
       PhiLog_Double log = new PhiLog_Double(5, logName: "test log");
       log.Add(1000, 10);
       log.Add(2000, 25);
@@ -388,13 +470,37 @@ namespace Phi {
       log.Add(5000, 2);
       testNode.Tag = log;
 
-      // add to root node
-      PhiGlobals.logForm.logTreeRootNode.Nodes.Add(testNode);
+      // add to window
+      log.addToLogWindow(PhiGlobals.logForm.logTreeRootNode, "test-log", "Test Log");
     }
 
     private void menuDebug_runClassTests(object sender, RoutedEventArgs e) {
       PhiGlobals.runClassTests();
     }
-
+    
   }
 }
+
+
+//
+// SAVE TEMPORARILY
+//
+
+
+    /*
+     SAVE
+
+      // have user select leg
+      DlgSelectLeg dlg = new DlgSelectLeg();
+      dlg.Owner = this;
+      dlg.ShowDialog();
+
+
+    private void menuActions_LegsToSafe(object sender, RoutedEventArgs e) {
+    }
+
+    private void menuActions_CrudeStandUp(object sender, RoutedEventArgs e) {
+    }
+
+    */
+

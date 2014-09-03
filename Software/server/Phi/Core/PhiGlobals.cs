@@ -17,6 +17,9 @@ namespace Phi
     // version
     public static byte[] PHI_VERSION = StrToByteArray("0.9 (exp)");
 
+    // default motor power used for startup tests (make sure XAML matches)
+    public const double DEF_TEST_MOTOR_POWER = 0.5;  
+
     //
     // GLOBAL VARS
     //
@@ -25,6 +28,7 @@ namespace Phi
     public static MainWindow mainWindow = null;
     public static LogForm logForm = null;
     public static System.Text.UTF8Encoding encoding;
+    public static double testMotorPower = DEF_TEST_MOTOR_POWER;
 
     // model of PHI
     public static PhiModel model;

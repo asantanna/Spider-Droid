@@ -34,24 +34,26 @@ namespace Phi {
       }) { }
     } // class Calibrate
 
-    // EXTEND FLAT ACTION
+    // EXTEND LEG FULLY ACTION
 
-    public PhiActionBase createAction_extendLegFlat() {
+    public PhiActionBase createAction_extendLegFully(int repeatCount = 1) {
       return
         new PA_Group(name: "extend_leg_flat",
+                            repeatCount: repeatCount,
                             actions: new PhiActionBase[] {
 
-          new PhiJoint.PA_SeekWithTimeout(name: "extend_thigh", joint: joints[PhiLeg.THIGH_IDX], targetPos: 0.1),
-          new PhiJoint.PA_SeekWithTimeout(name: "extend_shin",  joint: joints[PhiLeg.SHIN_IDX],  targetPos: 0.8),
+          new PhiJoint.PA_SeekWithTimeout(name: "extend_thigh", joint: joints[PhiLeg.THIGH_IDX], targetPos: 1),
+          new PhiJoint.PA_SeekWithTimeout(name: "extend_shin",  joint: joints[PhiLeg.SHIN_IDX],  targetPos: 1),
 
       });
     }
 
     // CENTER JOINTS ACTION
 
-    public PhiActionBase createAction_centerJoints() {
+    public PhiActionBase createAction_centerJoints(int repeatCount = 1) {
       return
         new PA_Group(name: "center_joints",
+                            repeatCount: repeatCount,
                             actions: new PhiActionBase[] {
 
           new PhiJoint.PA_SeekWithTimeout(name: "center_thigh", joint: joints[PhiLeg.THIGH_IDX], targetPos: 0.5),
@@ -64,8 +66,9 @@ namespace Phi {
 
     public class PA_TestLeg : PA_Sequence {
 
-      public PA_TestLeg(PhiLeg leg)
+      public PA_TestLeg(PhiLeg leg, int repeatCount = 1)
         : base(name: "test_leg",
+               repeatCount: repeatCount,
                actions: new PhiActionBase[] {
 
           new PhiJoint.PA_SeekWithTimeout(name: "clear_shin",
@@ -74,7 +77,7 @@ namespace Phi {
 
           new PhiJoint.PA_MoveWithTimeout(name: "extend_thigh",
                                           joint: leg.joints[PhiLeg.THIGH_IDX],
-                                          power: PhiJoint.TEST_MOTOR_POWER),
+                                          power: PhiGlobals.testMotorPower),
 
           // duration 1000 mS
 
@@ -102,31 +105,6 @@ namespace Phi {
                                                   maxAbsPower: 0.5,
                                                   msDuration:  1000),
 
-          // duration 700
-
-          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
-                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
-                                                  targetPos: 0.1,
-                                                  maxAbsPower: 0.5,
-                                                  msDuration:  500),
-
-          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
-                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
-                                                  targetPos: 0.9,
-                                                  maxAbsPower: 0.5,
-                                                  msDuration:  500),
-
-          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
-                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
-                                                  targetPos: 0.1,
-                                                  maxAbsPower: 0.5,
-                                                  msDuration:  500),
-
-          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
-                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
-                                                  targetPos: 0.9,
-                                                  maxAbsPower: 0.5,
-                                                  msDuration:  500),
       }) { }
     } // class Calibrate
 
@@ -149,14 +127,14 @@ namespace Phi {
       seq = new PA_Sequence(name: "test_joint_range",
                                    actions: new PhiActionBase[] {
 
-          new PA_MoveWithTimeout(name: "find_max_range", joint: this, power: TEST_MOTOR_POWER),
+          new PA_MoveWithTimeout(name: "find_max_range", joint: this, power: PhiGlobals.testMotorPower),
 
           new PA_RunBlock(name: "save_max", code: delegate() {
             // save max
             maxJointPos = PHI_currPos;
           }),
 
-          new PA_MoveWithTimeout(name: "find_min_range", joint: this, power: -TEST_MOTOR_POWER),
+          new PA_MoveWithTimeout(name: "find_min_range", joint: this, power: -PhiGlobals.testMotorPower),
 
           new PA_RunBlock(name: "save_min_and_park", code: delegate() {
             // save min and center
@@ -171,7 +149,7 @@ namespace Phi {
             double safePos = minJointPos + (maxJointPos - minJointPos) * safePosFrac;
 
             PhiActionBase seekAction = new PA_SeekWithTimeout(name: "seek_safe", joint: this,
-                                                                 absPower: TEST_MOTOR_POWER, targetPos: safePosFrac);
+                                                              absPower: PhiGlobals.testMotorPower, targetPos: safePosFrac);
 
             // mark action as auto remove since every time this sequence is repeated, a new one gets created
             seekAction.setFlagBits(PhiActionBase.ACTION_FLAGS.AUTO_REMOVE);
@@ -233,7 +211,7 @@ namespace Phi {
       public PA_SeekWithTimeout(
                 PhiJoint joint,
                 double targetPos,
-                double absPower = PhiJoint.TEST_MOTOR_POWER,
+                double absPower = PhiGlobals.DEF_TEST_MOTOR_POWER,
                 string name = "")
         : base(name) {
 
@@ -303,7 +281,7 @@ namespace Phi {
       public PA_AdaptiveSeekWithTimeout(
                 PhiJoint joint,
                 double targetPos,
-                double maxAbsPower = PhiJoint.TEST_MOTOR_POWER,
+                double maxAbsPower = PhiGlobals.DEF_TEST_MOTOR_POWER,
                 double msDuration = 0,
                 string name = "")
         : base(name) {
