@@ -48,6 +48,12 @@ namespace Phi {
       PhiGlobals.model.addChildAction(leg.createAction_extendLegFully(repeatCount));
     }
 
+    public void retractLegFull(int legIdx, int repeatCount) {
+      // create an action to extend leg
+      PhiLeg leg = PhiGlobals.model.legs[legIdx];
+      PhiGlobals.model.addChildAction(leg.createAction_retractLegFully(repeatCount));
+    }
+
     public void centerJoints(int legIdx, int repeatCount) {
       // create an action to extend leg
       PhiLeg leg = PhiGlobals.model.legs[legIdx];

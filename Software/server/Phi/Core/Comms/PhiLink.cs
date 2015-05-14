@@ -30,8 +30,8 @@ namespace Phi {
     const Int32 PHI_LINK_PORT = 1122;
 
     // PhiLink communication rate
-    public const double DESIRED_LOOP_FPS = 80;
-    public const double DESIRED_SECS_PER_LOOP = 1.0 / DESIRED_LOOP_FPS;
+    public const double DESIRED_FPS = 50;
+    public const double DESIRED_SECS_PER_FRAME = 1.0 / DESIRED_FPS;
 
     // adaptive sleep
     const double SLEEP_ERROR_ACCUM_RATE = (1.0 / 1e3);
@@ -59,7 +59,7 @@ namespace Phi {
 
     private static UInt32 loopCount = 0;
     private static double secsThisLoop = 0;
-    private static double accum_secsPerLoop = DESIRED_SECS_PER_LOOP;
+    private static double accum_secsPerLoop = DESIRED_SECS_PER_FRAME;
     private static double accum_sleepTime = 0;
     private static double sleepError = 0;
 
@@ -199,7 +199,7 @@ namespace Phi {
         // sleep to achieve desired FPS
         long commEndTicks = stopWatch.ElapsedTicks;
         double commSecs = (commEndTicks - loopStartTicks) * tickPeriod;
-        double sleepTime = DESIRED_SECS_PER_LOOP + sleepError - commSecs;
+        double sleepTime = DESIRED_SECS_PER_FRAME + sleepError - commSecs;
 
         if (sleepTime < 0) {
           sleepTime = 0;
@@ -220,7 +220,7 @@ namespace Phi {
 
         // compute sleep error and with running avg so we don't go all over the place
         // new_error = (desired_loop + curr_error) - actual_loop
-        sleepError = ((1-SLEEP_ERROR_ACCUM_RATE) * sleepError) + (SLEEP_ERROR_ACCUM_RATE*(DESIRED_SECS_PER_LOOP - secsThisLoop));
+        sleepError = ((1-SLEEP_ERROR_ACCUM_RATE) * sleepError) + (SLEEP_ERROR_ACCUM_RATE*(DESIRED_SECS_PER_FRAME - secsThisLoop));
 
         // time next
         loopStartTicks = loopEndTicks;
@@ -242,7 +242,7 @@ namespace Phi {
 
     public static double getAvgIdle() {
       lock (dataLock) {
-        return accum_sleepTime / DESIRED_SECS_PER_LOOP;
+        return accum_sleepTime / DESIRED_SECS_PER_FRAME;
       }
     }
 
@@ -274,4 +274,5 @@ namespace Phi {
     }
 
   }  // class
-}  // namespac
+}  // namespace
+

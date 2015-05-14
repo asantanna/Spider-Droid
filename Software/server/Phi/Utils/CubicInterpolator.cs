@@ -5,6 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//
+// NOTE: did not move to Eve yet because there is a function that takes PhiLog_Double - maybe refactor
+// to Eve.CubicInterpolator and Phi.LogInterpolator
+//
+
 namespace Phi.Utils {
 
   static public class CubicInterpolator {

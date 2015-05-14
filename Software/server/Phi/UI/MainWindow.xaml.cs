@@ -1,5 +1,7 @@
 ﻿using Phi.UI;
 using Phi.Utils;
+using Eve;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -341,6 +343,37 @@ namespace Phi {
       }
     }
 
+    // RETRACT LEG
+
+    private void retractLegX(int legIdx) {
+      StartupController controller = getStartupController();
+      if (controller != null) {
+        controller.retractLegFull(legIdx, bForeverMode ? PA_Group.REPEAT_FOREVER : 1);
+      }
+    }
+
+    private void menuActions_RetractLegFull_A(object sender, RoutedEventArgs e) {
+      retractLegX(PhiModel.LEG_A_IDX);
+    }
+
+    private void menuActions_RetractLegFull_B(object sender, RoutedEventArgs e) {
+      retractLegX(PhiModel.LEG_B_IDX);
+    }
+
+    private void menuActions_RetractLegFull_C(object sender, RoutedEventArgs e) {
+      retractLegX(PhiModel.LEG_C_IDX);
+    }
+
+    private void menuActions_RetractLegFull_D(object sender, RoutedEventArgs e) {
+      retractLegX(PhiModel.LEG_D_IDX);
+    }
+
+    private void menuActions_RetractLegFull_All(object sender, RoutedEventArgs e) {
+      for (int i = PhiModel.LEG_A_IDX ; i <= PhiModel.LEG_D_IDX ; i++) {
+        retractLegX(i);
+      }
+    }
+
     // CENTER JOINT
 
     private void centerJointsX(int legIdx) {
@@ -476,6 +509,10 @@ namespace Phi {
 
     private void menuDebug_runClassTests(object sender, RoutedEventArgs e) {
       PhiGlobals.runClassTests();
+    }
+
+    private void MenuItem_Click(object sender, RoutedEventArgs e) {
+      EveGlobals.runTests(null);
     }
     
   }

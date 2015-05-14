@@ -108,8 +108,10 @@ namespace Phi
       Console.WriteLine("***");
 
       // generic classes have test suites in PhiGlobals to make things less messy in the debugger
-      PhiGlobals.runClassTest_CircularBuffer();
-      PhiGlobals.runClassTest_ListWithReusableElements();
+      // DISABLED CUZ MOVED TO EVE - NEED TO WIRE UP AGAIN
+
+      // PhiGlobals.runClassTest_CircularBuffer();  
+      // PhiGlobals.runClassTest_ListWithReusableElements();
 
       Console.WriteLine("*** Done" );
     }

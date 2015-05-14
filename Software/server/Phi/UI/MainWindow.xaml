@@ -56,7 +56,21 @@
                        <Separator />
                        <MenuItem Header="A_LL" Click="menuActions_ExtendLegFull_All" />
                     </MenuItem>
-                    
+
+                    <MenuItem Header="Retract Full">
+                        <MenuItem Header="Leg _A"
+                                  Click="menuActions_RetractLegFull_A" />
+                        <MenuItem Header="Leg _B"
+                                  Click="menuActions_RetractLegFull_B" />
+                        <MenuItem Header="Leg _C"
+                                  Click="menuActions_RetractLegFull_C" />
+                        <MenuItem Header="Leg _D"
+                                  Click="menuActions_RetractLegFull_D" />
+                        <Separator />
+                        <MenuItem Header="A_LL"
+                                  Click="menuActions_RetractLegFull_All" />
+                    </MenuItem>
+
                     <MenuItem Header="_Test Leg">
                        <MenuItem Header="Leg _A" Click="menuActions_TestLeg_A" />
                        <MenuItem Header="Leg _B" Click="menuActions_TestLeg_B" />
@@ -98,6 +112,11 @@
                     
                 </MenuItem>
                 
+       <!--         <MenuItem Header="Eve">
+                    <MenuItem Header="Show Grid UI"
+                              Click="MenuItem_Click" />
+                </MenuItem> -->
+
                 <MenuItem Header="_Debug" HorizontalAlignment="Right">
                     <MenuItem Header="Show Log Window"
                               Click="menuLogs_showWindow"

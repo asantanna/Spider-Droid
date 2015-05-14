@@ -121,11 +121,7 @@
     <Compile Include="UI\LegBox.xaml.cs">
       <DependentUpon>LegBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\CircularBuffer.cs" />
     <Compile Include="Utils\CubicInterpolator.cs" />
-    <Compile Include="Utils\InfoT.cs" />
-    <Compile Include="Utils\ListWithReusableElements.cs" />
-    <Compile Include="Utils\PDF.cs" />
     <Compile Include="Utils\PhiLogBase.cs" />
     <Compile Include="Utils\PhiLog_Double.cs" />
     <Page Include="UI\DlgSelectLeg.xaml">
@@ -209,7 +205,12 @@
     <Resource Include="PhiIcon.ico" />
     <Content Include="Resources\PhiIcon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Eve\Eve.csproj">
+      <Project>{e65e975b-4f2c-4b8a-b698-b50a7dfe80c8}</Project>
+      <Name>Eve</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>

@@ -62,9 +62,26 @@ namespace Phi {
       });
     }
 
+    // EXTEND LEG FULLY ACTION
+
+    public PhiActionBase createAction_retractLegFully(int repeatCount = 1) {
+      return
+        new PA_Group(name: "retract_leg",
+                            repeatCount: repeatCount,
+                            actions: new PhiActionBase[] {
+
+          new PhiJoint.PA_SeekWithTimeout(name: "retract_thigh", joint: joints[PhiLeg.THIGH_IDX], targetPos: 0),
+          new PhiJoint.PA_SeekWithTimeout(name: "retract_shin",  joint: joints[PhiLeg.SHIN_IDX],  targetPos: 0),
+
+      });
+    }
+
+
     // TEST LEG ACTION
 
     public class PA_TestLeg : PA_Sequence {
+
+      const int TEST_MS_1 = 750;
 
       public PA_TestLeg(PhiLeg leg, int repeatCount = 1)
         : base(name: "test_leg",
@@ -73,37 +90,44 @@ namespace Phi {
 
           new PhiJoint.PA_SeekWithTimeout(name: "clear_shin",
                                                  joint: leg.joints[PhiLeg.SHIN_IDX],
-                                                 targetPos: 0.9),
+                                                 targetPos: 0.9,
+                                                 absPower: PhiGlobals.testMotorPower),
 
           new PhiJoint.PA_MoveWithTimeout(name: "extend_thigh",
                                           joint: leg.joints[PhiLeg.THIGH_IDX],
                                           power: PhiGlobals.testMotorPower),
 
-          // duration 1000 mS
+          // duration TEST_MS_1
 
-          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek_t1",
                                                   joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.2,
+                                                  maxAbsPower: PhiGlobals.testMotorPower,
+                                                  msDuration: TEST_MS_1),
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek_t2",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.8,
+                                                  maxAbsPower: PhiGlobals.testMotorPower,
+                                                  msDuration:  TEST_MS_1),
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek_t3",
+                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+                                                  targetPos: 0.5,
+                                                  maxAbsPower: PhiGlobals.testMotorPower,
+                                                  msDuration:  TEST_MS_1),
+
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek_s1",
+                                                  joint: leg.joints[PhiLeg.SHIN_IDX],
                                                   targetPos: 0.1,
-                                                  maxAbsPower: 0.5,
-                                                  msDuration:  1000),
+                                                  maxAbsPower: PhiGlobals.testMotorPower,
+                                                  msDuration: TEST_MS_1),
 
-          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
-                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
+          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek_s2",
+                                                  joint: leg.joints[PhiLeg.SHIN_IDX],
                                                   targetPos: 0.9,
-                                                  maxAbsPower: 0.5,
-                                                  msDuration:  1000),
-
-          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
-                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
-                                                  targetPos: 0.1,
-                                                  maxAbsPower: 0.5,
-                                                  msDuration:  1000),
-
-          new PhiJoint.PA_AdaptiveSeekWithTimeout(name: "test_adapt_seek",
-                                                  joint: leg.joints[PhiLeg.THIGH_IDX],
-                                                  targetPos: 0.9,
-                                                  maxAbsPower: 0.5,
-                                                  msDuration:  1000),
+                                                  maxAbsPower: PhiGlobals.testMotorPower,
+                                                  msDuration:  TEST_MS_1),
 
       }) { }
     } // class Calibrate
