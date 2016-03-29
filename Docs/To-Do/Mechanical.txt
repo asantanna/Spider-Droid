@@ -1,14 +1,71 @@
 TO DO LIST FOR MECHANICAL ITEMS
 ===============================
 
+BIG AND SMALL SPINDLE:
+
+  DONE *******************- Too much play between spindle and arm, possibly with 
+  DONE *******************   spindle and hip limb too
+
+  DONE *******************     INFO: Changes must occur in SPINDLE and BIG SPINDLE to make
+  DONE *******************           them thicker.  The alternative, to change the SPINDLE ARM,
+  DONE *******************           and RE-MERGE to create SMALL CAP and BIG CAP and the further
+  DONE *******************           MERGE to create various other parts is WAY too complicated.
+
+  DONE *******************    SOL: 
+  DONE *******************     - Add 0.2 to DIAMETER of hexagon in "SPINDLE" and "BIG SPINDLE"
+  DONE *******************     - ignore now incorrect REF sketch in "SPINDLE ARM"
+
+  ******* NOTE *****
+  This may make the bearing more snug ... we may need to tweak it back with a revolution "shave"
+  if necessary. It's hacky but it's the easiest thing to do BY FAR.
+
+      
+CABLE TUBE SUPPORT:
+
+  DONE ******************* - Need widen hole in cable tube supports
+  DONE *******************     SOL: maybe add 0.2 to DIAMETER of hole for glue space too
+
+FRAME:
+
+  DONE *******************- Motor driver support is bad - gap is too thin, holes are two big
+  DONE *******************    SOL:
+  DONE *******************      - remeasure controller board to see why this happened
+  DONE *******************      - change "slot" for driver board to single tabs
+  DONE *******************      - figure out what to do about the screws ... I think the holes
+  DONE *******************        are too tiny for any of the screws we have.  Try to come up
+  DONE *******************        with something clever so we don't need a new screw type.
+
+  DONE ******************* - Need two cable supports for motor wires that go to other frames
+
+  - Need to plan path of motor wires to see where they go and if it will work
+
+  DONE *******************- Paperclip that limits spindle arm is wonky.
+  DONE *******************    SOL: 
+  DONE *******************      - Add hole to frame to have arm stopper hole go all the way through to other side
+  DONE *******************      - Modify stopper hole arrangement so paperclip is more sturdily held in place.
+  DONE *******************        (see post-its)
+
+
+MINI-POT:
+
+  DONE ******************* - Position of threaded hole is incorrect
+       *******************   - SOL: fix but must also fix pot base support afterwards
+
+POT BASE SUPPORT:
+
+  DONE ******************* - change to mini-pot invalidates some things
+       *******************   - SOL: reproject REF figures, fix hole, fix ridges
+    
+
+
+
+=============================================================================
+
+FUTURE
+======
+
+- Figure out where RPi, accel, gyro and hip controller attach
+
 - Design touch sensor mechanicals
-
-- Attach to pots is not very sturdy
-    - drill hole thru pot shaft and pulley - insert pin thru hole to
-      lock together
-
-- Figure out where accel and gyro attach
-
-- Need hole to pass leg motor wires
 
 

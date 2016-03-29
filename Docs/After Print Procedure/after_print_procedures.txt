@@ -1,0 +1,85 @@
+
+==============================
+AFTER PRINT CLEANUP PROCEDURES
+==============================
+
+
+******  FRAME ******
+
+  BEFORE CURING
+  -------------
+
+    - Remove problematic print support leftovers
+        - clean up all bearing seats
+        - clean up pot seating surfaces
+       
+    - Use paperclip to clear all arm stopper holes
+
+  AFTER CURING
+  ------------
+
+    - remove burrs with nail salon sander
+      - sand edges 
+      - sand motor seating surface
+
+
+****** SPINDLE ARM ******
+
+  BEFORE CURING
+  -------------
+
+    - Remove problematic print support leftovers
+        - clean up cable clamp holes and wire exits
+
+    - Use paperclip to make sure retain hold goes all the way through
+
+  AFTER CURING
+  ------------
+
+    - remove burrs with nail salon sander
+      - sand edges 
+
+
+****** FRAME SPINDLE ******
+
+  BEFORE CURING
+  -------------
+
+    - Remove problematic print support leftovers
+      - clean up bearing seats
+      - make sure round shaft has no bumps
+      - make sure no burrs on hexagonal parts
+
+    - Use paperclip to make sure both retaining
+      pin holes go all the way through
+
+  AFTER CURING
+  ------------
+
+    - remove burrs with nail salon sander
+
+    - dry fit to frame, bearings, spindle arm and hip limb
+      and sand if neceesary
+
+
+--------------------------------------------------
+------------------ TEMPLATE ----------------------
+--------------------------------------------------
+
+
+****** PART ******
+
+  BEFORE CURING
+  -------------
+
+    - Remove problematic print support leftovers
+
+    - Use paperclip to 
+
+  AFTER CURING
+  ------------
+
+    - remove burrs with nail salon sander
+      - sand edges 
+
+

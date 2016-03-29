@@ -1,0 +1,160 @@
+
+========================================================
+Comments on Documention provided in ATMega Datasheet PDF
+========================================================
+
+This document is intended to summarize some unusual (to me)
+concepts as either an introduction or to refresh one's
+memory.  For full details, refer to the datasheet.
+
+Memory
+======
+
+1) Program (read-only) and Data Memory (read/write) are separate
+   and each have their own address space starting at zero.  Note
+   that there is a special instruction that can *read* Program
+   Memory so constant data can be stored there.
+
+2) Program Memory consists of up to 32K of Flash.  This area is
+   further divided into "application" and "boot sections". This is
+   so a boot loader can be stored in the the boot section in order
+	 to load the application section.  Flash has limited endurance 
+	 of about 100K write cycles so should not be used as regular memory.
+
+3) Data Memory address space consists of
+		a) 32 8-bit general purpose CPU registers mapped from 0 to 0x1F.
+       However, some of these registers may be mapped to physical pins
+			 and become externally readable and/or writable general purpose
+       I/O (GPIO) pins.
+    b) 224 8-bit I/O registers mapped from 0x20 to 0xFF. These
+       registers are used to communicate internally with sub components
+			 of the chip.  The first 64 can be addressed using the small
+			 IN and OUT instructions.  The others have to be accessed as if
+			 they were RAM (they are memory mapped).
+		c) Static RAM starts at 0x100 and can be up to 2K bytes long.
+
+4) There is also up to 1K of EEPROM accessed through some of the
+	 I/O registers. EEPROM also has low endurance (~100K write cycles)
+   so should not be used as RAM.
+
+
+Reset / Interrupts
+==================
+
+The architecture is somewhat unusual:
+
+1) The Reset and interrupt vectors are in Program Memory and thus are
+   *instructions*.  Typically each "vector" is a "jump" instruction.
+   So perhaps it is better to think of them as hardwired locations
+   that get called when an interrupt or reset occurs.
+
+2) The location of the reset and interrupt vectors is controlled by
+   two bits: BOOTRST and IVSEL.
+
+3) BOOTRST is a "fuse" and can only be set once with a programmer.
+   It indicates whether a reset jumps to 0x000 or to a separately
+	 specified "Boot Reset Address". When BOOTRST is "1" (unprogrammed)
+   the boot address is 0x000.  
+
+
+SPI (Serial Peripheral Interface)
+=================================
+
+SPI is a serial transmission scheme where one device is designated
+the master and one or more devices are designated as slaves. These
+designations are decided at design time and typically never change.
+Similar to a client (master) / server (slave) relationship.
+
+It is not impossible to change the relationship at any point but
+is this is not the intended mode of operation of SPI capable devices.
+Some devices are only capable of being operated always as master or
+always as slave.
+
+SPI uses 3 wires wires for communication: MOSI, MISO and SCLK.
+If there is more than one slave, they all share these three wires
+but an additional SSn wire is driven by the master per slave as a
+"slave select" for slave n.  
+
+MOSI = Master Out/Slave In
+MISO = Master In/Slave Out
+SCLK = Serial Clock
+SSn  = Slave Select (LOW) for slave n.
+
+What's interesting (and unusual) about SPI is that all communications
+are composed by *simultaneous exchanges* of bits. A device is known
+as a master iff it is the provider of the serial clock (SCLK) but
+transmission always occurs in both directions simultaneously for every
+bit that is sent.  Transmission is accomplished by means of shift
+registers so is usually done in blocks of 8 bits at a time.
+
+What this means is while dataflow is bidirectional at all times, one
+of the sides should be selectively ignored by the software as determined
+by whatever protocol is being used.  I don't know if it is *necessary*
+but whenever a device has nothing to say, it is good form to transmit
+zero instead of garbage (it will be ignored anyway, but still ...
+In other words, if it is not your turn to talk, send a zero.
+
+Example (Master sends CMD_A and gets RESP_A from slave N):
+
+time    |  t0  |        t1          |         t2         |  t3  |
+MOSI    | idle | Master sends CMD_A | Master sends 0     | idle |
+MISO    | idle | Slave  sends 0     | Slave sends RESP_A | idle |
+SCLK    | idle | Master drives SCLK | Master drives SCLK | idle |
+SS-N    | HIGH |      LOW           |       LOW          | HIGH |
+
+This scheme called SPI but is sometimes referred to as 3-wire serial.
+Some people call it 4-wire because they count the SS wire but that 
+is stupid. For a single slave, it is possible (but not recommended in
+general) to simply tie SS to LOW on the slave so save wiring and so 
+it would be called 3 wire. For N>1 slaves, you would need 3+N wires
+so it would never be 4 wires.
+
+It is also possible to have a switchable master/slave mode but this
+is uncommon. Only a simple bus arbitration scheme is supported to
+handle case of collisions and it seems inadequate to me.  Also, in
+this case you would have to handle most of the complications in
+software. Probably a BAD idea to try it? IMHO, use TWI (described below)
+instead.
+
+Another feature is the the chip USART can be configured to use
+this SPI protocol.  There are pluses and cons of going through
+the USART:
+
+Plus: USART has deeper buffering
+Plus: USART has more choices for SCLK rate
+Plus: USART has more interrupt choices
+Con:  Only Master mode supported with USART
+Con:  No "write collision bit" in USART (no big deal)
+Con:  Can't use USART for other stuff
+Con:  More complicated
+
+TWI (Two Wire Interface)
+========================
+
+TWI is a serial transmission scheme where up to 128 devices can
+be connected using a single pair of wires.  Any device can act as
+Master or Slave.  Also, bus contention is well addressed by hardware.
+According to Atmel, the TWI interface is compatible with the I2C
+interface (probably a patent problem or something).
+
+Although it was many additional pluses over SPI (see "Features" in 
+datasheet), it also has several cons:
+
+1) Max speed for TWI is 400 kHz ... for SPI it is System Clock / 2.
+2) Less efficient protocol due to address fields and other bits
+   enclosing the data being sent.
+3) Can be overkill
+
+The actual transmission/reception scheme is not particularly unusual
+so shall not be discussed here.  Please refer to the datasheet.
+
+Errata
+======
+
+Datasheet has errata at the end that apply to different revisions
+of the chip.  Make sure to read those.
+
+
+
+
+
