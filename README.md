@@ -3,6 +3,8 @@ Spider-Droid
 
 Spider like robot - WORK IN PROGRESS
 
+(THIS IS OBSOLETE - COMPLETE RE-IMPLEMENTATION STARTED)
+
 
 Sparse Checkout
 ===============
